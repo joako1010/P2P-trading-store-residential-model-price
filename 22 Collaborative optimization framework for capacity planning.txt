@@ -1,0 +1,1671 @@
+﻿Applied Energy 384 (2025) 125289
+
+Contents lists available at ScienceDirect
+
+Applied Energy
+journal homepage: www.elsevier.com/locate/apenergy
+
+Collaborative optimization framework for capacity planning of a
+prosumer-based peer-to-peer electricity trading community
+Richard A. Mahuze , Ali Amadeh , Bo Yuan , K. Max Zhang *
+Sibley School of Mechanical and Aerospace Engineering, Cornell University, Ithaca, NY 14853, USA
+
+H I G H L I G H T S
+
+• A novel framework for peer-to-peer (P2P) trading community capacity planning.
+• Bi-level optimization with system-wide and adopter-level objectives.
+• Demand flexibility harnessed through the local energy market.
+• Network topology and constraints considered in the planning process
+• Collaboratively planned P2P community outperforms individually planned.
+
+A R T I C L E I N F O A B S T R A C T
+
+Keywords: Peer-to-peer (P2P) electricity trading offers significant potential benefits for community microgrids, including
+P2P electricity trading reduced costs, enhanced demand flexibility, and increased self-sufficiency. However, optimizing the capacities (i.
+Demand flexibility e., on-site renewable generation and battery storage) in a P2P trading environment is complex. This complexity is
+Community microgrids due to the dual need to achieve broad system objectives while catering to individual households’ unique energy
+Capacity planning
+
+needs and preferences. To tackle this, our study proposes an innovative bi-level optimization framework that
+harmonizes these diverse needs through a collaborative approach that accounts for demand flexibility and
+network topology. At the heart of our method is a “collaborative optimization” process. This entails a synergistic
+planning strategy where system-wide objectives and individual household preferences are jointly considered to
+determine the optimal infrastructure setup. The upper level of the framework employs Borg Multiobjective
+Evolutionary Algorithm (MOEA) to reconcile various system-wide objectives, such as maximizing renewable
+energy use, minimizing costs, and ensuring grid stability. The lower-level optimization uses Mixed Integer
+Nonlinear Programming (MINLP) with a dynamic pricing mechanism based on Supply-Demand Ratio (SDR). Our
+results show that collaborative optimization significantly outperforms individual household optimization stra-
+tegies (where households plan capacity independently before adopting P2P trading). In our case study, we
+observed a 24.6 % reduction in bi-monthly peak load averages with collaborative optimization, compared to a
+modest 10.2 % reduction under individual planning scenarios. This not only signifies enhanced efficiency but
+also translates into significant economic benefits. For instance, the investment payback period for solar photo-
+voltaic (PV) panels and battery storage is drastically reduced—from an average of 5.1 years to just 1.8 years. Our
+findings highlight the significant economic and grid-stabilizing advantages gained through collaborative plan-
+ning of P2P trading.
+
+year, reaching nearly 510 gigawatts (GW), with solar photovoltaic (PV)
+making up three-quarters of these additions [1]. This substantial growth
+
+1. Introduction reflects an accelerated effort to meet international targets, such as the
+COP28 goal of tripling renewable energy capacity by 2030 [2].
+
+The global energy landscape is rapidly transforming, driven by an However, this shift towards renewable energy sources (RES) like
+urgent need to transition towards a more sustainable future. In 2023, the solar and wind power presents significant challenges for integration into
+world added 50% more renewable capacity compared to the previous
+
+* Corresponding author.
+E-mail address: kz33@cornell.edu (K.M. Zhang).
+
+https://doi.org/10.1016/j.apenergy.2025.125289
+Received 12 August 2024; Received in revised form 10 December 2024; Accepted 3 January 2025
+Available online 5 February 2025
+0306-2619/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Nomenclature Ψmin Minimum battery state-of-charge coefficient
+Ψmax Maximum battery state-of-charge coefficient
+
+Sets and indices δth,s PV generation forecasting error under realization s for
+h ∈ H Index for houses in the set of all houses house h at time t
+t ∈ T Index for time slots in the set of all time slots, representing Dh Vector of hourly baseline demand for house h
+
+total hours PVh Vector of forecasted PV generation for house h
+k ∈ {1,2,…,K} Index for the months within the specified period of Dt
+
+h Hourly baseline demand for house h at time t
+interest, K months It
+
+s h Grid import (electricity imported from the grid) for house h
+∈ S Index of solar PV generation realizations at time t
+
+M k ⊆ T Subset of T representing the set of hourly intervals in the Eth Electricity exported to the grid by house h at time t
+kth month NPh Vector of net load of house h
+
+Δt ⊆ T Subset of T representing the set of hourly intervals in the DK
+time horizon h , I
+
+K
+h ,E
+
+K
+h Total demand (baseline), import, and export for house h
+over K months, respectively
+
+λtou ⊆ Υ The set of all hourly retail electricity prices Λk Peak demand for month k
+λtbuy ∈ λtou The set of hourly retail electricity prices in different ΛK
+
+Time-of-Use periods where avg Average of the aggregated monthly peak demand over K
+months
+
+tou ∈ {off peak,mid peak, on peak} CC
+β h Total capital cost for house h
+∈ B Index for trials or iterations for internal price convergence
+
+Parameters CCO Average capital cost offset across all houses
+N CCOh Capital cost offset for house h
+
+= |H | Total number of houses
+T = |Δt| Total number of hours in the time horizon NPth Net electricity consumption for house h at time t
+
+TSPt|S| Total number of solar PV generation realization Total surplus power in the system at time t
+|B | Total number of trials or iterations in the local energy TBPt Total buying power in the system at time t
+
+market SDRt Supply-Demand Ratio (SDR) at time slot t
+λt ξ
+buy Hourly retail electricity price h Vector of adjusted power consumption profile for house h
+
+λ ξt
+sell Grid export price h Adjusted consumption at time t for house h
+
+γ slth Shiftable load consumption at time t for house h
+mc Solar PV module cost per watt
+
+γic Inverter cost per watt flth Fixed load consumption at time t for house h
+γkWh Ct
+bc BESS capital cost per kWh h Lower-level cost function for house h at time t
+
+γkW Prt
+bc BESS capital cost per kW buy Internal buying price at time t in the local P2P market
+
+γ Prt
+fc Fixed monthly network charge sell Internal selling price at time t in the local P2P market
+
+α Sensitivity coefficient quantifying the willingness to Dt,n
+h Hourly baseline demand for house h at time t and year n
+
+perform load shifting πh Breakeven year
+rinfl Inflation rate π*h Adjusted breakeven year
+rdr Nominal discount rate th0 Vector of initial time slots of the shiftable load in house h
+Lgrowth Load growth percentage per year νh Vector of durations for each identified non-zero shiftable
+γO Fixed O&M cost per kW-year for solar panels
+
+PV load sequence in house h
+γO Fixed O&M cost per kWh for battery storage
+
+BESS Γh Vector of vectors containing the actual values of shiftable
+σ Standard deviation loads for each non-zero shiftable load sequence in house h
+ϵ Internal local market price convergence criterion θth Monetary outcome for house h at time t, where positive
+μcha,μdis Charging and discharging efficiency of the battery values indicate revenue and negative values indicate
+Ec− rateh Capacity rate for the battery of house h expenditure
+Variables Ωh Accumulated monetary outcome for house h
+xh Nameplate capacity for solar photovoltaic (PV) system for ζh Savings for house h
+
+house h SCK
+h Self-consumption for house h over K months
+
+yh Capacity for Battery Energy Storage System (BESS) for GK
+h Total on-site generated electricity for house h over K
+
+house h months
+Etcha,h Battery charging rate of house h at time t ΦK
+
+h Renewable electricity portion for house h over K months
+Etdis,h Battery discharging rate of house h at time t ε Voltage support cost parameter
+Emaxcha,h Maximum charging rate for the battery of house h vtsupport,h Voltage support variable for house h at time t
+Emaxdis,h Maximum discharging rate for the battery of house h Vref Nominal voltage
+MODEtcha Vmin Upper bound of voltage
+
+,h Binary indicator of charging mode for house h at time t
+MODEtdis,h Binary indicator of discharging mode for house h at time t Vmax Lower bound of voltage
+MODEt ΔVmax Maximum allowable voltage deviation from the nominal
+
+import,h Binary mode indicator for when electricity is being
+voltage
+
+imported depending on the net load sign
+SOCt
+
+Vt
+h Voltage at house h at time t
+
+h State of charge of the battery for house h at time t
+|I
+
+SOC1 l| Current through line l
+h Initial state of charge of the battery for house h Imaxl Maximum allowable current through line l
+
+SOCfinal
+h Final state of charge of the battery for house h φi,t Binary decision variable indicating whether the shiftable
+
+SOCminh Minimum allowable state of charge for the battery of house load sequence i starts at time t or not
+h νih The duration of the shiftable load sequence i of house h
+
+SOCmaxh Maximum allowable state of charge for the battery of Γi,τ
+house h h The shiftable load value of the i-th sequence at offset τ
+
+2
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+τ Index representing the offset within the duration of a |th0| Total number of starting points for all the shiftable load
+shiftable load sequence sequences in house h
+
+χt The shiftable load value at time t
+
+existing power grids. Onemajor challenge is maintaining power stability sizes for solar PV and battery storage, limiting the generalizability of
+due to the intermittent nature of RES, which can lead to voltage and findings. Additionally, a significant portion of P2P research has
+frequency fluctuations. For instance, solar and wind power generation is concentrated on market design and operationalizing trading mecha-
+highly variable and depends on weather conditions, which can cause nisms [16,18], neglecting the critical question of how to size DERs for
+sudden drops or surges in power supply, affecting grid stability [3]. these emerging markets optimally. This lack of focus on capacity plan-
+Additionally, there is a significant interconnection challenge in the ning represents a significant gap in the P2P trading literature, hindering
+United States, with long waiting times for renewable energy projects to the full realization of its potential economic and grid-support benefits.
+connect to the grid. As of 2023, the average wait time for project While research specifically targeting capacity planning for P2P
+interconnection has been increasing, with many projects experiencing trading is limited, broader studies on optimizing RES offer valuable in-
+delays of several years [4]. sights and methodologies that can be leveraged. Researchers generally
+
+Moreover, upgrading the grid to accommodate bidirectional power use a multi-objective approach for capacity planning of RES due to the
+flow is another critical challenge. Traditional power grids were designed complex energy community structures and varying stakeholder interests
+for one-way power flow from centralized power plants to consumers. [19]. Studies demonstrate that a multi-objective function approach
+However, with the rise of distributed generation from RES, there is a yields better payoffs and optimal DER sizing than single-objective
+need to enable bidirectional power flow to manage the energy generated frameworks [20]. Capacity planning studies often rely on heuristic al-
+by prosumers (producers and consumers). This requires significant in- gorithms. Recent research suggests multi-objective heuristic strategies
+vestments in grid modernization, including advanced metering infra- excel at solving non-linear optimization problems, as many objectives
+structure, energy storage systems, and smart grid technologies to conflict and necessitate trade-offs [21]. Particle Swarm Optimization
+manage and distribute power efficiently [5]. These challenges require (PSO) and Evolutionary Algorithms (EAs) are the most frequent heu-
+innovative approaches to ensure a smooth, affordable, and reliable ristic algorithms for microgrid capacity planning [22]. While heuristics
+transition to a cleaner, more sustainable energy future. might not guarantee globally optimal solutions for large-scale mixed-
+
+A paradigm shift in energy systems is emerging to address these integer non-linear problems, they often provide quality results where
+complex and interconnected challenges, with peer-to-peer (P2P) energy classical optimization could struggle [23]. For instance, Ref. [24] in-
+trading gaining increasing attention as a potential solution. P2P elec- troduces a microgrid planning framework to minimize the Levelized
+tricity trading allows users of Distributed Energy Resources (DERs) such Cost of Energy (LCOE), risk of power shutoffs, and CO2 emissions, where
+as solar PV and Battery Energy Storage Systems (BESS) to buy or sell both system configuration and operational strategy are in the decision
+electricity with each other [6]. This approach aligns with the trend to- space variables. The authors optimize RES capacities within the micro-
+wards decentralized power systems and complements ongoing initia- grid using a steady epsilon state evolutionary algorithm. Similarly,
+tives for building electrification, which aim to eliminate on-site Ref. [25] employs a custom implementation of the Non-dominated
+greenhouse gas emissions from fossil fuel combustion [7,8]. Sorting Genetic Algorithm-II (NSGA-II) to solve a multiobjective plan-
+
+P2P energy trading offers multiple benefits that address the chal- ning problem. Finally, Ref. [26] uses a multi-objective particle swarm
+lenges of RES integration [9]. Pilot projects worldwide have demon- optimization algorithm to minimize system costs and power supply loss
+strated significant economic advantages [10]. For example, one study simultaneously. While these studies offer valuable insights into the
+highlights a potential reduction in consumer electricity bills by 14 %–16 multi-objective capacity planning of microgrids, they do not account for
+% and an increase in supplier monthly income by up to 65 % [11], while P2P electricity trading.
+another study reports reductions in energy bills for consumers ranging Research on capacity planning with P2P electricity trading has pri-
+from 7 % to 33 % [12]. Experiments in a low-voltage grid-connected marily emphasized system-level objectives, focusing on collective and
+microgrid reveal P2P trading’s capacity to enhance the local balance of societal benefits while often overlooking individual adopters’ nuanced
+energy generation and consumption [6], and other research underscores interests and incentives, who prioritize their own needs and benefits.
+its role in promoting local balance and adherence to transformer ca- This focus stems partly from the common approach of simplifying multi-
+pacity limits through increased diversity in generation and load profiles dimensional microgrid planning problems through aggregated capacity
+[13]. Further, P2P energy is recognized for its potential as a decentral- frameworks, which treat distributed resources as one entity [27].
+ized alternative to net metering [14]. However, this strategy might not address the diverse interests of pro-
+
+While promising, P2P energy trading is still in its early stages and sumers, consumers, aggregators, and system operators across multiple
+faces numerous challenges. Ensuring robust cybersecurity measures to levels. Microgrid planning with P2P trading capabilities must also ac-
+protect data-enabled P2P trading platforms from cyberattacks is crucial count for operational factors. For instance, Ref. [20] explores economic
+[15]. Likewise, establishing fair and transparent pricing mechanisms to planning within a multi-microgrid system involving P2P trading,
+ensure fair distribution of benefits remains an ongoing area of research combining the PSO algorithm for capacity planning with a cooperative
+and development [10]. On the regulatory front, existing electricity game model for operations. This study aims to optimize the LCOE and
+market policies are designed for the conventional power system para- reliability index, where LCOE represents the average cost per unit of
+digm, and there is a need to align the objectives of the different parties electricity generated, and the reliability index measures the system’s
+involved, such as the Distribution System Operator (DSO) and pro- ability to provide uninterrupted service. Similarly, Ref. [28] employs a
+sumers [16]. Social acceptance also poses a challenge due to issues of Mixed Integer Linear Programming (MILP) approach for solar PV and
+public awareness and affordability that limit broader implementation BESS capacity sizing for prosumers, maximizing both total net profit and
+[17]. These interlinked challenges underscore the need for a framework social welfare. While using dynamic pricing, this study does not consider
+that can demonstrate clear benefits to all stakeholders while maintain- generation profile uncertainties or flexible loads that could amplify the
+ing power systems reliability. demand flexibility benefits of P2P trading. Refs. [29,30] tackle un-
+
+The strategic planning of DER capacities in the context of P2P energy certainties with a multiobjective MILP transformed into fuzzy multi-
+remains a pivotal yet under-researched aspect. Most research in this area objective programming and solved using a genetic algorithm,
+has focused on specific operational case studies with pre-determined optimizing for total profit and environmental cost. Ref. [31] uses NSGA-
+
+3
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+II with a Supply-Demand Ratio (SDR) pricing mechanism but still fo- compared between coordinator-owned and user-owned. Even though
+cuses solely on system-wide objectives to boost self-consumption and the coordinator-owned BESS case considers both system- and adopter-
+reduce net electricity bills and carbon emissions. Ref. [32] optimizes the level objectives, the paper did not account for solar PV sizing and the
+total annual profit and reliability index in a networked P2P microgrid incorporation of demand flexibility and network topology. Table 1
+consisting of three individual microgrids. This lack of attention to in- compares current studies in capacity planning in the context of P2P
+dividual adopter needs limits the practicality and effectiveness of ca- energy in terms of Demand Flexibility (DF), Network Topology (NT),
+pacity planning solutions in real-world P2P trading environments. System-Level (SL), and Adopter-Level objective (AL) as well as com-
+
+Broadly, DER integration approaches fall along two axes: network- parison of adoption scenarios.
+focused and customer-focused [13]. Network-aware approaches The contributions of this paper are fourfold. First, we propose a novel
+explicitly consider constraints within the power system network, while collaborative optimization framework for planning capacities of PV and
+network-oblivious approaches ignore them. Similarly, customer- BESS for households in P2P electricity trading communities while
+oriented approaches prioritize individual user interests, while system- explicitly accounting for demand shifting. To the best of the authors’
+oriented approaches aim for maximized social welfare, including both knowledge, this simultaneous optimization approach for all community
+collective users and the system. Most P2P trading community planning members while taking explicit demand flexibility into account has never
+models are network-aware and system-oriented, focusing on high-level been proposed before. Second, this framework incorporates power flow
+impacts. However, in P2P trading, individual participant behaviors analysis at the distribution level to ensure that the determined DER
+significantly impact the system. Adopter decisions are crucial for the capacities and resulting P2P transactions respect physical network
+financial benefit of prosumers and consumers in P2P energy trading and constraints. This analysis validates power flows and triggers re-
+reduce grid stress [15]. Conversely, P2P trading can increase both power optimization with voltage constraints if violations are detected,
+injections from surplus energy producers and consumer withdrawals ensuring a feasible and grid-friendly solution. Third, the proposed
+within the distribution network. This imbalance might result in voltage framework employs the Borg Multiobjective Evolutionary Algorithm
+fluctuations and exceedance of line capacity limits if network parame- (MOEA), an adaptive optimization algorithm well-suited for handling
+ters are not carefully managed. This highlights a critical need for ca- problems with many objectives, to solve the upper-level optimization
+pacity planning approaches that can effectively integrate both network problem. To the best of our knowledge, this study represents the first
+constraints and individual adopter objectives, particularly the ability to application of Borg to P2P electricity trading capacity planning. Borg’s
+leverage demand flexibility. strength in handlingmany objectives andmultimodal problems has been
+
+Considering adopter-level objectives is crucial for unlocking the extensively demonstrated in benchmark studies, where it outperformed
+inherent demand flexibility of P2P electricity trading and providing other well-known algorithms in Ref. [41]. We further demonstrate its
+valuable grid services [33]. Buildings, responsible for 75 % of US elec- effectiveness in the context of our P2P planning problem by comparing
+tricity consumption, offer significant potential for demand-side man- its performance and computational runtime against NSGA-II, a widely
+agement [34]; their flexibility measures [35] could substantially reduce used multi-objective optimization algorithm. Fourth, this paper dem-
+the need for investments in fossil-fueled generation. Within P2P mar- onstrates the clear economic benefits of our collaborative capacity
+kets, community members with PV-coupled batteries possess the planning approach over the individual, isolated planning approach
+greatest flexibility, choosing to sell electricity to others or maximize employed before P2P trading adoption. In fact, no prior studies have
+their energy independence. When combined with flexible loads like explicitly demonstrated the clear difference in economic outcomes,
+controllable appliances, P2P electricity trading surpasses traditional specifically payback periods, between these two planning paradigms.
+systems in terms of flexibility. Individuals can customize traded energy This paves the way for a more comprehensive understanding of the
+amounts based on real-time needs and negotiate transaction prices. This financial implications of capacity planning in P2P energy trading com-
+provides enhanced market participation control [36] and helps absorb munities, enabling informed decision-making for stakeholders and pol-
+uncertainty in local renewable energy generation [37]. However, icymakers alike.
+despite the recognized potential of demand flexibility in P2P systems, The structure of this paper is as follows: Section 2 presents the pro-
+many existing planning studies fail to fully leverage this capability for posed framework, including the system topology and collaborative
+maximizing economic and grid benefits. optimization framework. Section 3 provides a detailed mathematical
+
+Several studies have attempted to bridge the gap between system- formulation of the bi-level optimization problem, encompassing both
+level and adopter-level objectives in P2P trading systems planning, the upper level, which focuses on capacity optimization, and the lower
+but they often fall short of fully integrating demand flexibility and level, which focuses on market operations. Section 4 introduces the case
+optimizing DER capacities. For instance, Ref. [23] demonstrates the study, including the benchmarking approach and relevant parameters.
+potential for synergistic benefits, achieving improvements in resilience Section 5 presents results and discussions, analyzing the Pareto front,
+(up to 80 %) and battery lifespan (32–37 %) through optimized battery adoption scenarios, transaction behaviors, grid impacts, economic
+sizing. However, this study assumes fixed PV capacities and does not
+leverage the full potential of demand flexibility, particularly time-
+shifting, for further cost savings and grid support. Similarly, Ref. [25] Table 1
+
+Summary of existing studies for P2P energy and optimal sizing.
+focuses on maximizing self-sufficiency and minimizing battery storage
+capacity using NSGA-II, overlooking the significant role flexible loads Paper Solar BESS DF NT Both SL Adoption scenario
+
+can play in enhancing P2P trading dynamics and overall system effi- PV and AL comparison
+
+ciency. While Ref. [38] incorporates adjustable loads within a stochastic [20] √ √ × × × ×
+
+model for Multi-Energy Microgrids (MEMG), it prioritizes operational [28] √ √ × × × ×
+[29] √ × × × × ×
+
+cost reduction and fair benefit distribution without optimizing for RES [30] √ × × × × ×
+capacities or considering broader grid impacts. Likewise, the study by [31] × √ × × × ×
+
+Ref. [39] optimizes PV and battery sizing for P2P energy sharing for [32] √ √ × × × ×
+
+residential households, focusing on minimizing the cost of electricity [23] × √ × √ √ ×
+
+(adopter-level objective). However, it neglects crucial aspects such as [25] × √ × √ × ×
+[38] × √ √ × √ ×
+
+network constraints, topology, and flexible loads, limiting its applica- [39] × √ × × × ×
+
+bility to real-world grid operations and demand-side management [40] × √ × × √ ×
+
+strategies. Meanwhile, Ref. [40] performs optimal sizing of BESS ca- This √ √ √ √ √ √
+pacities for a P2P energy-sharing community, where BESS ownership is paper
+
+4
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+impacts, and sensitivity of market parameters. The paper concludes with wide objectives such as minimizing aggregated peak loads, reducing
+Section 6. total emissions, or maximizing total electricity bill savings. This level
+
+aligns with broader sustainability goals and energy regulations. In
+2. Proposed framework contrast, the lower level focuses on individual prosumer (producer-
+
+consumer) objectives, such as minimizing day-to-day operational costs
+We will first introduce the topology of the P2P electricity trading and the inconvenience of shifting flexible loads. Importantly, the lower
+
+community considered in this study. Next, we will introduce the pro- level also governs the community’s operational aspects, including
+posed bi-level framework and outline its key steps, encompassing both energy-sharing pricing and trading mechanisms. This framework pro-
+system- and adopter-level optimization modeling. duces key outputs, including each participating prosumer’s optimal
+
+solar PV panel and battery storage capacities and relevant performance
+2.1. System topology metrics. It is important to note that the baseline load profiles are his-
+
+torical consumption data (including fixed and flexible loads) of the
+Fig. 1 shows the system topology we examine in this study. We focus prospective prosumers before adopting RES and BESS.
+
+on the grid’s Low-Voltage Distribution Level (LVDN), which typically The strategic interactions between levels operate within a collabo-
+employs a radial structure in residential areas [42]. The topology is rative framework, where the planner at the upper level and prosumers at
+based on Ref. [43] and includes four key components: (1) the utility grid, the lower level influence each other’s decisions through an iterative
+which supplies traditional electricity; (2) a coordinator, facilitating feedback loop. The planner suggests PV and BESS capacities, and in
+communication between prosumers; (3) prospective prosumers, who response, prosumers, along with a virtual coordinator at the lower level,
+want to produce, store, and utilize renewable energy; and (4) a independently optimize their daily operations and local market activ-
+centralized market structure designed to maximize social welfare [44]. ities. At the lower level, the virtual coordinator provides incentive sig-
+To model a best-case decarbonization scenario, this study assumes all nals rather than directly controlling flexible loads. The results of
+community members adopt the prosumer role. Each prosumer will have prosumers’ market participation, measured by metrics like cost savings,
+a BESS alongside their RES and flexible loads with adjustable operation are then communicated back to the planner, informing the next round of
+schedules. The system is assumed to support two-way information ex- capacity adjustments in a continuous cycle of refinement and
+change and P2P financial transactions between prosumers. improvement.
+
+Specifically, as shown in Fig. 3, the bi-level optimization process
+begins at the upper level, where it first generates potential capacity
+
+2.2. Collaborative optimization framework configurations for PV systems and batteries across all households. Next,
+these configurations are passed down to the lower level for operational
+
+This framework utilizes a bi-level optimization approach, as depicted simulation and optimization.
+at a high level in Fig. 2. The term collaborative optimization refers to a At the lower level, the process goes through several sequential steps.
+method for solving optimization problems that involve multiple stake- First, each household independently optimizes its daily operations,
+holders with different objectives [45]. The upper level optimizes system-
+
+Fig. 1. Schematic diagram of the topology and system setup, showing four key components: (a) utility grid, (b) coordinator (intermediary and transaction manager),
+(c) prosumers, and (d) a centralized market structure. Each prosumer is assumed to adopt solar photovoltaic (PV) and Battery Energy Storage System (BESS).
+
+5
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 2. Collaborative optimization framework for P2P community capacity planning. The framework utilizes bi-level optimization, taking baseline load profiles,
+Renewable Energy Source (RES) generation profiles, and utility grid retail rates as inputs. The output consists of optimal solar photovoltaic (PV) and battery storage
+capacities of community members and metrics of interest.
+
+including battery scheduling and load shifting, to minimize electricity better solutions. What makes Borg particularly effective is its archiving
+costs while considering the inconvenience of load shifting. Second, system that efficiently maintains a diverse set of high-quality solutions
+households participate in a local energy market where they can trade while avoiding redundancy. This approach ensures that the algorithm
+excess energy with neighbors, with prices determined through a supply- explores a wide range of possible solutions while consistently moving
+demand ratio mechanism. Third, the technical feasibility of these energy towards better outcomes. Unlike more traditional algorithms such as
+exchanges is validated through network analysis, checking for issues like NSGA-II, Borg incorporates multiple search strategies simultaneously
+voltage constraints or line capacity limits. If any technical violations are and automatically selects the most effective ones during optimization,
+detected, a re-optimization occurs with additional voltage awareness rather than relying on a single fixed approach.
+considerations, adjusting battery operations and market positions The lower-level optimization focuses on P2P energy market opera-
+accordingly. This P2P market operation iterates throughout the simu- tions, which include pricing and trading mechanisms. Different pricing
+lation period. Finally, all energy transactions are accounted for, and the strategies have been proposed to establish the internal P2P trading price.
+operational performance metrics are calculated. These strategies encompass market-based methods [49], distributed
+
+The process concludes with a feedback loop from the lower to the optimization-based methods [50], auction-based methods [51], game-
+upper level. The operational results, including financial outcomes and theoretic methods [52], and blockchain-based methods [53].
+system performance metrics, are aggregated and returned to the upper The pricing mechanism shapes trading by influencing bidding stra-
+level. The upper level uses these insights to refine the capacity decisions tegies, matching processes, and benefit allocations, with impacts vary-
+in subsequent iterations, learning from the operational impacts of pre- ing by market context and participant behavior [54]. P2P energy trading
+vious suggestions. mechanisms can be broadly categorized into theory-based and distrib-
+
+We use the Borg MOEA [41] as the solver of the upper-level opti- uted methods [33]. Recent advancements have utilized multi-agent
+mization problem due to its superior performance in comparison with reinforcement learning for model-free P2P energy trading, addressing
+six well-known multiobjective algorithms for solving benchmark suites inherent deep uncertainties in local energy market operations [51].
+of test problems with 2–8 objectives [46]. Borg MOEA is a self-adaptive For this study, we use the SDR method from Ref. [55] to demonstrate
+multiobjective evolutionary algorithm capable of solving complex, the framework. This method has a proven track record in multiple
+many-objective problems, and its application in energy planning has studies [36,49,56]. The SDR method offers a synchronous way to
+been demonstrated in [47,48]. determine energy pricing and adapt to supply and demand changes [57].
+
+The algorithm features an intelligent self-adjustment mechanism
+that fine-tunes its search process when it detects stagnation in finding
+
+6
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 3. Bi-level optimization flowchart. The upper level determines optimal solar PV and battery capacities in an iterative loop. The lower level then simulates P2P
+trading using these capacities, minimizing costs for each prosumer and coordinating transactions. The lower-level optimization returns metrics of interest to the
+upper level for evaluation and further solution search.
+
+3. Mathematical formulation of the Bilevel framework (respectively).
+Grid import is defined as the portion of the net load that is drawn
+
+3.1. Upper-level optimization problem from the utility grid (when the net load is positive). The grid import is
+(
+
+expressed as It NPt
+)
+
+h = max h, 0 , where Ith represents the grid import for
+The upper level of the framework is concerned with optimizing house h at time t. To assess the peak demand from the grid’s perspective,
+
+multiple objectives that may contradict each other to satisfy the needs of we sum the hourly grid import across all houses. Let M k be the set of
+different parties involved in a P2P electricity trading community. hourly intervals for the kth month and M k ⊆ T . For each month k, the
+Recognizing the limitations of purely cost-driven optimization, the monthly peak demand is calculated by finding the maximum hourly grid
+upper level of our framework addresses the multi-faceted nature of real- import over the set of hourly intervals within that month:
+world energy transitions. We incorporate system-wide objectives that {( )}
+may be nonlinear, reflecting the complex decision-making processes ∑
+
+that stakeholders undertake [58]. Λk = max It (1)
+t∈M k h∈H h
+
+To demonstrate this, this study aims to account for the utility’s in-
+terest in reducing high peak loads that can happen when there’s unco- where Λk is the peak demand for the month k, and the hourly electricity
+ordinated DER integration into the grid [59]. In addition, an objective demand is summed across all houses in H . The average aggregated
+concerning the capital cost of each prosumer is also considered, where monthly peak demand over K months is then calculated as follows:
+the capital cost is offset by the amount of savings accrued over some
+
+1∑time period, thanks to adopting P2P electricity trading. Furthermore, we f1∶ = ΛK K
+avg = Λ (2
+
+K k k )
+=1
+
+incorporate maximization of the percentage of the site’s electric load
+served by renewable electricity to promote decarbonization and broader This formulation connects with the upper-level optimization prob-
+sustainability goals. Hence, the three objectives at the upper level are to lem, where the objective is to minimize the aggregated peak demand by
+minimize the aggregated peak loads, minimize the capital cost offset, optimizing the PV and battery capacities for each household (i.e., opti-
+and maximize the REP. mizing xh and yh).
+
+3.1.1. Peak load 3.1.2. Capital cost offset
+Let NPth represent the net load for house h at time t, where h ∈ H and The capital cost offset accounts for the capital costs of DER in-
+
+t ∈ T . The net load accounts for the demand after considering the stallations and the total bill savings achieved through their operation
+involvement of PV generation, battery storage, and P2P trading. The over the period T . The total bill savings ζh for each house h are calcu-
+decision variables in the upper-level optimization, xh and yh, represent lated as:
+the PV capacity size (in kilowatts-peak, kWp) and battery capacity size ∑
+
+ζh = Dt
+(in kilowatt-hours, kWh) for each house h. These variables influence the ⋅λt +Ω ( )
+
+t∈T h buy h 3
+net load NPth, as discussed in later sections, since both the PV generation
+and the charging/discharging of the battery are functions of xh and yh,
+
+where Dt
+h Baseline electricity demand for the house h at time t (without
+
+7
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+DERs) and λtbuy is the hourly utility retail electricity price. The accu- generated electricity, baseline demand, self-consumption and export for
+mulated monetary outcomeΩh from DER operations and P2P trading for house h over K months, respectively. As noted in Section 3.1.1, the
+each house h over the period T is defined as: upper-level decision variables xh and yh directly impact the net load
+
+∑ profile and grid imports and exports.
+Ωh = θt (4)
+
+t∈T h
+3.1.4. Discounted payback period
+
+In Eq. (4), θth is the monetary outcome for the house h at time t, where In addition, discounted payback period is considered in this study to
+θth > 0 means revenue at time t (e.g., selling excess PV generation) and measure the economic performance of each solution. The formulation
+θth < 0 means expenditure at time t (e.g., purchasing electricity either starts with the estimation of future electricity retail rates, which is
+from the grid or peers). This formulation helps calculate the bill savings characterized as follows:
+by adding the net monetary outcome to the baseline cost, effectively
+capturing the financial benefits of DERs and P2P trading. The approach λt,n
+
+( ) ( )
+buy,tou = λtbuy,tou × 1+ r n
+
+infl + γfc× 1+ r n
+infl (16)
+
+essentially computes savings as the difference between the business-as-
+usual (BAU) cost and the net cost after intervention while also ac- where λt,nbuy,tou represent the hourly retail price for time-of-use periods
+counting for any new revenue streams. tou ∈ {off − peak,mid − peak,on − peak} and that λtou ⊆ Υ. The infla-
+
+Then, given the nameplate capacity xh and yh of solar PV and BESS tion rate is annotated as rinfl, and γfc represents a fixed monthly network
+capacity for house h, respectively, the capital cost for each house can be charge. Then the annual cost incurred by house h at year n before
+calculated as follows: adopting any RES is defined as:
+γ ∑
+pv,h = (γmc + γic)⋅xh (5) γn Dt,n ( )n
+
+h,BAU = × 1+
+t h L × λt,ngrowth buy,tou (17)
+
+(
+γbess,h = γbckWh⋅yh + γbcKw⋅ Ec− rate
+
+)
+h ⋅yh (6) where Dt,n
+
+h is the house’s baseline consumption at year n, adjusted by the
+
+CC annual load growth Lgrowth. Subsequently, drawing on savings formula-
+h = γpv,h + γbess,h (7)
+
+tion in Eq. (4) with inflation rate and operations and maintenance
+where γmc is the cost per watt of the solar modules, γic is the cost per watt
+
+(O&M) costs accounted, as well as the upfront costs from Eq. (7), the
+of the inverter, γ discounted payback period is characterized as:
+
+bckWh is the capital cost per kilowatt-hour of the BESS,
+γbcKw is the capital cost per kilowatt of the BESS, and Ec− rateh is the ca- { }
+
+∑n ζ
+pacity rate or C-rate of house h’s battery. Hence, given Eqs. (4) and (7), πh = arg min n h,
+
+≥ 0 k
+| k ≥ CCh (18)
+
+k=0(1+ r
+the capital cost offset CCOh is calculated as the difference between the
+
+dr)
+
+capital cost CCh and the savings ζh, which is given by: ⎛ ⎞
+∑
+
+CC π− 1 ζ
+− h,k
+
+CCOh = CCh − ζh (8) π* ⎜ h k=0(1+rdr)k ⎟
+h = πh +⎝ ζ ⎠ (19)
+
+h,π
+(1+r
+
+The average capital cost offset CCO across all houses is calculated by dr)
+πh
+
+summing the individual CCOh for each house and dividing by the total
+number of houses as follows: where πh is the breakeven year, π*h is the adjusted breakeven year after
+
+incorporating the fractional year, and rdr corresponds to the nominal
+1 ∑
+
+f2∶ = CCO = CCOh (9) discount rate.
+|H | h∈H
+
+3.1.5. Upper-level problem formulation
+3.1.3. Renewable electricity portion (REP) Drawing on the objectives defined in Eqs. (2), (9), and (15), the
+
+The Renewable Electricity Portion (REP) is a metric that measures multiobjective optimization problem is thus defined as:
+the degree to which a site’s electricity needs are met by renewable ( )
+sources. It considers both electricity generated and used directly on-site Minimize F(x1, x2,…, xN, y1, y2,…, yN) = f1, f2, − f3 (20)
+and any surplus renewable energy exported to the grid, assuming Subject to:
+compensation for that exported energy. REP extends the renewable
+electricity percentage constraint from the National Renewable Energy xh ∈ {4,7,9, 11} kWp ∀h ∈ H (21)
+Laboratory’s (NREL) REopt optimization model [60]. By accounting for
+both on-site consumption and compensated exports, REP assesses a site’s yh ∈ [3,15] kWh ∀h ∈ H (22)
+reliance on renewable energy sources. This is expressed as: This formulation presents a multiobjective optimization problem
+
+∑K ∑
+Dt where the goal is to find the vector of decisions (x1, x2,…, xN, y1, y2,…DK
+
+h = (10)
+k=1 t∈M h
+
+k , yN) that minimizes the objectives simultaneously within the given
+∑ constraints. The decision variable is a vector of decisions
+
+IK
+K ∑
+
+t
+h = I (11) (x
+
+k 1, x2,…, xN, y1, y2,…, yN), where x1, x2,…, xN represent the solar PV
+=1 t∈M h
+
+k capacities for each of the N houses and y1, y2,…, yN represent the BESS
+∑ ∑
+
+EK
+K
+
+h = Et (12 capacities for each of the N houses. The decisions are constrained by
+k=1 t∈M h )
+
+k typical residential solar PV and co-located BESS capacities [61]. While
+explicit constraints are minimal at the upper level, it’s important to note
+
+SCK
+h = DK
+
+h − IKh (13) that the objectives themselves act as soft constraints that guide the
+design towards desirable characteristics while maintaining flexibility.
+
+GK
+h = SCK
+
+h +EKh (14) For example, minimizing average peak demand inherently discourages
+( ) solutions that would violate typical network capacity limits. This
+GK
+
+f3∶ = ΦK approach facilitates the discovery of balanced solutions that might be
+h = h 0 ( 5
+
+DK × 1 0 1 )
+h eliminated by strict constraints while ensuring operational feasibility is
+
+managed at the lower level. Our bi-level optimization approach delib-
+whereΦK
+
+h is the REP percentage, andGK
+h , D
+
+K
+h , SC
+
+K
+h , and EKh are total on-site erately shifts the majority of operational constraints to the lower level.
+
+8
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+This design ensures that all critical technical and operational constraints decision variables in the lower-level optimization.
+are still rigorously enforced but at a level where they can be more pre- The vector of original or baseline hourly demand and forecasted PV
+cisely applied to each household’s specific conditions. generation profile for house h at time t are denoted by Dt
+
+h and PVt
+h,
+
+respectively. Then, the net load at time t, NPth, is given as:
+3.2. Lower-level optimization problem [ ]
+
+Dh ≡ D1
+h ,D
+
+2
+h ,…,DT
+
+h ∀h ∈ H (26)
+
+3.2.1. Supply-demand ratio (SDR) pricing mechanism [ ]
+PVh ≡ PV1
+
+h , PV
+2
+h ,…,PVT
+
+h ∀h ∈ H (27)
+In an SDR-based approach, prosumers directly influence internal P2P
+
+market prices. They achieve this by adjusting their flexible loads and NPth = Dt
+h − PVt
+
+h + Etcha,h − Etdis,h (28)
+battery storage usage. In this study, we treat the adjustment of flexible
+loads as a shifting of operational times throughout the time horizon. where Etcha,h and Etdis,h are the charging and discharging rate of pro-
+Adjusted power consumption profile of prosumer h is defined as: sumer’s h battery at time t, respectively. It should be noted that after
+
+{ }
+ξh ≡ ξ1h , ξ2h ,…, ξTh (23) load adjustment, the net load calculation will account for ξh instead of
+
+Dh. To account for forecasting error of PV generation, we draw δ from
+ξt
+( (
+
+h slt
+)
+
+h = slth + flth (24) N 0, σ2
+)
+over realizations S. Hence, the net load vector with uncertainty
+
+is defined as follows:
+where ξth is the adjusted consumption at time t, slth is the shiftable load 1 ∑S ( ( )
+consumption and flth is the fixed load consumption. Here, t represents NPh ≡ D − V • δs
+
+)
+c
+
+|S h P h 1+
+| h + E ha,h − Edis,h (29)
+
+hourly time slots in time horizon Δt ⊆ T andT = |Δt| represents the s
+
+total number of hours in the time horizon. In Eq. (24), the adjusted The forecasted PV generation profile is determined by the upper-
+consumption consists of shiftable and fixed load, which gives the vector level decision variable xh. These profiles are simulated based on spe-
+of the shiftable load during the time horizon slh (as). cific weather data. Thus, the upper-level PV capacity decisions directly
+
+{
+slh sl1h , sl
+
+2 }
+≡ h ,…, slTh (25) affect the lower-level net load calculations. The SDR of energy in the
+
+local market is then defined as:
+However, to enable load shifting, we need to extract specific pa- ∑
+
+rameters that characterize the shiftable loads within the time horizonΔt. TSPt = − NPt NPt < 0 (30)
+h∈H h h
+
+Algorithm 1 presents the procedure to identify the parameters of the ∑
+shiftable load, which are the start time, duration, and power consump- TBPt = NPt NPt ( 1
+
+h∈H h h ≥ 0 3 )
+tion profile.
+Algorithm 1. Identify Parameters of Shiftable Loads.
+
+In Algorithm 1, th0 is a vector of the initial time slots (tih0) where a
+non-zero shiftable load sequence begins. For each sequence i starting at a TSPt
+non-zero value, tih0 marks the start time slot. νh is a vector of durations
+
+SDRt =
+TBPt
+
+(32)
+
+for each identified non-zero sequence. Each duration νih corresponds to where TSPt and TBPt are total supply power and total buying power at
+the length of the ith non-zero sequence, indicating how many consecu- time t, respectively. Since PV generation and users’ net load fluctuate,
+tive time slots contain non-zero shiftable loads. Γh is a vector of vectors the SDR varies throughout the day, influencing the prices at which
+containing the actual values of shiftable loads for each non-zero prosumers buy and sell energy. The internal buying and selling prices
+sequence. Each sub-vector Γi
+
+h contains the sequence of shiftable load are defined as the following:
+values corresponding to the ith non-zero sequence identified in the time { }
+series. These parameters will then be utilized to build the load-shifting Pr ≡ Pr1buy,Pr
+
+2
+buy,…,PrTbuy;Pr
+
+1
+sell,Pr
+
+2
+sell,…,PrTsell (33)
+
+9
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+⃒ ⃒
+
+Prt t i ( )
+buy = f(SDR ) φ ,ti +φi,tj ≤ 1 if ⃒ti − tj⃒ < max νi, νj ∀i, j ∈ {1,2,…, |th0|}, i ∕= j
+
+= Prt (39)
+sell⋅SDR
+
+t + λtbuy⋅(1 − SDRt)⋅1{0≤SDRt≤1} + λsell⋅1{SDRt>1} (34)
+
+where φi,t is the binary decision variable indicating whether the shiftable
+λ t
+
+Prt sell⋅λbuy load sequence i starts at time t or not, T is the total number of time slots
+sell = f(SDRt) = ( ) ⋅1 0≤SDRt≤1
+
+λt λ { } + λsell⋅1{SDRt>1}
+buy − λ t
+
+sell ⋅SDR + sell in the planning horizon,νih is the duration of the shiftable load sequence
+(35) i. The variable Γi,τ
+
+h is the shiftable load value of the i-th sequence at the
+offset τ and χt is the shiftable load value at time t. The shiftable load
+
+where Prtbuy and Prtsell are the buying and selling prices within the local sequences are indexed by i, running from 1 to the total number of se-
+P2P market at time t, respectively. In addition, λsell and λtbuy are the grid quences |th0|. The constraints ensure each load sequence i is shifted once
+export and retail prices, respectively. within the planning horizon, and the energy consumption at each time
+
+In practical terms, consider a microgrid comprising several house- slot t respects the demand of the shiftable load sequence if it is scheduled
+holds that both generate and consume energy. During midday, when to start at that time.
+solar generation peaks, most prosumers generate more energy than they The intuition behind the load shifting and operation duration pres-
+consume, causing the total supply power TSPt to exceed the total buying ervation constraints (37) and (38) is to ensure that each load sequence is
+power TBPt. In this scenario, the SDRt will be high (close to or greater scheduled to begin at exactly one time slot within the planning horizon
+than 1), triggering a lower internal selling price Prt and that the consumption at any given time χt is sufficient to meet the
+
+sell, as indicated by Eq.
+(35). This aligns with the inverse-proportional relationship between demand of any shiftable load starting at that time. Constraint (39) is a
+price and SDR, where an excess of supply leads to reduced selling prices non-overlapping constraint ensuring that for any pair of shiftable load
+to maintain economic balance within the system. sequences, i and j, if the start times ti and tj are within the maximum
+
+Conversely, in the evening, when PV generation drops and energy duration of the two loads, then they cannot both be scheduled to start —
+demand rises, the total buying power TBPt surpasses the total supply preventing simultaneous operation that would exceed capacity or
+power TSPt, leading to a low SDR operational limits.
+
+t. In this case, Eq. (34) dictates that the
+internal buying price Prt In addition, battery operational constraints are also included:
+
+buy will rise, reflecting increased demand and
+lower supply. This adjustment is to ensure that prosumers are incen- − Etcha,h ≤ Eth ≤ Etdis,h (40)
+tivized to reduce consumption or shift demand during periods of low
+generation, stabilizing the grid and promoting efficient energy use MODEtb,h ∈ {0,1}∀b ∈ {cha, dis} (41)
+within the microgrid. Meanwhile, the internal price bounds are deter-
+mined by the utility’s retail price λtbuy and feed-in tariff λsell, ensuring MODEtcha,h +MODEtdis,h ≤ 1 (42)
+competitive pricing for prosumers and encouraging local energy trading.
+
+The lower-level optimization problem is then defined as: 0 ≤ Et ax
+b,h ≤ Emb,h ⋅MODEtb,h∀b ∈ {cha, dis} (43)
+
+1∑S ∑T ( ( ) ( ) ( )
+min C t )2
+
+h = Prt
+sl port,h + α⋅ ξth − Dh (36)
+h ,Eb,h ,SOCh ,MODEtb DEt S| s=1 t=1 buy • NP
+
+t
+h •MODEtimport,h − Prtsell − NPth • 1 − MODEtim
+
+,h ,MO import |
+,h
+
+where index b ∈ {cha, dis}, MODEtimport ∈ {0,1} is a binary mode indi-
+,h SOCmin
+
+h ≤ SOCt ax
+h ≤ SOCm
+
+h (44)
+cator for when electricity is being imported depending on the net load
+sign, MODEtb is a binary mode indicator for battery operations, s ∈ S is
+
+,h SOC1 start
+h = SOC (45)
+
+the index for generation realization, and α is a sensitivity coefficient that
+penalizes deviation of the adjusted consumption from the original con- SOCfinal rget
+
+h ≥ SOCta (46)
+sumption. The cost function (Eq. (36)) reflects not only the individual
+monetary outcome from the local P2P market but also the inconvenient 1
+cost of shifting flexible loads. The optimization is subjected to several SOCt
+
+h = SOCt− 1 t− 1
+h + μcha⋅Echa,h − μ ⋅Et− 1dis,h∀t = 2,…,T (47)
+
+dis
+constraints, including load-shifting parameters obtained from Algorithm
+1, which are characterized as follows: SOCfinal
+
+h = SOCT
+h + μ 1
+
+cha⋅ETcha,h −
+∑ μ ⋅ETdis,h (48)
+
+T− νi dis
+h+1φi,t = 1 ∀i (37)
+
+t=0
+where Etcha and Et power charged into and discharged
+
+,h dis represent the
+,h
+
+t [
+χ +τ ≥ Γi,τ ,t
+
+h ⋅φi ∀i, t, τ ∈ 0, νi
+]
+
+h − 1 (38) from the battery by house h at time t, respectively. The maximum
+charging and discharging power rates are denoted as Emaxcha nd Emax
+
+,h a dis,h,
+
+10
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+respectively. Binary mode indicators MODEtcha,h and MODEtdis,h signify
+whether charging or discharging is active for house h at time t, with ‘1’ 3.2.2. Ensuring grid-feasible P2P trading through power flow analysis
+indicating the mode is active and ‘0’ otherwise. The state of charge of the Modeling the distribution network is crucial when evaluating the
+battery is represented by SOCt
+
+h, with SOCmin
+h and SOCmax
+
+h indicating the feasibility and impact of P2P energy trading. Ref. [62] pointed out that
+minimum andmaximum allowable states of charge for house h’s battery. neglecting grid constraints like voltage limits and line loading capacities
+
+The initial state of charge is given by SOC1h , while SOC
+final can lead to overly optimistic results and potentially unsafe operating
+h refers to the conditions. In this study, we address this challenge by integrating power
+
+final state of charge at the end of the considered time horizon. The flow analysis into our P2P energy trading framework. We focus on a
+charging and discharging efficiencies are given by μcha and μdis, typical LVDN segment operating at 240 V single-phase, representing a
+(respectively). portion of a feeder downstream of a 12.47 kV/240 V distribution
+
+The battery operational constraints are parameterized by the upper- transformer. Each house in our model is connected to a single phase of
+level battery capacity decision variable yh, which defines the permissible the 240 V network. For simplicity, our analysis assumes single-phase
+operating range for battery operations in the lower-level optimization. operation with loads modeled as constant power (PQ) and a power
+Specifically, the maximum charging and discharging power rates (Emaxcha,h factor of 0.9, representing an approximation of typical residential ap-
+and Emaxdis,h) are determined by the product of the battery C-rate parameter pliances. Inverters are assumed to operate at unity power factor. We
+(Ec− rateh ) and the capacity yh, such that Emaxcha,h = Emaxdis,h = Ec− rateh ⋅yh. Simi- acknowledge that real-world networks may exhibit more complex load
+larly, the allowable state of charge range is defined as a fraction of the behaviors and inverter characteristics. This simplified yet representative
+battery capacity, where the minimum and maximum SoC bounds are set model allows us to capture the essential voltage and current dynamics
+to SOCminh = Ψmin⋅yh and SOCmaxh = Ψmax⋅yh, respectively, with Ψ while maintaining computational tractability.
+
+min and
+Ψmax representing the lower and upper SoC coefficients to ensure proper To ensure the feasibility of the P2P trading schedule, our approach
+battery operation and longevity. relies on a two-step process [63]: power flow analysis and voltage-aware
+
+In the lower level, an iterative algorithm described in Algorithm 2 reoptimization:
+[55] is utilized to allow the local market prices to converge.
+
+3.2.2.1. Power flow analysis and feasibility check. After the initial opti-
+Algorithm 2. Iterative algorithm for SDR-based internal pricing. mization determines load shifting and battery dispatch schedules based
+
+The iterative process above is set to achieve SDR-based internal on market signals, the central coordinator performs a power flow
+pricing in a P2P electricity market, where users iteratively adjust their analysis at each time interval. This analysis utilizes the network topol-
+consumption to influence the price. The algorithm initiates by setting up ogy and updated power injections at each bus, calculated from the net
+the necessary parameters for each house h in the set H . It then enters a
+loop over the time horizons Δt ⊆ T . For each household, the lower-
+level optimization in Eq. (36) is performed. This optimization calcu- Table 2
+
+Line data of the 6-bus radial distribution system based on Aluminum Conductors
+lates the net consumption NPh from the resulting slh as well as the TSP, Steel-Reinforced (ACSR) 1/0 overhead conductor [67].
+TBP, and SDR. The internal local market price Pr is calculated. If the
+difference between the current and previous iteration’s price Prold is Begin Bus End Bus rij xij Distance Current Rating
+
+(i) (j) (Ohms) (Ohms) (km) (kA)
+within tolerance ϵ, the algorithm terminates, returning the optimized
+shiftable load consumption slh and the price Pr. If an agreement on the 1 2 0.0269 0.01975 0.05 0.24
+
+local market price is not reached after |B | iterations, transactions are 2 3 0.02152 0.0158 0.04 0.24
+3 4 0.03228 0.0237 0.06 0.24
+
+made with the utility grid; otherwise, market clearance is performed. 2 5 0.03763 0.02765 0.07 0.24
+3 6 0.04304 0.0316 0.08 0.24
+
+11
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+load profiles considering PV generation, load shifting, and battery homes in Tompkins County, NY, to establish a representative original
+operation. The AC power flow equations are solved using the Newton- consumption profile among residential households from the NREL’s
+Raphson method to obtain the steady-state voltage profile (|Vh| for ResStock database [65]. These building characteristics are then simu-
+each bus h) and line currents (|Il| for each line l). The coordinator then lated using EnergyPlus to obtain each household’s consumption pattern
+checks if these values violate the operational constraints: of flexible loads [66]. In this study, we model each household as having
+
+⃒ ⃒ a unique smart clothes dryer with a power rating between 2500 and
+Voltage limits: Vmin ≤ ⃒Vt ⃒
+
+h ≤ Vmax ∀h ∈ H , t ∈ T (49) 6000 watts. These power ratings are sufficient to impact load shifting for
+peak load reduction because clothes dryers represent a substantial en-
+
+Line loading limits: |Il| ≤ Imaxl ∀l (50) ergy draw within a typical household. Additionally, our load-shifting
+strategy outlined in section 3.2.1 does not depend on factors like in-
+
+3.2.2.2. Voltage-aware battery re-optimization. If constraint violations door/outdoor temperature or occupancy levels.
+are detected, a voltage-aware re-optimization process is triggered. This Secondly, we generated residential solar PV generation data using
+process, which modifies the lower-level optimization introduced previ- the PVwatts module on the System Advisor Model (SAM) [68]. Our
+ously in Eq. (36), adjusts the battery charging and discharging profiles to simulation models typical U.S. residential solar PV systems with sizes
+mitigate voltage deviations (vtsupport,h) from the nominal voltage Vref . We drawn from [61]. To ensure compatibility with our evaluation process,
+first calculate the voltage support variable as follows we discretized the initially continuous solar PV capacities by rounding
+
+them to the nearest typical size. However, we employ continuous sizes
+Vt
+
+vt h − Vref
+for battery storage capacities because this allows for more precise
+
+support,h = ΔVmax (51)
+optimization of storage capabilities. Continuous battery sizing enables
+
+where ΔVmax represents the maximum allowable voltage deviation from us to identify the exact storage capacity that maximizes economic ben-
+the nominal voltage. This normalization scales the voltage support efits. It’s important to note that continuous solar PV sizes would demand
+variable to be within the range of − 1 to 1, where − 1 corresponds to the more sophisticated forecasting techniques, but an in-depth exploration
+minimum allowable voltage, and 1 corresponds to the maximum of those techniques lies outside the scope of this study.
+allowable voltage. Then, we incorporate a voltage support cost term, Thirdly, we selected January and February for the simulation
+( )2 because they typically exhibit higher energy consumption and lower
+
+ε⋅ vtsupport nto he o
+,h , i t riginal lower-level cost function and adjust the solar PV generation. This choice reflects worst-case design conditions
+
+battery operation constraints to account for the voltage support variable: and reduces computational burden. After determining optimal capac-
+( ( )) ities from this short-term simulation, we conducted a full-year simula-
+
+Etcha,h ≤ Emaxcha,h⋅ 1 − max 0, vtsupport,h (52) tion (January to December) to calculate annual electricity bill savings
+and economic metrics like discounted payback period. Our cost
+
+( ( ))
+Et modeling employs assumed values (e.g., solar PV module cost) from
+dis,h ≤ Emaxdis,h⋅ 1+min 0, vtsupport,h (53)
+
+NREL’s SAM software. We focus on PV, inverter, and battery upfront
+The parameter ε is tuned to balance the trade-off between mini- costs, as permitting and installation costs vary. For electricity retail
+
+mizing voltage deviations and ensuring P2P trading opportunities are rates, we incorporate Time-of-Use (ToU) tariffs based on New York State
+not overly restricted. This approach ensures the proposed energy ex- Electric and Gas (NYSEG) off-, mid- and on-peak periods [69]. Weekdays
+change schedules are not only economically beneficial but also adhere to have three distinct periods: on-peak (7 AM - 9 AM and 5 PM - 9 PM),
+the physical limitations of the LVDN. mid-peak (10 AM - 4 PM and 10 PM - 11 PM), and off-peak (all other
+
+hours). Weekends have two schedules: off-peak (12 AM - 6 AM) andmid-
+4. Case study peak (7 AM - 11 PM). Furthermore, the simulation operates on two
+
+distinct periods: trading and contract periods. The trading period occurs
+4.1. Description the day before the contract period. During the trading period, prosumers
+
+communicate their day-ahead, planned consumption, and forecasted
+We apply our collaborative optimization framework to plan a P2P generation to the coordinator. If the market then clears, the contract
+
+electricity trading community in Ithaca, New York. Ithaca’s aggressive period begins at 6 AM the following day, lasting 24 h. The day-ahead
+decarbonization goals, including plans to electrify all buildings by 2030 planning horizon allows for a more structured approach to P2P
+[64], create a fitting environment to assess the potential of emerging trading, enabling the determination of market prices before the actual
+renewable energy integration technologies, including local energy energy exchange takes place.
+markets. The case study involves six residential single-family homes,
+where each household is assumed to be prospective adopters of solar PV 4.2. Benchmarking approach
+and BESS. The six households are situated in an LVDN connected in a
+radial manner, as shown in Fig. 1. Table 2 shows line data for the We benchmarked our framework against several scenarios, as out-
+considered network. Our approach integrates various simulation tools lined in Table 3.
+and data sources to establish a benchmark across different scenarios. For individual optimization, we use the same upper-level objectives
+
+First, we obtained structural characteristics for six single-family as in collaborative optimization but apply them to individual houses.
+
+Table 3
+Benchmarking scenarios for evaluating capacity planning of a P2P community.
+Scenario Description Acronym
+
+Baseline No solar PV or BESS installed. –
+Individual Optimization with Net Metering (NM) Each prosumer optimizes their solar PV and BESS capacities independently, using Borg IND + NM
+
+MOEA and three objectives outlined above. In addition, the battery dispatch is set to
+minimize incurred costs. The prosumers can export excess electricity to the grid for $ credit.
+
+Individual Optimization with NM þ P2P Prosumers trade electricity peer-to-peer utilizing flexible loads, with system capacities IND + NM + P2P
+derived from individual optimization.
+
+Collaborative Optimization The proposed framework COL + NM + P2P
+
+12
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+These objectives are minimizing bi-monthly peak load, minimizing Table 4
+Key Case Study Parameters.
+
+capital cost offset, and maximizing the portion of renewable electricity
+used. We model battery dispatch to minimize operational costs Parameter Value Parameter Value
+
+(including grid import and export) by optimizing battery operation. In Battery O&M costs, γ
+Sensitivity coefficient, α 0.01 OBESS 15
+
+the individual case, we assume no flexible appliances are present. ($/kWh)
+Entropy-weight and Technique for Order Preference by Similarity to Number of PV generation 10 Battery replacement cost, 273
+
+an Ideal Solution (TOPSIS) method are applied to find the best solution realization, |S| γbcRepl ($/kWh)
+Battery capital cost per kWh,
+
+among the Pareto front solutions [70]. The entropy-weight method Total number of trials, |B | 15
+γbckWh ($/kWh)
+
+273.52
+objectively determines the weights of different criteria based on the Internal local market price 1e-1 Battery capital cost per kW, 545.48
+information contained in the data, with higher entropy indicating convergence criterion, ϵ γbckW ($/kW)
+greater variability but less discriminatory power, thus receiving lower Standard deviation, σ 0.05 Utility fixed monthly service 15.11
+weights. Conversely, criteria with lower entropy (less variability) charge, γfc ($)
+
+Inflation rate, rinfl (%) 3.67 Battery C-rate, Ec− rate 0.3
+receive higher weights as they provide more decisive information for Battery charging and
+differentiation between alternatives. TOPSIS then uses these weights to Nominal discount rate, rdr 7.47 discharging efficiency, 0.95
+rank alternatives by measuring their Euclidean distances from both an (%) μcha and μdis
+ideal solution (combining the best values for each criterion) and a Annual load growth, Lgrowth On-peak utility ToU rates,
+
+1
+negative-ideal solution (combining the worst values). The alternative (%) λon− peak ($/kWh)
+
+0.20
+
+Mid-peak utility ToU rates,
+with the shortest distance to the ideal solution and the longest distance Inverter cost, γic ($/kW) 0.46
+
+λmid− peak ($/kWh)
+0.10
+
+from the negative-ideal solution is considered the best choice. It is Solar PV module cost, γmc 0.56 Off-peak utility ToU rates,
+important to note that the entropy-weighted TOPSIS serves as a post- 0.075
+
+($/kW) λoff − peak ($/kWh)
+processing decision-making tool applied after optimization in both in- Solar PV O&M costs, γOPV 31 Utility feed-in tariff, λsell 0.05
+dividual and collaborative settings. First, the capacity optimization ($/kW-yr) ($/kWh)
+
+generates the complete Pareto front, presenting non-dominated solu- Minimum battery SoC 0.20 Maximum battery SoC 0.95
+coefficient, Ψmin coefficient, Ψmax
+
+tions and their trade-offs. Then, we apply the entropy method to assign Voltage support cost Maximum allowable nominal
+weights based on the information entropy of these solutions. Finally, parameter, ε 1000 voltage deviation, ΔVmax ±5%
+
+TOPSIS helps us select the most preferred solution according to these
+weights.
+
+In addition, the simulations are performed for 3000 Number of iterations. The cyan circle indicates the best solution obtained from
+Function Evaluation (NFE) or iterations with Borg MOEA parameters as using the TOPSIS method.
+suggested in [41]. Furthermore, we conducted a sensitivity analysis to From Fig. 4 (a), a lower mean capital cost offset correlates with a
+evaluate the influence of the local market parameters, specifically ϵ (the lower mean bi-monthly peak load. This correlation arises because cap-
+internal local market price convergence criterion) and α (the sensitivity ital cost offset reflects savings on electricity bills. Higher savings indi-
+coefficient), on the payback period outcomes. We conduct the simula- cate successfully avoiding high retail electricity prices through strategic
+tion using a compute cluster, leveraging 100 cores on five nodes to load shifting. This flexible load shifting directly reduces the household’s
+parallelize the computation. monthly peak load by influencing internal local market prices and
+
+driving convergence.
+4.3. Parameters We analyzed the Pareto front solutions and calculated objective
+
+weights based on entropy. This yielded weights of 0.38 for the mean
+Table 4 summarizes the parameters for this case study, encompassing capital cost offset, 0.30 for the mean bi-monthly peak load, and 0.32 for
+
+economic factors (e.g., inflation rate, inverter cost), technical specifi- the mean REP. Employing TOPSIS [70], we determined the best solution
+cations of the solar PV and battery systems (e.g., PV module cost, battery offering optimal balance across the objectives: $3362 for mean capital
+capital cost), operational constraints (e.g., voltage deviation, load cost offset, 18.53 kW for mean bi-monthly peak load, and 52.8 % for
+growth), and simulation parameters (e.g., sensitivity coefficient, num- mean REP. This solution corresponds to the following solar PV sizes (in
+ber of PV generation realizations). kWp): x1 = 7,x2 = 9,x3 = 4,x4 = 9,x5 = 7,x6 = 11, and battery ca-
+
+pacities (in kWh): y1 = 3.8, y2 = 6.7, y3 = 3.3, y4 = 3.6, y5 = 3.8, y6 =
+5. Results and discussions 3.2. This set of capacities establishes a foundational design for the P2P
+
+trading community. This design should be refined through collaboration
+5.1. Pareto front analysis with relevant stakeholders to create a comprehensive implementation
+
+plan. This participatory approach is crucial for aligning the P2P market
+A P2P electricity trading community must balance diverse stake- setup with the expectations of all participants, as emphasized in
+
+holder interests. The utility grid prioritizes stability and reliability, users Ref. [71].
+seek to minimize costs, and the wider population may prioritize sus- Fig. 4 (b) presents the hypervolume indicator as a function of the
+tainability goals, including decarbonization. This study addresses these NFEs, allowing for a comparison of the convergence behavior and so-
+concerns by focusing on three objectives: minimizing peak load and lution quality obtained by Borg MOEA and NSGA-II. The plot reveals
+capital cost offset and maximizing users’ renewable electricity portion. that Borg MOEA achieves higher hypervolume values throughout the
+
+Fig. 4 presents the Pareto front, the trade-off surface where im- optimization process compared to NSGA-II. This indicates that Borg
+provements to one objective inevitably degrade another. It also includes MOEA more effectively explores the search space and identifies a wider
+the hypervolume indicator plot, which quantifies the area covered by spread of diverse and high-performing solutions. As the NFE increases,
+the Pareto front, indicating search convergence upon reaching a plateau. the hypervolume of Borg exhibits a marked and steady increase until it
+Fig. 4 (a) shows the emergence of the Pareto front as a result of applying plateaus after 3000 NFE, signifying the convergence of the optimization
+our collaborative optimization framework in the case study. Each point process. While NSGA-II’s hypervolume indicator is still increasing at the
+represents a unique solar PV and battery storage configuration for each end of the observed timeframe, it remains lower than that of Borg. This
+house. The x-axis denotes the bi-monthly peak load average, the y-axis enhanced performance with Borg MOEA is achieved with a reduced
+indicates the mean capital cost offset, and the z-axis shows the mean computational cost, requiring only 8.6 h compared to 13.2 h for NSGA-
+renewable electricity portion. Red circles highlight non-dominated so- II.
+lutions, while purple circles highlight those dominated by previous Our case study demonstrates the bi-level optimization for a
+
+13
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 4. (a) Pareto front visualization demonstrating the trade-off between multiple objectives. Pareto optimal solutions are marked in red, dominated solutions are in
+purple, and the TOPSIS [70] best solution is in cyan. Arrows indicate the direction of preference. (b) The hypervolume indicator quantifies the space enclosed by
+Pareto front solutions and is plotted against the number of function evaluations (NFEs). The plot compares the convergence behavior of Borg MOEA (blue) and NSGA-
+II (red). Borg MOEA performs better by achieving higher hypervolume values earlier in the optimization process than NSGA-II. (For interpretation of the references to
+colour in this figure legend, the reader is referred to the web version of this article.)
+
+community with six households. Scaling to larger communities can pose MINLP optimization and market clearing to improve scalability and
+increased computational burdens, particularly in the lower-level MINLP computational efficiency.
+optimization, which involves various decision variables like continuous
+variables for battery charging and discharging operations, binary vari- 5.2. Analysis of P2P energy community planning under different
+ables for operational modes, and flexible load scheduling. The compu- scenarios
+tational complexity is further amplified by market interactions between
+households and the extended day-ahead time horizon of the Our approach uniquely optimizes solar PV and BESS sizing while
+optimization. integrating flexible demand shifting. After performing both Individual
+
+We use Message Passing Interface (MPI) for parallel computing in the (IND) and Collaborative (COL) optimization, we present the obtained
+upper-level evolutionary algorithm, allowing simultaneous evaluations optimal solar PV and battery storage capacities in Table 5. Performing
+of different capacity configurations. This approach targets small to individual optimization means only focusing on one’s consumption
+medium-sized communities but sets the foundation for larger systems. patterns and maximizing profit. This is evident from the higher battery
+Future research could focus on applying parallel methods to lower-level storage capacities on average in comparison with the obtained sizes
+
+14
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+from COL because each household aims to become more self-sufficient shown in Fig. 5). This drives price convergence and utilization of the
+and cost-efficient. local market. Fig. 6 showcases a sample day’s converged internal prices
+
+Under IND, the BESS capacities vary more significantly across within the local energy market, comparing them against retail electricity
+Households (H), with H4 being allocated the highest capacity at 7.9 kWh rates (under COL+ NM+ P2P). Four lines depict the P2P purchase price
+and H3 the lowest at 3 kWh. In contrast, the COL approach appears to (green), P2P selling price (purple), retail electricity rates (orange), and
+harmonize BESS capacities, drawing them closer together, such as the feed-in tariff (grey). The P2P purchase price indicates the maximum
+reductions seen for H1 from 5.1 to 3.8 kWh and for H4 from 7.9 to 3.6 price a local buyer is willing to pay. Notably, P2P purchases and selling
+kWh, while increasing for H2 from 3.6 to 6.7 kWh. Solar PV capacities consistently remain below the retail electricity rates. This pattern
+remain unchanged for H4 and H5 across both scenarios, indicating a demonstrates the cost-savings for households to save money through
+possible optimal sizing that benefits from both individual and communal P2P electricity trading, particularly during on-peak hours.
+approaches. Notably, H6 shows an increase in solar PV capacity under From Fig. 7, we can see the different transactions between house-
+COL, suggesting a shift in strategy to leverage shared resources more holds throughout the same sample day depicted in Fig. 6. Transactions
+effectively. where households bought energy are indicated by positive values. In
+
+Table 6 shows a comparison between scenarios outlined in Section contrast, households who sold energy are shown as negative values. By
+4.2. The baseline consumption scenario, where there are no DERs comparing with Fig. 6, it becomes evident that all P2P trades were
+involved, has a high bi-monthly peak load average of 23.7 kW. The IND executed at prices lower than the retail rates, illustrating the economic
++ NM scenario reduces the peak load to 21.4 kW (a 10.2 % improve- benefits of participating in the local energy market, especially during on-
+ment), achieving a mean capital cost offset of $ 3427 and a mean REP of peak hours. Notably, P2P transactions occur throughout the day, with a
+47.3 %. Incorporating P2P trading with flexible load (IND + NM + P2P) cessation after 20:00 due to insufficient excess supply available for
+further enhances these metrics, yielding a peak load of 21.2 kW, a mean selling. Importantly, Fig. 7 displays a balanced pattern of buying and
+capital cost offset of $3406, and a mean REP of 47.9 %. While the lower selling due to the local market’s effective pairing of supply with demand.
+capital cost offset reflects increased savings through the local market,
+the collaboratively planned scenario (COL + NM + P2P) demonstrates
+the most significant reduction: peak load decreases to 18.5 kW (a 13.6 % 5.4. Analysis of voltage fluctuation and line loadings
+reduction from the previous scenario), capital cost offset reaches $3362,
+and REP increases to 52.8 %. These results demonstrate the benefits of Fig. 8 (a) presents voltage fluctuation data from power flow analysis
+collaboration in performing capacity planning for P2P electricity trading conducted over a year with the optimal set of capacities categorized by
+communities. This underscores the conclusions of Ref. [72], which season. The analysis reveals significant variations in voltage profiles
+emphasizes the increased autarky achieved through dynamic P2P ex- across the network. House 1 exhibits the smallest voltage drop due to its
+change over isolated self-consumption models. Flexible electricity proximity to the grid connection, while Houses 4 and 6 experience the
+trading within a P2P community minimizes grid interactions, leading to largest voltage drops, reflecting their distant positions in the radial
+greater community-level self-sufficiency. network. Winter is the most fluctuating season, likely due to limited PV
+
+The reduction in peak loads results from individual households’ generation and high heating loads. Summer data shows numerous out-
+iterative appliance load adjustment process to minimize their electricity liers, potentially resulting from high PV generation and increased
+costs by shifting flexible demand away from high-cost periods. Fig. 5 trading activity. Despite these fluctuations, the voltage deviations
+shows this flexible load shift for a sample household in Scenario COL remain within the ANSI standard range of 0.95 to 1.05 per unit (p.u.)
+
++
+NM + P2P, where optimization moves the initial morning peak-hour [73], indicating the network’s ability to maintain acceptable voltage
+load to 14:00 to align with solar PV generation. This strategic shift, levels under varying conditions.
+directed by the lower-level optimization detailed in Eq. (36), aims to Fig. 8 (b) illustrates the line loadings of each segment in the network,
+minimize costs, including both monetary and inconvenience costs. calculated by dividing the apparent power (S) flowing through each line
+
+As households adjust their flexible load schedules, the SDR fluctu- by its maximum apparent power capacity (S_max) and expressing the
+ates, influencing internal local market prices (P2P purchase and selling). result as a percentage. The network employs ACSR 1/0 overhead con-
+This convergence reshapes the aggregated household load profile. The ductors, commonly used in secondary distribution, with a maximum
+optimized profile avoids peak pricing, aligns consumption with favor- current capacity of 0.24 kA per segment. Line 1 exhibits the largest
+able P2P market times, and reduces peak load in response to ToU rates. loading percentage, approximately 25 %, due to its direct connection to
+We further enhance this shift mechanism by considering the actual the grid in the radial network configuration. This line carries the
+flexible load consumption pattern during operation, represented by
+constraints in Eqs. (37)–(39). This approach offers a more realistic Table 6
+representation than the constant consumption assumption used in Comparative analysis under different scenarios.
+Ref. [55]. Scenario Bi-Monthly Peak Mean Capital Mean Renewable
+
+Load Average (kW) Cost Offset ($) Electricity Portion (REP)
+(%)
+
+5.3. Analysis of transaction behaviors in the local market with dynamic Baseline 23.7 – –
+pricing IND + NM 21.4 3427 47.3
+
+IND + NM 21.2 3406 47.9
++ P2P
+
+Households strategically shift their flexible load to capitalize on COL + NM 18.5 3362 52.8
+favorable prices within the local P2P market. They influence pricing + P2P
+dynamics by adjusting their planned consumption of shiftable loads (as
+
+Table 5
+Optimized capacities for the six households under individual and collaborative optimization.
+Approach H1 H2 H3 H4 H5 H6
+
+Solar PV BESS Solar PV BESS Solar PV BESS Solar PV BESS Solar PV BESS Solar PV BESS
+
+Individual Optimization (IND) 4 5.1 11 3.6 7 3 9 7.9 7 4.4 7 3
+Collaborative Optimization (COL) 7 3.8 9 6.7 4 3.3 9 3.6 7 3.8 11 3.2
+
+15
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 5. Flexible load shift (before and after) from a sample house under Scenario COL + NM + P2P. The optimization shifts the flexible load’s operation time to align
+with solar PV generation and avoid on-peak hours, achieving lower electricity costs.
+
+cumulative load of all downstream branches. However, the maximum to 2.2 years, indicating an efficient adoption of P2P trading. The shift to
+loading reaching only a quarter of the line’s capacity suggests significant scenario COL+NM + P2P, where houses implement collaborative opti-
+room for future network growth. mization, results in the most marked improvement. The average
+
+payback period across the households drops further to 1.8 years, with
+house 3 achieving a short payback period of 1 year. Overall, Fig. 9
+
+5.5. Payback period analysis demonstrates that as households engage more deeply with collaborative
+optimization efforts in planning the P2P trading community, the greater
+
+Fig. 9 presents the discounted payback periods for six households the reduction in payback periods they can experience.
+under three different scenarios, with a clear trend towards shorter
+payback times as the scenarios advance. In scenario IND + NM, which
+employs net metering, houses 1 and 6 lead with the shortest payback 5.6. Sensitivity analysis of local energy market parameters
+periods at 4.1 and 4.4 years, respectively, while housing 4 lags with the
+longest at 6.8 years. The average payback period for this scenario stands We conducted a sensitivity analysis of the local market price
+at 5.1 years. Moving to scenario IND+ NM+ P2P, which introduces P2P convergence criterion ϵ due to its crucial role in allowing local P2P
+trading, the payback periods further decrease, with the average falling market usage. As described in Algorithm 2, households engage in an
+to 3.1 years. House 1 leads in this scenario, reducing its payback period iterative adjustment of their flexible load, which in turn impacts the
+
+Fig. 6. Comparison of retail electricity rates vs. Peer-to-Peer (P2P) market prices over a sample day in Scenario COL + NM + P2P. This figure illustrates the
+successfully converged peer-to-peer purchase and selling prices against retail rates, emphasizing the economic advantage for households. During on-peak hours, the
+P2P prices remain consistently lower, underscoring the substantial savings households can access by trading energy with their neighbors during high-
+demand periods.
+
+16
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 7. Household participation in the P2P market (hours with transactions shown). Negative quantities indicate selling energy to the market; positive quantities
+indicate buying. Symmetry in transactions highlights the market’s matching of supply and demand (e.g., at hour 16:00, House 3 buys from multiple sellers). In
+addition, the local P2P market is being utilized during high-cost on-peak periods to reduce electricity bills.
+
+Fig. 8. Seasonal voltage profiles and line loading of the 6-bus radial distribution network. (a) Box plots depicting voltage deviations across six houses over four
+seasons, demonstrating larger voltage drops at network extremities and increased fluctuations during winter due to limited PV generation and high heating loads. (b)
+Maximum line loading percentages for the five line segments.
+
+pricing within the local peer-to-peer market. The parameter ϵ serves as We use capacities obtained from scenario IND + NM + P2P for the
+the critical threshold for determining when this iterative process of price analysis, as IND + NM represents a baseline without P2P market usage.
+adjustments has reached a point of convergence. This analysis explores We test a range of ϵ values (ϵ ∈ {1e − 1, 0.08,0.06,0.04,0.02,
+the relationship between ϵ and the average discounted payback period. 1e − 2,1e − 3}). Fig. 10 (a) shows the inverse relationship between
+
+17
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+ϵ and the mean discounted payback period. As ϵ decreases, the average demographics, geographic location and PV penetration levels. For
+payback period lengthens, approaching that of IND + NM, as shown in instance, Ref. [49] found that moderate PV penetration levels facilitate
+Fig. 9. This underscores ϵ’s importance in determining local market sufficient buying and selling activities in the P2P market and can
+participation and the economic viability of DER investments for accommodate stricter convergence thresholds, provided that the shift-
+prosumers. able loads are appropriately designed. Additionally, seasonal variations
+
+In practical terms, a smaller ϵ value discourages P2P trades, leading and weather-related factors can affect the convergence process, as
+houses to revert to individual load management using co-located battery higher variability may necessitate more iterations for price convergence.
+storage. Crucially, this study assumes P2P trading depends on flexible Alternative approaches such as step-length control and adaptive
+load shifting; without a P2P market, houses lack the incentive to utilize bidding strategies [49] could potentially enhance market stability, but
+their load flexibility. Consequently, the benefits of participating in the their implementation involves trade-offs beyond the scope of our current
+P2P market, such as improved energy cost savings and faster payback study. Our findings about the relationship between ϵ and P2P market
+periods, are diminished. From the perspective of system operators and utilization are therefore specific to the characteristics of our case study,
+market designers, understanding this relationship is essential for facili- particularly the discrete nature of shiftable loads, and may vary in
+tating effective P2P market operations. Setting ϵ too low may lead to different contexts. Consequently, smaller ϵ values in our study effec-
+market inefficiencies, reduced participation, and underutilization of tively reduce P2P trading activity, though this effect might differ in
+demand flexibility. By calibrating ϵ appropriately, operators can systems with more gradual load flexibility or different prosumer
+enhance market stability, promote active prosumer engagement, and behaviors.
+support the overall efficiency of the energy system. For prosumers, this We also conduct a sensitivity analysis on the sensitivity parameter α,
+means that overly stringent convergence criteria set by a coordinator which sets prosumers’ willingness towards load shifting (as outlined in
+can reduce their incentives to participate in the P2P market—the Eq. (36)). We test α values of 0.01, 0.001, and 0.1. The results in Fig. 10
+lengthened payback periods reflect decreased economic returns on their (b) indicate that when prosumers place a higher value on convenience
+investments. Prosumers must therefore consider the trade-off between (larger α), they are less responsive to price incentives. This occurs as the
+the precision of price convergence and the practicality of market lower-level optimization assigns a greater penalty for diverging from the
+participation. original load profile, limiting the extent of load shifting and leading to a
+
+A limitation of the SDR-based approach emerges from our sensitivity more ‘conservative’ approach—such conservative load shifting results in
+analysis of the convergence criterion ϵ. While Algorithm 2 provides a reduced mean discounted payback periods. This conservative approach
+tractable solution for lower-level market operations, convergence chal- provides local energy market stability but potentially leaves economic
+lenges arise due to the discontinuous nature of flexible loads in our benefits unrealized.
+model. Specifically, shiftable loads are adjusted using fixed discrete Conversely, if prosumers prioritize price sensitivity (smaller α), they
+steps, resulting in sudden changes in energy demand in response to price demonstrate more aggressive load-shifting behavior. Their volatile load
+signals. As highlighted by Ref. [49], smaller values of ϵ can lead to shifting disrupts internal price convergence, potentially lengthening
+divergence and oscillation in local market prices under such conditions, payback periods. This leads to households exhibiting a more explorative
+as adjustments occur in sudden increments rather than gradually. To approach towards load shifting, affecting internal pricing strategies and
+maintain system stability, we implemented a fallback mechanism that potentially creating imbalances within the local energy market. Our
+allows participants to default to individual operations with the utility findings support Ref. [55], highlighting the challenge of internal price
+grid at retail prices when convergence isn’t achieved within a specified convergence within P2P systems as user power flexibility increases.
+number of iterations. While this pragmatic approach ensures continuous This analysis highlights that, within our approach, ϵ and α are not
+system operation, it may not capture the full economic potential of local just technical parameters but crucial factors shaping the economic
+market interactions, potentially leading to missed savings opportunities. outcomes and stability of P2P energy markets. Careful calibration of
+
+It is important to note that the impact of the convergence threshold ϵ these values is essential to balance efficient market operation with in-
+on P2P market participation can vary based on factors such as prosumer centives for prosumer participation.
+
+Fig. 9. Discounted payback periods for solar PV and battery investments under different scenarios. Individual bars show payback periods for six houses (H1-H6). The
+collaborative approach (IND + NM + P2P) demonstrates significantly faster payback than other scenarios, as the average (dashed lines) indicates.
+
+18
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+Fig. 10. Relationship between mean discounted payback period with (a) ϵ (local market price convergence criterion) and (b) α (sensitivity coefficient). In (a), as ϵ
+decreases, local market utilization declines, leading to economic outcomes similar to those without a local market (as in Scenario IND + NM). In (b), as α increases,
+households become less responsive to price incentives, reducing volatility within the local market.
+
+6. Conclusion technical and non-technical barriers. These barriers include economic
+considerations (market efficiency, fair benefit distribution), privacy
+
+This study proposed a novel bi-level optimization framework to concerns (data sharing, transaction visibility), and social factors (trust,
+address the challenges of capacity planning in community microgrids community engagement, technology acceptance). Furthermore, incor-
+with P2P electricity trading. The framework explicitly emphasizes de- porating risk models and mitigation strategies for potential negative
+mand flexibility and balances system- and adopter-level objectives. The impacts caused by malicious actors within the community will
+proposed framework consists of upper- and lower-level optimization, strengthen future planning efforts.
+where the Borg Multiobjective Evolutionary Algorithm (MOEA) and
+Mixed Integer Nonlinear Programming (MINLP) approach were adop- CRediT authorship contribution statement
+ted. Further, an internal pricing mechanism based on the Supply-
+Demand Ratio (SDR) was used to illustrate the framework’s utility. Richard A. Mahuze: Writing – review & editing, Writing – original
+
+Our findings indicate that collaborative capacity planning signifi- draft, Software, Methodology, Investigation, Data curation, Conceptu-
+cantly surpasses individual approaches in P2P electricity trading com- alization. Ali Amadeh: Writing – review & editing, Methodology,
+munities by effectively reducing peak loads. Specifically, the research Investigation. Bo Yuan: Writing – review & editing, Methodology,
+highlights a peak load reduction of 13.6 % over individual planning and Investigation. K. Max Zhang: Writing – review & editing, Supervision,
+P2P trading scenarios and a 24.6 % reduction compared to the baseline Methodology, Investigation, Funding acquisition, Conceptualization.
+scenario, which excludes Distributed Energy Resources (DERs). This
+reduction in peak load results from households utilizing demand flexi-
+bility in response to local market pricing to lower costs. Moreover, the Declaration of competing interest
+availability of electricity through P2P markets during peak hours plays a
+crucial role in diminishing peak demand. The authors declare that they have no known competing financial
+
+The study also reveals the economic advantages of collaborative interests or personal relationships that could have appeared to influence
+optimization, with notable reductions in payback periods across various the work reported in this paper.
+scenarios. This emphasizes the economic viability of P2P energy trading,
+especially when integrated with collaborative optimization strategies Acknowledgments
+for capacity planning. The average discounted payback period
+decreased from 5.1 years in scenarios involving individual planning and The authors would like to acknowledge the support of the Cornell
+net metering to 3.1 years with the inclusion of P2P trading capabilities. Atkinson Center for a Sustainable Future and the Indonesia Endowment
+A more substantial reduction to an average of 1.8 years was observed Fund for Education (LPDP) Scholarship (to RAM).
+with collaborative capacity planning. These outcomes highlight the
+significant benefits that collaborative efforts bring to capacity planning Data availability
+and optimization in P2P trading communities.
+
+Looking ahead, future research should focus on integrating policy Data will be made available on request.
+simulations to assess how different regulatory scenarios impact P2P
+market dynamics, capacity planning decisions, and overall system per- References
+formance. Behavioral models incorporating adaptive bidding processes
+and learning mechanisms should be investigated to address both [1] “Massive expansion of renewable power opens door to achieving global tripling
+
+goal set at COP28 - news - IEA.” Accessed: Jul 31, 2024. [Online]. Available, htt
+
+19
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+ps://www.iea.org/news/massive-expansion-of-renewable-power-opens-door-to performance at building cluster level. Appl Energy 2024;356:122312. https://doi.
+-achieving-global-tripling-goal-set-at-cop28. org/10.1016/j.apenergy.2023.122312.
+
+[2] “Renewable energy: Global capacity increased by 50% in 2023 | World Economic [28] Yaldız A, Gökçek T, Şengör İ, Erdinç O. Optimal sizing and economic analysis of
+Forum.” Accessed: Jul. 31, 2024. [Online]. Available, https://www.weforum.org/a photovoltaic distributed generation with battery energy storage system considering
+genda/2024/02/renewables-energy-capacity-demand-growth/. peer-to-peer energy trading. Sustainable Energy, Grids and Networks 2021;28:
+
+[3] Anvari M, et al. Short term fluctuations of wind and solar power systems. New J 100540. https://doi.org/10.1016/j.segan.2021.100540.
+Phys 2016;18(6):063027. https://doi.org/10.1088/1367-2630/18/6/063027. [29] Yu VF, Le THA, Gupta JND. Sustainable microgrid design with peer-to-peer energy
+
+[4] “Queued Up: 2024 Edition, Characteristics of Power Plants Seeking Transmission trading involving government subsidies and uncertainties. Renew Energy 2023;
+Interconnection As of the End of 2023 | Energy Markets & Policy.” Accessed: Jul. 206:658–75. https://doi.org/10.1016/j.renene.2023.02.003.
+31, 2024. [Online]. Available, https://emp.lbl.gov/publications/queued [30] Yu VF, Le THA, Gupta JND. Sustainable microgrid design with multiple demand
+-2024-edition-characteristics. areas and peer-to-peer energy trading involving seasonal factors and uncertainties.
+
+[5] “Electricity – Renewables 2023 – Analysis - IEA.” Accessed: Aug. 01, 2024. Renew Sust Energ Rev 2022;161:112342. https://doi.org/10.1016/j.
+[Online]. Available, https://www.iea.org/reports/renewables-2023/electricity. rser.2022.112342.
+
+[6] Zhang C, Wu J, Zhou Y, Cheng M, Long C. Peer-to-peer energy trading in a [31] Liu J, Yang H, Zhou Y. Peer-to-peer trading optimizations on net-zero energy
+microgrid. Appl Energy 2018;220:1–12. https://doi.org/10.1016/j. communities with energy storage of hydrogen and battery vehicles. Appl Energy
+apenergy.2018.03.010. 2021;302:117578. https://doi.org/10.1016/j.apenergy.2021.117578.
+
+[7] Shrestha A, et al. Peer-to-Peer Energy Trading in Micro/Mini-Grids for Local [32] Ali L, Muyeen SM, Bizhani H, Ghosh A. A multi-objective optimization for planning
+Energy Communities: A Review and Case Study of Nepal. 2024. https://doi.org/ of networked microgrid using a game theory for peer-to-peer energy trading
+10.1109/ACCESS.2019.2940751. scheme. IET Gener Transm Distrib 2021;15(24):3423–34. https://doi.org/
+
+[8] Paudel A, Chaudhari K, Long C, Gooi HB. Peer-to-peer energy trading in a 10.1049/gtd2.12308.
+prosumer-based community microgrid: a game-theoretic model. IEEE Trans Ind [33] Zahraoui Y, Korõtko T, Rosin A, Agabus H. “Market Mechanisms and Trading in
+Electron 2019;66(8):6087–97. https://doi.org/10.1109/TIE.2018.2874578. Microgrid Local Electricity Markets: A Comprehensive Review,” Energies 2023, Vol.
+
+[9] Lee ZE, Zhang KM. Regulated peer-to-peer energy markets for harnessing 16, Page 2145, vol. 16, no. 5, p. 2145. Feb. 2023. https://doi.org/10.3390/
+decentralized demand flexibility. Applied Energy 2023;336:120672. https://doi. EN16052145.
+org/10.1016/j.apenergy.2023.120672. [34] Langevin J, et al. US building energy efficiency and flexibility as an electric grid
+
+[10] Suthar S, Cherukuri SHC, Pindoriya NM. Peer-to-peer energy trading in smart grid: resource. Joule 2021;5(8):2102–28. https://doi.org/10.1016/j.joule.2021.06.002.
+frameworks, implementation methodologies, and demonstration projects. Electr [35] Lee Z, Gupta K, Kircher KJ, Zhang KM. Mixed-integer model predictive control of
+Power Syst Res 2023;214:108907. https://doi.org/10.1016/j.epsr.2022.108907. variable-speed heat pumps. Energy and Buildings 2019;198:75–83. https://doi.
+
+[11] Mensin Y, Ketjoy N, Chamsa-ard W, Kaewpanha M, Mensin P. The P2P energy org/10.1016/j.enbuild.2019.05.060.
+trading using maximized self-consumption priorities strategies for sustainable [36] Shah MIA, Wahid A, Barrett E, Mason K. Multi-agent systems in peer-to-peer
+microgrid community. Energy Rep 2022;8:14289–303. https://doi.org/10.1016/j. energy trading: a comprehensive survey. Eng Appl Artif Intell 2024;132:107847.
+egyr.2022.10.400. https://doi.org/10.1016/j.engappai.2024.107847.
+
+[12] Amin W, et al. A motivational game-theoretic approach for peer-to-peer energy [37] Li J, Xu D, Wang J, Zhou B, Wang MH, Zhu L. P2P multigrade energy trading for
+trading in islanded and grid-connected microgrid. Int J Electr Power Energy Syst heterogeneous distributed energy resources and flexible demand. IEEE Trans Smart
+2020;123:106307. https://doi.org/10.1016/j.ijepes.2020.106307. Grid 2023;14(2):1577–89. https://doi.org/10.1109/TSG.2022.3181703.
+
+[13] Guerrero J, Gebbran D, Mhanna S, Chapman AC, Verbič G. Towards a transactive [38] Wang Z, Hou H, Zhao B, Zhang L, Shi Y, Xie C. Risk-averse stochastic capacity
+energy system for integration of distributed energy resources: home energy planning and P2P trading collaborative optimization for multi-energy microgrids
+management, distributed optimal power flow, and peer-to-peer energy trading. considering carbon emission limitations: an asymmetric Nash bargaining approach.
+Renew Sust Energ Rev 2020;132:110000. https://doi.org/10.1016/J. Appl Energy 2024;357:122505. https://doi.org/10.1016/J.
+RSER.2020.110000. APENERGY.2023.122505.
+
+[14] Lopez HK, Zilouchian A. Peer-to-peer energy trading for photo-voltaic prosumers. [39] Khanal S, Khezri R, Mahmoudi A, Kahourzadeh S. Effects of energy sharing and
+Energy 2023;263:125563. https://doi.org/10.1016/j.energy.2022.125563. electricity tariffs on optimal sizing of PV-battery systems for grid-connected
+
+[15] Pena-Bello A, Parra D, Herberz M, Tiefenbeck V, Patel MK, Hahnel UJJ. Integration houses. Comput Electr Eng 2024;118:109457. https://doi.org/10.1016/J.
+of prosumer peer-to-peer trading decisions into energy community modelling. Nat COMPELECENG.2024.109457.
+Energy 2022;7(1):74–82. https://doi.org/10.1038/s41560-021-00950-2. [40] Rodrigues DL, Ye X, Xia X, Zhu B. Battery energy storage sizing optimisation for
+
+[16] Zhou Y, Wu J, Long C, Ming W. State-of-the-art analysis and perspectives for peer- different ownership structures in a peer-to-peer energy sharing community. Appl
+to-peer energy trading. Engineering 2020;6(7):739–53. https://doi.org/10.1016/j. Energy 2020;262:114498. https://doi.org/10.1016/J.APENERGY.2020.114498.
+eng.2020.06.002. [41] Hadka D, Reed P. Borg: an auto-adaptive many-objective evolutionary computing
+
+[17] Schneiders A, Fell MJ, Nolden C. Peer-to-peer electricity trading and the sharing framework. Evol Comput 2013;21(2):231–59. https://doi.org/10.1162/EVCO_a_
+economy: social, markets and regulatory perspectives. Energy Sources B: Econ Plan 00075.
+Policy 2022;17(1). https://doi.org/10.1080/15567249.2022.2050849. [42] Parise G, Martirano L, Parise L, Mitolo M. “Safety evolution of residential
+
+[18] Tushar W, et al. Peer-to-peer energy systems for connected communities: a review microsystems,” 2012 IEEE International Energy Conference and Exhibition,
+of recent advances and emerging challenges. Appl Energy 2021;282:116131. ENERGYCON 2012, pp. 778–782. 2012. https://doi.org/10.1109/
+https://doi.org/10.1016/J.APENERGY.2020.116131. ENERGYCON.2012.6348256.
+
+[19] Barabino E, et al. Energy communities: a review on trends, energy system [43] Zheng B, Fan Y, Wei W, Xu Y, Huang S, Mei S. Distribution optimal power flow
+modelling, business models, and optimisation objectives. Sustainable Energy, Grids with energy sharing via a peer-to-peer Transactive market. Front Energy Res Jul.
+and Networks 2023;36:101187. https://doi.org/10.1016/j.segan.2023.101187. 2021;9:701149. https://doi.org/10.3389/FENRG.2021.701149/BIBTEX.
+
+[20] Ali L, Muyeen SM, Bizhani H, Simoes MG. Economic planning and comparative [44] Liu C, Li Z. Comparison of centralized and peer-to-peer decentralized market
+analysis of market-driven multi-microgrid system for peer-to-peer energy trading. designs for community markets. IEEE Trans Ind Appl 2022;58(1):67–77. https://
+IEEE Trans Ind Appl 2022;58(3):4025–36. https://doi.org/10.1109/ doi.org/10.1109/TIA.2021.3119559.
+TIA.2022.3152140. [45] Zhang Y, et al. HOMER-based multi-scenario collaborative planning for grid-
+
+[21] Abid MdS, Apon HJ, Hossain S, Ahmed A, Ahshan R, Lipu MSH. A novel multi- connected PV-storage microgrids with electric vehicles. Processes 2023;11(8):
+objective optimization based multi-agent deep reinforcement learning approach for 2408. https://doi.org/10.3390/pr11082408.
+microgrid resources planning. Appl Energy 2024;353:122029. https://doi.org/ [46] Sahraei S, Asadzadeh M, Shafii M. Toward effective many-objective optimization:
+10.1016/j.apenergy.2023.122029. rounded-archiving. Environ Model Softw 2019;122:104535. https://doi.org/
+
+[22] Raya-Armenta JM, Bazmohammadi N, Avina-Cervantes JG, Sáez D, Vasquez JC, 10.1016/j.envsoft.2019.104535.
+Guerrero JM. Energy management system optimization in islanded microgrids: an [47] Gonzalez JM, et al. Designing diversified renewable energy systems to balance
+overview and future trends. Renew Sust Energ Rev 2021;149:111327. https://doi. multisector performance. Nature Sustainability 2023 6:4 Jan. 2023;6(4):415–27.
+org/10.1016/J.RSER.2021.111327. https://doi.org/10.1038/s41893-022-01033-0.
+
+[23] Spiliopoulos N, et al. Peer-to-peer energy trading for improving economic and [48] Gupta A, Liu M, Gold D, Reed P, Anderson CL. “Exploring a Direct Policy Search
+resilient operation of microgrids. Renew Energy 2022;199:517–35. https://doi. Framework for Multiobjective Optimization of a Microgrid Energy Management
+org/10.1016/j.renene.2022.08.061. System,” Hawaii International Conference on System Sciences, vol. 2020-January, pp.
+
+[24] Perera ATD, Zhao B, Wang Z, Soga K, Hong T. Optimal design of microgrids to 3137–3147. 2020. https://doi.org/10.24251/HICSS.2020.382.
+improve wildfire resilience for vulnerable communities at the wildland-urban [49] Zhou Y, Wu J, Long C. Evaluation of peer-to-peer energy sharing mechanisms
+interface. Appl Energy 2023;335:120744. https://doi.org/10.1016/j. based on a multiagent simulation framework. Appl Energy 2018;222:993–1022.
+apenergy.2023.120744. https://doi.org/10.1016/j.apenergy.2018.02.089.
+
+[25] Secchi M, Barchi G, Macii D, Moser D, Petri D. Multi-objective battery sizing [50] Paudel A, Gooi HB. Pricing in peer-to-peer energy trading using distributed
+optimisation for renewable energy communities with distribution-level constraints: optimization approach. IEEE Power and Energy Society General Meeting, vol 2019-
+a prosumer-driven perspective. Appl Energy 2021;297:117171. https://doi.org/ August Aug. 2019. https://doi.org/10.1109/PESGM40551.2019.8973868.
+10.1016/J.APENERGY.2021.117171. [51] Li S, Zhou Y, Wu J, Pan Y, Huang Z, Zhou N. A digital twin of multiple energy hub
+
+[26] Parvin M, Yousefi H, Noorollahi Y. Techno-economic optimization of a renewable systems with peer-to-peer energy sharing. Appl Energy 2025;380:124908. https://
+micro grid using multi-objective particle swarm optimization algorithm. Energy doi.org/10.1016/J.APENERGY.2024.124908.
+Convers Manag 2023;277:116639. https://doi.org/10.1016/j. [52] Zheng B, Wei W, Chen Y, Wu Q, Mei S. A peer-to-peer energy trading market
+enconman.2022.116639. embedded with residential shared energy storage units. Appl Energy 2022;308:
+
+[27] Ren H, Gao D, Ma Z, Zhang S, Sun Y. Data-driven surrogate optimization for 118400. https://doi.org/10.1016/j.apenergy.2021.118400.
+deploying heterogeneous multi-energy storage to improve demand response
+
+20
+
+
+
+R.A. Mahuze et al. Applied Energy 384 (2025) 125289
+
+[53] Tsao YC, Van Thanh V. Toward sustainable microgrids with blockchain flexibility programs. Appl Energy 2017;203:128–41. https://doi.org/10.1016/J.
+technology-based peer-to-peer energy trading mechanism: a fuzzy meta-heuristic APENERGY.2017.06.040.
+approach. Renew Sust Energ Rev Feb. 2021;136:110452. https://doi.org/10.1016/ [64] “City of Ithaca to become 100% decarbonized by 2030 – THE ITHACAN.” Accessed:
+J.RSER.2020.110452. Feb. 25, 2024. [Online]. Available, https://theithacan.org/42334/news
+
+[54] Lin J, Pipattanasomporn M, Rahman S. Comparative analysis of auction /city-of-ithaca-to-become-100-decarbonized-by-2030/.
+mechanisms and bidding strategies for P2P solar transactive energy markets. Appl [65] Wilson EJ, Christensen CB, Horowitz SG, Robertson JJ, Maguire JB. Energy
+Energy 2019;255:113687. https://doi.org/10.1016/J.APENERGY.2019.113687. efficiency potential in the U.S. Single-Family Housing Stock. Dec. 2017. https://
+
+[55] Liu N, Yu X, Wang C, Li C, Ma L, Lei J. Energy-sharing model with Price-based doi.org/10.2172/1414819.
+demand response for microgrids of peer-to-peer prosumers. IEEE Trans Power Syst [66] Crawley DB, et al. EnergyPlus: creating a new-generation building energy
+2017;32(5):3569–83. https://doi.org/10.1109/TPWRS.2017.2649558. simulation program. Energ Buildings 2001;33(4):319–31. https://doi.org/
+
+[56] Kanakadhurga D, Prabaharan N. Peer-to-peer trading with demand response using 10.1016/S0378-7788(00)00114-6.
+proposed smart bidding strategy. Appl Energy 2022;327:120061. https://doi.org/ [67] Santoso S, Beaty HW. “CONDUCTOR MATERIALS,” in Standard Handbook for
+10.1016/j.apenergy.2022.120061. Electrical Engineers, 17th Edition., New York: McGraw-Hill Education, 2018.
+
+[57] Kim HJ, Chung YS, Kim SJ, Kim HT, Jin YG, Yoon YT. Pricing mechanisms for peer- [Online]. Available, https://www.accessengineeringlibrary.com/conten
+to-peer energy trading: towards an integrated understanding of energy and t/book/9781259642586/toc-chapter/chapter3/section/section2.
+network service pricing mechanisms. Renew Sust Energ Rev 2023;183:113435. [68] Blair N, et al. “System Advisor Model, SAM 2014.1.14: General Description,” 2013,
+https://doi.org/10.1016/J.RSER.2023.113435. Accessed: Feb. 25, 2024. [Online]. Available, www.nrel.gov/publications.
+
+[58] Trutnevyte E. Does cost optimization approximate the real-world energy [69] “Time of use service rate - NYSEG.” Accessed: Feb 25, 2024. [Online]. Available,
+transition? Energy 2016;106:182–93. https://doi.org/10.1016/J. https://www.nyseg.com/account/understandyourbill/electricpricing/time-of-use-
+ENERGY.2016.03.038. service-rate.
+
+[59] Dubey A, Santoso S. Electric vehicle charging on residential distribution systems: [70] Chen P. Effects of normalization on the entropy-based TOPSIS method. Expert Syst
+impacts and mitigations. IEEE Access 2015;3:1871–93. https://doi.org/10.1109/ Appl 2019;136:33–41. https://doi.org/10.1016/J.ESWA.2019.06.035.
+ACCESS.2015.2476996. [71] Wilkinson S, Hojckova K, Eon C, Morrison GM, Sandén B. Is peer-to-peer electricity
+
+[60] Simpkins T, et al. “REopt: A Platform for Energy System Integration and trading empowering users? Evidence on motivations and roles in a prosumer
+Optimization: Preprint,” 2014, Accessed: Mar. 21, 2024. [Online]. Available. www. business model trial in Australia. Energy Res Soc Sci 2020;66:101500. https://doi.
+nrel.gov/publications. org/10.1016/J.ERSS.2020.101500.
+
+[61] Ramasamy V, Feldman D, Desai J, Margolis R. U.S. Solar Photovoltaic System and [72] Pena-Bello A, Parra D, Herberz M, Tiefenbeck V, Patel MK, Hahnel UJJ. Integration
+Energy Storage Cost Benchmarks: Q1 2021. Nov. 2021. https://doi.org/10.2172/ of prosumer peer-to-peer trading decisions into energy community modelling. Nat
+1829460. Energy 2022;7(1):74–82. https://doi.org/10.1038/s41560-021-00950-2.
+
+[62] Nasiri S. “A Peer-to-Peer Energy Trading Framework in Distribution Systems [73] “Voltage Tolerance Standard – ANSI C84.1 – Voltage Disturbance.” Accessed: Aug
+Considering Network Constraints,” Sep. 2023, Accessed: Aug. 02, 2024. [Online]. 02, 2024. [Online]. Available, https://voltage-disturbance.com/voltage-quality/
+Available. https://arxiv.org/abs/2309.03132v1. voltage-tolerance-standard-ansi-c84-1/.
+
+[63] Razmara M, Bharati GR, Hanover D, Shahbakhti M, Paudyal S, Robinett RD.
+Building-to-grid predictive power flow control for demand response and demand
+
+21

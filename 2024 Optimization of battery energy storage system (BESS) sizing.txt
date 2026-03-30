@@ -1,0 +1,1665 @@
+﻿Journal of Cleaner Production 470 (2024) 143317
+
+Contents lists available at ScienceDirect
+
+Journal of Cleaner Production
+journal homepage: www.elsevier.com/locate/jclepro
+
+Optimization of battery energy storage system (BESS) sizing in different
+electricity market types considering BESS utilization mechanisms
+and ownerships
+Ruixiaoxiao Zhang a, Minhyun Lee b,*, Lijie Huang a, Meng Ni c
+
+a Department of Building and Real Estate, The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong
+b Department of Building and Real Estate, Research Institute for Smart Energy (RISE), The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong
+c Department of Building and Real Estate, Research Institute for Sustainable Urban Development (RISUD) & Research Institute for Smart Energy (RISE), The Hong Kong
+Polytechnic University, Hung Hom, Kowloon, Hong Kong
+
+A R T I C L E I N F O A B S T R A C T
+
+Handling Editor: Cecilia Maria Villas Bôas de To elucidate the optimal techno-economic role of battery energy storage system (BESS), this study proposes
+Almeida optimal sizing of BESS in various scenarios based on BESS installation in existing photovoltaic systems. The
+
+proposed scenarios include different electricity market types (i.e., peer-to-grid, peer-to-peer, and energy storage
+Keywords: sharing) considering utilization mechanism (i.e., individual-design or shared-design) and ownership (i.e., user-
+Battery energy storage system owned or developer-owned) of the BESS. Towards this end, this study develops comprehensive and systematic
+Sizing optimization
+Mixed-integer linear programming mathematical models for BESS sizing using mixed-integer linear programming algorithm, and the BESS sizing is
+Utilization mechanism and ownership optimized to maximize the total net present value. The developed models are validated in the Hong Kong context
+Peer trading considering four peers, and the empirical data of electric load profile as well as the photovoltaic installed ca-
+Energy storage sharing pacity are collected. As a result, it is indicated that the optimal BESS capacity in energy storage sharing scenario
+
+is the least. In terms of electricity bill saving, user-owned BESS is regarded as the model yielding the highest
+electricity bill savings. The breakdown of net present value exposes that under the same ownership, the optimal
+BESS capacity is determined by different utilization mechanisms. Regarding the total net present value, it is
+found that developer-owned BESS could achieve the maximum economic merits. Nonetheless, the distribution
+loss through energy storage sharing is also the highest. The policy implications of this study primarily emphasize
+incentivizing user-owned BESS, promoting energy storage sharing, supporting shared BESS infrastructure, and
+encouraging a diversity of electricity trading mechanisms to enhance the integration and efficiency of renewable
+energy systems.
+
+Nomenclature (continued )
+Abbreviations and parameters
+
+Abbreviations and parameters
+DO developer-owned
+
+Abbreviations NPV net present value
+BESS battery energy storage system MILP mixed-integer linear programming
+PV photovoltaic DG distributed generation
+P2G peer-to-grid DERs distributed energy resources
+P2P peer-to-peer GA genetic algorithm
+ESS energy storage sharing EV electric vehicle
+ID individual-design PSO particle swarm optimization
+SD shared-design SoC state of charge
+UO user-owned SR surplus ratio
+
+(continued on next column) (continued on next page)
+
+* Corresponding author.
+E-mail addresses: ruixiaoxiao.zhang@connect.polyu.hk (R. Zhang), minhyun.lee@polyu.edu.hk (M. Lee), li-jie.huang@connect.polyu.hk (L. Huang), meng.ni@
+
+polyu.edu.hk (M. Ni).
+
+https://doi.org/10.1016/j.jclepro.2024.143317
+Received 20 October 2023; Received in revised form 16 April 2024; Accepted 31 July 2024
+Available online 31 July 2024
+0959-6526/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+(continued ) configurations) (Long et al., 2018). Compared to traditional centralized
+
+Abbreviations and parameters network, DG can promote the flexibility of electricity supply by the
+DR demand ratio utility grid in terms of responsive and localized generation (Lüth et al.,
+SDR surplus and demand ratio 2018), while simultaneously enhancing the reliability and affordability
+PV-E PV-generated electricity of electricity supply for householders within a microgrid (Nguyen et al.,
+Parameters 2018). To efficiently accommodate the renewable electricity (RE)
+Pinet(t) net PV-E after self-consumption at time t (kW) generated from the DERs, peer-to-peer (P2P) trading (Soto et al., 2021)
+Piload(t) electric load demand by peer i at time t (kW)
+Pi
+
+and energy storage sharing (ESS) (Taşcıkaraoğlu, 2018) have gradually
+pv(t) PV-E at time t (kW)
+
+emerged and arouse attentions as the Feed-in Tariff-based incentives by
+PiBESS (t) electricity that has been charged to the BESS at time t (kW),
+
+char
+
+Ii
+means of peer-to-grid (P2G) trading (Pandžić, 2018) have been gradu-
+
+b battery capacity of BESS (kW)
+ally phased out.
+
+PiBESS (t) electricity that has been discharged to peers at time t (kW)
+dis
+
+Pi,jsur pv surplus electricity that has been traded from peer j to peer i at time t The superiority of introducing P2P trading to P2G trading relies on
+(kW) its managerial flexibility, network stability (Zhou and Lund, 2023), and
+
+Piʹ́net(t) electric load shortage by peer i at time t after self-consumption and P2P improved system efficiency (Tsao and Van Thanh, 2021). In addition,
+trading through PV-E(kW) P2P trading is also capable of avoiding grid infrastructure limits and
+
+ηtrans distribution loss endured by P2P trading (%) unfair access to DERs (Brockway et al., 2021). Therefore, studies
+PESSBESS PV-E sold from peers to charge the ESS trading after self-consumption
+
+char
+and P2P trading at time t (kW) investigating the technical and economic aspects of P2P trading have
+
+IESS been widely conducted. For instance, Azim et al. (2019) evaluate the
+b battery capacity of the ESS trading (kW)
+PESSBESS stored electricity sold from the ESS trading to the peers at time t (kW). economic benefits in P2P trading considering possible network issues,
+
+dis
+
+CAPEX capital expenditure of the BESS systems (US$) and concludes that even both prosumers and consumers can benefit from
+OPEX operation expenditure including annual operation and maintenance cost P2P trading, over-voltage is a critical constraint for both sides when the
+
+(US$) penetration of rooftop PV is high. Guerrero et al. (2018) demonstrate the
+ECF net electricity cash flow (US$)
+i discount rate importance of preventing low-voltage network issues in P2P trading,
+λ electricity retail price annual increasing rate and proposes a new methodology to deploy P2P trading considering
+Rgrid utility grid electricity price such constraints. In addition, a P2P grid voltage support function of
+Rretail retail electricity price (US$/kWh) smart photovoltaic inverters is designed in Almasalma et al.‘s study
+Rexport electricity export price (US$/kWh) (Almasalma et al., 2019) to regulate the voltage within a reasonable
+RP2P P2P trading price (US$/kWh)
+R time by applying the Jacobi-Proximal Alternating Direction Method of
+buyi individual P2P buying price (US$/kWh)
+
+Rsell i individual P2P selling price (US$/kWh) Multipliers. Moreover, existing studies have aroused increasing atten-
+RESS ESS trading price (US$/kWh) tion to P2P trading strategies as well. A blockchain-based P2P trading
+RbuyESS ESS buying price (US$/kWh) model is exploited in Kang et al.‘s study (Kang et al., 2017) to enhance
+RsellESS ESS selling price (US$/kWh) the social welfare, and the P2P trading price is determined by an iter-
+Rg global radiation on an hourly basis (W/m2)
+I0 solar constant value (W/m2) ative double auction mechanism. An optimized P2P trading strategy
+DOY day-of-year with an internal pricing model depended on supply and demand ratio is
+γs solar altitude angle (degree, ◦) applied in Meinke et al.‘s study (Meinke et al., 2020), and the optimi-
+ϕ latitude (degree, ◦) zation objective is to minimize the electricity trading distance. As a
+δ declination angle (degree, ◦)
+ω hour angle (degree, ◦) result, the proposed strategy manages to improve the self-consumption
+t local solar time ratio, as well as reduce peak demand during hours of high usage. To
+Ge,t hourly PV system electricity generation (W) enhance the consumers’ participation in the P2P market, a mid-market
+A total area of solar panels (m2) rate pricing mechanism is proposed by Tushar et al. (2018). This pricing
+ϵ solar panel yield (%) mechanism stipulates that the P2P trading price is the mid-value of the
+PR performance ratio
+Pchar,max maximum charging limit (kW) P2P buying and selling price, which is determined by the supply and
+P demand situation in the market. Furthermore, the P2P trading strategy is
+dis,max maximum discharging limit (kW)
+
+ηb charging/discharging efficiency of the battery (%) formulated by the canonical coalition game, and is proven efficient to
+SoCmin minimum limit of a state of charge facilitate the consumers’ participation. Apart from these P2P trading
+SoCmax maximum state of charge pricing models, game theory-based methods (Jing et al., 2020), match-
+SoCin initial state of BESS
+SoCen end state of BESS ing theory-based methods (Morstyn et al., 2019), and auction-based
+SRpeer i surplus ratio of a specific peer i methods (Guerrero et al., 2018) are also widely used by researchers to
+DRpeer i demand ratio of a specific peer i optimize the P2P trading strategy.
+Qshor peer i the electrical load shortage of peer i after self-consumption (kWh) In terms of ESS, Zheng et al. (2022) propose an equilibrium model of
+Qpeer i electrical load demand for peer i (kWh) a P2P trading market considering the application of ESS, and demon-
+SDRgrid supply-demand ratio of the whole microgrid strates that although P2P trading can benefit all participants, the
+Gsur grid surplus RE in the microgrid
+Q introduction of ESS can further reduce energy costs. Walker and Kwon
+shor grid electrical load shortage in the microgrid after RE self-consumption
+
+(kWh) (2021) intend to investigate the economic benefits of introducing ESS in
+γ(t) compensation factor a residential community, and concludes that the electricity bill saving
+k coefficient of the compensation factor can be sufficiently achieved if the ESS is centralized rather than indi-
+
+vidual. Li et al. (2022a) compare the economic and technical benefits of
+individual and centralized ESS by adopting a two-stage optimization
+
+1. Introduction model, and concluded that the performance of centralized ESS is better
+in terms of cost saving, self-consumption ratio and self-sufficiency ratio
+
+1.1. Research background compared to individual ESS. Tushar et al. (2016) focus on an individual
+ESS market where the fraction of electricity shared on the market is
+
+Distributed generation (DG), which utilizes distributed energy re- determined by each peer, and the electricity trading price is formulated
+sources (DERs) such as solar photovoltaics (PVs), wind turbines, hy- by an auction-based mechanism which captures that interaction be-
+droelectric generators to generate electricity, has become more popular tween multiple shared facility controllers and each peer. Liu et al.
+in applications at microgrid-level (e.g., integration into microgrid (2017) propose a cloud ESS, which is capable of providing energy
+
+2
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+storage service at a relatively lower cost, and the economic analysis il- critical topic. Nonetheless, most of the existing studies focus on BESS
+lustrates that the feasibility and economic benefit can both be realized sizing only in the P2G trading, such as (Liu et al., 2018), (Mehrtash et al.,
+under the proposed operating mechanism. An optimization model for 2020), (Wang et al., 2018), (Moazzami et al., 2017), (Kharrich et al.,
+P2P trading with unique decentralized generation and ESS, a centralized 2018), (Askarzadeh, 2013a), (Alberizzi et al., 2020a), (Askarzadeh,
+ESS is designed in Sahebi et al.‘s study (Sahebi et al., 2023), and the 2013b), (Alberizzi et al., 2020b), while studies considering P2P trading
+economic assessment shows that the centralized ESS significantly in- and ESS are relatively limited. Hence, this study has summarized some
+creases the benefits for all peers. Therefore, it can be summarized that of the BESS sizing studies considering P2G trading, as well as the
+improved efficiency and reduced energy costs for participants in a state-of-art studies considering P2P and ESS as shown in Table 1, to
+community can be better achieved by centralized ESS. compare the research scope and context regarding the electricity market
+
+However, existing studies that focus primarily on the applications of types, utilization mechanism and ownership of BESS, as well as algo-
+DERs overlook the uncertainty resulting from the intermittent output rithms and optimization objectives.
+(Xia et al., 2022). Furthermore, since the electrical load demand is also A smart home energy management system is proposed with the
+unpredictable, an increase in voltage may occur locally for a period of installation of PV-BESS by stochastic mixed-integer non-linear pro-
+time while the output of DERs might be unable to satisfy, which nega- gramming (MINLP) algorithm by Hemmati and Saboori (2017), and the
+tively affects the reliability of electricity supply (Park and Yong, 2017). optimization of BESS is achieved by minimizing the electricity cost using
+Under such circumstance, energy storage technology is gaining one typical residential house as a scenario study. Results demonstrate
+increased attention to maintain the balance between supply and demand that a 27.8% reduction of electricity bill can be realized by the proposed
+(Guerrero et al., 2023). On top of this, battery energy storage system system. A multi-objective optimization function is applied in Ntube and
+(BESS) is considered as an important back-up system affiliated to DERs Li’s study (Ntube and Li, 2023), which considers the financial aspect (i.
+to achieve significant electricity bill saving and self-sufficiency ratio e., minimize the BESS cost) and the technical aspect (i.e., minimize the
+within a community. To promote its development, the operational amount of energy imported from the utility grid). In addition, by
+economy of BESS has been explored by Gomez-Gonzalez et al. (2020), applying genetic algorithm (GA) to a PV-BESS configuration with or
+and the results demonstrate that with the installation of BESS, the PV without electric vehicle (EV), the optimal BESS capacity is measured in
+self-consumption has been sufficiently improved and the levelized cost three scenarios (i.e., on grid, off grid with EV, and off grid without EV)
+of electricity has been decreased. An optimization model for PV-BESS by minimizing the total cost of the system considering electricity load
+sizing considering different operation strategies (e.g., DERs configura- uncertainties (Mohammadi et al., 2022). Nonetheless, only P2G trading
+tions, distribution grids, and battery placements) is proposed by Weck- is considered in this study, the flexibility in electricity trading of P2P or
+esser et al. (2021), and conclusions and implications are drawn based on ESS has not been investigated. In Yaldız et al.‘s study (Yaldız et al.,
+different results (e.g., battery capacity and economic benefit) under 2021), however, the BESS sizing is achieved by mixed-integer non-linear
+various operation strategies. programming (MILP) considering P2P trading, and the shared-design
+
+In addition, it can be seen that some studies mainly investigate and (SD) of user-owned (UO) BESS is adopted. The optimization objective
+explore the cost-optimal installed capacities for a household or a com- is to maximize the net present value (NPV) of the BESS system which
+munity, and it is proven that proper sizing of energy storage can enhance consists of the investment cost and the deduction of the profit from
+the technical (e.g., network flexibility (Liu et al., 2018), self-sufficiency electricity trading. Ali et al. (2020) investigate the PV/wind turbine
+ratio (Gallego-Castillo et al., 2021)) and economic performances (e.g., configuration with the optimal BESS capacity using particle swarm
+electricity bill saving, cost saving (Weckesser et al., 2021)) for both optimization (PSO), which concluded that combined P2G and P2P
+supply and demand sides. For instance, Mehrtash et al. (2020) analyse trading enables to maximize the profitability of prosumers compared to
+the optimal sizing of PV-BESS for a zero-energy building, and they only P2G trading. Furthermore, developer-owned (DO) ESS is proposed
+considered the environmental impact assessment as their optimization and optimized by Rodrigues et al. (2020), and is compared to an alter-
+indicator, which takes the PV and battery manufacturing, as well as the native ownership (i.e., UO P2P trading), which exhibits that under the
+electricity supply into account. Li et al. (2022b) develop a genetic ESS scenario, the participation of prosumers in community battery
+algorithm-based constraint model to determine the BESS capacity in a sharing will be facilitated with reduced electricity cost. Similar to this
+community, which has improved the local energy self-consumption rate. study, Li et al. (2022b) utilize GA algorithm to optimize the BESS ca-
+Skoglund et al. (2021) examine the operation strategy and optimizes the pacity under various scenarios considering different electricity market
+scheduling of BESS to reduce the total system costs, and to alleviate the types (i.e., P2P and ESS trading) and ownership of BESS (i.e., UO and
+electricity supply pressure for commercial buildings during daytime. DO). However, Li et al. (2022b) consider the transmission loss while
+
+Rodrigues et al. (2020) do not, and both of the studies do not consider
+1.2. Literature review individual-design (ID) as the BESS utilization mechanism. An ESS-solely
+
+scenario within a microgrid consisting of four prosumers is optimized by
+As the investment cost in BESS solutions brings concerns and un- GA (Gul et al., 2022), and the optimization objective is to maximize the
+
+certainties for the economic feasibility, BESS sizing is regarded as a power output of the PV system. Results demonstrate that the penetration
+
+Table 1
+Summary of representative and state-of-art studies.
+
+Ref. Electricity market Utilization mechanism Ownership of Algorithm Optimization objective
+types of BESS BESS
+
+P2G P2P ESS ID SD UO DO
+
+Hemmati and Saboori (2017) o o o MINLP Minimize electricity cost
+Ntube and Li (2023) o o o MILP Minimize BESS cost and the utility grid imported electricity
+Mohammadi et al. (2022) o o o GA Minimize the total cost in three scenarios
+Yaldız et al. (2021) o o o MILP Maximize NPV
+Ali et al. (2020) o o o o PSO Maximize profitability
+Rodrigues et al. (2020) o o o o o MILP Maximize NPV
+Li et al. (2022b) o o o o o GA Maximize NPV
+Gul et al. (2022) o o o MILP Maximize power output
+This study o o o o o o o MILP Maximize NPV
+
+3
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+of renewable electricity in the microgrid is sufficiently improved by What are the effects of different BESS utilization mechanisms and
+developing ESS. ownership models on the optimal sizing of BESS; and (iii) How to
+
+develop a mathematical model with wide applicability that facilitates
+1.3. Research gap the comparison of economic merits under various scenarios?
+
+To achieve the above research aims and objectives, and to cope with
+As shown in the literature review, existing studies demonstrate that the corresponding research questions, this study intends to use PV-
+
+exploring the optimal BESS sizing is of importance to facilitate the in- installers as a practical example within the systematic architecture to
+vestment profitability under specific research contexts, yet some demonstrate the application of the developed models and algorithms,
+research gaps remain as follows: providing a tangible example of how the models can be applied in real-
+
+world scenarios. To optimize the BESS capacity, this study employs a
+(i) Lack of comprehensive scenario analysis: Existing studies on MILP algorithm, executed with MATLAB R2022b and supported by
+
+BESS sizing have not fully explored the interplay between Financial Toolbox and Optimization Toolbox. Specifically, for all sce-
+different electricity market types, BESS utilization mechanisms, narios, the optimization objective of BESS sizing is to maximize the NPV
+and ownership structures in a unified framework. This gap is of installing BESS. The decision variable is the capacity of BESS, while
+significant because it limits the ability to compare the economic the capacity of PV system will not be considered since the primary
+merits of BESS applications across various scenarios. A compre- purpose of this study is to facilitate the BESS installation on existing PV
+hensive scenario analysis that includes all these characteristics is systems. NPV is chosen as the techno-economic indicator because it
+essential for a holistic understanding of the economic impacts takes into account the time value of money, offering a clear picture of
+and for guiding policy reforms in the electricity market; and the long-term economic viability and net benefits of BESS investments,
+
+(ii) Limited applicability of mathematical models: Most current which is a primary concern for stakeholders. To be more specific, NPV is
+mathematical models and algorithms for BESS sizing are tailored particularly favoured for BESS sizing optimization because it captures
+to specific RE configurations or particular research contexts. This the long-term financial impact of the system, including the costs asso-
+specialization restricts the models’ generalizability and hinders ciated with installation, operation, maintenance, and replacement, as
+their application to a broader range of scenarios. henceforth, well as the benefits from electricity bill savings and potential revenue
+there is a need for mathematical models that can be applied to from electricity trading. This aligns with the objectives of this study,
+diverse sectors, various RE configurations, or expanded size of the which aims to determine the most cost-effective BESS application so-
+microgrid, thereby enhancing the expandability and utility of lutions across various scenarios.
+BESS modelling. The rest of the study will be organized as follows. The methodology,
+
+including scenario design and the development of mathematical models
+1.4. Research aims and objectives are comprehensively introduced in Section 2. A case study in Hong Kong
+
+is conducted in Section 3 as an illustration of the techno-economic role
+The motivation behind this study is driven by the imperative to of BESS under various scenarios, which is followed by the results and
+
+enhance the strategic planning and implementation of BESS to the discussions in Section 4. Finally, a precise conclusion along with
+existing PV systems. Recognizing two primary gaps in the field of BESS constructive policy implications will be drawn in Section 5.
+sizing within the context of electricity markets, and the critical role of
+BESS in achieving energy sustainability and economic efficiency, this 2. Methodology
+study intends to facilitate informed decision-making for stakeholders
+and to advance the state of knowledge in BESS applications. In response 2.1. Systematic architecture
+to these motivations and the research gaps, this study sets out with the
+following aims and objectives: Five scenarios are developed in this study considering the electricity
+
+market types, the utilization mechanism of BESS as well as the owner-
+(i) Propose a comprehensive scenario analysis: The study aims to ship of BESS as demonstrated in Fig. 1, and the main characteristics
+
+develop a systematic analysis framework that encompasses considered in different scenarios are summarized in Table 2. The pro-
+different electricity market types (i.e., peer-to-grid (P2G), peer- posed detail in each scenario is introduced below:
+to-peer (P2P), or energy storage sharing (ESS)) considering uti-
+lization mechanism (i.e., individual-design (ID) or shared-design (i) Scenario 1 (PV-standalone) is designed as a baseline scenario
+(SD)) and ownership (i.e., user-owned (UO) or developer-owned which excludes the installation of BESS, and only considers the
+(DO)) of the BESS. This framework will facilitate a direct com- existing situation. Under scenario 1, the PV-generated electricity
+parison of economic merits among different scenarios, thereby (PV-E) will be first self-consumed, and then sold to the utility grid
+influencing policy reform and investment strategies in the elec- through P2G trading only. The purpose of proposing scenario 1 is
+tricity market; and to use it as a baseline for illustrating the economic merit of
+
+(ii) Develop mathematical models for BESS sizing: The objective is to installing BESS in other scenarios.
+create mathematical models that are not limited to specific (ii) Scenario 2 (P2G-IDUO-BESS) is proposed as an improved baseline
+renewable energy configurations or research contexts. These scenario which includes the installation of UO-BESS for individ-
+models are an integration of RE system modelling, BESS model- ual utilization. Under scenario 2, the PV-E will be first self-
+ling, P2P trading price modelling (i.e., individual P2P pricing consumed, and then stored in the BESS before being sold to the
+model), as well as ESS trading price modelling. The developed utility grid. The electricity market type considered in scenario 2 is
+models are expected to be applied to various sectors (e.g., resi- also P2G only, and the BESS-stored electricity is designed for
+dential, commercial, and industrial), different RE configurations individual utilization only. The purpose of introducing scenario 2
+(e.g., PVs, wind turbines, and EVs), and expanded microgrid sizes is to let it serve as a benchmark model for comparing the eco-
+(e.g., increased number of prosumers), thus addressing the need nomic merit under other electricity market types (i.e., P2P and
+for models with wide applicability. ESS trading) to P2G trading.
+
+(iii) Scenario 3 (P2P-IDUO-BESS) is developed as a scenario compared
+In line with the above research aims and objectives, several key to scenario 2 by introducing P2P trading as an additional elec-
+
+research questions are raised: (i) How can BESS sizing be optimized in tricity market type to P2G trading. Similar to scenario 2, the UO-
+different electricity market types to maximize economic benefits? (ii) BESS in scenario 3 is also designed for individual utilization only.
+
+4
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Under scenario 3, the PV-E will be first self-consumed, and then
+sold to other peers through P2P trading if they are under electric
+load shortage. After feeding other peers, the surplus PV-E will be
+stored in the BESS before being sold to the utility grid. The pur-
+pose of developing scenario 3 is to investigate the flexibility of
+introducing P2P trading for IDUO-BESS.
+
+(iv) Scenario 4 (P2P-SDUO-BESS) is developed as a scenario
+compared to scenario 3 by facilitating the shared utilization for
+UO-BESS. Specifically, the shared utilization for UO-BESS allows
+the BESS-stored electricity to be traded through P2P trading
+among all the peers, especially during peak period. In addition to
+the trading process under scenario 3, the BESS-stored electricity
+will be first discharged for self-consumption during peak period,
+and then sold to other peers through P2P trading if they are under
+electric load shortage. The purpose of developing scenario 4 is to
+highlight the flexibility of SDUO-BESS compared to scenario 3.
+
+(v) Scenario 5 (ESS-SDDO-BESS) is proposed as an alternative sce-
+nario compared to other scenarios. In scenario 5, instead of the
+UO-BESS, the DO-BESS is introduced to be installed in the
+microgrid to demonstrate an innovative electricity market type.
+Under scenario 5, the PV-E will be first self-consumed, and then
+sold to other peers through P2P trading. After feeding other
+peers, the surplus PV-E will be stored in the DO-BESS before being
+sold to the utility grid. During peak period, the electricity trading
+priority is for peers buying electricity from the DO-BESS first, and
+the electric load shortage is then satisfied by the utility grid. The
+purpose of developing scenario 5 is to propose an innovative
+electricity trading mechanism as an alternative to other sce-
+narios, which is believed to carry out insightful findings that can
+enhance the development of ESS in the future.
+
+2.2. Mathematical models for BESS sizing
+
+2.2.1. Scenario 2 (P2G-IDUO-BESS)
+In scenario 2, PV-E will be self-consumed by the peer to satisfy its
+
+load demand first. After self-consumption, the status of peer i is pre-
+sented by Eq. (1).
+
+Pi
+net(t)=Pi
+
+load(t) − Pi
+pv(t) (1)
+
+Where Piload(t) is the electric load demand by peer i at time t (kW), Pipv(t)
+is the PV-E at time t (kW), and Pinet(t) is the net PV-E after self-
+consumption at time t (kW). There are three possible types of load sta-
+tus at this moment:
+
+(i) Pinet(t) > 0, which indicates that the PV-E is unable to fulfill the
+electric load demand of peer i, and peer i needs to buy electricity
+from the utility grid to satisfy the load shortage;
+
+(ii) Pinet(t) < 0, which indicates that surplus PV-E after self-
+Fig. 1. Systematic architecture. consumption is available for BESS charging for peer i; and
+
+(iii) Pinet(t) = 0, which indicates power balance for peer i.
+
+Table 2 Next, surplus PV-E will be charged to user-owned BESS by the
+Main characteristics considered in five scenarios. following diagonal matrices during the daytime (i.e., Eqs. (2) and (3)).
+
+Scenarios Electricity market BESS utilization BESS ⎡ ⎤
+types mechanisms ownerships 1
+
+⎢PBESS (t) 0 ⋯ 0
+char ⎥
+
+P2G P2P ESS ID SD UO DO ⎢ ⎥
+
+Pi ⎢ 0 P2
+
+Scenario 1 o (t)=⎢ BESS (t) ⋯ 0 ⎥
+char ⎥
+
+BESS ⎢ ⋱ ⋮ ⎥ (2)
+char
+
+⎢ ⋮ ⋮ ⎥
+Scenario 2 o o o ⎣ ⎦
+Scenario 3 o o o 0 0 ⋯ Pi
+
+BESS (t)
+char
+
+Scenario 4 o o o
+Scenario 5 o o o
+
+s.t.
+{⃒ ⃒ ⃒ ⃒
+⃒Pi ⃒ ⃒ i
+
+net(t) , if P t(t)⃒ ≤ Ii
+Pi
+BESS (t ne b
+
+)= ⃒ ⃒
+char Ii ⃒ i (3)
+
+b, if P (t)⃒ > Iinet b
+
+5
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Where Pi peer i, and peer i needs to buy electricity from the utility grid to
+BESS (t) refers to the power that has been charged to the BESS
+
+char satisfy the load shortage;
+at time t (kW), Iib is the battery capacity of BESS (kW). (ii) Piʹ́
+
+Finally, the stored electricity in the user-owned BESS will be dis- net(t) < 0, which indicates that surplus PV-E after self-
+consumption and P2P trading is available for BESS charging for
+
+charged by the following diagonal matrices during nighttime (i.e., Eqs. peer i; and
+(4) and (5)).
+
+(iii) Piʹ́
+⎡ ⎤ net(t) = 0, which indicates power balance for peer i.
+
+1
+⎢PBESS (t) 0 ⋯ 0
+
+dis ⎥
+⎢ ⎥ Then, the surplus PV-E will be charged by the user-owned BESS by
+
+i ⎢ 0 P2 ⋯ 0 ⎥
+P =⎢ BESS (t)
+
+dis ⎥ Eq. (2) during the daytime, and the stored electricity in the user-owned
+BESSdis ⎢ ⋱ ⋮ ⎥ (4)
+
+⎢ ⋮ ⋮ ⎥ BESS will be discharged by Eq. (4) during nighttime, which is deter-
+⎣ ⎦
+
+0 0 ⋯ Pi
+BESS (t) mined by Eqs. (9) and (10), respectively.
+
+dis
+{⃒ ⃒ ⃒ ⃒
+⃒Piʹ́ ⃒P ʹ́
+
+s.t. Pi net(t)⃒, if
+i
+net(t)⃒ ≤ Iib
+
+BESS (t)= ⃒ ⃒ (9)
+char Ii ⃒ ⃒ i
+
+{⃒ ⃒ ⃒ ⃒ b, if Piʹ́
+net(t) > Ib
+
+⃒Pi (t)⃒, if ⃒Pi (t)⃒ ≤ Ii
+Pi net net b {⃒ ⃒ ⃒ ⃒
+BESS (t)= ⃒ ⃒
+
+dis Ii
+(5)
+
+⃒ ⃒Piʹ́
+b, if Pi t)⃒net( > Iib n t(t)⃒, if ⃒P
+
+iʹ́ ⃒ i
+Pi e net(t) ≤ Ib
+BESS (t)= ⃒ ⃒ (10)
+
+dis Ii iʹ́ ⃒
+b, if ⃒Pnet(t) > Iib
+
+Where PiBESS (t) refers to the electricity that has been discharged to
+dis
+
+peers at time t (kW). 2.2.3. Scenario 4 (P2P-SDUO-BESS)
+Compared to scenario 3, scenario 4 allows P2P trading to be not only
+
+2.2.2. Scenario 3 (P2P-IDUO-BESS) happened from PV-generated electricity, but also from the BESS, which
+Compared to scenario 2, direct P2P trading from PV-E among peers refers to two approaches; (i) electricity charging from peer j to peer i’s
+
+)
+after self-consumption is allowed in scenario 3. Therefore, after self- BESS during daytime (i.e., Pi,j
+consumption, the load status of peer i can be calculated by Eq. (1) BESS (t) ; or (ii) electricity discharging
+
+char
+)
+
+first, and the P2P trading from PV-E is then determined by the following from peer i’s BESS to peer j during nighttime (i.e., Pi,jBESS (t) . Therefore,
+dis
+
+matrices (i.e., Eqs. (6) and (7)). the procedures of self-consumption and P2P trading PV-E are the same
+⎡ ⎤ as scenario 3. Next, the electricity charging from peer j to peer i’s BESS
+
+0 P2,1 1
+⎢ sur (t) ⋯ Pj,
+
+sur(t)⎥ during daytime can be calculated during the following matrices (i.e.,
+⎢ 1,2 ,2 ⎥ Eqs. (11) and (12)).
+
+Pi,j ⎢Psur (t) 0 ⋯ Pj
+sur(t)⎥
+
+sur pv(t)=⎢ ⎥ (6)
+⎢ ⋮ ⋮ ⋱ ⋮ ⎥ ⎡ ⎤
+⎣ ⎦ 1,1 ,1 ,1
+P1,j ,j
+sur(t) P2
+
+sur(t) ⋯ 0 ⎢PBESS (t) P2
+(t) ⋯ Pj
+
+(t)
+char BESSchar BESSchar ⎥
+
+⎢ ⎥
+⎢
+
+Pi,j ⎢P
+1,2
+BESS (t) P2,2
+
+(t) ⋯ Pj,2
+(t)⎥
+
+char BESSchar BESSchar ⎥
+BESS (t)= )
+
+s. t. char ⎢
+⎢ ⋮ ⋮ ⋱ ⋮ ⎥ (11
+
+⎥
+⎣ ⎦
+
+i ( P1,j ,j ,j
+P ,j BESS (t) P2
+
+(t) ⋯ Pj
+(t)
+
+char BESSchar BESSchar
+sur(t) ≥ 0, ∀ Pi )
+
+net(t)≤0, Pj
+net(t)≥0 (7)
+
+Where Pi,jsur pv refers to the surplus electricity that has been traded from s.t.
+peer j to peer i at time t (kW), which is subjected to the condition when Pi,j
+
+peer i has surplus electricity after self-consumption (i.e., Pi BESS (t) (12)
+char
+
+net(t) ≤ 0)
+while peer j is in load shortage (i.e., Pjnet(t) ≥ 0).
+
+⎧ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒
+⎪ ⃒Piʹ́ ⃒
+⎨ net(t) + ⃒Pjʹ́
+
+net(t)⃒ ∗ (1 − ηtrans), if ⃒Piʹ́
+net(t)⃒ ≤ Ii ⃒
+
+b ≤ Piʹ́
+net(t)⃒+ ⃒P
+
+jʹ́
+net(t)⃒ and
+
+( ⃒ ⃒ ⃒ ⃒ )
+= ⃒Piʹ́ t)⃒+ ⃒Pjʹ́ ⃒ i
+⎪ net( net(t) ∗ (1 − ηtrans) ≤ Ib
+⎩ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒ ( ⃒ ⃒ ⃒ ⃒ )
+
+Ii ⃒ ⃒ ⃒ ⃒
+b, if Piʹ́
+
+net(t)⃒ ≤ Ii ⃒
+b ≤ Piʹ́
+
+net(t)⃒+ Pjʹ́
+net(t)⃒ and ⃒Piʹ́
+
+net(t) + Pjʹ́
+net(t)⃒ ∗ (1 − ηtrans) > Iib
+
+Next, after the P2P trading from PV-generated electricity, the load Where the charging status of peer i is influenced by the remaining
+status can be determined by Eq. (8). storage capacity of the BESS as well as the battery charging capacity
+
+from other peers considering distribution loss.
+Piʹ́
+
+∑
+i
+
+net(t)=Pnet(t) − (1 − η i,j
+trans) ∗ Psur(t) (8) Finally, the electricity discharging from peer i’s BESS to peer j during
+
+)
+
+Where Piʹ́ nighttime (i.e., Pi,jBESS (t) is determined by Eqs. (13) and (14).
+dis
+
+net(t) is the electric load shortage by peer i at time t after self-
+consumption and P2P trading through PV-E(kW), η ⎡ ⎤
+
+trans is the distribu-
+tion loss endured by P2P trading (%), which is considered as 8% per time ⎢P
+
+1,1 j,1
+BESS (t) P2,1
+
+dis BESS (t) ⋯ P
+dis BESS (t)
+
+dis ⎥
+(Li et al., 2022b). Then, the three possible types of load status at this ⎢ ⎥
+
+⎢
+moment are summarized as follows: Pi,j P1,2 2,2 ,2 ⎥
+
+BESS (t) P
+dis BESS (t) ⋯ Pj
+
+dis BESS (t)
+dis ⎥
+
+BESS (t)=⎢
+dis ⎢ ⎥ (13)
+
+⎢ ⋮ ⋮ ⋱ ⋮ ⎥
+⎣ ⎦
+P1,j
+
+(i) Piʹ́ BESS (t ,j
+) P2
+
+dis BESS (t) ⋯ Pj,j
+dis BESS (t)
+
+dis
+net(t) > 0, which indicates that the PV-E after self-consumption
+
+and P2P trading is unable to fulfill the electric load demand of
+s.t.
+
+6
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Pi,j $), OPEX refers to the operation expenditure including annual operation
+BESS (t) (14)
+
+char and maintenance cost (US$), ECF refers to the net electricity cash flow
+(US$). The service time of the BESS is considered 8 years (Rodrigues
+
+⎧ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒
+⎪ ⃒Piʹ́ ⃒ ⃒ ⃒
+
+⃒ ⃒ jʹ́ ⃒
+⎨ net(t) + Pnet(t) ∗ (1 − ⃒Piʹ́ ⃒ jʹ́ ⃒
+
+η ⃒ iʹ́
+trans), if P ⃒ i
+
+net(t) ≤ Ib ≤ ⃒
+net(t) + ⃒Pnet(t) and
+
+( ⃒
+= ⃒Piʹ́ ⃒ ⃒
+
+⃒ ʹ́ ⃒
+
+⎪ net(t) + ⃒Pj )
+net(t)⃒ ∗ (1 − η i
+
+trans) ≤ Ib
+⎩ ⃒
+
+Ii ʹ́ ⃒ ⃒ ⃒ ⃒ ⃒ ⃒
+b, if ⃒P
+
+i ⃒ i ⃒Pjʹ́ (
+⃒ iʹ́
+
+net(t) ≤ I ⃒
+b ≤ Pnet(t) + ⃒ ⃒ iʹ́ ⃒ ⃒
+
+⃒ ʹ́ ⃒ )
+net(t) and Pnet(t) + ⃒Pj ⃒
+
+net(t) ∗ (1 − ηtrans) > Iib
+
+2.2.4. Scenario 5 (ESS-SDDO-BESS) et al., 2020). i is the discount rate which is considered 3% (The World
+Different from scenarios 1 to 4, scenario 5 is proposed to demonstrate Bank), and λ is the electricity retail price annual increasing rate, which is
+
+the ESS trading invested by the developers (e.g., any investor including a considered as 1.4%, such increase in electricity retail price reflects fac-
+utility company, a firm, or an individual). The procedures of self- tors such as inflation, changes in fuel costs, infrastructure investments,
+consumption and P2P trading PV-E are the same as scenario 3. Next, regulatory changes, and the overall market dynamics that affect the
+the charging and discharging capacity of the developer-owned BESS is price of electricity (Liu et al., 2021). The cost specifications of BESS
+represented by the following matrices (i.e., Eqs. (15) – (18)). systems are summarized in Table 3.
+
+[ ] Accordingly, the optimization objectives of BESS sizing for each peer
+PESS
+BESS (t)= P1 2
+
+char BESS (t), P
+char BESS (t),⋯,Pi (t 1 )
+
+r BESS ) ( 5
+cha char in scenarios 2–4 are represented in Eqs. (20) – (26), respectively. The
+
+subscripts “S2,” “S3,” and “S4” of NPV(BESS) refers to the NPV of
+s.t. installing BESS under scenarios 2–4.
+
+⎧ ∑⃒ ⃒ ⃒
+⎨ (1 − η ⃒ iʹ́
+
+∑⃒
+s) ∗ P ⃒ ʹ́
+
+net(t) , if ⃒Pi
+t(t)⃒ ≤ IESS ∑t=T
+
+ne
+PESS tran b OPEX
+
+max.NPV(BESSS2)=CAPEX+
+BESS (t)= ∑ t
+
+IESS
+⃒ iʹ́ ⃒ (16)
+
+char ⎩
+b , if ⃒Pn t(t)⃒ > IESS t=1 (1 + i)
+
+e b ( ⃒ ⃒ )
+∑t=T R i ∑
+
+grid ∗ ⃒P ⃒
+net(t) − PS2
+
+BESS
++
+
+t=1 (1 + i t (20)
+Where PESSBESS (t) represents the PV-E sold from peers to charge the ESS )
+
+char
+
+trading after self-consumption and P2P trading at time t (kW), IESSb is the
+battery capacity of the ESS trading (kW). s.t.
+
+[ ] {
+R
+
+R retail , if Pi
+PESS (t)= P1 2
+BESSdis BESS (t), P
+
+dis BESS (t),⋯,Pi
+BESS (t) (17) net(t) ≥ 0
+
+dis dis grid = (21)
+Rexport, if Pi
+
+net(t) < 0
+s.t.
+
+⎧ ∑⃒ ⃒ ∑⃒ ⃒ Where PS2
+BESS refers to the BESS status of charging and discharging
+
+⎨ (1 − η ⃒Piʹ́ ⃒ ⃒ iʹ́
+
+PESS trans) ∗ net(t) , if Pnet(t)⃒ ≤ IESSb illustrated in scenario 2, which is regarded as the status of PiBESS (t) or
+char
+
+BESS (t)= ∑
+dis ⎩ IESS
+
+⃒ ⃒ (18)
+⃒ iʹ́
+
+b , if P ⃒
+net(t) > IESS Pi
+
+b BESS (t) at time t (kW) calculated by Eqs. (2)–(5). Rgrid is the utility grid
+dis
+
+electricity price (US$/kWh), Rretail and Rexport is the retail electricity
+Where PESSBESS represents the stored electricity sold from the ESS trading price (US$/kWh) and the electricity export price (US$/kWh),
+
+dis
+
+to the peers at time t (kW). respectively.
+∑t=T OPEX
+
+max.NPV(BESSS3)=CAPEX+ t
+2.3. Optimization objectives t=1 (1 + i)
+
+∑t=T
+( ⃒
+
+R iʹ́
+⃒ ∑ )
+
+grid ∗ ⃒P ⃒
+net(t) − PS3
+
+BESS
+For all scenarios, the optimization objective of BESS sizing is to + (22)
+
+t=1 (1 + i t
+)
+
+maximize the NPV of installing BESS. Since scenario 1 is developed as a
+baseline scenario without BESS installation, the NPV of BESS in scenario s.t.
+1 is then regarded as zero. For scenarios 2–4, the NPV of BESS instal- {
+lation is calculated by Eq. (19). R
+
+R retail , if Piʹ́
+net(t) ≥ 0
+
+grid = (23)
+Rexport, if Piʹ́
+
+∑t=T net(t) < 0
+OPEX ∑t=T ECF(1 t−
+
++ λ 1
+)
+
+NPV=CAPEX + t + t (19)
+t=1 (1 + i) t=1 (1 + i) Where PS3
+
+BESS refers to the BESS status of charging and discharging
+illustrated in scenario 3, which is regarded as the status of Pi
+
+Where CAPEX refers to the capital expenditure of the BESS systems (US BESS (t) or
+char
+
+PiBESS (t) at time t (kW) calculated by Eqs. (9) and (10).
+dis
+
+Table 3 ∑t=T OPEX
+Cost specifications BESS systems. max. NPV(BESSS4)=CAPEX+ t
+
+t 1 + i
+=1 ( )
+
+Cost items Cost specifications ∑ ( ⃒ ⃒ ∑ )
+∑t=T RP2P ∗ PS4 ⃒ iʹ́
+
+BESS + Rgrid ∗ Pnet(t)⃒ − PS4
+BESS CAPEX 150 US$/kWh (Liu et al., 2020) BESS
+
++ (24)
+t=1 (1 + i t
+
+OPEX 3% of CAPEX (Rodrigues et al., 2020) )
+
+Replacement 2 times
+Discount rate 3% (The World Bank) s.t.
+Electricity retail price annual increasing 1.4% (Liu et al., 2021)
+
+rate
+
+7
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+{
+R ʹ́ 3. Case study
+
+R retail , if Pi
+net(t) ≥ 0
+
+grid = ; (25)
+R iʹ́
+export, if Pnet(t) < 0 3.1. Electric load profile
+
+{
+R if Piʹ́ (t) ≥ 0
+
+R buyi , net According to the summary results of 2021 Population Census (Census
+P2P = (26)
+
+Rsell i, if Piʹ́
+net(t) < 0 and Statistics Department, 2022), 50% of domestic household is
+
+composed of more than three household members including four types:
+Where PS4
+
+BESS refers to the BESS status of charging and discharging (i) couple and unmarried children; (ii) lone parent and unmarried
+illustrated in scenario 4, which is regarded as the status of Pi,j children; (iii) couple and at least one of their parents; or (iv) couple and
+
+BESS (t) or
+char their children, and at least one of their parents. Based on this informa-
+
+Pi,jBESS (t) at time t (kW) calculated by Eqs. (11) – (14). R
+dis P2P refers to the tion, this study has established four representative household types (i.e.,
+
+P2P trading price (US$/kWh), Rbuyi and Rselli is the individual P2P H1, H2, H3 and H4), each composed of four household members. The
+buying and selling price, respectively (US$/kWh). occupation status and daily routine of a typical four-person family in
+
+As for scenario 5, multi-objective optimization is conducted from the Hong Kong are collected from Wan and Yik’s questionnaire (Wan and
+perspectives of BESS developer (i.e., ESS trading) and the peers in the Yik, 2004), which has shown that on weekdays, 75% of the household
+community considering the trade-off effect. As a result, the optimization members will not be at home during the daytime (i.e., 08:00–17:00) and
+objective for BESS developer is to maximize the NPV of installing BESS almost all household members will be at home after 21:00. The time
+(i.e., NPV(BESS)), whereas the optimization objective for the peers in household members return home from work or school varies and de-
+the community is to minimize their electricity bill cost (i.e., pends on their employment status (i.e., employed or unemployed) as
+NPV(CostS5)), by Eqs. (27) – (30). NPV(BESSS5) and NPV(CostS5) refers well as occupation. The types of electrical appliances for household daily
+to the NPV of installing BESS for developers and the NPV of electricity use are collected from (Kanakadhurga and Prabaharan, 2021) and (Wan
+bill cost for participating in the ESS trading market for the whole com- and Yik, 2004) and the input power and estimated running cost of ap-
+munity under scenario 5, respectively. pliances are collected from (HK ELectric, 2022). The utilization duration
+
+∑
+∑t=T of all appliances is collected from (Wan and Yik, 2004), (Kanakadhurga
+
+OPEX ∑t=T R
+max. NPV(BESSS5)=CAPEX ESS ∗ PBESS(t)
+
++ 27) and Prabaharan, 2021), (HK ELectric, 2022). Table 4 summarizes the
+t (1 + i t +
+
+) (1 + i t (
+)
+
+=1 t=1 electrical appliance utilization pattern for H1, H2, H3 and H4, respec-
+∑ ( ⃒ ⃒ ∑ ) tively, and the electrical load profile is eventually established and
+
+∑t=T R e5
+min. NPV(Cost ESS ∗ Pcas
+
+BESS + Rgrid ∗ ⃒Piʹ́
+net(t)⃒ − Pcase5
+
+BESS illustrated in Fig. 2.
+S5)= t
+
+t (1 + i)
+=1
+
+(28)
+3.2. PV system modelling
+
+s.t.
+{ Hourly solar PV electricity generation (Ge,t) is calculated based on
+R iʹ́ (
+
+R retail , if Pnet(t) ≥ 0 hourly global radiation Rg) (Nunez Munoz et al., 2022), (Kittler and
+grid = ; (29)
+
+Rexport, if Piʹ́
+net(t) < 0 Darula, 2013), which is calculated from Eq. (31):
+
+( ( ))
+{ 360 ∗ DOY
+R Rg = I0 ∗ 1+0.033 ∗ cos ∗ sin γ
+
+R buyESS , if P
+iʹ́
+net(t) ≥ 0 365 s (31)
+
+ESS = (30)
+RsellESS, if Piʹ́
+
+net(t) < 0
+Where Rg denotes the global radiation on an hourly basis (W/m2), I0 is
+
+Where RESS refers to the ESS trading price (US$/kWh), RbuyESS and RsellESS the solar constant value (W/m2), DOY represents the day-of-year, which
+is the ESS buying and selling price, respectively (US$/kWh). equals to the value of the n th day of the year. γs represents the solar
+
+altitude angle (degree, ◦). Following the clockwise measurement of solar
+
+Table 4
+Input power and estimated running cost of appliances, and domestic electrical appliance utilization pattern.
+
+Operating mode Appliance Input Power (W) Estimated running cost (US$) Utilization duration
+
+H1 H2 H3 H4
+
+On/Off Television 100 0.018/hour 17:00–22:00 19:00–22:00 19:00–22:00 17:00–23:00
+AC 960 1.140/8 hour 18:00–02:00 18:00–02:00 20:00–02:00 20:00–02:00
+Hair dryer 500 0.022/15min 21:00–22:00 21:00–22:00 22:00–23:00 22:00–23:00
+Computer 135 0.023/hour 20:00–21:00 20:00–21:00 21:00–22:00 21:00–22:00
+Lighting 48 0.008/hour 18:00–22:00 18:00–22:00 20:00–24:00 20:00–24:00
+Video/CD player 20 0.004/hour 19:00–20:00 19:00–20:00 21:00–22:00 21:00–22:00
+Hi-Fi set 200 0.034/hour 19:00–20:00 19:00–20:00 21:00–22:00 21:00–22:00
+Electric kettle 2000 0.057/10min 20:00–21:00 20:00–21:00 22:00–23:00 22:00–23:00
+Toaster 800 0.006/3min 06:00–07:00 06:00–07:00 05:00–06:00 06:00–07:00
+Coffee maker 500 0.014/10min 06:00–07:00 06:00–07:00 05:00–06:00 06:00–07:00
+Iron 600 0.100/hour 08:00–09:00 19:00–20:00 21:00–22:00 11:00–12:00
+Vacuum cleaner 600 0.052/30min 09:00–10:00 20:00–21:00 22:00–23:00 12:00–13:00
+Exhaust fan 50 0.009/hour 12:00–13:00 19:00–20:00 21:00–22:00 11:00–12:00
+Washing machine 500 0.038/45min 13:00–14:00 21:00–22:00 23:00–24:00 13:00–14:00
+Microwave oven 900 0.078/30min 12:00–13:00 18:00–19:00 – 18:00–19:00
+
+18:00–19:00
+Rice cooker 500 0.029/20min 11:00–12:00 17:00–18:00 – 17:00–18:00
+
+17:00–18:00
+Range hood 130 0.023/hour 11:00–12:00 17:00–18:00 – 17:00–18:00
+
+17:00–18:00
+Continuous-running Refrigerator 115 0.15/Day 01:00–24:00 01:00–24:00 01:00–24:00 01:00–24:00
+
+8
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Fig. 2. Electric load profile of four typical households in Hong Kong.
+
+Finally, Ge,t is calculated based on Eq. (35) (Vakili et al., 2022):
+Table 5
+Parameters in PV modelling. Ge,t =Rg ∗ A ∗ ϵ ∗ PR (35)
+
+Parameters Description
+Where Ge,t is the hourly PV system electricity generation (W), A is the
+
+Installed Capacity for H1 8.28 kW total area of solar panels (m2), ϵ is the solar panel yield (%), which
+Installed Capacity for H2 9.32 kW
+Installed Capacity for H3 6.9 kW represents the amount of energy harvested from solar panels, which are
+Installed Capacity for H4 8 kW subjected to external factors such as orientation, wind speed, shade,
+PV module 320 W polycrystalline PV module (Ltd. ambient temperature, and dust deposition. PR is the performance ratio,
+
+Focus Technology Co) which measures the efficiency of energy output and thus considers the
+Unit solar panel area 1.6 m2 (Ltd. Focus Technology Co)
+Solar panel yield 16.53% (Ltd. Focus Technology Co) possible internal losses during the conversion of solar energy into elec-
+Performance ratio 0.75 (Photovoltaic Software) tricity (i.e., inverter losses and cable losses) by the PV system. The
+Latitude 22.3106◦N (Hong Kong Observatory) installed capacity for H1, H2, H3 and H4 is collected from the real
+Unit capital cost 3185 US$/kW (Research Office, 2018) scenarios of residential PV projects located in Tai Po, Hong Kong (Ho
+Unit O&M cost (proportion of unit 1% (An et al., 2020) Ying Engineering, 2022). The parameters in PV modelling are summa-
+
+capital cost)
+Unit decommissioning cost (proportion 5% (Ouyang and Lin, 2014) rized in Table 5.
+
+of unit capital cost) As a result, hourly solar PV system output during one typical summer
+Degradation rate 0.9% (An et al., 2022) day (DOY = 210, July) is calculated and illustrated in Fig. 3.
+System service life 25 years
+System title angle 14-22 ◦ (EMSD, 2021)
+System orientation South (EMSD, 2021) 3.3. BESS modelling
+Solar constant 1367 W/m2
+
+The charging and discharging capacity of BESS is constrained by the
+charging and discharging limits of the battery, as well as the state of
+
+angle in standard International Organization for Standardization system charge (SoC) limits, as expressed by Eqs. (36)–(38) (Kanakadhurga and
+(0◦ − 360◦) (Kittler and Darula, 2013), γs is calculated by Eq. (32): Prabaharan, 2021).
+γs = sin ϕ ∗ sin δ − cos ϕ ∗ cos δ ∗ cos ω (32) 0≤Pi
+
+BESS (t) ≤ Pchar,max (36)
+char
+
+Where ϕ, δ and ω represent the latitude, declination angle and the hour
+angle, respectively (degree, ◦). The value of ϕ is reliably determined 0≤Pi
+
+BESS (t) ≤ P
+dis dis,max (37)
+
+from the official website of Hong Kong Observatory (Hong Kong Ob-
+servatory) while δ and ω can be calculated by Eqs. (33) and (34): SoCmin ≤ SoCt ≤ SoCmax (38)
+
+( ( ))
+284 + DOY
+
+δ=23.45 ∗ sin 360 ∗ (33) Where PiBESS (t) and Pi
+cha BESS (t) are subject to the maximum charging and
+
+r dis
+365 discharging limits Pchar,max and Pdis,max (kW), respectively. SoCt is the
+
+state of charge, which represent the level of the charge status of a bat-
+ω= t ∗ 15 (34) tery, and it is affected by the battery capacity, the SoC will be updated
+
+hourly by Eq. (39) and it is subject to Eq. (40):
+Where t is the local solar time.
+
+9
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Fig. 3. Hourly solar PV output.
+
+Table 6 of battery series is the unknown objective this study intends to investi-
+Parameters in BESS modelling. gate. SoCmin is the minimum limit of a state of charge (battery should not
+
+Parameters Description be discharged less than this limit), SoCmax is the maximum state of
+charge above which the battery should not be charged. The maximum
+
+Battery type NP100-12FR Lead-Acid (Liu et al., 2020)
+Unit battery capacity 100 Ah/12V (Liu et al., 2020) battery charge limit should be determined based on the limit of nominal
+Minimum SoC 0.3 (Kanakadhurga and Prabaharan, battery capacity so that at any instant of time, the battery should not be
+
+2021) charged beyond 100% as expressed by Eq. (41). The parameters utilized
+Maximum SoC 0.9 (Kanakadhurga and Prabaharan, in the BESS modelling are summarized in Table 6.
+
+2021)
+Charging and discharging efficiency 90% (Liu et al., 2020) Pi
+
+BESS (t)
+Maximum charging and discharging 1 (Kanakadhurga and Prabaharan, 2021) char
+
+limit η + SoCt− 1 ≤ 1 (41)
+b ∗ Ib
+Moreover, to provide a sustainable energy supply, the SoCen is
+
+( )
+Pi generally limited not to be lower than the SoCin as expressed in Eq. (42):
+
+(t) Pi
+SoC BESS r BESS (t) ∗ η
+
+h
+t = SoC c a
+
+t− 1 +
+dis b
+
+η − (39)
+b ∗ Ib Ib SoCin ≤ SoCen (42)
+
+SoCmin ≤ SoCt ≤ SoCmax (40) Where SoCin and SoCen represent the initial state and end state of BESS
+each day.
+
+Where ηb is the charging/discharging efficiency of the battery (%) and Ib
+is the total capacity of the battery (amp-hours). The unit battery capacity
+for residential houses is 100 Ah/12V (Liu et al., 2020), and the numbers
+
+Fig. 4. Individual P2P pricing model.
+
+10
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+3.4. P2P trading price modelling Table 7
+Optimization results of BESS capacity for all scenarios.
+
+Individual P2P trading price model is adopted by this study to Peers/ BESS capacity in kWh (Numbers of BESS series)
+determine the independent P2P selling/buying for each peer based on Community
+
+Scenario Scenario Scenario Scenario Scenario
+their intrinsic electricity surplus ratio (SR) and demand ratio (DR). The 1 2 3 4 5
+relationship between P2P trading price and SR and DR is illustrated by
+Fig. 4. Accordingly, SR and DR are determined by Eqs. (43) and (44), H1 – 21.6 (18) 21.6 (18) 21.6 (18) –
+
+H2 – 26.4 (22) 26.4 (22) 21.6 (18) –
+and the P2P trading prices are therefore calculated by Eqs. (45) and (46). H3 – 19.2 (16) 19.2 (16) 21.6 (18) –
+
+H4 – 19.2 (16) 19.2 (16) 21.6 (18) –
+− Pi
+
+SR net(t) Community – – – – 40.8 (34)
+peer i = , and Pi
+
+net(t) < 0 (43)
+Ge,t Total – 86.4 (72) 86.4 (72) 86.4 (72) 40.8 (34)
+
+Pi
+DR net(t)
+
+peer i = , and Pi (44)
+Q net(t) > 0
+
+peer i G
+SDR sur grid
+
+grid = (47)
+( ) Qshor grid
+
+R
+R retail ∗ Rexport
+sell i = f SRpeer )
+
+i = ( (45)
+R ⎧
+retail − Rexport ∗ SRpeer i + Rexport ⎪ (P
+
+( )⎨(
+retail+ γ(t)) ∗P
+
+) export
+,0≤ SDR≤1
+
+( ) ( ) Psell= f SDRgrid Pretail − Pexport − γ(t) ∗SDR+Pexport + γ(t)
+R ⎪
+buy i = f DRpeer ⎩ /
+
+i = Rretail − Rexport ∗ DRpeer i + Rexport (46) Pexport + γ(t) SDR,1< SDR
+(48)
+
+Where SRpeer i and DRpeer i refer to the surplus ratio and demand ratio of
+a specific peer i, G {
+
+sur peer i is the surplus RE of peer i after self- ( )
+consumption, Q P
+
+shor peer i is the electrical load shortage of peer i after buy = f SDR Psell ∗ SDR+ Pretail ∗ (1 − SDR),0 ≤ SDR ≤ 1
+grid = P 49)
+
+export + γ(t), 1 < SDR (
+self-consumption (kWh), and Qpeer i is the electrical load demand for
+peer i (kWh). s.t.
+
+( )
+3.5. ESS trading price modelling γ(t)= k ∗ Pretail − Pexport , and k ∈ (0,1) (50)
+
+ESS trading price model is only applied to scenario 5, which is Where SDRgrid is the supply-demand ratio of the whole microgrid,
+influenced by the surplus and demand ratio (SDR) of all the peers within Gsur grid is the surplus RE in the microgrid while Qshor grid is the electrical
+the microgrid as expressed by Eq. (47). The community selling and load shortage in the microgrid after RE self-consumption (kWh). γ(t) is
+buying price is formulated by Eq. (48) and Eq. (49), respectively, which the compensation factor, while k is the coefficient of the compensation
+is restricted by the compensation factor (i.e., γ factor. In this study, k is considered as 0.8, referring to (Li et al., 2022b).
+
+(t)) as expressed by Eq.
+(50). Compensation factor is introduced in the ESS trading price model
+(Fig. 5) since it is able to enhance the motivation of electricity trans- 4. Results and discussions
+actions between peers and BESS developers considering the following
+reasons; (i) Without compensation factor, the community selling and 4.1. Optimization of BESS sizing
+buying price when SDR is larger than 1 will be the same as electricity
+export price, which will demotivate the willingness of peers to sell and The optimization results considering BESS capacity are summarized
+buy electricity from the BESS developers since there is no incentive for in Table 7. As shown in Table 7, the total optimal BESS capacity in
+them to do so (Long et al., 2018); (ii) Without compensation factor, the scenarios 2 to 4 is 86.4 kWh (i.e., 72 BESS series), while in scenario 5 is
+electricity price arbitrage for BESS developers can hardly be achieved 40.8 kWh (i.e., 34 BESS series). Specifically, the optimal BESS capacity
+when SDR is larger than one, which will demotivate the willingness of for each peer in scenarios 2 and 3 is the same, of which H1 is optimized
+developers to install the community BESS since the potential profit- for 21.6 kWh (i.e., 18 BESS series), H2 is optimized for 26.4 kWh (i.e., 22
+ability is unattractive (Rodrigues et al., 2020); (iii) It is proven that the BESS series), and H3 and H4 are optimized for 19.2 kWh (i.e., 16 BESS
+larger the compensation factor, the higher the economic merit can be series), respectively. The main reason for generating the same results for
+realized by all the peers as well as the BESS developers (Li et al., 2022b). scenarios 2 and 3 is because the utilization mechanism and the owner-
+
+ship of BESS are the same (i.e., IDUO-BESS), and even though the P2P
+trading has been considered on top of the P2G trading regarding the PV-
+
+Fig. 5. ESS trading price model. Fig. 6. Pareto frontier of multi-objective functions in scenario 5.
+
+11
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+E in scenario 3, the actual P2P trading among peers is rather limited. during non-peak periods, it enables surplus PV-E to be stored in the
+According to the calculation, the P2P trading among peers only happens DO-BESS and then sold to the utility grid or used for P2P trading. During
+at 7:00, when the surplus PV-E for H3 is available whereas other peers peak periods, electricity from the DO-BESS is prioritized for trading
+are all suffering electricity shortages, which indicates that P2P trading among peers before resorting to the utility grid. This prioritization en-
+does not occur at other time slots. This reveals that the P2P trading sures that the stored energy is utilized effectively, contributing to the
+under scenario 3 is not critical enough to influence the optimization reduced need for larger BESS capacities. This finding has important
+results compared to scenario 2 since the BESS is designed for individual policy implications, indicating that support for such centralized energy
+utilization. However, when BESS is designed for sharing among all peers storage solutions could be a cost-effective strategy for enhancing the
+(i.e., scenario 4), the optimal BESS capacity for peers H2, H3, and H4 is integration of RE sources into the grid.
+different from that of scenarios 2 and 3. According to Table 7, the
+optimal BESS capacity for all peers in scenario 4 is 21.6 kWh (i.e., 18
+BESS series), and it is observed that the optimal BESS capacity is reduced 4.2. Electricity trading price
+for H2 while increased for H3 and H4. This reveals that the utilization
+mechanism of BESS can effectively affect the optimization results, and The results of P2P trading price under scenarios 3 and 4 are pre-
+the flexibility of SD-BESS has been enhanced. Furthermore, under the sented in Figs. 7 and 8, respectively. It can be found that in scenario 3 (i.
+community shared BESS scenario (i.e., scenario 5), since the perspec- e., P2P-IDUO-BESS), the P2P trading price is active during the daytime,
+tives of both BESS developers and the peers are considered in the opti- reflecting the direct sale of surplus PV-E among peers. At night, the price
+mization objectives, the results are demonstrated as pareto frontiers as equals the retail tariff, as there is no BESS-stored electricity trading in
+shown in Fig. 6. Pareto frontiers represents a set of non-dominated so- this scenario. This scenario demonstrates the potential for P2P trading to
+lutions, where no single solution can be considered better than another enhance self-consumption and reduce reliance on the utility grid during
+without degrading at least one objective. The multi-objective MILP is daylight hours. On the other hand, scenario 4 (i.e., P2P-SDUO-BESS)
+conducted by solving a series of single-objective MILP problems (in this extends the flexibility of scenario 3 by allowing stored electricity in
+study, Eqs. (27) and (28), respectively), and with each objective function BESS to be traded among peers, especially during peak periods. This
+being given equal weight to ensure that the final set of solutions provides results in a more active P2P trading throughout the day and night, as the
+a balanced representation of outcomes for both the BESS developers and stored electricity can be utilized when solar generation is not available.
+the peers. The solutions derived from solving these single-objective Specifically, the P2P trading under scenario 4 is rather active especially
+problems are then plotted in Fig. 6 to identify the Pareto optimal set during the nighttime since the SR of each peer is larger than zero.
+(i.e., Pareto frontiers), which are charted by iterating through varying However, the P2P trading among peers does not occur during nighttime
+the decision variables (i.e, BESS capacity). To facilitate the benefit in scenario 3 since the SR of each peer becomes zero. This scenario
+equality for both BESS developers and the peers, the optimal BESS ca- highlights the benefits of shared utilization of user-owned BESS, which
+pacity is determined by the median point of the pareto frontier of the can lead to improved energy management and potentially lower energy
+multi-objective functions (Rodrigues et al., 2020), which is 40.8 kWh (i. costs.
+e., 34 BESS series). It can be found that under scenario 5, the total In addition, according to the ESS trading price model, the community
+optimal BESS capacity is sufficiently reduced to more than 50% selling and buying price between peers and the BESS developer is
+compared to scenarios 2 to 4, which proves that introducing the ESS as illustrated in Fig. 9 for scenario 5 (i.e., ESS-SDDO-BESS). The commu-
+an innovative electricity trading alternative is more cost effective. This is nity selling price refers to the electricity price the peers sell to the BESS
+attributed to the characteristics of ESS trading, that it allows for a more developer (i.e., BESS charging), while the community buying price re-
+centralized approach to energy storage and management. Specifically, fers to electricity price the peers buy from the BESS developer (BESS
+
+discharging). By introducing the compensation factor, a community
+
+Fig. 7. P2P trading price under scenario 3.
+
+12
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Fig. 8. P2P trading price under scenario 4.
+
+Fig. 9. ESS trading price under scenario 5.
+
+selling price that is higher than the export tariff and a community buying 4.3. Economic assessment
+price that is lower than the retail tariff can be guaranteed, which
+effectively enhances the community selling during daytime and the 4.3.1. Electricity bill saving
+community buying during nighttime. This mechanism could proactively The comparisons between annual original and final bills under all
+facilitate the electricity arbitrage for BESS developers, which is scenarios are illustrated in Fig. 10. “Original bill” refers to the electricity
+considered as their most important revenue to offset the expenditures on bill without the consideration of BESS installation (i.e., only electricity
+BESS investment. market types are considered) whereas “final bill” takes the economic
+
+The trading prices in these scenarios are indicative of the economic merits of installing BESS into consideration, and therefore, is affected by
+incentives for different stakeholders, including prosumers, consumers, the utilization mechanisms as well as the ownerships of BESS. None-
+and BESS developers. They influence the adoption of RE technologies by theless, the installation of BESS is not considered in the “original bill,”
+demonstrating the potential for cost savings and improved energy self- but it is considered in the “final bill.” As a result, the annual original bill
+sufficiency. Additionally, the optimization of BESS is directly tied to under scenarios 1 and 2 is 4232 US$, and the annual original bill under
+P2P and ESS trading prices, as they affect the profitability and payback scenarios 3 to 5 is 4201 US$. The difference in annual original bills
+period of BESS investments. between scenarios 1 and 2, and among scenarios 3 to 5 is attributed to
+
+the absence or presence of direct PV-E P2P trading under the same
+condition (i.e., without BESS installation). In terms of the annual final
+
+13
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Fig. 10. Comparison of annual electricity bill under all scenarios.
+
+Fig. 11. Total NPV of BESS installation.
+
+bill, the annual final bill will not be changed compared to the original developers (Fig. 12 (d)), and the NPV of the community is considered as
+bill in scenario 1 since it serves as a baseline scenario where it does not only the electricity bill saving. Under this circumstance, the profit gain
+consider the installation of BESS at all. As for scenario 2, a 93.68% of the BESS developers comes from the electricity sale (i.e., 48,018 US$),
+reduction of electricity bill is observed when the IDUO-BESS is intro- which can compensate for the expenditures on the BESS installation.
+duced in the P2G trading. For scenario 3, a 96.35% reduction of elec- Eventually, the NPV of the BESS developer is investigated as 24,181 US
+tricity bill can be achieved when P2P trading is allowed on top of $. Besides, the total NPV in scenario 4 is also considerable against sce-
+scenario 2, which enables the whole community (i.e., four peers) to narios 2 and 3. Referring to Fig. 12 (c), it is found that although the
+realize the lowest total final electricity bill (i.e., 160 US$). For scenario optimal BESS capacity for all peers in scenario 4 are the same, the rev-
+4, a 97.91% reduction of electricity bill is investigated if SDUO-BESS is enue from electricity sale (i.e., 5128 US$) by H2 is sufficiently high
+adopted. For scenario 5, 47.18% reduction of electricity bill can be compared to other peers, which directly leads to a higher total NPV
+realized when SDDO-BESS is introduced. By comparing the annual under scenario 4 as illustrated in Fig. 11. It is because that the solar PV
+original and final bills among all scenarios, it can be concluded that in output of H2 is the highest (Fig. 3) while the electric load profile reveals
+terms of energy bill saving, UO-BESS is considerably more efficient than that during daytime (i.e., 8:00–17:00), the electricity demand of H2 is
+DO-BESS. very low (Fig. 2). Therefore, the electricity charged into the BESS for H2
+
+during daytime is the highest, and the available electricity discharged
+4.3.2. Net present value from BESS for electricity sale during nighttime is correspondingly high.
+
+The total NPV of installing BESS in scenarios 2–5 are demonstrated in These findings have highlighted that the optimal BESS capacity under
+Fig. 11, and the breakdown of the NPV composition are illustrated in the SDUO-BESS mechanism is mutually depended on the internal elec-
+Fig. 12. It should be noted that the NPV of installing BESS in scenario 1 is tricity usage pattern by the prosumer, as well as the external electricity
+zero. It is found that regarding the whole community, the total NPV in demand by other peers. In other words, it is determined by the SR and
+scenario 5 is the highest (i.e., 30,379 US$) since under scenario 5, the DR. Nonetheless, as shown in Fig. 12 (a) and (b), it is found that under
+investment (i.e., CAPEX and OPEX) on BESS is completely bored by the the scenario of IDUO-BESS (i.e., scenarios 2 and 3), the larger the
+
+14
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+Fig. 12. Breakdown of NPV considering BESS installation.
+
+distribution loss occurs every time when a peer is charging the BESS, and
+when the BESS is discharging peers. As a result, the annual distribution
+loss in scenarios 4 and 5 are calculated as 751 kWh and 1796 kWh, as
+demonstrated in Fig. 13.
+
+5. Conclusion
+
+This study has proposed various scenarios considering BESS instal-
+lation to existing PV-installers, including different electricity market
+types (i.e., P2G, P2P and ESS) as well as the utilization mechanisms (i.e.,
+ID or SD) and ownerships (i.e., UO or DO) of BESS. Results indicate that
+the optimal BESS capacity in ESS scenario is the least while those in
+other scenarios are the same. In terms of electricity bill saving, UO-BESS
+is observed to be the most efficient ownership since more than 90%
+
+Fig. 13. Annual distribution loss. electricity bill savings can be achieved, despite the utilization mecha-
+nism of BESS (i.e., whether it is ID or SD). The breakdown of NPV ex-
+
+optimal BESS size, the higher the electricity bill saving. This finding poses that under the same ownership (i.e., UD), the optimal BESS
+reveals that the optimal BESS capacity under the IDUO-BESS is mainly capacity is determined by different utilization mechanisms, of which the
+dependent on the internal electricity usage pattern by the prosumer. IDUO-BESS is determined by the SR and DR, whereas the SDUO-BESS is
+
+In addition, while the ESS model demonstrates economic advan- determined by the internal electricity usage pattern by the prosumer.
+tages, it also results in the highest distribution loss. Distribution loss is Regarding the total NPV, it is found that under the scenario of SDDO, the
+considered in the mathematical models for scenarios 4 and 5 since the BESS developer and the whole community could achieve the maximized
+utilization mechanism of BESS is shared-designed. Specifically, in sce- economic merits, which highlights the significance of ESS trading.
+nario 4, distribution loss occurs every time when the BESS of a peer is Nonetheless, the distribution loss through ESS is also the highest.
+discharged for selling electricity to other peers. In scenario 5, Some key policy implications are elaborated as follows:
+
+15
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+(i) Incentivizing UO-BESS: user-owned BESS models, whether Declaration of competing interest
+individual-design (i.e., IDUO-BESS) or shared-design (i.e., SDUO-
+BESS), are highly efficient in terms of electricity bill savings. The authors declare that they have no known competing financial
+Policies that incentivize the adoption of UO-BESS can empower interests or personal relationships that could have appeared to influence
+consumers to take control of their energy usage, leading to the work reported in this paper.
+increased energy self-sufficiency and potentially significant cost
+savings. Data availability
+
+(ii) Promotion of ESS: ESS, particularly when combined with
+developer-owned models (i.e., SDDO-BESS), can lead to a sub- Data will be made available on request.
+stantial reduction in the required BESS capacity while achieving
+maximum economic benefits for both developers and the com- Acknowledgement
+munity. Policymakers should consider promoting ESS as a viable
+and cost-effective electricity trading mechanism that can enhance This work was supported by the Postdoctoral Matching Fund from
+the development of RE systems. the Department of Building and Real Estate at the Hong Kong Poly-
+
+(iii) Support for shared BESS infrastructure: this study demonstrates technic University, a grant from the Research Grants Council, University
+the benefits of shared BESS infrastructure, which can offer Grants Committee, the Hong Kong Special Administrative Region, China
+economies of scale and improved energy management. Policy- (PolyU25206822), and PhD Student Stipend from the Department of
+makers could support the development of shared BESS infra- Building and Real Estate at the Hong Kong Polytechnic University.
+structure through grants, subsidies, or regulatory frameworks
+that facilitate community-based energy storage solutions. References
+
+(iv) Encouraging diverse electricity trading mechanisms: The sce-
+nario analysis performed in this study highlights the importance Alberizzi, J.C., Rossi, M., Renzi, M., 2020a. A MILP algorithm for the optimal sizing of an
+
+of diverse electricity trading mechanisms, including P2P and ESS, off-grid hybrid renewable energy system in South Tyrol. Energy Rep. 6, 21–26.
+https://doi.org/10.1016/J.EGYR.2019.08.012.
+
+in optimizing BESS capacity and maximizing economic returns. Alberizzi, J.C., Rossi, M., Renzi, M., 2020b. A MILP algorithm for the optimal sizing of an
+Policies should be crafted to support the integration of these off-grid hybrid renewable energy system in South Tyrol. Energy Rep. 6, 21–26.
+trading mechanisms into the energy market, providing a more https://doi.org/10.1016/J.EGYR.2019.08.012.
+
+Ali, L., Muyeen, S.M., Ghosh, A., Bizhani, H., 2020. Optimal sizing of networked
+dynamic and flexible energy trading environment. microgrid using game theory considering the peer-to-peer energy trading. In: 2020
+
+2nd International Conference on Smart Power and Internet Energy Systems, SPIES
+While the study focuses on the residential sector, it does not preclude 2020. Institute of Electrical and Electronics Engineers Inc., pp. 322–326. https://doi.
+
+org/10.1109/SPIES48661.2020.9243067
+the integration of other sectors into the model. The algorithms and Almasalma, H., Claeys, S., Deconinck, G., 2019. Peer-to-peer-based integrated grid
+metrics used in the developed mathematical models are not exclusive to voltage support function for smart photovoltaic inverters. Appl. Energy 239,
+residential applications, they can be efficiently expanded or modified for 1037–1048. https://doi.org/10.1016/J.APENERGY.2019.01.249.
+
+An, J., Lee, M., Yeom, S., Hong, T., 2020. Determining the Peer-to-Peer electricity trading
+future studies to extend the research scope. The contribution of this price and strategy for energy prosumers and consumers within a microgrid. Appl.
+study is threefold; (i) Wide applicability. The mathematical models Energy 261, 114335. https://doi.org/10.1016/J.APENERGY.2019.114335.
+developed in this study are capable of being applied across a diverse An, J., Hong, T., Lee, M., 2022. Determining the optimal trading price of electricity for
+
+energy consumers and prosumers. Renew. Sustain. Energy Rev. 154 https://doi.org/
+range of contexts. For instance, various sectors (e.g., residential, com- 10.1016/j.rser.2021.111851. Elsevier Ltd.
+mercial, and industrial sectors, etc.), or various RE configurations (e.g., Askarzadeh, A., 2013a. Developing a discrete harmony search algorithm for size
+PVs, wind turbines and EVs, etc)), or expanded size of the microgrid (e. optimization of wind–photovoltaic hybrid energy system. Sol. Energy 98 (PC),
+
+g., increased number of prosumers); (ii) Influences in decision-making 190–195. https://doi.org/10.1016/J.SOLENER.2013.10.008.
+Askarzadeh, A., 2013b. Developing a discrete harmony search algorithm for size
+
+process. The installation and sizing of BESS can be compared straight- optimization of wind–photovoltaic hybrid energy system. Sol. Energy 98 (PC),
+forwardly under various scenarios regarding the economic merits, which 190–195. https://doi.org/10.1016/J.SOLENER.2013.10.008.
+is believed to provide in-depth insights for the various stakeholders (e.g., Azim, M.I., Pourmousavi, S.A., Tushar, W., Saha, T.K., 2019. Feasibility Study of
+
+Financial P2P Energy Trading in a Grid-Tied Power Network. IEEE Power & Energy
+householders, policymakers, developers, etc.) in terms of RE-related Society.
+awareness, policy reform and investment; (iii) Novelty of methodol- Brockway, A.M., Conde, J., Callaway, D., 2021. Inequitable access to distributed energy
+ogy. The metrics and algorithms in the developed mathematical models resources due to grid infrastructure limits in California. Nat. Energy 6 (9), 892–903.
+
+https://doi.org/10.1038/s41560-021-00887-6.
+are specifically designed for the proposed scenarios, which can be effi- Census and Statistics Department, 2022. 2021 population Census: summary results
+ciently expanded or modified for future studies in order to extend the [Online]. Available: www.censtatd.gov.hk.
+research scope. Despite its contribution, limitations are also identified. EMSD, 2021. User Guide for the Hong Kong Solar Irradiation Map April 2022 User Guide
+
+for the Hong Kong Solar Irradiation Map Content.
+For example, this study does not consider the battery degradation of the Gallego-Castillo, C., Heleno, M., Victoria, M., 2021. Self-consumption for energy
+BESS and the uncertainties of RE generation. Future research should aim communities in Spain: a regional analysis under the new legal framework. Energy
+to incorporate these elements into the mathematical models. By doing Pol. 150, 112144 https://doi.org/10.1016/J.ENPOL.2021.112144.
+
+Gomez-Gonzalez, M., Hernandez, J.C., Vera, D., Jurado, F., 2020. Optimal sizing and
+so, the models would provide a more holistic representation of BESS power schedule in PV household-prosumers for improving PV self-consumption and
+operation and its interaction with RE sources, leading to more precise providing frequency containment reserve. Energy 191, 116554. https://doi.org/
+and actionable insights for stakeholders. With these improvements, the 10.1016/J.ENERGY.2019.116554.
+
+models could become a more powerful tool for informing policy and Guerrero, J., Chapman, A.C., Verbič, G., 2018. Decentralized P2P energy trading under
+network constraints in a low-voltage network. IEEE Trans. Smart Grid 10 (5),
+
+investment decisions in the field of energy storage and management. 5163–5173. https://doi.org/10.1109/TSG.2018.2878445.
+Guerrero, J., Chapman, A., Verbič, G., 2023. A study of energy trading in a low-voltage
+
+CRediT authorship contribution statement network: centralised and distributed approaches. 2017 Australasian Universities
+Power Engineering Conference (AUPEC), Melbourne, VIC, Australia, 2017, pp. 1–6
+doi: 10.1109/AUPEC.2017.8282502.
+
+Ruixiaoxiao Zhang: Conceptualization, Data curation, Formal Gul, E., et al., 2022. A techno-economic analysis of a solar PV and DC battery storage
+analysis, Investigation, Methodology, Resources, Software, Validation, system for a community energy sharing. Energy 244, 123191. https://doi.org/
+
+10.1016/J.ENERGY.2022.123191.
+Visualization, Writing – original draft. Minhyun Lee: Conceptualiza- Hemmati, R., Saboori, H., 2017. Stochastic optimal battery storage sizing and scheduling
+tion, Funding acquisition, Methodology, Project administration, Super- in home energy management systems equipped with solar photovoltaic panels.
+vision, Visualization, Writing – review& editing. Lijie Huang:Writing – Energy Build. 152, 290–300. https://doi.org/10.1016/J.ENBUILD.2017.07.043.
+
+HK ELectric, 2022. Estimated electricity cost of common appliances [Online]. Available:
+review & editing. Meng Ni: Writing – review & editing. https://www.hkelectric.com/en/customer-services/billing-payment-electricity-tar
+
+16
+
+
+
+R. Zhang et al. Journal of Cleaner Production 470 (2024) 143317
+
+iffs/know-more-about-electricity-consumption/estimated-electricity-cost-of-co Nunez Munoz, M., Ballantyne, E.E.F., Stone, D.A., 2022. Development and evaluation of
+mmon-appliances. (Accessed 28 October 2022). empirical models for the estimation of hourly horizontal diffuse solar irradiance in
+
+Ho Ying Engineering, 2022. List of residential PV projects [Online]. Available: https:// the United Kingdom. Energy 241, 122820. https://doi.org/10.1016/J.
+www.hyengineering.com.hk/projects?gclid=CjwKCAiA3KefBhByEiwAi2LDHBTwn ENERGY.2021.122820.
+r_DjgzLjmiJMPlKiMrVuJWnLqrpzdHQrROAnMdX2hxkZll_xBoCmNAQAvD_BwE. Ouyang, X., Lin, B., 2014. Levelized cost of electricity (LCOE) of renewable energies and
+(Accessed 27 April 2023). required subsidies in China. Energy Pol. 70, 64–73. https://doi.org/10.1016/j.
+
+Hong Kong Observatory. Information of weather station [Online]. Available: https:// enpol.2014.03.030.
+www.hko.gov.hk/en/cis/stn.htm. (Accessed 24 May 2022). Pandžić, H., 2018. Optimal battery energy storage investment in buildings. Energy Build.
+
+Jing, R., Xie, M.N., Wang, F.X., Chen, L.X., 2020. Fair P2P energy trading between 175, 189–198. https://doi.org/10.1016/J.ENBUILD.2018.07.032.
+residential and commercial multi-energy systems enabling integrated demand-side Park, C., Yong, T., 2017. Comparative review and discussion on P2P electricity trading.
+management. Appl. Energy 262, 114551. https://doi.org/10.1016/J. Energy Proc. 128, 3–9. https://doi.org/10.1016/J.EGYPRO.2017.09.003.
+APENERGY.2020.114551. Photovoltaic Software. Calculate the annual solar energy output of a photovoltaic system
+
+Kanakadhurga, D., Prabaharan, N., 2021. Demand response-based peer-to-peer energy [Online]. Available: https://photovoltaic-software.com/principle-ressources/how-c
+trading among the prosumers and consumers. Energy Rep. 7, 7825–7834. https:// alculate-solar-energy-power-pv-systems. (Accessed 24 May 2022).
+doi.org/10.1016/J.EGYR.2021.09.074. Research Office, 2018. Feed-in Tariff for Solar Power in Selected Places.
+
+Kang, J., Yu, R., Huang, X., Maharjan, S., Zhang, Y., Hossain, E., 2017. Enabling localized Rodrigues, D.L., Ye, X., Xia, X., Zhu, B., 2020. Battery energy storage sizing optimisation
+peer-to-peer electricity trading among plug-in hybrid electric vehicles using for different ownership structures in a peer-to-peer energy sharing community. Appl.
+consortium blockchains. IEEE Trans. Ind. Inf. 13 (6), 3154–3164. https://doi.org/ Energy 262, 114498. https://doi.org/10.1016/J.APENERGY.2020.114498.
+10.1109/TII.2017.2709784. Sahebi, H., Khodoomi, M., Seif, M., Pishvaee, M.S., Hanne, T., 2023. The benefits of peer-
+
+Kharrich, M., Sayouti, Y., Akherraz, M., 2018. Microgrid sizing with environmental and to-peer renewable energy trading and battery storage backup for local grid. J. Energy
+economic optimization. In: 3rd Renewable Energies, Power Systems and Green Storage 63, 106970. https://doi.org/10.1016/J.EST.2023.106970.
+Inclusive Economy, REPS and GIE 2018. Institute of Electrical and Electronics Skoglund, I.E.U., Rostad, M., Thorvaldsen, K.E., 2021. Impact of shared battery energy
+Engineers Inc. https://doi.org/10.1109/REPSGIE.2018.8488864 storage system on total system costs and power peak reduction in commercial
+
+Kittler, R., Darula, S., 2013. Determination of time and sun position system. Sol. Energy buildings. In: Journal of Physics: Conference Series. IOP Publishing Ltd. https://doi.
+93, 72–79. https://doi.org/10.1016/J.SOLENER.2013.03.021. org/10.1088/1742-6596/2042/1/012108.
+
+Li, L., Cao, X., Zhang, S., 2022a. Shared energy storage system for prosumers in a Soto, E.A., Bosman, L.B., Wollega, E., Leon-Salas, W.D., 2021. Peer-to-peer energy
+community: investment decision, economic operation, and benefits allocation under trading: a review of the literature. Appl. Energy 283, 116268. https://doi.org/
+a cost-effective way. J. Energy Storage 50, 104710. https://doi.org/10.1016/J. 10.1016/J.APENERGY.2020.116268.
+EST.2022.104710. Taşcıkaraoğlu, A., 2018. Economic and operational benefits of energy storage sharing for
+
+Li, Y., Qian, F., Gao, W., Fukuda, H., Wang, Y., 2022b. Techno-economic performance of a neighborhood of prosumers in a dynamic pricing environment. Sustain. Cities Soc.
+battery energy storage system in an energy sharing community. J. Energy Storage 38, 219–229. https://doi.org/10.1016/J.SCS.2018.01.002.
+50, 104247. https://doi.org/10.1016/J.EST.2022.104247. The World Bank. Real interest rate (%) [Online]. Available: https://data.worldbank.
+
+Liu, J., Zhang, N., Kang, C., Kirschen, D., Xia, Q., 2017. Cloud energy storage for org/indicator/FR.INR.RINR?locations=HK. (Accessed 24 May 2022).
+residential and small commercial consumers: a business case study. Appl. Energy Tsao, Y.C., Van Thanh, V., 2021. Toward sustainable microgrids with blockchain
+188, 226–236. https://doi.org/10.1016/J.APENERGY.2016.11.120. technology-based peer-to-peer energy trading mechanism: a fuzzy meta-heuristic
+
+Liu, N., Cheng, M., Yu, X., Zhong, J., Lei, J., 2018. Energy-sharing provider for PV approach. Renew. Sustain. Energy Rev. 136, 110452 https://doi.org/10.1016/J.
+prosumer clusters: a hybrid approach using stochastic programming and stackelberg RSER.2020.110452.
+game. IEEE Trans. Ind. Electron. 65 (8), 6740–6750. https://doi.org/10.1109/ Tushar, W., et al., 2016. Energy storage sharing in smart grid: a modified auction-based
+TIE.2018.2793181. approach. IEEE Trans. Smart Grid 7 (3), 1462–1475. https://doi.org/10.1109/
+
+Liu, J., Chen, X., Yang, H., Li, Y., 2020. Energy storage and management system design TSG.2015.2512267.
+optimization for a photovoltaic integrated low-energy building. Energy 190, 116424. Tushar, W., Saha, T.K., Yuen, C., Liddell, P., Bean, R., Poor, H.V., 2018. Peer-to-Peer
+https://doi.org/10.1016/J.ENERGY.2019.116424. energy trading with sustainable user participation: a game theoretic approach. IEEE
+
+Liu, J., Yang, H., Zhou, Y., 2021. Peer-to-peer energy trading of net-zero energy Access 6, 62932–62943. https://doi.org/10.1109/ACCESS.2018.2875405.
+communities with renewable energy systems integrating hydrogen vehicle storage. Vakili, S., Schönborn, A., Ölçer, A.I., 2022. Techno-economic feasibility of photovoltaic,
+Appl. Energy 298, 117206. https://doi.org/10.1016/J.APENERGY.2021.117206. wind and hybrid electrification systems for stand-alone and grid-connected shipyard
+
+Long, C., Wu, J., Zhou, Y., Jenkins, N., 2018. Peer-to-peer energy sharing through a two- electrification in Italy. J. Clean. Prod. 366, 132945 https://doi.org/10.1016/J.
+stage aggregated battery control in a community Microgrid. Appl. Energy 226, JCLEPRO.2022.132945.
+261–276. https://doi.org/10.1016/J.APENERGY.2018.05.097. Walker, A., Kwon, S., 2021. Analysis on impact of shared energy storage in residential
+
+Ltd. Focus Technology Co., “320W Polycrystalline Solar Module 320wp Poly Solar Panel community: individual versus shared energy storage. Appl. Energy 282, 116172.
+for Solar Energy Systems.”. https://doi.org/10.1016/J.APENERGY.2020.116172.
+
+Lüth, A., Zepter, J.M., Crespo del Granado, P., Egging, R., 2018. Local electricity market Wan, K.S.Y., Yik, F.H.W., 2004. Representative building design and internal load patterns
+designs for peer-to-peer trading: the role of battery flexibility. Appl. Energy 229, for modelling energy use in residential buildings in Hong Kong. Appl. Energy 77 (1),
+1233–1243. https://doi.org/10.1016/J.APENERGY.2018.08.004. 69–85. https://doi.org/10.1016/S0306-2619(03)00104-1.
+
+Mehrtash, M., Capitanescu, F., Heiselberg, P.K., Gibon, T., Bertrand, A., 2020. An Wang, P., Wang, W., Xu, D., 2018. Optimal sizing of distributed generations in DC
+enhanced optimal PV and battery sizing model for zero energy buildings considering microgrids with comprehensive consideration of system operation modes and
+environmental impacts. IEEE Trans. Ind. Appl. 56 (6), 6846–6856. https://doi.org/ operation targets. IEEE Access 6, 31129–31140. https://doi.org/10.1109/
+10.1109/TIA.2020.3022742. ACCESS.2018.2842119.
+
+Meinke, R.-J., Sun, H., Jiang, J., 2020. Optimising demand and bid matching in a peer- Weckesser, T., Dominković, D.F., Blomgren, E.M.V., Schledorn, A., Madsen, H., 2021.
+toPeer energy trading model. In: ICC 2020 - 2020 IEEE International Conference on Renewable Energy Communities: optimal sizing and distribution grid impact of
+Communications (ICC). photo-voltaics and battery storage. Appl. Energy 301, 117408. https://doi.org/
+
+Moazzami, M., Fadaei, D., Shahinzadeh, H., Fathi, S.H., 2017. Optimal sizing and 10.1016/J.APENERGY.2021.117408.
+technical analysis of Rural electrification alternatives in kerman province. In: Smart Xia, Y., Xu, Q., Qian, H., Cai, L., 2022. Peer-to-Peer energy trading considering the output
+Grid Conference (SGC). uncertainty of distributed energy resources. Energy Rep. 8, 567–574. https://doi.
+
+Mohammadi, F., Faghihi, F., Kazemi, A., Salemi, A.H., 2022. The effect of multi org/10.1016/J.EGYR.2021.11.001.
+-uncertainties on battery energy storage system sizing in smart homes. J. Energy Yaldız, A., Gökçek, T., Şengör, İ., Erdinç, O., 2021. Optimal sizing and economic analysis
+Storage 52, 104765. https://doi.org/10.1016/J.EST.2022.104765. of Photovoltaic distributed generation with Battery Energy Storage System
+
+Morstyn, T., Teytelboym, A., McCulloch, M.D., 2019. Bilateral contract networks for considering peer-to-peer energy trading. Sustainable Energy, Grids and Networks 28,
+peer-to-peer energy trading. IEEE Trans. Smart Grid 10 (2), 2026–2035. https://doi. 100540. https://doi.org/10.1016/J.SEGAN.2021.100540.
+org/10.1109/TSG.2017.2786668. Zheng, B., Wei, W., Chen, Y., Wu, Q., Mei, S., 2022. A peer-to-peer energy trading market
+
+Nguyen, S., Peng, W., Sokolowski, P., Alahakoon, D., Yu, X., 2018. Optimizing rooftop embedded with residential shared energy storage units. Appl. Energy 308, 118400.
+photovoltaic distributed generation with battery storage for peer-to-peer energy https://doi.org/10.1016/J.APENERGY.2021.118400.
+trading. Appl. Energy 228, 2567–2580. https://doi.org/10.1016/J. Zhou, Y., Lund, P.D., 2023. Peer-to-peer energy sharing and trading of renewable energy
+APENERGY.2018.07.042. in smart communities ─ trading pricing models, decision-making and agent-based
+
+Ntube, N., Li, H., 2023. Stochastic multi-objective optimal sizing of battery energy collaboration. Renew. Energy 207, 177–193. https://doi.org/10.1016/J.
+storage system for a residential home. J. Energy Storage 59, 106403. https://doi. RENENE.2023.02.125.
+org/10.1016/J.EST.2022.106403.
+
+17

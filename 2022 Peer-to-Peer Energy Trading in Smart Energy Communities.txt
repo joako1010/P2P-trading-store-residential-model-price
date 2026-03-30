@@ -1,0 +1,1722 @@
+﻿Received March 25, 2022, accepted April 7, 2022, date of publication April 18, 2022, date of current version April 27, 2022.
+Digital Object Identifier 10.1109/ACCESS.2022.3167828
+
+Peer-to-Peer Energy Trading in Smart Energy
+Communities: A Lyapunov-Based Energy
+Control and Trading System
+HAILING ZHU 1, KHMAIES OUAHADA 1, (Senior Member, IEEE),
+AND ADNAN M. ABU-MAHFOUZ 1,2, (Senior Member, IEEE)
+1Department of Electrical and Electronic Engineering Science, University of Johannesburg, Auckland Park 2006, South Africa
+2Council for Scientific and Industrial Research (CSIR), Pretoria 0183, South Africa
+
+Corresponding author: Hailing Zhu (kasha0306@gmail.com)
+
+This work was supported in part by the Council for Scientific and Industrial Research, Pretoria, South Africa, through the Smart Networks
+Collaboration Initiative and IoT-Factory Program (Funded by the Department of Science and Innovation (DSI), South Africa).
+
+ABSTRACT This paper studies the real-time energy trading problem in a smart community consisting of
+a group of grid-connected prosumers with controllable loads, renewable generations and energy storage
+systems. We propose a peer-to-peer (P2P) energy trading system, which integrates energy trading with
+energy management, enabling each prosumer to jointly manage its energy consumption, storage scheduling
+and energy trading in a dynamic manner for smart communities consisting of a group of grid-connected
+prosumers with controllable loads, renewable generations and energy storage systems. The proposed
+community-based P2P energy trading system combines an online energy control and trading algorithm with
+a double auction mechanism. The energy control and trading algorithm is designed based on the Lyapunov
+theory, allowing each prosumer to independently determine its bid in each time slot only based on its current
+energy supply condition, while the trading price, which is determined via the double auction mechanism,
+reflects the collective energy supply conditions of all prosumers participating in energy trading. The
+integration of the Lyapunov-based energy control and trading algorithm and the double auction mechanism
+yields a dynamic energy trading pricing mechanism that induces the prosumers to participate in energy
+trading in a coordinated manner by influencing the energy consumption, energy charging/discharging and
+energy trading decisions of the prosumers. Numerical simulation results demonstrate that energy exchange
+in the proposed scalable energy trading system yields significant improvements in terms of energy cost
+savings and renewable energy utilization efficiency, while ensuring the fair sharing of the benefits reaped
+from energy trading among the prosumers.
+
+INDEX TERMS Demand side management, double auction, energy management, energy trading, Lyapunov
+optimization, peer-to-peer, smart grids.
+
+LIST OF MAIN SYMBOLS gRi (t) Prosumer i’s harvested renewable energy.
+
+t Time slot index. gli(t) Energy purchased from the utility grid
+D by prosumer i that directly supplies its load.
+i(t) Prosumer i’s served load demand.
+
+Di(t) Maximum energy demanded by prosumer i. gsi (t) Energy purchased from the utility grid that is
+D stored into prosumer i’ ESS.
+i(t) Minimum energy demanded by prosumer
+
+i that cannot be shed. gch−Ri (t) Excess renewable energy
+δi(t) Indicator of the sensitivity of prosumer charged into prosumer i’s ESS.
+
+ges−Ri towards its energy consumption i (t) Excess renewable energy sold by prosumer i
+deviation Di(t)− Di(t). in energy trading.
+
+εi Upper bound of prosumer i on the gdis−Di (t) Energy discharged from prosumer i’ ESS that
+long-term time-averaged load shedding ratio. supplies the prosumer i’s load.
+
+geb−Di (t) Energy bought by prosumer i via
+The associate editor coordinating the review of this manuscript and energy trading that supplies its load.
+
+approving it for publication was Salvatore Favuzza . gchi (t) Total energy charged into prosumer i’s ESS.
+
+42916 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/ VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+gdisi (t) Total energy discharged from prosumer i’ ESS. In this paper, we study the energy trading problem in a
+p(t) Unit energy price from the utility grid. community with grid-connected prosumers in close proxim-
+p ity. Specifically, prosumers with excess renewable energy
+max Maximum unit energy price from
+
+the utility grid. have to decide to store the extra energy into their energy
+p storage systems (ESSs) or sell to other prosumers and at
+min Minimum unit energy price from
+
+the utility grid. what prices, while prosumers with energy deficit have to
+pask decide whether to buy energy from other prosumers and at
+es,i(t) Ask price of prosumer i.
+pbid
+
+what prices, or to purchase energy from the utility grid. Due
+eb,i(t) Bid price of prosumer i. to the finite capacity of ESSs, all the charging/discharging
+pET (t) Unit energy trading price. actions are coupled across time. Inevitably, the inherent
+gETes,i(t) Energy sold by prosumer i in energy trading. time-coupling feature of ESSs affects the energy trading and
+gET purchasing actions. Furthermore, the ESS scheduling, energy
+eb,i(t) Energy bought by prosumer i
+
+in energy trading. trading and energy purchasing decisions of a prosumer not
+Ci(t) Energy cost of prosumer i. only affect each other, but also impact those of other pro-
+cR sumers. In addition, the role of a prosumer in the P2P trading
+i (t) Average per unit cost of prosumer i’s energy
+
+available for trading. system varies according to the change in its energy supply
+Si(t) State of Charge (SoC) of prosumer i’s ESS. condition due to its time-varying demand and renewable
+Smax generation. A prosumer has to make energy control and trad-
+i Maximum energy limit of prosumer i’s ESS.
+Smini Minimum energy limit of prosumer i’s ESS. ing decisions based on its current energy supply condition,
+Rchi Maximum charging rate of prosumer i’s ESS. while its time-varying energy supply condition is not only
+Rdis dependent on its own energy control and trading decisions
+i Maximum discharging rate of
+
+prosumer i’s ESS. but also affected by the energy trading decisions of other
+ηchi Charging efficiency coefficient of prosumers. Therefore, the energy trading problem and the
+
+prosumer i’s ESS. energy control problem need to be jointly considered when
+ηdis making the energy control and energy trading decisions that
+i Discharging efficiency coefficient of
+
+prosumer i’s ESS. are interrelated with one another over time.
+A properly designed trading pricing mechanism that facil-
+
+itates energy sharing among prosumers through financial
+incentives is important for the implementation of the P2P
+
+I. INTRODUCTION energy trading system. Auctions that handle situations where
+Peer-to-peer (P2P) energy trading enabling energy shar- multiple buyers and sellers bid to exchange a designated
+ing among multiple interconnected distributed energy good have been widely applied in P2P energy trading studies
+resource (DER) owners is envisaged to be a next-generation to model the interactions among autonomous self-interested
+energy management mechanism for collaborative energy prosumers. Intensive research and development efforts have
+communities [1]–[5]. In P2P energy trading communi- been conducted in this regard. Various auction mechanisms
+ties, proactive electricity consumers, so-called prosumers, presented for P2P energy trading in energy communities
+with renewable energy production and storage capabilities, in literature can be broadly divided into two categories:
+actively manage their production and consumption and trade (a) autonomous mode, where prosumers trade energy with
+their excess energy with other interested consumers at a rel- each other directly under an internal energy price mechanism
+atively cheaper rate. The development of community-based aiming to optimize their own benefits individually [10]; and
+P2P energy trading has the potential to benefit the prosumers (b) coordinated mode, where prosumers trade energy via a
+in earning revenues, reducing electricity costs and improving third-party entity that coordinates energy trading in a cen-
+returns on investments in distributed generation [1]. On the tralized or distributed way aiming to optimize the overall
+other hand, the utility grid can benefit from the lowered economic benefits of the trading system.
+reliance of the prosumers on the main electricity grid [6]–[8], Most of the studies on autonomous energy trading have
+such as reducing peak demand, improving reliability, etc. mainly focused on prosumer-centric interaction mechanisms
+In addition, increasing local consumption of renewable gen- for decentralized negotiation processes between prosumers
+eration through energy trading in a community is more attrac- and complicated decentralized iterative algorithms are devel-
+tive than the conventional peer-to-grid (P2G) trading, which oped to determine trading decisions with short-term opti-
+could lead to adverse impacts on the utility grid stability [9]. mization models [11]–[15]. A real-time P2P energy trading
+Nonetheless, it is challenging to design a proper energy model with the goal of maximizing per-slot individual wel-
+management mechanism to motivate prosumers, who only fare is established in [11], [12] without fully exploiting the
+aim to maximize their own benefits, to participate in energy potential of ESSs in energy cost saving from a long-term
+trading so as to facilitate a sustainable and reliable balance point of view. In [13], [14], to minimize daily energy cost,
+between the generation and consumption of renewable energy a day-ahead optimal dispatch model is developed to deter-
+within energy communities. mine hourly trading prices and optimal scheduling of DERs
+
+VOLUME 10, 2022 42917
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+in advance. It is assumed that renewable generation and load trading algorithm for each prosumer to individually and
+demand are perfectly known a day-ahead, which is difficult to dynamically determine its energy trading parameters
+achieve in practice due to the stochastic nature of renewable (howmuch energy to trade and at what price) along with
+generation and load demand. its energy consumption and storage scheduling decisions
+
+On the other hand, the studies on coordinated energy only based on its current energy supply condition and
+trading have mainly focused on coordination methods for energy consumption preference.
+controlling DERs of prosumers [16]–[19] or inducing pro- • We design a double auction based energy trading sys-
+sumers to reach optimal solutions (from the community per- tem. The scalable energy trading system combines a
+spective) by indirectly influencing prosumers’ energy trading double auction mechanism with the Lyapunov-based
+decisions and demand response actions via certain pricing energy control and trading algorithm, enabling the
+signals [20]–[24]. Energy trading prices are simply defined cost-minimizing bids of individual prosumers, which are
+based on supply-demand ratio (SDR) [18], [19] or decided based on the changes in their individual energy
+mid-market rate (MMR) [21]–[23], which is the mid-value of supply conditions over time, to contribute to the deci-
+the buying and selling prices set by the utility grid. However, sions of the final trading prices. The energymanagement
+without considering the utility maximization objective of actions of the prosumers are accordingly influenced by
+prosumers, both SDR andMMRpricingmechanismsmay not the final trading prices, which reflect the time-varying
+be able to financially incentivize self-interested prosumers to energy supply conditions of all prosumers participating
+participate in P2P trading. in energy trading. Thus, the dynamic online double auc-
+
+Given the inherent time-coupling feature of ESSs, ran- tion mechanism yields a dynamic energy trading pricing
+domness of renewable energy generation, arbitrary changes mechanism reflecting the changes in the energy supply
+in load demand and time-varying energy consumption pref- state of the system over time. The dynamic price signal
+erences of individual prosumers, an effective and system- is essential to inducing the prosumers to participate
+atic control strategy that jointly carries out energy control in energy trading in a collaborative and coordinated
+and energy trading while efficiently adapting the dynamic manner by influencing the demand response and energy
+changes in such a P2P trading system, with the objective of trading decisions of individual prosumers.
+maximizing the benefits of individual prosumers, is neces- • In the distributed coordination energy trading system,
+sary to determine the above-mentioned interrelated decisions where the bid of each prosumer is private and inde-
+optimally. pendent of the bids from other prosumers, the double
+
+Lyapunov optimization, a technique that provides a auction mechanism determines the trading price with
+per-slot optimal solution with lower computation complexity little global information, while ensuring the truthfulness
+for time-average stochastic optimization problems without of the ask and buy prices that the prosumers submit in
+requiring any knowledge of the probability distributions of energy trading and guaranteeing the participating pro-
+the random event processes, has been widely applied in sumers economically benefit from energy trading.
+designing online energy management mechanisms, such as The rest of the paper is organized as follows: Section II
+demand side management (DSM) and energy storage man- briefly discusses the related work. A joint energy con-
+agement [25]–[29]. There have been attempts employing the trol and trading system model is presented in Section III.
+Lyapunov optimization techniques in studying joint optimiza- In Section IV, a double auction based online P2P energy
+tion of energy control and energy trading. A Lyapunov-based trading system is developed, where a Lyapunov-based online
+online energy sharing method is proposed in [30], aiming to energy control and trading algorithm is integrated with a
+improve the self-sufficiency of the NGC without consider- double auction mechanism. Simulation evaluations are pre-
+ing the economic benefits of individual nanogrids. A joint sented in Section V. Finally, Section VI provides concluding
+energy scheduling and trading algorithm based on Lyapunov remarks.
+optimization and a double-auction mechanism are proposed Notations: The main symbols used in this paper are sum-
+for multiple microgrids with multi-energy resources in [31], marized in List of Main Symbols.
+mainly focusing on the synergies among various energy
+systems. II. BACKGROUND ON COMMUNITY-BASED P2P ENERGY
+
+In this paper, energy trading is integrated with DSM and TRADING AND RELATED WORK
+energy storagemanagement for energy cost optimization. The Energy trading has been viewed as an effective solution
+joint energy control and trading optimization problem in the that allows prosumers to trade their surplus renewable
+presence of the randomness of renewable energy generation generation within their local community market, improves
+and arbitrary changes in load demand is exploited. The main self-consumption and self-sufficiency of local renewable gen-
+contributions of this paper are as follows: eration, and reduces energy costs. Various bidding policies
+• We propose an energy management framework that have been applied to develop P2P energy trading mech-
+incorporates energy trading with demand response anisms and approaches for community-based energy trad-
+and energy storage management. Based on Lyapunov ing. Most of the studies on autonomous P2P energy trading
+optimization, we develop a joint energy control and focus on different prosumer-centric interaction mechanisms
+
+42918 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+for negotiation processes between prosumers. In autonomous participation level might not converge. A variant of the SDR
+mode based P2P energy sharing systems, intensive sensing method was used in [19], where an energy storage (ES)-
+and communication infrastructures are required for direct equipped ESP facilitates energy trading among neighboring
+information exchange between prosumers and complicated PV prosumers to ensure cost fairness among the prosumers.
+decentralized iterative algorithms are required to determine Similarly, an MMR trading pricing scheme was used in [20],
+trading prices and optimal schedules of DERs. In [11], the where a centralized P2P energy trading model was proposed
+authors proposed a game-theoretic real-time P2P energy trad- based on cooperative game theory to encourage all peers to
+ing model for small community microgrids with PVs and form a grand coalition by maximizing the total social welfare
+ESSs, where the seller selection competition among buyers is of the coalition.
+modeled as an evolutionary game and the direct negotiating Under distributed coordination [21]–[24], prosumers trade
+interaction between the sellers and buyers is modeled as an energy with others and manage their loads and DERs via
+M-leader and N-follower Stackelberg game. Two iterative a third party, e.g., a coordinator, which usually influences
+algorithms were used to find the equilibrium states of the prosumers’ energy trading decisions and demand response
+games. The iterative frameworks are subjected to divergence actions indirectly via energy trading price signals [32]. The
+concerns and require intensive communications and compu- distributed coordination model combines the features of the
+tation for energy price bidding. Two computationally efficient autonomous mode and the centralized coordination model.
+mechanisms were proposed to construct a stable grand coali- Hence, it provides a higher level of privacy and autonomy
+tion of prosumers and optimize the operation of their ES units for prosumers and delivers a higher level of flexibility as
+cooperatively at each time interval in [12]. A two-stage opti- compared to the centralized coordination model, while the
+mization strategy with two iterative algorithms was proposed behaviors of prosumers can be better coordinated to improve
+based on the Nash bargaining theory for day-ahead energy social welfare as compared to the autonomous model.
+trading and scheduling in [13]. The authors in [14] proposed One of the core issues of P2P energy trading under dis-
+a multiagent based framework, where multiple autonomous tributed coordination is pricing mechanisms for energy trad-
+agents interact, negotiate and cooperate with each other to ing. In [21], with an objective to improve the participation
+achieve their individual objectives. An auction based energy of prosumers, the authors developed a coalition game based
+tradingmechanism, where sellers provide bids by announcing peer-to-peer trading approach employing a rule-based MMR
+their available capacities and linear cost models, and passive pricing scheme, in which the trading (buying and selling)
+buyers announce the amount to purchase, was designed to prices are set based on the grid selling and buying prices
+allow agents to dispatch their DERs with a day-ahead dis- depending on the difference between the total surplus energy
+patch schedule. and the load demands of the prosumers. Similarly, a coalition
+
+Compared to the autonomous mode of energy trading, formation game model was designed utilizing the MMR as a
+which involves direct negotiation processes, the coordi- pricing mechanism for P2P trading to form a grand coalition
+nated mode requires simpler communication systems (only in [22]. The authors proposed a multi-cluster deep reinforce-
+bi-communication links between the central coordinator and ment learning approach in [23] to motivate households to
+prosumers are required) and less data processing. However, engage in P2P trading through an incentive-driven market
+well-designed incentive mechanisms are required to encour- mechanism based on the MMR pricing scheme to attract pro-
+age prosumers to participate in energy sharing while ensuring sumers to participate in energy trading. Despite the simplicity
+the fairness of energy sharing. of implementation of the MMR pricing scheme, the result-
+
+Under centralized coordination [16]–[20], while presumers ing energy trading and control decisions may not be utility-
+trade energy with others via a third party, each presumer maximizing. In [33], the authors proposed a game-theoretic
+directly controls and manages its DER. Hence, direct con- based energy trading framework, which combines a double
+trol is extensively studied. For instance, in [17], the authors auction mechanism with a non-cooperative game allowing a
+integrated DSMwith P2P energy trading and proposed a cen- number of storage unit owners to strategically and individu-
+tralized coordinated model to schedule the loads and DERs ally decide the amount of stored energy to sell to a number
+of smart homes within the connected community, aiming to of buyers who need a certain amount of energy without con-
+maximize the benefit of all participants in P2P trading. The sidering DSM. An iterative algorithm, under which the sellers
+authors in [18] proposed a time-ahead internal pricing model, can reach a Nash equilibrium point, was designed to solve the
+where the internal trading prices are defined as a function non-cooperative game in which the reservation prices/bids of
+of the feed-in tariff of the utility grid and the SDRs of PV the seller/buyers are predefined.
+prosumers, to allow PV prosumers to carry out price-based In the online P2P energy trading system proposed in this
+demand response after the energy trading prices are set. paper, where a double auction mechanism is combined with
+An energy sharing provider (ESP)was proposed to coordinate a Lyapunov based energy control and trading algorithm, each
+the trading processes among prosumers and a distributed prosumer dynamically decides its cost-minimizing bidding
+iterative algorithm was developed to solve the optimization prices and quantities based on the changes in its energy supply
+problem of energy sharing and demand response. However, condition over time. The cost-minimizing energy manage-
+the iterative pricing process affected by the demand response ment actions of each prosumer are accordingly influenced by
+
+VOLUME 10, 2022 42919
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+whereDi(t) is the maximum energy demanded by prosumer i
+in time slot t , i.e., the most preferred energy consumption of
+prosumer i, and Di(t) is the minimum power demanded by
+prosumer i in time slot t that cannot be shed. Note that Di(t)
+and Di(t) are the demand requests decided by prosumer i
+based on its energy consumption preference. If a prosumer
+refuses load shedding in time slot t , the Di(t) and Di(t) will
+be the same. Themaximum andminimumdemand requests of
+each prosumer in each time slot are assumed to be stochastic.
+
+However, load shedding used for cost saving may cause
+discomfort to the prosumers. Discomfort experienced by pro-
+sumer i can be represented by a discomfort cost function,
+which is given by
+
+FIGURE 1. P2P energy trading in a smart community.
+CCOM ,i(t) = δi(t)[Di(t)− Di(t)]2, (2)
+
+the final trading prices, which reflect the time-varying energy where the weighted coefficient δi(t) is a positive constant that
+supply conditions of all prosumers participating in energy represents the sensitivity of prosumer i towards the power
+trading. The resulting dynamic energy trading pricing mech- consumption deviation Di(t)−Di(t) in time slot i: the higher
+anism provides a simple tool to enable efficient distributed the value of δi(t), the more sensitive the prosumer i towards
+coordination of self-interested prosumers. the power consumption deviation.
+
+Meanwhile, in order to control the quality-of-service
+III. SYSTEM MODEL (QoS) [28] for each prosumer, an upper bound is imposed
+In this paper, we consider a smart community with I = on the long-term time-averaged load shedding ratio (the ratio
+{1, 2, . . . , I } prosumers in close proximity, which are inter- of the shed elastic loads to the elastic loads), which can be
+connected to each other through bi-directional power links formally expressed by [34]
+and connected to the utility grid. The prosumers, each of ]
+which is equipped with a small-scale renewable energy sys- 1 T∑[
+
+−1 D
+lim i(t)− Di(t)
+
+≤ εi, (3)
+tem and a finite capacity ESS to store energy for future T→∞ T
+
+t=0 Di(t)− Di(t)
+use, can trade energy with each other via an auctioneer,
+which manages double auctions among the prosumers. Each where Di(t)−Di(t) is the shed load demand, Di(t)−Di(t) is
+prosumer independently determines and submits its bid the total elastic load demand that can be shed in time slot t ,
+(the price and amount of energy to sell/buy) to the auctioneer, and εi ∈ (0, 1] is a pre-designed threshold for controlling
+who computes the trading price based on all the submitted the QoS. The threshold εi reflects the tolerance of prosumer i
+bids using the proposed double auction mechanism. Thus, to the energy consumption deviation. A smaller εi indicates
+only bi-directional communications between the auctioneer a tighter QoS control. Note that δi(t) and εi are decided by
+and prosumers are required for auction in the energy trading prosumer i based on its energy consumption preference and
+system. A cloud infrastructure can be a suitable platform to δi(t) could vary over time in a stochastic manner.
+implement the proposed double auction mechanism. As illus- Prosumer i’ harvested renewable energy in time slot t is
+trated in Fig.1, the bids submitted by the prosumers are denoted by gRi . We assume a priority of using the harvested
+processed in a cloud using the proposed double auctionmech- renewable energy gRi (t) to directly supply Di(t) and consider
+anism and the resulting trading price and quantities are sent the following two cases:
+to the respective prosumers. The traded energy can be used • If Di(t) > gRi (t), i.e., energy deficit, all the harvested
+to serve a prosumer’s loads and/or stored into its ESS. The renewable energy is used to serve load and the residual,
+power system operates in slotted time t ∈ {0, 1, . . . ,T − 1}. Di(t)− gRi (t), can be served by
+
+– discharging energy, gdis−Di (t), from its own ESS;
+A. LOAD DEMAND AND SERVING – buying energy, geb−Di (t), from other prosumers;
+The time-varying load demand of each prosumer can be – purchasing energy, gli(t), from the utility company
+served with energy harvested from its own renewable energy in case the energy drawn from its ESS and brought
+generator, drawn from its ESS, exchanged from other pro- from other prosumers is insufficient.
+sumers, and/or purchased from the utility grid. Note that all Thus, a balance between purchasing energy and dis-
+power quantities are in the unit of energy per time slot in this charging energy must be struck under the following
+paper. We consider a DSM strategy, where flexible loads can feasibility condition:
+be shed in response to supply conditions. Thus, prosumer i’
+load that is served in time slot t , Di(t), is bounded by: gli(t)+ g
+
+dis−D
+i (t)+ geb−Di (t) = Di(t)− gRi (t). (4)
+
+Di(t) ≥ Di(t) ≥ Di(t), (1) • If Di(t) ≤ gRi (t), i.e., energy surplus, prosumer i can
+
+42920 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+– store the excess renewable energy into its own ESS. Combining (6), (8) and (9), in time slot t , the amounts of
+Let gch−Ri (t) denote the amount of excess renewable charging and discharging energy are bounded by the capacity
+energy charged into prosumer i’s ESS in time slot t; constraint and energy availability constraint, which can be
+
+– sell the excess renewable energy to other pro- compactly expressed by
+sumers. Let ges−Ri (t) denote the amount of excess
+renewable energy sold to other prosumers by pro- Smax
+
+0 ≤ gchi (t)+ gs i − Si(t − 1)
+i (t) ≤ min{Rch,i,
+
+sumer i in time slot t . ηch
+} (a)
+
+i
+We then have Si(t − 1)− Smin
+
+0 ≤ gdisi (t) ≤ min{Rdis,i, i
+ηdis
+
+} (b). (10)
+gch−Ri (t)+ ges−Ri (t) ≤ gRi (t)− Di(t). (5) i
+
+Note that, due to the finite storage capacity, a portion of Note that all feasible control decisions on charging and dis-
+the excess renewable energy could be curtailed if there charging energy must ensure that both the capacity constraint
+is not enough storage space. in (10).a and the energy-availability constraint in (10).b are
+
+satisfied for all time.
+B. ENERGY STORAGE DYNAMICS
+In each time slot, prosumer i can store its own extra renewable IV. ONLINE P2P ENERGY TRADING SYSTEM
+energy, gch−Ri (t), the energy bought through energy trading, A. ENERGY CONTROL AND TRADING ALGORITHM BASED
+geb−Ei (t), and/or the energy purchased from the utility com- ON LYAPUNOV OPTIMIZATION
+pany, gsi (t), into its ESS. Each prosumer can then draw the 1) ENERGY COST MINIMIZATION OF INDIVIDUAL
+stored energy from its ESS to serve its loads, gdis−Di (t), and/or PROSUMERS
+sell to other prosumers, ges−Ei (t). We now consider the energy In each time slot, each prosumer can purchase energy from
+storage model of the ESS at each prosumer. the utility company at the unit price p(t), pmin ≤ p(t) ≤ pmax ,
+
+In practice, energy conversion losses occur during the which is time-varying, to supply its load and/or store into
+charging and discharging processes. Denote Si(t) as the its battery to take advantage of price variations. In addition,
+energy state of prosumer i’s ESS, i.e., state of charge (SoC), each prosumer can trade energy with other prosumers at the
+at the beginning of time slot t , which evolves as follows: buying or selling price pebi (t) or pesi (t). To encourage energy
+
+trading among proumers so as to reduce conventional energy
+Si(t) = Si(t − 1)+ ηchi [gch−Ri (t)+ geb−Ei (t)+ gsi (t)] purchase from the utility company, the buying and selling
+
+−ηdisi [gdis−Di (t)+ ges−Ei (t)] prices are capped by p(t), i.e., pesi (t) ≤ p(t) and p
+eb
+i (t) ≤ p(t).
+
+= Si(t − 1)+ ηchi [gchi (t)+ gsi (t)]− η
+dis
+i gdisi (t), (6) Thus, the energy cost of prosumer i in time slot t consists
+
+of the cost incurred for energy purchase from the utility
+where ηchi ∈ (0, 1] and ηdisi ∈ [1,∞) are the charging company, the expense/revenue incurred/generated in energy
+and discharging efficiency coefficients of prosumer i’s ESS, tradingwith other prosumers, and the discomfort costs of load
+respectively, and gchi (t) , gch−Ri (t)+ geb−Ei (t) and gdisi (t) , shedding, which is given by
+gdis−Di (t) + ges−Ei (t) are the total charging and discharging
+amounts in time slot t , respectively. Ci(t) = [gli(t)+ g
+
+s
+i (t)]p(t)+[g
+
+eb−D
+i (t)+ geb−Ei (t)]pebi (t)
+
+Note that, energy charging and discharging should not
+−[ges−Ri (t)+ ges−Ei (t)]pesi (t)+ δi(t)[Di(t)− Di(t)]
+
+2.
+happen simultaneously, i.e.,
+
+(11)
+[gchi (t)+ gsi (t)] ∗ g
+
+dis
+i (t) = 0 (7)
+
+The objective of each prosumer is to minimize its long-
+Due to limitation imposed by charging and discharging term time-averaged energy cost subject to the time-varying
+
+circuits, the amount of energy that can be charged/discharged renewable energy generation and load demand along with the
+into/from prosumer i’s ESS is upper bounded. The maxi- operational constraints of its ESS, by jointlymanaging energy
+mum charging and discharging rates of prosumer i’s ESS are purchasing, energy trading and energy charging/discharging
+denoted by Rchi and Rdisi , respectively. We have actions. Thus, the strategy set of prosumer i can be denoted
+
+0 ≤ gchi (t)+ gsi (t) ≤ R
+ch as
+i
+
+0 ≤ gdisi (t) ≤ Rdisi . (8) Yi(t) , [geb−Di (t), geb−Ei (t), ges−Ri (t), ges−Ei (t), pebi (t),
+Charging an ESS near its capacity or discharging it close to pesi (t), g
+
+ch−R
+i (t), gdis−Di (t), gli(t), g
+
+s
+i (t),Di(t)].
+
+zero will significantly reduce its lifetime [35]. Thus, the SoC
+of prosumer i’s ESS in time slot t is bounded by Then the optimization problem of prosumer i is to find a
+
+Smin control strategy that determines the optimal strategy set based
+i ≤ Si(t) ≤ Smaxi , (9)
+
+on its current renewable energy generation, load demand and
+where Smini and Smaxi are the preferred energy lower and upper SoC of its ESS in each time slot tominimize its time-averaged
+bounds respectively. energy cost, which can be formulated as the following
+
+VOLUME 10, 2022 42921
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+stochastic control optimization problem, called P1, Accordingly, P1 is relaxed to the following problem:
+
+1 T∑−1 1 T∑−1
+P1 : min lim E {Ci(t)} P2 : min lim E {Ci(t)}
+
+Yi(t) T→∞ T Yi(t) T→∞ T
+t=0 t=0
+
+s.t. (3) (4) (5) (7) (10), (12) s.t. (3) (5) (7) (8) (13). (14)
+
+whereE{·} is takenwith respect to prosumer i’s energy supply In the relaxed problem P2, the dependency of per time slot
+states Xi(t) , [gRi (t),Di(t),Di(t), Si(t), p(t)]. We assume control decisions on the battery state is removed, so that the
+statistics of gRi (t), Di(t) and Di(t) are unknown and their standard Lyapunov optimization techniques can be applied
+dynamics are arbitrary. Taking into account the system to tackle P2. As in [37], we now introduce a virtual energy
+dynamics, the stochastic optimization problem P1 seeks con- queue Ei(t) and a QoS-control load queue Qi(t) to transform
+trol decisions for the whole process. However, the con- the time-averaged constraints (13) and (3) in P2 into con-
+trol actions Yi(t) that are correlated over time due to the straints with queue stability.
+time-coupling constraints make P1 a particularly challenging The virtual energy queue is defined as Ei(t) = Si(t) − θi,
+problem to solve. where θi is a perturbation parameter that can be designed to
+
+guarantee the energy state constraint in (9) is satisfied. The
+2) ONLINE ENERGY CONTROL AND TRADING ALGORITHM dynamics of Ei(t) is given by
+DESIGN
+
+Ei(t) = Ei(t − 1)+ ηchi g
+ch
+i (t)+ ηchi g
+
+s
+i (t)− η
+
+dis
+i gdisi (t). (15)
+
+The Lyapunov optimization theory [36] provides simple
+online solutions based on the current information of the sys- The QoS-control load queue is defined as
+tem state as opposed to approaches like Markov decision pro-
+cesses and dynamic programming, which require statistical Di(t)− Di(t)
+information of the random variables for forecasting future Qi(t + 1) = max {Qi(t)− εi, 0} + , (16)
+
+Di(t)− Di(t)
+information and suffer from high computational complex-
+ity. In this paper, the Lyapunov drift optimization theory is where the arrival rate is the shedding percentage and the
+applied to solve the time-coupling optimization problem P1. departure rate is εi. To ensure the QoS-control load queue
+Employing the concept of one-slot look-ahead queue stability Qi(t) to be stable, the time-averaged load shedding percent-
+to handle the time-coupling constraints through successive age must be less than or equal to εi. Hence, maintaining the
+problem relaxation and transformation, the Lyapunov based stability of Qi(t) is equivalent to keeping the constraint (3)
+optimization algorithm determines the control vector Yi(t) satisfied [36].
+for each prosumer in each time slot based only on its cur- We then define 2i(t) , [Ei(t),Qi(t)] as the concatenated
+rent energy supply state Xi(t), without requiring any statis- vector of the virtual queues and a Lyapunov function asso-
+tical knowledge of its renewable energy generation and load ciated with 2i(t) as Li(2i(t)) , 1
+
+2 [Ei(t)
+2
++ Qi(t)2]. In a
+
+demand. decisionmaking algorithmminimizing a drift of the quadratic
+In general, for complex dynamic systems, time-averaged Lyapunov function of Ei(t), keeping the quadratic Lyapunov
+
+constraints are transformed into queue stability constraints function small pushes the value of Si(t) towards θi. Hence,
+and simple real-time algorithms can be constructed based on carefully choosing the value of the perturbation parameter
+the virtual queues to achieve system optimization using the will ensure the battery queue always lies in the feasible
+Lyapunov optimization theory. However, the constraint in (9) region.
+couples the charging and discharging decisions across time Define the conditional one-slot Lyapunov drift, which rep-
+slots, making the standard Lyapunov optimization technique resents the expected change in the Lyapunov function from
+inapplicable directly to the problem P1. To overcome such one time slot to the next, as follows:
+time-coupling, the constraint (6) can be relaxed to the fol-
+lowing soft constraint 1i(t) , E {Li(t + 1)− Li(t)|2i(t)} ,:
+
+where the expectation is taken with respect to all the ran-
+1 T∑−1 { }
+
+lim E ηch h dom processes associated with the energy supply state,
+T i g
+
+c
+i (t)+ ηchi g
+
+s
+i (t)− η
+
+dis
+i gdisi (t) = 0.
+
+T→∞
+t=0 [gRi (t),Di(t),Di(t), Si(t)], given the current virtual queue
+
+(13) states of Ei(t) and Qi(t).
+We now incorporate a weighted version of the time-
+
+Instead of bounding the energy state, Si(t), in each time averaged energy cost into the Lyapunov drift and obtain the
+slot, (13) maintains the stability of the mean rate of the following drift-plus-penalty expression: 1i(t) + Vi E{Ci(t)},
+effective charging and discharging amounts in the whole where the Lyapunov drift in the first term represents the
+process. The derivation of (13) follows the framework of stability of the virtual energy queue, and Vi in the second
+Lyapunov optimization [36] and is given in our previous item serves as a weight controlling the performance tradeoff
+work [37]. between minimizing the queueing delay and minimizing the
+
+42922 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+energy cost. A larger Vi indicates a greater priority to mini- in their ESSs. In each time slot, each prosumer determines
+mize the energy cost at the expense of a greater size of the its ask/bid price and the amount of energy to sell/buy, with
+virtual energy queue and vice versa. which it is willing to participate in energy trade with other
+
+Based on the drift-plus-penalty minimization method [36], prosumers, by solving the optimization problem P3 based
+the control decisions are chosen to minimize the upper only on its current energy supply state. The prosumers who
+bound on the drift-plus-penalty expression, which is given are willing to trade energy with others report their ask/bid
+in Lemma 1, to jointly maintain the stability of the virtual prices, which are given in Lemma 2, to the auctioneer who
+energy queue and minimize the time-averaged energy cost of facilitates the prosumers to determine the trading price and
+prosumer i. the amounts of energy to trade using a double-auction mech-
+Lemma 1: For any possible control decision, the drift- anism based on the strategy-proof double auction schemes
+
+plus-penalty expression for all t is upper bounded by: proposed in [33], [38].
+
+1(t)+ Vi E{Ci(t){} } Lemma 2: In time slot t, the ask/bid price paskes,i(t)/p
+bid
+eb,i(t)
+
+of prosumer i is given by
+≤ Bi + Ei(t)E{ ηchi [gchi (t)+ gsi (t)]− η
+
+di}si gdisi (t)|2i(t) • Energy Deficit: when g
+R
+i (t) < Di(t),
+
+D
++ Q i(t)− D (t)  ( ( ) )
+
+ −E (t) d s
+min max i η i
+
+i
+i(t)E
+
+i
+− εi|2i(t) V , cR ) ( )
+
+i i (t , p t
++ Vi E {Ci(t)} ,
+
+Di(t)− Di(t)
+paskes,i(t) =  if Ei(t) ≤ 0
+
+(17)
+
+where Bi , 1
+2 [(η
+
+ch
+i R
+
+ch
+i )2 + (ηdisi Rdisi )2 + (1+ εi)2].
+
+0 ( ( if Ei(t) > 0
+Proof: See Appendix A.  ) )
+
+The energy control and trading algorithm is then con- −E )
+pbid
+
+i(t ηch
+eb,i(t) = min max i , 0 , p(t) ; (20)
+
+structed: in each time slot t , the control decision Yi(t) of Vi
+each prosumer i is determined based on its current virtual
+queue state [Ei(t),Qi(t)] and energy state Xi(t) by solving • Energy Surplus: when gRi (t) ≥ Di(t),
+the following linear programming problem P3: paskes,i(t) = cRi (t)( ( ) )
+
+P3 : min Ei(t)[ηch
+Y i g
+
+ch
+i (t)+ ηchi g
+
+s
+i (t)− η
+
+dis
+i(t)
+
+i gdisi (t)] −Ei(t)ηch
+pbideb,i(t) = min max i , 0 , p(t) , (21)
+
+Vi
+Di(t)− Di(t)
+
++Qi(t) + ViCi(t) where cRDi(t)− D i (t) is the average per unit cost of prosumer i’si(t)
+s.t. (4) (5) (7) (8) (15) (16). (18) stored energy available for trading in time slot t, which
+
+refers to the total cost of stored energy available for
+Selling energy in energy trading will reduce a prosumer’s trading divided by the amount of stored energy available
+
+instantaneous energy cost in a time slot. However, an optimal for trading, i.e.∑,
+solution to P3 could lead to a situation, in which a prosumer t−1
+
+cR τ=1 [g
+i (t) ∑si (τ )p(τ )+geb−Ei (τ )pET (τ )+g
+
+ch−R
+i (τ )cDER
+
+= i ]
+
+sells toomuch energy at relatively lower energy trading prices t−1 ,
+τ=1 [g
+
+s
+i (τ )+g
+
+eb−E
+i (τ )+gch−Ri (τ )]
+
+to other prosumers, so that it has to purchase more energy where cDERi is the per unit cost of prosumer i’s stored
+from the utility company to serve its own load demand later renewable energy, which reflects prosumer i’s capital
+on. To address the over-selling problem, the accumulated costs and maintenance costs of its renewable energy
+energy gap between prosumer i’s stored energy available for generator and ESS.
+trading and discharged energy for load serving is bounded: Proof: See Appendix B. 
+
+∑ In time slot t , assumeM prosumers, referred to as potential
+t−1
+
+ηch h sellers, submit their offers about the amounts of energy they
+EGi(t) = i [gci (τ ) s
+
++ gi (τ )]
+di
+
+− η s
+i gdis−Di (τ ) ≥ φi. want to sell and at what prices, and N prosumers, referred
+
+τ=1 to as potential buyers, submit their bids about the amounts
+(19) of energy they seek to acquire and at what prices. The M
+
+In time slot t , if EGi(t) < φi, prosumer iwill not sell its stored potential sellers and N potential buyers form a P2P energy
+energy in energy trading, i.e., ges−E trading market. Note that M and N vary in each time slot
+
+i (t) = 0.
+and could be zero. The auctioneer first sorts the offer prices
+
+B. DOUBLE AUCTION MECHANISM in increasing order and the bid prices in decreasing order as
+Due to the intermittent renewable energy generation, time- follows:
+varying electricity demand and finite energy storage capacity, paskes,1(t) < paskes,2(t) < . . . < paskes,m(t) < . . . < paskes,M (t)
+a prosumer might be unable to meet its load demand with
+
+pbid
+only its own DER. In this respect, the prosumers with energy eb,1(t) > pbideb,2(t) > . . . > pbideb,n(t) > . . . > pbideb,N (t),
+
+deficit can acquire energy from other prosumers who are to determine the ask and bid intersection point, which corre-
+willing to sell their extra renewable energy or stored energy sponds to a seller K and a buyer L with paskes,K (t) > pbideb,L(t)
+
+VOLUME 10, 2022 42923
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+and paskes,K−1(t) ≤ pbideb,L−1(t). Once the intersection point is
+identified, it implies that the sellersK = {1, 2, . . . ,K−1} and
+the buyers L = {1, 2, . . . ,L − 1} will participate in energy
+trading and the trading price can be selected within the inter-
+val [paskes,K (t), p
+
+bid
+eb,L(t)] [39]. As in [33], theK−1 participating
+
+sellers and L − 1 participating buyers will exchange energy
+at a trading price given by
+
+pask
+p es,K (t)+ p
+
+bid
+eb,L(t)
+
+ET (t) = . (22)
+2
+
+Note that paskes,K (t) < pET (t) < pbideb,L(t).
+Given the trading price in (22), the participating sellers K
+
+and buyers L redetermine the amounts of energy to sell
+and buy, gadjes,k (t) and gadjeb,l(t), respectively, by solving the
+optimization problem P3. Then in order to match the supply
+and demand, the market clearing scheme developed in [38]
+is adopted to decide the amount of energy traded between
+each of the K −1 participating sellers and L−1 participating
+buyers, which is given in the following two rules, such that the
+total energy dem∑and and supply will balance while ensuring
+a strategy-proof double auction.
+• Rule 1: if K−1
+
+k=1 g
+adj ∑L−1
+es,k (t)
+
+a
+≥ l=1 g
+
+dj
+eb,l(t), i.e., the total
+
+supply exceeds the total demand, the amount of energy
+traded by each participating seller k ∈ K and each
+
+FIGURE 2. Implementation of the online P2P energy trading system.
+participating buyer l ∈∑L is given by
+
+K−1
+gET k=1 g
+
+adj ∑L−1
+es,k (t)
+
+a
+− l=1 g
+
+dj
+eb,l(t)
+
+es,k (t) = gadjes,k (t)− K − 1 trading algorithm provides a low-complexity alternative for
+gET each prosumer to independently determine its energy control
+eb,l(t) =∑gadjeb,l(t). (23)
+
+decisions along with energy trading decisions by solving its
+• Rule 2: if K−1
+
+k=1 g
+adj ∑L−1
+es,k (t)
+
+a
+< l=1 g
+
+dj
+eb,l(t), i.e., the total optimization problem P3 on a per slot basis with all infor-
+
+demand exceeds the total supply, the amount of energy mation obtained locally or through simple bi-communication
+traded by each participating seller k ∈ K and each between each prosumer and the auctioneer, without requiring
+participating buyer l ∈ L is given by any statistical information of the system. The integration of
+gET the energy control algorithm with the double auction mecha-
+es,k (t) = gadjes,k (t) ∑ nism allows each prosumer to determine its energy manage-
+
+L−1
+gET l=1 g
+
+adj ∑K−1
+eb,l(t)
+
+a
+− k=1 g
+
+dj
+es,k (t)
+
+eb,l(t) = gadj
+ment decisions as a response to its energy supply condition
+
+eb,l(t)− .
+L − 1 as well as the collective energy supply condition of other
+
+(24) prosumers, which is reflected through the energy trading
+As elaborated in [38], using Rule 1 or Rule 2 to balance price. The proposed energy trading framework is relatively
+
+the demand and supply among the participating sellers and simple to be implemented and can cope with an arbitrary
+buyers, we have number of prosumers while preserving the privacy of the
+Lemma 3: In each time slot, no prosumer participating prosumers.
+
+in the energy trading auction benefits by deviating from its
+truthful offer price paskes,i(t) or bid price p
+
+bid C. PERFORMANCE ANALYSIS
+eb,i(t) given in (20)
+
+and (21), and the double auction is strategy-proof. Since the time-coupling constraint (6) is replaced with the
+Proof: See Appendix C.  time-average constraint (13), the solution to P3 might not be
+
+After balancing the demand and supply, the participating feasible for P1. It is shown in the following Lemma that the
+sellers and buyers decide their optimal control actions Yi(t) boundedness of the energy states (8) in P1 can be satisfied
+using the finalized trading price, pET (t), given in (22), and by appropriately designing the perturbation parameter, θi and
+the quantities of energy to trade, gET the control parameter, Vi, so that the solution to P3 meets all
+
+es,k (t)/g
+ET
+eb,l(t), obtained
+
+by (23)/(24). constraints of P1. Thus, the control decisions Y(t) derived
+The online P2P energy trading system is summarized in from P3 are a feasible set of P1.
+
+Fig.2. In summary, by transforming the original stochastic Lemma 4: Set the perturbation parameter θ as
+control optimization problem P1 into the linear program-
+ming problem P3, the Lyapunov based energy control and θi , Smini + η
+
+dis
+i Rdisi + Vip
+
+max/ηdisi , (25)
+
+42924 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+where
+ηdis
+
+0 < V i (Smaxi − Smini − η
+ch
+i R
+
+ch
+i − η
+
+dis
+i Rdisi )
+
+i ≤ . (26)
+pmax
+
+Then, under the energy control and trading algorithm,
+we have
+
+1) In each time slot t,
+
+Smini ≤ Si(t) ≤ Smaxi , ∀t, (27)
+
+i.e., the control decision Yi(t) derived from P3 is feasi-
+ble to P1.
+
+2) The resulting time-averaged cost under the proposed
+energy control and trading algorithm by solving P3,
+C∗P3,i, is within bound Bi/Vi of the optimal cost of P1,
+C∗P1,i, i.e.,
+
+B
+C∗P3,i − C
+
+∗ i FIGURE 3. An illustrative example of solar generation and demand
+P1 profiles of different types of prosumers.
+,i ≤ , (28)
+
+Vi
+where B 1
+
+i , s
+2 [(η
+
+di is
+i Rdi )2 + (ηchi R
+
+ch
+i )2 + (1+ εi)2].
+
+Proof: See Appendix D.  We randomly generate 10 prosumers: 3 Type I prosumers
+Lemma 4.1 indicates that the control decisions Yi(t) with 26.30kWh of average load demand and 8.51kWh of
+
+derived by the proposed energy control and trading algo- average solar generation per day, 3 Type II prosumers with
+rithm are a feasible set of P1. Lemma 4.2 further charac- 31.97kWh of average load demand and 14.83kWh of average
+terizes the gap between the expected time-averaged energy solar generation per day, and 4 Type III prosumers with
+cost achieved by P3 and the optimal energy cost of P1, 39.11kWh of average load demand and 29.40kWh of average
+which implies that this performance gap can be mini- solar generation per day. Note that there are just slight dif-
+mized by setting the control parameter V as Vmax
+
+i , ferences in the load profiles of different types of prosumers,
+ηdisi (Smaxi −Smini −η
+
+ch
+i R
+
+ch
+i −η
+
+dis
+i Rdisi ) while the solar generation profiles of different types of pro-
+
+p .
+max sumers differ considerably. For the sake of easy comparison,
+
+V. NUMERICAL SIMULATION the average monthly solar generations and load demands
+A. SIMULATION SETUP of individual prosumers are listed in Table 1. In addition,
+In order to evaluate the effectiveness of the proposed energy the corresponding average monthly costs without any DSM
+trading system, a residential microgrid consisting of 10 inter- mechanism are listed in Table 1 as lower benchmarks.
+connected prosumers with solar systems is considered. The Each prosumer is equipped with a battery with Smaxi listed
+prosumers are classified into 3 types: Type I with low elec- in Table 1 and ηchi = 0.8 and ηdisi = 1.2, respectively.
+tricity consumption and PV generation capacity, Type II with For the sake of simplicity, we assume Smini = 0.1Smaxi and
+
+Rchi = Rdisi = 0.15Smaxmedium electricity consumption and PV generation capac- i , and set the initial battery energy
+ity, and Type III with high electricity consumption and PV level as Smini . The per unit cost of stored solar energy of
+
+each prosumer, cDERgeneration capacity. The prosumers in the same type produce i , associated with its solar system and
+a similar amount of solar energy in each time slot and the battery are listed in Table 1. The simulation is performed for
+load demand profiles of different prosumers resulting from a duration of 90 days with T = 2160 and the Time-of-Use
+the operation of various appliances vary temporally, as shown tariff of Johannesburg city power, in which the peak, stan-
+in Fig.3. The time-varying energy consumption of household dard and off-peak energy prices are R1.7268, R1.3660 and
+appliances is simulated using the appliance demand profile R1.0746 per kWh, respectively, is used in the simulation.
+generator (ADPG) developed in [37] to synthesize the vari-
+ability in the load demands among prosumers at different B. SIMULATION RESULTS AND ANALYSIS
+times of day. For each prosumer, the total load demand gen- Fig.4 and Fig.5 illustrate how the trading price and the traded
+erated by the ADPG in each time slot is used as the most energy are influenced by the energy supply condition of the
+preferred load request Di(t), while the inelastic load Di(t) system and the utility grid prices. As can be observed, the
+is randomly set from [0.3Di(t), 0.9Di(t)]. The QoS related spikes in the trading prices coincide with a) the drops in the
+parameters δi(t) and εi are randomly selected from [1.8, 3.8] stored energy; and b) the rise in the energy deficit. In other
+and [0.4, 0.9], respectively. The values of the parameters words, the P2P trading price reflects the changes in the energy
+δi(t) are chosen to ensure the weighted discomfort cost is supply condition of the system: the more energy available for
+comparable to the energy cost in the objective function of trading, the lower the trading price, which encourages local
+the optimization problem P1, so that both energy cost and energy trading and consumption, as shown in Fig.5. In con-
+discomfort cost are active factors in the optimization problem. trast, when less energy is available for trading, the trading
+
+VOLUME 10, 2022 42925
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+FIGURE 4. Real time P2P trading prices and energy supply conditions of
+the system.
+
+FIGURE 5. Real time P2P trading energy and energy supply conditions of
+the system.
+
+price rises, which in turn induces the prosumers to adjust
+their energy consumption in response to the higher trading
+price. Additionally, the trading prices, which are capped by
+the utility grid prices, fluctuate based on the utility grid prices.
+
+The traded energy can be classified into the following four
+cases: 1. the sold PV generation is used to serve buyers’ loads
+directly; 2. the sold PV generation is stored into buyers’ ESSs;
+3. the sold energy from sellers’ ESSs is used to serve buyers’
+loads; 4. the sold energy from sellers’ ESSs is stored into
+buyers’ ESSs. It can be observed in Fig.5 that, while the
+incidence of case 1 is much lower as net demand patterns
+among prosumers are relatively similar, a large portion of
+surplus energy production is traded in case 2 taking advantage
+of the increased flexibility brought by the ESSs. Particularly,
+more energy is traded in case 2 in response to the higher utility
+grid prices. In the case of the stored energy, a large portion
+of energy brought at relatively cheaper prices in energy trad-
+ing is used for load-serving (case 3) to reduce energy costs FIGURE 6. Real-time energy storage scheduling and energy purchasing
+of buyers. Since charging and discharging can not happen from the utility company.
+
+simultaneously, under the proposed energy control algorithm,
+a prosumer could sell its stored energy only in the case of
+energy deficit, where the energy available for discharging is serve its load with energy bought via energy trading, thereby
+allocated for load-serving first. Hence, just a smaller portion purchasing less energy from the utility company, as shown
+of the stored energy is sold in case 4 when the grid prices are in Fig.5.
+peaked, so that both sellers and buyers benefit from energy Although the role of each prosumer in energy trading
+trading. dynamically changes with its net-demand, it can be observed
+
+To verify the effectiveness of the proposed energy trading in Fig.7(b) that, in energy trading, the Type I prosumers, with
+mechanism, comparisons are drawnwith the scenario without low ratios of PV generation to demand, buy more energy
+energy sharing, where each prosumer operates independently than what they sell, whereas the Type III prosumers, who
+under a similar Lyapunov based energy control algorithm and produce more solar energy, sell more energy. In addition, the
+does not share energy with each other. Fig.6 compares the energy traded by a prosumer is dependent not only on its
+real time energy storage scheduling and energy purchasing energy generation and storage capacities but also on other
+actions with and without energy trading. As shown in Fig.6, prosumers’ real-time net demands. Especially, prosumer 1,
+since stored energy in ESSs can be traded between prosumers, with a larger storage capacity, buys more energy than other
+the proposed energy trading mechanism allows more surplus Type I prosumers, while prosumer 7, with a lower ratio of PV
+solar generation to be stored into the ESSs, which in turn generation to demand, sells more energy than other Type III
+reduces the storage space available for the prosumers to prosumers.
+store energy purchased from the utility company. In addition, Fig.7(c) further demonstrates that, the prosumers with
+under the proposed energy trading mechanism, in addition to lower energy generation reduce energy purchases from the
+its stored energy, a prosumer with energy deficit is able to utility company after buying more energy via energy trad-
+
+42926 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+TABLE 1. Comparison of energy costs and solar generation curtailment rates of individual prosumers.
+
+ing, while the prosumers selling more energy via energy To evaluate the fairness of the proposed energy trading
+trading are able to keep enough storage space to store their mechanism, a similar energy trading mechanism without an
+surplus solar energy with almost zero solar generation cur- energy selling control scheme is compared. As shown in
+tailment as shown in Table 1, which in turn lowers their Fig.7, without a scheme to control energy selling in energy
+reliance on the utility grid. As illustrated in Fig.7(c), thanks trading, the Type III prosumers with more energy available
+to energy trading, the energy that individual prosumer pur- for trading sell energy as much as possible, so they have to
+chases from the utility grid is reduced by 2.03%-15.67%, purchase 5.83%-9.41% more energy at higher prices from
+and the total energy purchased from the utility company is the utility company to serve their loads, which leads to
+reduced by 8.17%, compared to the scenario without energy 0.77%-3.89% increase in their energy costs compared to the
+sharing. Accordingly, the monthly energy consumption cost proposed energy trading mechanism. In contrast, due to the
+of each prosumer decreases by 4.80%-15.93%, as shown incorporation of constraint (19), the proposed energy control
+in Fig.7(d). and trading algorithm ensures the Type III prosumers, who
+
+VOLUME 10, 2022 42927
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+FIGURE 7. Comparison of traded and purchased energy of individual prosumers with and without energy trading.
+
+contribute more energy, benefit more (11.84%-15.93% cost trading to contribute to the decisions of the trading prices,
+reduction compared to the scenario without energy sharing) under the proposed energy control and trading algorithm, the
+in energy trading compared to others, as can be observed energy management decisions of each prosumer depend not
+in Fig.7(d). only on its own energy supply condition, but also on the
+
+According to Table 1, compared with the lower benchmark energy supply conditions of others. Numerical evaluations
+case, the independent energy control algorithm reduces the provide a more comprehensive insight into the interactions
+monthly energy costs of the prosumers by 29.83%-54.47% among the self-interested prosumers with various energy
+with 6.82%-9.62% load demands being shed and 0.05%- generation and storage capacities and diverse load demand
+17.46% solar production being curtailed. Under the proposed profiles. Simulation results show that, compared to the sce-
+energy trading framework, each prosumer achieves a further nario without energy sharing, energy exchange via energy
+2.03%-15.67% cost reduction with a slightly lower demand trading reduces the energy costs of individual prosumers
+shedding rate (6.53%-9.62%) and near-zero solar generation and improves the utilization efficiency of local renewable
+curtailment (0-3.69%). generation, while ensuring the fair sharing of the benefits
+
+reaped from energy trading. Since the proposed online energy
+VI. CONCLUSION control and trading algorithm allows each prosumer to inde-
+This paper studies the real time energy trading problem in pendently control its DER and determine its bid on a per slot
+smart energy communities and presents a double auction basis, prosumers are able to freely join or leave the proposed
+based energy trading system that integrates energy consump- scalable energy trading system anytime without increasing
+tion management, energy storage control and energy trading, computational complexity.
+aiming to minimize the long-term time-averaged costs of
+individual prosumers while maintaining customer comfort. APPENDIX A
+Based on the Lyapunov theory, we propose an online energy Proof of Lemma 1:
+control and trading algorithm, under which each prosumer According to the definition of Li(2i(t)),
+optimizes its energy trading decision along with its energy
+consumption management and storage charging/discharging Li(2i(t + 1))− Li(2i(t))
+decisions in an independent manner without requiring any 1 1
+
+= [E t 1 2 E ( ) ]
+2 i( + ) 2
+
+− i t + [Q t 1 2 Q ( ) ]
+2 i( + ) 2
+
+statistical knowledge of the system. Since the double auction − i t .
+
+mechanism enables all prosumers participating in energy (29)
+
+42928 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+Based on the queue update rule in (15), we have + Vip(t)[Di(t) R
+− gi (t)]+ [Vip(t)+ Ei(t)ηchi ]gsi (t)
+
+E D
+i(t + 1)2 − Ei(t)2 i(t)− Di(t)
+
++ Viδi[Di(t)− Di(t)]2 + Qi(t)
+dis D
+
+= 2Ei(t)[ηch ch ch s i(t)− Di(t)
+i gi (t)+ ηi gi (t)
+
+is
+− ηdi gi (t)]
+
+h h h dis is s.t. (8) (15) (16). (33)
++[ηci g
+
+c
+i (t)+ ηci g
+
+s
+i (t)− ηi gdi (t)]2
+
+≤ 2E As can been seen
+i(t)[ηchi g
+
+ch
+i (t) dis
++ ηchi g
+
+s
+i (t)− ηi gdisi (t)]
+
+ch ch 2 dis – If pebi (t) − p(t) ≤ 0, i.e., pebi (t) ≤ p(t), prosumer i
++(ηi Ri ) + (ηi Rdis 2
+
+i ) . (30) tends to increase geb−Di (t). Otherwise, geb−Di
+Similarly, based on the queue update rule of Qi(t) in (16), (t) = 0;
+Qi(t 2
++ 1) − Qi(t)2 is upper bounded by – If E dis
+
+i(t)ηi +Vip(t) ≥ 0, i.e., p(t) is
+≥ −Ei(t)ηdi /Vi,
+
+prosumer i tends to increase gdis−D
+Q i (t). Otherwise,
+i(t + 1)2 −[ Qi(t)2 ] [ ] gdis−D
+
+2 i (t) = 0;
+Di(t)− Di(t) Di(t)− D (t) – If Ei(t)ηchi + Vipeb eb
+
+i (t) ≤ 0, i.e., pi (t) ≤
+≤ 2Qi(t)
+
+i
+
+[ − εi
+(t)− D −E
+
+i(t) ]+ + εi
+Di Di(t)− Di(t) i(t)ηchi /Vi, prosumer i tends to increase
+
+geb−E
+D i (t). Otherwise, geb−Ei (t) = 0;
+i(t)− D (t)
+
+≤ 2Qi(t)
+i
+− ε 1 )2i + ( + εi . (31) – If E s es
+
+i(t)ηdii + Vipi (t) ≥ 0, i.e., pesi (t) ≥
+Di(t)− Di(t) −Ei(t)ηdisi /Vi, prosumer i tends to increase
+
+es−E
+Applying inequalities (30) and (31) to (29), taking the condi- ges−Ei (t). Otherwise, gi (t) = 0.
+tional expectation over L Note that, the ask price is bounded by [cR
+
+i(2i(t + 1))− Li(2i(t)) given 2i(t) i (t), p(t)], where
+and adding the penalty termV cR
+
+i E{Ci(t)} yield the upper bound i (t) is the average per unit cost of prosumer i’s energy
+in (17). available for trading. In case p(t) ≥ −Ei(t)ηdisi /Vi,
+
+we have gdis−Di (t) > 0. Since energy charging and
+APPENDIX B discharging can not happen simultaneously, prosumer
+Proof of Lemma 2 i is not able to buy energy via energy trading to store
+
+We first rearrange the optimization problem P3 to into its battery, i.e., geb−Ei (t) = 0. In case p(t) <
+dis is−D
+
+−Ei(t)ηi /Vi, we have gdi (t) = 0. Prosumer i tends
+P4 h ch is
+: min [Vip(t)+Ei(t)ηc
+
+t) i ]gi (t)−[Vip(t)+ Ei(t)ηdisi ]gdi (t)
+Y( to increase geb−Ei (t) by choosing the bid price pebi (t) =
+
+min{−Ei(t)ηch
++[V i /Vi, p(t)}.
+
+ip(t) es s
+− Vipi ]g
+
+e
+i (t)− [Vip(t)− Vipebi ]gebi (t)
+
+• Energy Surplus: when gR
+h s i (t) ≥ Di(t), we have
+
++[Vip(t)+ Ei(t)ηci ]gi (t)+ Vip(t)g
+l
+i(t) gl −E D
+
+i(t) = 0, gdis−Di (t) = 0, gesi (t) = 0, and geb−i
+2 Di(t)− Di(t) (t) = 0. Then, the optimization problem P4 can be
+
++Viδi[Di(t)− Di(t)] + Qi(t) ,
+D written as follows:
+i(t)− Di(t)
+
+= Ei(t)ηchi g
+ch−R
+i (t) dis −D
+
+− Ei(t)ηi gdisi (t) P5− b
+E
+
++[Ei(t)ηchi + Vip
+eb
+i (t)]geb−i (t) min E ch−R es
+
+i(t)ηch
+Y(t) i gi (t)− Vipi (t)g
+
+es−R
+i (t)
+
+E
+−[Ei(t)ηdisi + Vip
+
+es
+i (t)]g
+
+es−
+i (t)
+
++ [Ei(t)ηch eb
+i + Vipi (t)]geb−Ei (t)
+
++[Vip(t)+ Ei(t)ηchi ]gsi (t)+ Vip(t)g
+l
+i(t) + [V
+
+b ip(t)+ Ei(t)ηch
+−D es i ]gsi (t)
+
++Vipei (t)gebi (t)− Vipi (t)g
+es−R
+i (t) D (t)− Di(t)
+D )− D + Viδi[Di(t)− Di(t)]2
+
+i
++ Qi(t)
+
++Viδi[Di(t)− Di(t)]2 Q i(t i(t)
++ i(t) Di(t)− Di(t)
+
+Di(t)− Di(t) s.t. (8) (15) (16). (34)
+s.t. (4) (5) (8) (15) (16). (32)
+
+As can been seen
+We consider the following two cases: – If Ei(t) < 0, prosumer i tends to increase gch−Ri (t).
+• Energy Deficit: when gRi (t) < Di(t), according to (4), Otherwise, gch−Ri (t) = 0;
+we have gli(t)
+
+dis−D D
+= Di(t) − gRi (t) − gi (t) − geb−i (t), – If E h eb
+
+i(t)ηci + Vipi (t) < 0, i.e., pebi (t) <
+gch−Ri (t) = 0 and ges−Ri (t) = 0. Then, the optimization −Ei(t)ηchi /Vi, prosumer i tends to increase
+problem P4 can be written as follows: geb−Ei (t). Otherwise, geb−Ei (t) = 0;
+
+P5 – If pes
+− a i (t) ≥ 0, prosumer i tends to increase ges−Ri (t).
+
+Otherwise, ges−R
+min V i (t) = 0.
+
+i[pebi (t)− p(t)]geb−Di (t)
+Y(t) In case Ei(t) ≥ 0, we have gch−Ri (t) = 0, i.e., prosumer
+
+is D i’s surplus renewable energy is not able to be stored
+− [Ei(t)ηdi + Vip(t)]g
+
+dis−
+i (t)
+
+eb into its battery. Prosumer i tends to increase ges−Ri (t) by
++ [Ei(t)ηchi + Vipi (t)]geb−Ei (t) choosing the lowest possible ask price, i.e., the average
+
+es
+− [Ei(t)ηdisi + Vipi (t)]g
+
+es−E
+i (t) per unit cost of prosumer i’s energy available for trading,
+
+VOLUME 10, 2022 42929
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+cRi (t), to reduce its energy cost and avoid the waste of – Case 1: Ei(t) ≥ −Vipesi (t)/η
+dis
+i , as pesi (t) < p(t),
+
+renewable energy. On the other hand, in case Ei(t) < 0, we have gs
+∗
+
+i (t) = 0 and
+prosumer i tends to increase gch−Ri (t) and ges−Ri (t) with 0 < ges−E
+
+∗
+
+i (t)+ gdis−D
+∗
+
+i (t) ≤ Rdisi .
+any ask price paskes,i(t) ≥ cRi (t). To encourage energy Based on the update equation (15), we have
+trading among prosumers to reduce conventional energy Ei(t + 1) < Ei(t) ≤ Smaxi − θi;
+purchase from the utility company, the ask price is set as In addition, as pesi (t) < p(t) < pmax , we have
+the lowest possible price: paskes,i(t) = cRi (t). Ei(t) > −Vipmax/ηdisi . Then, we get
+
+Ei(t + 1) ≥ Ei(t) − ηdisi Rdisi > −Vipmaxηdisi −
+ηdisi Rdisi = Smini − θi,APPENDIX C
+based on the definition of θi.Proof of Lemma 3 – Case 2: −Vipesi (t)/η
+
+dis
+i > Ei(t) ≥ −Vip(t)/ηdisi ,
+
+Prosumers are assumed to be rational so that each prosumer
+chooses a strategy that minimizes its energy cost. The proof we have gs
+
+∗
+
+i (t) = 0, ges−E
+∗
+
+i (t) = 0 and 0 <
+gdis−D
+
+∗
+
+i (t) ≤ Rdisof strategy-proofness is the same as Vickrey’s argument. i . Similar to Case 1, we have
+In the proposed double-auction mechanism, in each time slot, Ei(t + 1) < Ei(t) ≤ Smaxi − θi;
+the ask/bid price submitted by prosumer i, paskes,i(t)/p
+
+bid Similar to Case 1, as Ei(t) > −Vip(t)/ηdis
+eb,i(t), i ≥
+
+−Vipmax/ηdisis its reservation price that minimizes its energy cost, and the i , we have
+Ei(t + 1) = Ei(t)− ηdisi Rdistrading price pET (t) determined by the double-auction mech- i ≥ S
+
+min
+i − θi,
+
+anism is the actual energy trading price. Suppose prosumer i based on the definition of θi.
+submits ξpbideb,i(t) as its bid price. In case of p
+
+bid
+eb,i(t) > pET (t),
+
+– Case 3: −Vip(t)/ηdisi > Ei(t) ≥ −Vip(t)/ηchi ,
+we have gs
+
+∗
+
+i (t) = 0, ges−E
+∗
+
+i (t) = 0 and gdis−D
+∗
+
+i.e., prosumer i is supposed to win the trade, overbidding, i.e., i (t) =
+ξ > 1, results in the same benefit as if it bids pbideb,i(t). On the 0. Thus,
+other hand, underbidding, i.e., ξ < 1, may cause it to lose Smini − θi ≤ Ei(t + 1) = Ei(t) ≤ Smaxi − θi.
+
+– Case 4: Ei(t) < −Vip(t)/ηchi , we have 0 < gs
+∗
+
+the trade. Even it wins the trades with ξpbideb,i(t), it gets the i (t) ≤
+Rchi , ges−E
+
+∗
+
+i (t) = 0 and gdis−D
+∗
+
+same benefit as if it bids pbideb,i(t). In case of p
+bid i (t) = 0. Thus,
+eb,i(t) < pET (t),
+
+overbiddingmay lead to negative benefit if prosumer i’s bid is we have
+
+included in the final trade, or zero benefit, which is the same Ei(t + 1) > Ei(t) ≥ Smini − θi.
+
+as if it bids pbideb,i(t), if it’s bid is not included. Conversely, On the other hand, as Ei(t) < 0, we have
+Ei(t + 1) < Ei(t)+ ηchi R
+
+ch
+i < ηchi R
+
+ch
+underbidding just leads to zero benefit, which is the same as i ≤ S
+
+max
+i − θi,
+
+if it bids pbideb,i(t). For the same reasons, each prosumer who where the last inequality holds based on the defini-
+
+intends to sell its energy will report its true reservation price. tion of θi.
+
+• Energy Surplus:
+APPENDIX
+Proof of Lemma 4 – Case 1: Ei(t) ≥ 0, we have gs
+
+∗
+
+i (t) = 0, geb−E
+∗
+
+i (t) =
+Proof of Lemma 4.1: 0 and gch−R
+
+∗
+
+i (t) = 0. Thus, we have
+The per-slot problem P3 includes all constraints of the Smini − θi ≤ Ei(t + 1) = Ei(t) ≤ Smaxi − θi;
+
+original problem P1 except for the energy state constraint. – Case 2: 0 > Ei(t) ≥ −Vipebi (t)/ηchi , as pebi (t) <
+Hence, to prove the solution derived from P3 are feasible to p(t), we have gs
+
+∗
+
+i (t) = 0, geb−E
+∗
+
+i (t) = 0 and 0 <
+P1 is to show the energy state of prosumer i, Si(t), is bounded gch−R
+
+∗
+
+i (t) < Rchi . Based on the update equation (15),
+within [Smini , Smaxi ]. The proof proceeds by induction. First, we have
+it is obvious that the lower and upper bounds hold for t = 0. Ei(t + 1) > Ei(t) ≥ Smini − θi;We now suppose that Smini ≤ Si(t) ≤ Smaxi holds for time On the other hand, as Ei(t) < 0, we have
+slot t , which in turn indicates Smini − θi ≤ Ei(t) ≤ S
+
+max
+i − θi. Ei(t + 1) < Ei(t)+ ηchi R
+
+ch
+i < ηchi R
+
+ch
+i ≤ S
+
+max
+i − θi,
+
+Hence, to prove the boundary of Si(t) in (27) also holds for where the last inequality holds based on the defini-
+time slot t + 1, we need to prove Smini − θi ≤ Ei(t + 1) ≤ tion of θi.
+Smaxi − θi holds. – Case 3: −Vipebi (t)/ηchi > Ei(t) ≥ −Vip(t)/ηchi ,
+
+Let geb−D
+∗
+
+i (t), geb−E
+∗
+
+i (t), ges−R
+∗
+
+i (t), ges−E
+∗
+
+i (t), gch−R
+∗
+
+i (t), we have gs
+∗
+
+i (t) = 0 and 0 < geb−E
+∗
+
+i (t)+gch−R
+∗
+
+i (t) ≤
+gdis−D
+
+∗
+
+i (t), gl
+∗
+
+i (t), g
+s∗
+i (t) and D∗i (t) be the optimal solution Rchi . Thus, we have
+
+to (33) and (34). It is noticed thatD∗i (t) does not directly affect Ei(t + 1) ≤ Ei(t)+ ηchi R
+ch
+i ≤ S
+
+max
+i − θi.
+
+the virtual energy queue Ei(t). Hence, D∗i (t) can be treated as On the other hand, as Ei(t) < 0, similar to Case 2,
+a given load when determining how to schedule prosumer i’s we have
+battery charge/discharge.We now study the energy deficit and Ei(t + 1) < ηchi R
+
+ch
+i ≤ S
+
+max
+i − θi.
+
+energy surplus cases separately. – Case 4: Ei(t) < −Vip(t)/ηchi , we have 0 < gs
+∗
+
+i (t)+
+geb−E
+
+∗
+
+• Energy Deficit: We prove the upper and lower bounds i (t)+ gch−R
+∗
+
+i (t) ≤ Rchi . Thus, we have
+considering the following cases: Ei(t + 1) ≤ Ei(t)+ ηchi R
+
+ch
+i ≤ S
+
+max
+i − θi.
+
+42930 VOLUME 10, 2022
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+On the other hand, as Ei(t) < 0, similar to Case 2, [17] M. R. Alam, M. St-Hilaire, and T. Kunz, ‘‘Peer-to-peer energy trad-
+we have ing among smart Homes,’’ Appl. Energy, vol. 238, pp. 1434–1443,
+
+Mar. 2019.
+Ei(t + 1) < ηchi R
+
+ch
+i ≤ S
+
+max
+i − θi. [18] N. Liu, X. H. Yu, C. Wang, C. J. Li, L. Ma, and J. Y. Lei, ‘‘Energy-
+
+Proof of Lemma 4.2: sharingmodel with price-based demand response formicrogrids of peer-to-
+
+The proof of the performance boundary follows the perfor- peer prosumers,’’ IEEE Trans. Power Syst., vol. 32, no. 5, pp. 3569–3583,
+Sep. 2017.
+
+mance result derivation in the Lyapunov optimization frame- [19] C. Long, J. Wu, Y. Zhou, and N. Jenkins, ‘‘Peer-to-peer energy sharing
+work and is similar to that of our previous work. Interested through a two-stage aggregated battery control in a communitymicrogrid,’’
+
+readers may refer to [37] for details. Appl. Energy, vol. 226, pp. 261–276, Sep. 2018.
+[20] S. Malik, M. Duffy, S. Thakur, B. Hayes, and J. Breslin, ‘‘A priority-based
+
+approach for peer-to-peer energy trading using cooperative game theory
+in local energy community,’’ Int. J. Electr. Power Energy Syst., vol. 137,
+
+REFERENCES May 2022, Art. no. 107865.
+[1] W. Tushar, C. Yuen, H. Mohsenian-Rad, T. Saha, H. V. Poor, and [21] W. Tushar, T. K. Saha, C. Yuen, T. Morstyn, and M. D. McCulloch,
+
+K. L. Wood, ‘‘Transforming energy networks via peer-to-peer energy trad- ‘‘A motivational game theoretic approach for peer-to-peer energy trading
+ing: The potential of game-theoretic approaches,’’ IEEE Signal Process. in the smart grid,’’ Appl. Energy, vol. 243, pp. 10–20, Jun. 2019.
+Mag., vol. 35, no. 4, pp. 90–111, Jul. 2018. [22] W. Tushar, T. K. Saha, C. Yuen, M. I. Azim, T. Morstyn, H. V. Poor,
+
+[2] R. Zafar, A. Mahmood, S. Razzaq, W. Ali, U. Naeem, and D. Niyato, and R. Bean, ‘‘A coalition formation game framework
+K. Shehzad, ‘‘Prosumer based energy management and sharing in for peer-to-peer energy trading,’’ Appl. Energy, vol. 261, Mar. 2020,
+smart grid,’’ Renew. Sustain. Energy Rev., vol. 82, pp. 1675–1684, Art. no. 114436.
+Feb. 2018. [23] D. Qiu, Y. Ye, D. Papadaskalopoulos, and G. Strbac, ‘‘Scalable coordi-
+
+[3] E. Mengelkamp, J. Gärttner, K. Rock, S. Kessler, L. Orsini, and nated management of peer-to-peer energy trading: A multi-cluster deep
+C. Weinhardt, ‘‘Designing microgrid energy markets—A case study: reinforcement learning approach,’’ Appl. Energy, vol. 292, Jun. 2021,
+The Brooklyn microgrid,’’ Appl. Energy, vol. 210, pp. 870–880, Art. no. 116940.
+Jan. 2018. [24] T. Morstyn and M. D. McCulloch, ‘‘Multiclass energy management for
+
+Peer-to-Peer energy trading driven by prosumer preferences,’’ IEEE Trans.
+[4] T. Sousa, T. Soares, P. Pinson, F. Moret, T. Baroche, and E. Sorin,
+
+Power Syst., vol. 34, no. 5, pp. 4005–4014, Sep. 2019.
+‘‘Peer-to-peer and community-based markets: A comprehensive review,’’
+
+[25] Y. Guo, M. Pan, and Y. Fang, ‘‘Optimal power management of residential
+Renew. Sustain. Energy Rev., vol. 104, pp. 367–378, Jan. 2019.
+
+customers in the smart grid,’’ IEEE Trans. Parallel Distrib. Syst., vol. 23,
+[5] W. Tushar, C. Yuen, T. K. Saha, T.Morstyn, A. C. Chapman,M. J. E. Alam, no. 9, pp. 1593–1606, Sep. 2012.
+
+S. Hanif, and H. V. Poor, ‘‘Peer-to-peer energy systems for connected [26] S. Salinas, M. Li, P. Li, and Y. Fu, ‘‘Dynamic energy management for the
+communities: A review of recent advances and emerging challenges,’’ smart grid with distributed energy resources,’’ IEEE Trans. Smart Grid,
+Appl. Energy, vol. 282, Jan. 2021, Art. no. 116131. vol. 4, no. 4, pp. 2139–2151, Dec. 2013.
+
+[6] W. Hou, G. Tian, L. Guo, X. Wang, X. Zhang, and Z. Ning, ‘‘Cooperative [27] S. Sun, M. Dong, and B. Liang, ‘‘Distributed real-time power balancing in
+mechanism for energy transportation and storage in internet of energy,’’ renewable-integrated power grids with storage and flexible loads,’’ IEEE
+IEEE Access, vol. 5, pp. 1363–1375, 2017. Trans. Smart Grid, vol. 7, no. 5, pp. 2337–2349, Sep. 2016.
+
+[7] W. Tushar, T. K. Saha, C. Yuen, T. Morstyn, Nahid-Al-Masood, H. V. Poor, [28] Y. Huang, S. Mao, and R. M. Nelms, ‘‘Adaptive electricity scheduling
+and R. Bean, ‘‘Grid influenced Peer-to-Peer energy trading,’’ IEEE Trans. in microgrids,’’ IEEE Trans. Smart Grid, vol. 5, no. 1, pp. 270–281,
+Smart Grid, vol. 11, no. 2, pp. 1407–1418, Mar. 2020. Jan. 2014.
+
+[8] T. Morstyn, N. Farrell, S. J. Darby, and M. D. McCulloch, ‘‘Using [29] W. Shi, N. Li, C.-C. Chu, and R. Gadh, ‘‘Real-time energy management
+peer-to-peer energy-trading platforms to incentivize prosumers to form in microgrids,’’ IEEE Trans. Smart Grid, vol. 8, no. 1, pp. 228–238,
+federated power plants,’’ Nature Energy, vol. 3, no. 2, pp. 94–101, Jan. 2017.
+Feb. 2018. [30] N. Liu, X. Yu, W. Fan, C. Hu, T. Rui, Q. Chen, and J. Zhang,
+
+[9] S. Park, J. Lee, S. Bae, G. Hwang, and J. K. Choi, ‘‘Contribution- ‘‘Online energy sharing for nanogrid clusters: A Lyapunov optimiza-
+based energy-trading mechanism in microgrids for future smart grid: A tion approach,’’ IEEE Trans. Smart Grid, vol. 9, no. 5, pp. 4624–4636,
+game theoretic approach,’’ IEEE Trans. Ind. Electron., vol. 63, no. 7, Sep. 2018.
+pp. 4255–4265, Jul. 2016. [31] D. Zhu, B. Yang, Q. Liu, K. Ma, S. Zhu, C. Ma, and X. Guan, ‘‘Energy
+
+[10] F. Luo, Z. Y. Dong, G. Liang, J. Murata, and Z. Xu, ‘‘A distributed trading in microgrids for synergies among electricity, hydrogen and heat
+electricity trading system in active distribution networks based on multi- networks,’’ Appl. Energy, vol. 272, Aug. 2020, Art. no. 115225.
+agent coalition and blockchain,’’ IEEE Trans. Power Syst., vol. 34, no. 5, [32] Y. Zhou, J. Wu, and C. Long, ‘‘Evaluation of peer-to-peer energy sharing
+pp. 4097–4108, Sep. 2019. mechanisms based on a multiagent simulation framework,’’ Appl. Energy,
+
+[11] A. Paudel, K. Chaudhari, C. Long, and H. B. Gooi, ‘‘Peer-to-Peer energy vol. 222, pp. 993–1022, Jul. 2018.
+trading in a prosumer-based community microgrid: A game-theoretic [33] Y. Wang, W. Saad, Z. Han, H. V. Poor, and T. Basar, ‘‘A game-theoretic
+model,’’ IEEE Trans. Ind. Electron., vol. 66, no. 8, pp. 6087–6097, approach to energy trading in the smart grid,’’ IEEE Trans. Smart Grid,
+Aug. 2019. vol. 5, no. 3, pp. 1439–1450, May 2014.
+
+[12] J. Li, Y. Ye, D. Papadaskalopoulos, and G. Strbac, ‘‘Computationally [34] S. Sun, M. Dong, and B. Liang, ‘‘Joint supply, demand, and energy storage
+efficient pricing and benefit distribution mechanisms for incentivizing management towards microgrid cost minimization,’’ in Proc. IEEE Int.
+stable peer-to-peer energy trading,’’ IEEE Internet Things J., vol. 8, no. 2, Conf. Smart Grid Commun. (SmartGridComm), Venice, Italy, Nov. 2014,
+pp. 734–749, Jan. 2021. pp. 3–6.
+
+[13] A. Jiang, H. Yuan, and D. Li, ‘‘A two-stage optimization approach on the [35] S. Han, S. Han, and K. Sezaki, ‘‘Economic assessment on V2G fre-
+decisions for prosumers and consumers within a community in the Peer-to- quency regulation regarding the battery degradation,’’ in Proc. IEEE PES
+peer energy sharing trading,’’ Int. J. Electr. Power Energy Syst., vol. 125, Innov. Smart Grid Technol. (ISGT), Washington, DC, USA, Jan. 2012,
+Feb. 2021, Art. no. 106527. pp. 16–20.
+
+[14] P. Shamsi, H. Xie, A. Longe, and J.-Y. Joo, ‘‘Economic dispatch for an [36] M. Neely, Stochastic Network Optimization With Application to Commu-
+agent-based community microgrid,’’ IEEE Trans. Smart Grid, vol. 7, no. 5, nication and Queueing Systems. Morgan & Claypool, USA: 2010.
+pp. 2317–2324, Sep. 2016. [37] H. Zhu and K. Ouahada, ‘‘Credit-based distributed real-time energy stor-
+
+[15] T. Morstyn, A. Teytelboym, andM. D. McCulloch, ‘‘Bilateral contract net- age sharing management,’’ IEEE Access, vol. 7, pp. 185821–185838,
+works for peer-to-peer energy trading,’’ IEEE Trans. Smart Grid, vol. 10, 2019.
+no. 2, pp. 2026–2035, Mar. 2019. [38] P. Huang, A. Scheller-Wolf, and K. Sycara, ‘‘Design of a multi-unit
+
+[16] N. Su, P. Wei, S. Peter, D. Alahakoon, and X. Yu, ‘‘Optimizing double auction E-market,’’ Comput. Intell., vol. 18, no. 4, pp. 596–617,
+rooftop photovoltaic distributed generation with battery storage for Nov. 2002.
+peer-to-peer energy trading,’’ Appl. Energy, vol. 228, pp. 2567–2580, [39] D. Friedman and J. Rust, The Double Auction Market: Institutions, Theo-
+Oct. 2018. ries and Evidence. Westview Press, USA: 1993.
+
+VOLUME 10, 2022 42931
+
+
+
+H. Zhu et al.: P2P Energy Trading in Smart Energy Communities: Lyapunov-Based Energy Control and Trading System
+
+HAILING ZHU received the M.Ing. degree in ADNAN M. ABU-MAHFOUZ (Senior Member,
+electrical and electronic engineering and the Ph.D. IEEE) received the M.Eng. and Ph.D. degrees
+degree in engineering management from the Uni- in computer engineering from the University of
+versity of Johannesburg, South Africa. She is cur- Pretoria. He is currently a Chief Researcher and
+rently a Research Fellow with the Department the Centre Manager of the Emerging Digital
+of Electrical and Electronic Engineering Science, Technologies for 4IR (EDT4IR) Research Cen-
+University of Johannesburg. Her research interests tre, Council for Scientific and Industrial Research
+include game theory, resource allocation, queuing (CSIR), an Extraordinary Professor at the Univer-
+theory, network economics, system optimization, sity of Pretoria, a Professor Extraordinaire at the
+and energy management. Her research is in the Tshwane University of Technology, and a Visiting
+
+broad area of game theoretical applications in communication systems and Professor at the University of Johannesburg. He participated in the for-
+modeling and optimization of communication networks. mulation of many large and multidisciplinary research and development
+
+successful proposals (as a principal investigator or main author/contributor).
+KHMAIES OUAHADA (Senior Member, IEEE) He is the Founder of the Smart Networks collaboration initiative that aims
+received the B.Eng. degree from the University to develop efficient and secure networks for the future smart systems, such
+of Khartoum, Sudan, in 1995, and the M.Eng. as smart cities, smart grid, and smart water grid. His research interests
+(Hons.) and D.Eng. degrees from the University of include wireless sensor and actuator networks, low power wide area net-
+Johannesburg, South Africa, in 2002 and 2009, works, software-defined wireless sensor networks, cognitive radio, network
+respectively. He worked with Sudatel, Sudanese security, network management, and sensor/actuator node development. He is
+National Communications Company. He is a member of many IEEE technical communities. He is a Section Editor-
+currently a Professor with the University of in-Chief at the Journal of Sensor and Actuator Networks and an Associate
+Johannesburg. He is also the Founder and the Editor of IEEE ACCESS, IEEE INTERNET OF THINGS JOURNAL, and the IEEE
+Chairperson of the Centre for Smart Communica- TRANSACTIONS ON INDUSTRIAL INFORMATICS.
+
+tions Systems, Faculty of Engineering and the Built Environment, University
+of Johannesburg. He is a Rated Researcher with the National Research Foun-
+dation of South Africa. His research interests include information theory,
+coding techniques, power-line communications, visible light communica-
+tions, smart grid, energy demand management, renewable energy, wireless
+sensor networks, reverse engineering, and engineering education. He is
+a Senior Member of the IEEE Information Theory and Communications
+societies and the SAIEE Society. He is also a member of the IEEE South
+Africa Information Theory Society Chapter.
+
+42932 VOLUME 10, 2022

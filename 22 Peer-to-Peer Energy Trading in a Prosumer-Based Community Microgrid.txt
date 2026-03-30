@@ -1,0 +1,1179 @@
+﻿IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019 6087
+
+Peer-to-Peer Energy Trading in a
+Prosumer-Based Community Microgrid:
+
+A Game-Theoretic Model
+Amrit Paudel , Student Member, IEEE, Kalpesh Chaudhari , Student Member, IEEE,
+
+Chao Long , Member, IEEE, and Hoay Beng Gooi , Senior Member, IEEE
+
+Abstract—This paper proposes a novel game-theoretic infrastructures enables the residential consumers to harness en-
+model for peer-to-peer (P2P) energy trading among the pro- ergy and inject into the distribution systems. This advancement
+sumers in a community. The buyers can adjust the energy changes the residential consumers into prosumers. An entity that
+consumption behavior based on the price and quantity of
+the energy offered by the sellers. There exist two separate has the capability to produce, consume, and possibly also has
+competitions during the trading process: 1) price competi- demand response (DR) capacities is known as prosumer [2]. A
+tion among the sellers; and 2) seller selection competition group of prosumers can be integrated as a prosumer energy com-
+among the buyers. The price competition among the sell- munity. The small-scale power system in a house is known as a
+ers is modeled as a noncooperative game. The evolutionary prosumer nanogrid [3]. The terms prosumer nanogrid and pro-
+game theory is used to model the dynamics of the buyers
+for selecting sellers. Moreover, an M-leader and N-follower sumer are used interchangeably in this paper. Several nanogrids
+Stackelberg game approach is used to model the interac- serving in close proximity can be combined to form a commu-
+tion between buyers and sellers. Two iterative algorithms nity microgrid.
+are proposed for the implementation of the games such that A community microgrid presents a new basis for distribution
+an equilibrium state exists in each of the games. The pro- grid with various operating constraints and business models.
+posed method is applied to a small community microgrid
+with photo-voltaic and energy storage systems. Simulation It aims at extending the benefits of the traditional microgrid by
+results show the convergence of the algorithms and the ef- sharing the distributed energy resources (DERs) among multiple
+fectiveness of the proposed model to handle P2P energy prosumers. In addition, the on-site use of energy generated from
+trading. The results also show that P2P energy trading pro- local DERs through energy trading in a community is more
+vides significant financial and technical benefits to the com- attractive than feeding the utility grid. This helps to alleviate
+munity, and it is emerging as an alternative to cost-intensive
+energy storage systems. the adverse impacts on the power systems [4]. A proper energy
+
+trading model is necessary to manage the local energy trading
+Index Terms—Community microgrid, energy storage, among multiple prosumers.
+
+game theory, peer-to-peer energy trading, prosumer. The peer-to-peer (P2P) network is a widely used model for re-
+I. INTRODUCTION source sharing in the field of computer science where resources
+
+are located in and provided by computers (i.e., peers) at the
+
+ENVIRONMENTAL benefits, financial incentives, and re- edge of the network [5]. Since a community microgrid consists
+duction in electricity bills motivate house owners to in- of several prosumers in close proximity having their own gen-
+
+stall renewable-based distributed generators and energy storage eration and demand, it can be modeled as a P2P network. A P2P
+units at residential buildings [1]. Increasing deployment of dis- energy trading model seems to be suitable for energy trading
+tributed generators and energy storage systems with intelligent in the prosumer-based community microgrid. P2P energy trad-
+
+ing is flexible between peers, where excess energy from various
+Manuscript received March 12, 2018; revised July 28, 2018 and August small-scale DERs is traded locally [6]. The P2P model encour-
+
+28, 2018; accepted September 19, 2018. Date of publication October 12, ages local energy trading and DR to the available resources in a
+2018; date of current version March 29, 2019. This work was supported
+by the Energy Innovation Program Office through the National Research community [7].
+Foundation and Singapore Energy Market Authority, under the Project Since P2P energy trading in a community microgrid is a new
+LA Contract NRF2014EWT-EIRP002-005. (Corresponding author: Amrit concept, a proper modeling framework is required to define
+Paudel.)
+
+A. Paudel and H. B. Gooi are with the School of Electrical and the business models, to determine energy prices, as well as to
+Electronic Engineering, Nanyang Technological University, Singapore implement DR programs in a community. The business model
+639798 (e-mail:,amrit003@e.ntu.edu.sg; ehbgooi@ntu.edu.sg). and energy pricing play a vital role because they determine the
+
+K. Chaudhari is with National Renewable Energy Laboratory, Golden,
+Colorado 80401, USA (e-mail:,kalpesh.chaudhari@nrel.gov). suitability of P2P trading in a community microgrid in terms of
+
+C. Long is with the School of Engineering, Cardiff University, CF24 financial benefits. The business model also forms a basis for the
+3AA Cardiff, U.K. (e-mail:,chao.long.10@gmail.com). implementation of DR programs.
+
+Color versions of one or more of the figures in this paper are available
+online at http://ieeexplore.ieee.org. The remainder of this paper is organized as follows. In
+
+Digital Object Identifier 10.1109/TIE.2018.2874578 Section II, state of the art is presented and major
+
+0278-0046 © 2018 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications standards/publications/rights/index.html for more information.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+6088 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019
+
+contributions in this paper are highlighted. The proposed model
+of the community microgrid for P2P energy trading is explained
+in Section III followed by the detail of evolutionary game among
+buyers in Section IV. In Section V, detail of noncooperative
+game among sellers is presented. Stackelberg game between
+sellers and buyers is explained in Section VI. Detailed simu-
+lation results are discussed in Section VII, and conclusion is
+drawn in Section VIII.
+
+II. STATE OF THE ART
+
+A. Related Works
+Alam et al. [8], has proposed a P2P energy trading model Fig. 1. Structure of a community microgrid for P2P trading.
+
+for smart households. The optimal microgrid energy and price
+for P2P trading are determined in order to minimize the total friendliness [21]. In situations where there are many prosumers
+energy cost. A customer-to-customer business based on the ar- with conflicting interests, it would be quite challenging either
+chitecture model for P2P energy trading is introduced in [9]. to capture such conflicting interests in the decision-making pro-
+The bidding system called Elecbay is proposed for P2P trad- cess of each participant or to motivate them to cooperate for
+ing, and simulation is done using game theory. An efficient and achieving the goals of P2P trading. Therefore, there should be
+privacy-preserving P2P energy exchange scheme in a smart grid a proper tool for modeling the decision-making process such as
+environment is presented in [10], with the novel optimization ap- deciding energy price, incorporating DR in P2P energy trading
+proach to increase efficient energy transfer without information in a community microgrid. The modeling tool should be able to
+leakage. In [11], a new algorithm has been proposed for au- deliver the energy management solution considering a diverse
+tomating electricity trading by prosumers in the P2P electricity set of constraints in a trading process. In this context, consider-
+market. A framework for performance evaluation using several ing the interactive and conflicting nature of energy trading in a
+indices is proposed in [12] to assess the economic performance community microgrid, game theory is a very effective tool for
+of P2P energy sharing models. A P2P index is developed to modeling the decision-making process of prosumers participat-
+assess the feasibility of P2P energy trading in low voltage dis- ing in the P2P energy trading.
+tribution system in [7]. Long et al. [13], has introduced different
+P2P market paradigms using bill sharing (BS), mid-market rate
+(MMR), and auction-based pricing strategies, but DR is not B. Major Contributions
+
+considered. The main contributions of this paper are summarized as
+In line with the above works on P2P energy trading, many follows.
+
+researchers have carried out research works on DR management 1) A novel game-theoretic model is proposed for P2P en-
+(DRM), energy sharing management, and real-time pricing ergy trading using direct interactions between buyers and
+using various game-theoretical approaches in [4], [14]–[16]. sellers in a community microgrid considering the DR
+Lee et al. [15], has proposed a competitive market based dis- capability and privacy of prosumers.
+tributed mechanism for energy trading among microgrids using 2) The pricing competition among the sellers is modeled as a
+multileader multifollower Stackelberg game. A Stackelberg noncooperative game; dynamics of buyers in the process
+game theory is used to study the DRM from various aspects of selecting sellers are modeled as an evolutionary game;
+in [17]–[19]. A hybrid approach using stochastic programming interaction between sellers and buyers is modeled as a
+and Stackelberg game is presented in [14] to coordinate energy Stackelberg game.
+sharing and energy consumption behavior of prosumers by 3) A novel iterative algorithm is proposed to reach the stable
+using internal prices. state in the evolutionary game among buyers for the seller
+
+In these works [4], [7], [13], [14], [20], a separate entity selection.
+acted as an energy trading coordinator and was responsible for 4) A novel distributed algorithm is proposed to obtain the
+the execution of energy trading. There was no direct commu- equilibrium in both noncooperative game among sellers
+nication between buyers and sellers. However, since prosumers and Stackelberg game between buyers and sellers.
+in a community are proactive, it is possible to perform P2P en-
+ergy trading in a community with less involvement of energy III. SYSTEM MODEL
+trading coordinator (i.e., using the direct communication or in-
+teraction between buyers and sellers). The direct involvement A. General Structure of Community Microgrid
+of each prosumer during the trading process is the main fea- Fig. 1 shows a structure of a smart community microgrid
+ture of P2P energy trading. It poses the challenge of modeling comprising several prosumers. Each prosumer comprises loads
+the decision-making process of each participant for the greater and photo-voltaic (PV) systems. Prosumers may or may not
+benefit of the entire community microgrid while considering hu- have battery energy storage systems (BESS) since deploying
+man factors such as rationality, motivation, and environmental energy storage systems in the residential level is costly. The PV
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+PAUDEL et al.: PEER-TO-PEER ENERGY TRADING IN A PROSUMER-BASED COMMUNITY MICROGRID: A GAME-THEORETIC MODEL 6089
+
+system of a prosumer is connected to the load and ac system The nominal demand represents the demand from regular ap-
+through dc/ac converter, which is also known as PV inverter. If pliances before the implementation of any DR program and the
+any prosumer has both a PV system and a battery, they can be installation of BESS.
+connected via a dc-coupled or an ac-coupled topology. In the
+dc-coupled topology, the battery is connected to the PV system B. Battery Energy Storage Systems
+at the dc side of the PV inverter through the dc/dc bidirectional Let Et−Δt
+
+n and Et
+n denote the battery energy level of pro-
+
+converter as shown in Prosumer 1 in Fig. 1. In the ac-coupled sumer n at the beginning and the end of the time slot t, P t
+topology, the battery is connected to the PV system at the ac ch,n
+
+denote the battery charging power of prosumer n at time slot t,
+side of the PV inverter through dc/ac bidirectional converter as and P t
+
+dch,n denote the battery discharging power of prosumer
+shown in Prosumer 2 in Fig. 1.
+
+n at time slot t. Let ηtch,n and ηtdch,n denote battery-charging
+All the prosumers in a community are connected to one an- and -discharging efficiencies of prosumer n. Assuming the self-
+
+other through the bidirectional power and communication links, discharge of the battery is negligible and the charge/discharge
+and a whole community microgrid is connected to the upstream power remains constant during a time slot, the dynamics of the
+utility grid via a one grid connection point. Smart meters are in- battery level can be modeled as follows [22]:
+stalled at each prosumer. Also, each prosumer has a local work- ( )
+station with an energy management system called prosumer ψt P t
+
+Et
+n = Et−Δt
+
+n + χtnP
+t n
+ch,n η
+
+t
+ch,n − dch,n
+
+energy management system (P-EMS). P2P energy trading algo- Δ (
+ηt
+
+× t 3)
+dch,n
+
+rithm is integrated with the P-EMS software. The smart meter
+measures the prosumer’s generation, consumption, and energy where χtn and ψtn are binary variables of prosumer n related to
+transaction with other prosumers or with the grid and sends charge and discharge states in time slot t.
+information to the local workstation for processing. To avoid simultaneous charging and discharging of the bat-
+
+We assume that there is an agent called P2P market operator tery, the following condition is required:
+(P2PMO), which assists in energy trading in a P2P market in a
+community. P2PMO is a part of the distribution system opera- χtn + ψtn ≤ 1. (4)
+
+tor and is assumed to serve free of charge to assist P2P trading In practical applications, the energy stored in a battery is re-
+because P2P trading helps reduce the congestion in the distri- stricted within a certain range, i.e.,
+bution system. Since the prosumers are serving nearby, and the
+
+Emin
+n ≤ Et
+
+n ≤ Emax
+amount of energy traded in the P2P market is small, we assume n (5)
+that transmission losses and transmission cost are negligible. where Emax
+
+n is the maximum capacity of the battery, and Emin
+n
+
+Smart meters are capable of communicating with other entities, is the minimum amount of energy that prevents the battery from
+and workstations are powerful enough to carry out the computa- deep discharge.
+tional tasks. During the trading process, all the communication The limits of charging and discharging powers are determined
+tasks are done using the smart meters, and computations are by the size of the inverter as follows:
+performed in local workstations.
+
+0 ≤ P t
+ch,n ≤ Pmax
+
+With the existing infrastructures explained, the main aim of ch,n
+
+this study is to develop an algorithm for P2P energy trading. The 0 ≤ P t
+dch,n ≤ Pmax
+
+dch,n (6)
+detailed working processes of smart meters, communication sys-
+tems, and physical infrastructures in the community microgrid where Pmax
+
+ch,n and Pmin
+ch,n are the maximum charging and discharg-
+
+are beyond th{e scope of thi}s paper. ing powers.
+Let N = 1, 2, 3, ..., N denote the set of the prosumers In the conventional peer-to-grid (P2G) trading, the excess PV
+
+in the community with n ∈ N , and N  |N | gives the to- energy of the prosumer is used to charge the battery until the
+tal number of prosumers in the community. We assume that battery is fully charged and the remaining is fed back to the
+the total operation time is divided into different slots of equal grid. The stored energy is used to meet the demand when PV
+interv{al Δt. In this} study we have considered Δt = 1 h. Let generation is lower than the demand. The prosumer buys energy
+T = 1, 2, 3, ..., T denote the set of all operation time slots from the grid when there is insufficient energy from the PV and
+with t ∈ T and T  |T | gives the total number of operation battery system.
+time slots. In P2P energy trading, if any prosumer has excess PV energy,
+
+The PV generation profile of prosumer n during a day can be the first priority is to supply to the neighbors who have unmet
+defined as follows: consumption in the community and if there is any remaining
+
+power, which is used to charge the battery. When the demand
+{ } is higher than the PV generation, some of the unmet demand
+
+Gpv,n = G1
+pv,n , G
+
+2
+pv,n , G
+
+3
+pv,n , ..., G
+
+T
+pv,n , n ∈ N . (1)
+
+is satisfied by buying PV power from the neighbors through
+the P2P market at first, and the remaining, if there is any, is
+
+The nominal demand profile of prosumer n during the same met by discharging the own battery and buying power from the
+period can be defined as follows: grid. Furthermore, the stored energy in a particular prosumer’s
+
+{ battery can be used to supply its own demand only when that
+Dn = D1
+
+n ,D
+2
+n ,D
+
+3 }
+n , ...,D
+
+T
+n , n ∈ N . (2) prosumer participates in the P2P market. This is because if any
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+6090 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019
+
+prosumer can sell stored energy in the P2P market, the prosumer where yto,n is the nominal nonflexible demand of prosumer n at
+having high storage capacity and high excess generation during time t.
+certain hours can influence the market in other hours, which Assume that all the flexible loads are continuous in nature.
+discourage other prosumers to participate in the P2P market. Their reduction affects the comfort level and reduces the energy
+
+The use of battery systems should be justified by saving due cost of the prosumers.
+to its use. If Cc is the capital cost of the battery system (i.e., the If the amount of flexible load in nominal case at any time t is
+cost of the battery and converter),Cm is the annual maintenance βDt
+
+n , then we have the following:
+cost of the battery, and Ndays is the number of days in a year,
+then the equivalent daily cost (EDC) of the battery is given 0 ≤ ztn ≤ βDt
+
+n , 0 ≤ β ≤ 1 (14)
+by [23] where β is proportion of flexible demand.
+
+EDC = Cc ×
+r(1 + r)l × 1 C
+
++ m (7)
+(1 + r)l − 1 N E. Utility Function
+
+days Ndays
+
+where r is the discount rate, and l is the lifetime of the battery The responses of different prosumers to various scenarios can
+in years. The use of the battery is beneficial only if the saving be modeled by using the concept of utility function [24]. The
+in a day is higher than the EDC. utility function is a method to quantify the level of satisfaction
+
+or happiness that the prosumer receives when it consumes a
+C. Classification of Prosumers as a Seller and a Buyer certain amount of power.
+
+If x is the power consumption level and λ is the parameter
+The generation-to-demand ratio (GDR) of a prosumer n ∈ N to distinguish a prosumer from the others, the utility function
+
+in a given time period t ∈ T is defined as follows: can be represented by U(x, λ). There are two types of util-
+Gt ity functions frequently used for modeling the electricity con-
+
+GDRt
+n = pv,n
+
+. (8) sumers. They are logarithmic utility function [14]–[17], [25]
+Dt
+n
+
+{ } and quadratic utility function [18], [19], [24].
+Let S = n ∈ N|GDRt
+
+n > 1 represent the set of sellers at In this paper, we consider a quadratic utility function to quan-
+time slot twith index j ∈ S, and S = |S| gives the total number tify the satisfaction of prosumer n ∈ N at time t ∈ T
+of sellers at{time t. }
+
+Let B = n ∈ N|GDRt
+n < 1 represent the set of buyers at utn (xtn ) = λtnx
+
+t
+n − θn (xtn )2 xtn,min ≤ xtn ≤ xtn,max (15)
+
+2
+time slot twith index i ∈ B, andB = |B| gives the total number
+of buyers at time t. where λtn > 0 is a prosumer preference parameter character-
+
+The amount of power the prosumer j ∈ S can sell (export) at izing the prosumers’ behaviors, which vary from prosumer to
+time t is prosumer and may also vary along the time, and θn > 0 is a
+
+predetermined constant [24]. The terms xtn , xt
+P t
+
+ex,j = (GDRt
+j − 1)Dt
+
+j . (9) n,min, and xtn,max
+are the actual power consumption, its lower limit, and upper
+
+The maximum amount of power the prosumer i ∈ B can pro- limit for prosumer n at time t, respectively.
+cure at time t is
+
+F. Welfare Function for Buyer and Seller
+P t
+
+im,i = (1 − GDRt
+i)D
+
+t
+i . (10)
+
+If any buyer i ∈ B chooses seller j ∈ S, the welfare function
+D. Nonflexible and Flexible Demands of Prosumer of the buyer i can be defined as follows:
+
+Suppose that xtn , ytn , and ztn represent the total demand, non- Wt
+i = uti(x
+
+t
+i) − πtjx
+
+t
+j,i . (16)
+
+flexible demand, and flexible demand of the prosumer n ∈ N
+For any buyer i ∈ B
+
+at time t ∈ T , respectively. The total demand of prosumer n at
+any time t can be defined as follows: xti,min ≤ xti ≤ xti,max
+
+xtn = ytn + ztn . (11) xti = xtj,i +Gt
+i . (17)
+
+Let Yo,n andZo,n denote the nominal nonflexible and flexible Based on (17), the following condition is always true:
+demand profiles of the prosumer n ∈ N . According to (11), the
+
+xtj,i,min = xti,min −Gt
+nominal demand of the prosumer n can be expressed as follows: i
+
+Dn = Yo,n + Zo,n . (12) xtj,i,max = xti,max −Gt
+i
+
+The critical (nonflexible) loads are fixed and have no contribu- xtj,i,min ≤ xtj,i ≤ xtj,i,max (18)
+tion to DR. The total demand of the prosumer can be modified
+by adjusting the flexible demand. The adjusted demand of the where πtj , x
+
+t
+j,i , x
+
+t
+j,i,min, and xtj,i,max are the price decided by
+
+prosumer n ∈ N at time t ∈ T can be defined as follows: seller j, actual power the buyer i buys from seller j, and its
+lower and upper power limits buyer i can buy from the seller j
+
+xtn = yto,n + ztn (13) at time t, respectively. Now, the welfare function of any buyer i
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+PAUDEL et al.: PEER-TO-PEER ENERGY TRADING IN A PROSUMER-BASED COMMUNITY MICROGRID: A GAME-THEORETIC MODEL 6091
+
+In addition to the separate competition at the two levels of
+the P2P market, there is an interaction between the two levels.
+The main aim of this interaction between two levels is to set the
+appropriate strategies for both sellers and buyers to maintain
+the balance between supply and demand in the P2P market. In
+this paper, interaction between the two levels is modeled as a
+Stackelberg game.
+
+IV. EVOLUTIONARY GAME AMONG BUYERS
+
+In general, the players of the game are arranged in multiple
+groups. In this paper, without loss of generality, all the buyers
+are arranged in a single group, and there is only one population
+scenario in the game. The evolutionary game for P2P energy
+
+Fig. 2. Two levels of competition in P2P market. trading in the community can be precisely defined as follows:
+1) Players: buyers i ∈ B;
+2) Population: set of buyers;
+
+given by (16) can be expressed as follows: 3) Strategy: selection of seller;
+Wt 4) Utility: welfare function of the buyers.
+
+i (x
+t
+j,i) = uti(x
+
+t
+j,i +Gt
+
+i) − πtjx
+t
+j,i . (19)
+
+We have arranged all the buyers in a single population group,
+The welfare function of the seller j ∈ S can be defined as so all the buyers will show the same behavior, i.e., the strategy
+follows: of each buyer in the population is identical. Each buyer selects a
+
+Wt seller to purchase power when they receive the price announced
+j = utj (x
+
+t
+j ) + πtjmin(P t
+
+ex,j , S
+t
+j ). (20)
+
+by sellers. Each buyer then gradually adjusts its selection strat-
+Stj is the total demand of electricity coming to seller j at time egy and acts independently in the selection process [25].
+t and is defined in (22). For any seller, the nominal demand is Let γtj be the probability of the buyer i ∈ B choosing a seller
+always satisfied so that xtj = Dt ∑
+
+j . j ∈ S at time t, where 0 ≤ γtj ≤ 1 and S
+j=1 γ
+
+t
+j = 1. Since
+
+the strategies of all the population (buyers) are identical, the
+G. P2P Energy Trading Between Buyers and Sellers population state can be denoted as γt = [γt1 , γ
+
+t
+2 , γ
+
+t
+3 , ..., γ
+
+t
+S ].
+
+The aim of P2P trading is to maximize the welfare of both When buyer i selects seller j, the optimal amount of power
+buyers and sellers, and reduce the dependence on the upstream buyer i buying from seller j can be achieved by maximizing the
+grid. P2P energy trading is carried out in the following steps. welfare given by (19) subject to (18). Mathematically, we have
+
+1) Prosumers register into a P2P market as a seller or a buyer, the following:
+based on their GDR.
+
+2) After grouping of prosumers as a seller or a buyer, xt∗j,i = arg maxWt
+i . (21)
+
+xtP2PMO assigns a unique and encrypted identity to each j , i
+
+buyer and each seller, which maintains the anonymity of
+sellers and buyers ensuring privacy. The total demand of electricity comes to the seller j at time t
+
+3) The P2PMO sends uniquely assigned buyer identities to is given by
+
+all sellers and seller identities to all buyers. This estab- ∑B
+lishes direct communication between sellers and buyers. Stj = γtj xt∗j,i . (22)
+
+4) Each anonymous seller and each anonymous buyer par- i=1
+ticipate in a P2P energy trading game to obtain the stable
+state. The supply-to-demand ratio (SDR) for seller j at time t can
+
+5) Finally, P2PMO receives information about the final price be defined as follows:
+and amount of energy traded anonymously by different
+
+P t t
+prosumers to settle the financial transactions. νtj = ex,j Pex,j αt
+
+St
+= = j
+
+∑
+t
+
+j γ B t∗ 2 )
+γt
+
+( 3
+There are multiple sellers and multiple buyers in the com- j i=1 xj,i j
+
+munity. Two levels of competition exist in this multiseller and
+multibuyer P2P energy trading market as shown in Fig. 2. P t
+
+where,αt x, j
+j = ∑ e
+
+B
+i= 1 x
+
+t ∗ , andαtj , P
+t
+ex,j , and πtj are constant during
+
+The competition at the higher level is among the sellers to j , i
+
+the evolution process.
+sell their excess energy to the group of buyers at the lower The actual amount of power that buyer i buys from seller j at
+level. In this paper, competition among the sellers is modeled time t is given as follows:
+as a noncooperative game. The competition at the lower level is
+among multiple buyers to select the sellers to buy energy offered {
+
+γtjx
+t∗
+j,i νtj ≥ 1
+
+by them. In this paper, an evolutionary game approach is used xtj,i,actual = . (24)
+for competition among the buyers. νtj γ
+
+t
+jx
+
+t∗
+j,i νtj < 1
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+6092 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019
+
+Assume that the net utility of seller j at time t can be defined
+as the accumulated welfare of all buyers obtained from seller j.
+There are two possibilities as follows.
+
+Case 1: If P t
+ex,j ≥ Stj , then the net utility is
+
+σt
+1 ∑B
+
+j = θ (xt∗ )2 . 2
+2 i j,i + C ( 5)
+i=1
+
+Case 2: If P t
+ex,j < Stj , then the net utility is
+
+[ ]
+(νtj )
+
+2 ∑B
+σtj = νtj − θ (xt∗
+
+2 i j,i)
+2 + C. (26)
+
+i=1
+( )
+
+In both (25) and (26), C = λtiG
+t
+i − θi
+
+2 (Gt
+i)
+
+2 .
+The replicator dynamics is designed to depict the selection
+
+dynamics of the buyers as follows:
+
+∂γtj = γt
+∂ i (σ
+
+t
+j − σt) (27)
+
+t
+where σt denotes the average utility, and it can be calculated as
+follows:
+
+∑S
+σt = γt t
+
+j σj . (28)
+j=1
+
+A stable condition at which the population will not change its
+selection is referred to as evolutionary stable strategy (ESS). The detailed algorithm to reach the evolutionary equilibrium
+Mathematically, we have the following: is given in Algorithm 1.
+
+∂γtj = γ̇t V. NONCOOPERATIVE GAME AMONG SELLERS
+∂ j = 0. (29)
+t
+
+The condition for stable state in evolutionary game can also Each seller aims at maximizing its own welfare by selling
+
+be written as follows: the power to buyers who need it. They are noncooperative and
+behave in a rational manner. A noncooperative game is used to
+
+σt1 = σt2 = ... = σtS = σt. (30) model the competition among the sellers as follows.
+∑ 1) Players: selling role prosumers or sellers j ∈ S;
+
+If we consider the dynamics of S
+j=1 γ
+
+t
+j , then 2) Strategy: the price πtj ∀j ∈ S and ∀t ∈ T ;
+
+∑
+∂ S t ∑
+
+j=1 γ ∑S S 3) Utility: the welfare of the sellers.
+j = γt t
+
+∂ j (σ
+t
+
+j − σt) = σ − σt γtj . (31) The welfare function of the seller j ∈ S given in (20) can be
+t
+
+j=1 j=1 rewritten as
+∑ {
+
+Using (29) and (31), it can be proved that S
+j=1 γ
+
+t
+j = 1 is utj (x
+
+t
+j ) + πtjS
+
+t
+j P t
+
+ex,j > St
+
+always valid during the game. The equilibrium in the evolution- Wt j
+j = . (34)
+
+ary game is denoted by γt∗ = [γt∗ utj (x
+t
+j ) + πtjP
+
+t
+ex,j P t
+
+ex,j ≤ Stj
+1 , γ
+
+t∗
+2 , γ
+
+t∗
+3 , ..., γ
+
+t∗
+S ]. The con-
+
+vergence of the game to the evolutionary equilibrium given in The solution of the game is called Nash equilibrium (NE), which
+(29) using the replicator dynamics given in (27) can be proved includes the energy price and amount of the energy sold. NE
+via Lyapunov theory [26]. A concept of multiple populations is exists in the game if the following conditions are satisfied [27].
+used when there is a large number of players [25]. (1) The player set is finite.
+
+The replicator dynamics can be approximated by using the (2) The strategy sets are closed, convex, and bounded.
+discrete replicator in iterative way, though it is time continuous. (3) The utility functions are continuous and quasi-concave
+The discrete replicator for approximation of replicator dynamics in the strategy space.
+is defined as follows:
+
+( ) There are S number of sellers, so that the player set is al-
+γtj (k + 1) = γtj (k) + η1γ
+
+t
+j (k) σt ways finite. The game first starts by announcing the price πtj by
+
+j (k) − σt(k) . (32)
+the seller. There are limits on πtj such that πtj ∈ [πtj,min, π
+
+t
+j,max].
+
+The termination criterion is defined as The lower bound πtj,min is normally determined by the genera-
+
+| tion cost and the operating expenses. The upper bound πt
+σt j,max is
+j (k) − σt(k)| < ε (33)
+
+fixed by the government policies. The sellers must consider
+where k is the iteration number, η1 is the adjustment parameter, the price limits during the game. In this paper, we choose
+and ε is a small positive constant. feed-in-tariff ρsell as the lower limit and the grid buying price
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+PAUDEL et al.: PEER-TO-PEER ENERGY TRADING IN A PROSUMER-BASED COMMUNITY MICROGRID: A GAME-THEORETIC MODEL 6093
+
+ρbuy as the upper limit such that πtj ∈ [ρsell, ρbuy ]. Hence, the
+strategy sets are nonempty, closed, bounded, and convex.
+
+The utility function given in (34) is a continuous function of
+πtj . Since the welfare Wt
+
+j of seller j increases with amount of
+power for a given πtj , the seller shall assume that all the available
+power to export, P t
+
+ex,j , can be sold to the buyers. The game will
+be stopped when all the P t
+
+ex,j is sold or all Stj is satisfied.
+If P t
+
+ex,j ≤ Stj , then
+
+∂2(Wt
+j ) = 0. (35)
+
+∂(πtj )2
+
+If P t
+ex,j > Stj , the second-order derivative ofWt
+
+j with respect
+to πtj is given by
+
+∂2(Wt ∑B
+j ) 1
+
+< 0. (36)
+∂(πt 2 = −2λtj
+
+j ) θ
+i=1 i
+
+where l is the iteration counter, η2 is the speed adjustment pa-
+∂ 2 (W t )
+
+Combining (35) and (36), we get j
+2 ≤ 0, so that Wt
+
+∂ (π t j is rameter, and ε is a small positive number.
+j )
+
+always quasi-concave in πt e energy trading game starts with an announcement of
+j . Therefore, we can conclude that Th
+
+NE exists in the noncooperative game among the sellers. the price vector from the sellers. The buyers then receive the
+announced price vector and play the evolutionary game. When
+
+VI. S the buyers obtain evolutionary equilibrium for a given price
+TACKELBERG GAME BETWEEN SELLERS AND BUYERS
+
+vector, they send the information of ESS back to the sellers.
+The interaction behaviors between the sellers and buyers can Once the sellers receive the updated strategy from the buyers,
+
+be modeled as an M-leader and N-follower Stackelberg game. they participate in the noncooperative game and update their
+The sellers are the multiple leaders, and the buyers are the price, and the process is repeated until the final equilibrium
+multiple followers. Stackelberg game establishes a relationship state is reached. The detailed process is given in Algorithm 2.
+between the evolutionary game and the noncooperative game. P2P energy trading algorithm proposed in this paper uses
+The output of the noncooperative game, i.e., price vector, is an iterative pricing mechanism. The demand from the buyers
+used as an input to the evolutionary game to update the seller would change in response to the prices provided by the sellers,
+selection strategy. The output of the evolutionary game, i.e., and this change will, in turn, affect the sellers’ prices. If there
+ESS or seller selection probability, is used as an input to the are a large numbers of prosumers, the change in the energy
+noncooperative game to update the price vector. So, all the demand may be such high that the prices may oscillate heavily.
+three games are related to each other. All the buyers receive This fact may lead to an outcome where the seller selection
+the announced price vector from the sellers and participate and pricing iteration never end, i.e., the algorithm does not
+in the evolutionary game. Once the ESS is obtained in the evo- converge. The convergence of the algorithm is essential for
+lutionary game, sellers update their price to obtain an NE, i.e., its implementation. If the convergence cannot be guaranteed,
+price. control measures should be taken to enhance the convergence
+
+The sellers are involved in a noncooperative game, and any of the algorithm.
+seller does not know the information of other sellers. In this sce- The step length control method [28] is used to deal with
+nario, it is not possible to obtain the NE by analytical method, the effect of random exploration for better convergence of the
+and iterative approach must be used. An iterative distributed al- algorithm. The step length control at each iteration of price
+gorithm is designed to obtain the NE among the sellers such that update can be achieved by the following:
+the Stackelberg equilibrium (SE) is reached in the Stackelberg ( )
+game between sellers and buyers. The price updating strategy max πt t
+
+j (l) − Δ, π πtj,min ≤ j (l + 1)
+of the seller j is designed as follows: ( )
+
+( ) ≤ min πtj (l) + Δ, πtj,max , Δ = ζ|πtj (l)| (40)
+πtj (l + 1) = πt t
+
+j (l) + η2 Sj (l) − P t
+ex,j . (37)
+
+where ζ is a nonnegative ramping rate.
+The termination criterion is defined as follows: This technique limits the ramping rate of the price in the
+
+iterative process. The buyers reject any price that exceeds
+|πtj (l + 1) − πtj (l)| < ε. (38) the prescribed ramping rate so that all the sellers have to
+
+Alternatively, the termination criteria in (38) can be expressed obey the ramping rate limit. Since the buyers’ strategies are
+as follows: the response to the sellers’ prices, step length control method
+
+for price update in Algorithm 2 ultimately improves the conver-
+|Stj (l) − P t
+
+ex,j | < ε (39) gence of Algorithm 1.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+6094 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019
+
+Fig. 3. GDR of all prosumers.
+Fig. 4. Convergence of evolutionary game at t = 11.
+
+VII. SIMULATION RESULTS
+
+This section presents the results of simulation studies to assess
+the performance of the proposed game-theoretic model for P2P
+energy trading in a prosumer-based community microgrid. We
+consider a community microgrid that consists of five prosumers.
+The community microgrid is connected to the utility grid, thus
+the prosumers can trade with one another as well as the retailers.
+Each prosumer has a solar PV system. Each prosumer has both Fig. 5. Convergence of average net utility at t = 11.
+the flexible and nonflexible demands. The generation and load
+profiles of each prosume{r in the commu}nity are taken from [20].
+For one day study T = 1, 2, 3, ..., 24 .
+
+The value of λti is selected randomly from [5, 10], and θi is
+taken as 0.5. Based on the actual electricity price of Singapore,
+the buying price of electricity from the grid, ρbuy , is taken as
+20 cent/kWh. The selling price to the grid, ρsell is assumed to
+be 2 cent/kWh. Since the solar PV is used as a local generation,
+we assume that the P2P market is active only during the day
+time from 9:00 to 18:00 hours. Prosumers 2 and 5 have installed
+the battery of 20 kWh capacity. Lithium-ion batteries are con- Fig. 6. Convergence of mismatch between individual net utility and
+
+average net utility at t = 11.
+sidered is this paper. The minimum battery capacity, Emin
+
+i , is
+4 kWh, the charging/discharging efficiency is taken as 90%, and
+the charging/discharging capacity is assumed to be 3 kW. The
+capital cost Cc of 20 kWh Tesla Powerwall is 7800 Singapore
+Dollar (SGD) [29]. The discount rate r is taken as 5% in this
+paper, the lifetime is set to 15 years, and the maintenance cost
+Cm for the given size of the battery is 150 SGD.
+
+Based on the value of GDR, the prosumers can behave as
+sellers or buyers during the day time. The GDR of the prosumers
+at each time slot is shown in Fig. 3. We choose time slot 11 to
+demonstrate the performance of the proposed method. At time Fig. 7. Convergence of price of sellers at t = 11.
+
+slot 11, Prosumers 1 and are treated as sellers, and the remaining
+three prosumers are buyers. Fig. 6. Figs. 5 and 6 ensure that buyers get better welfare at
+
+the ESS.
+
+A. Convergence of the Evolutionary Game B. Convergence of Noncooperative Game and
+Among Buyers Stackelberg Game
+
+Each buyer participates in the evolutionary game to find the We proposed Algorithm 2 for two purposes: 1) to perform
+probability of buying power from a particular seller, which is an price competition among the sellers using noncooperative game;
+ESS. Fig. 4 shows the convergence characteristics of the evolu- and 2) to carry out the negotiation between the buyers and the
+tionary game, and it depicts that buyers converge to the stable sellers using Stackelberg game. Since the sellers are leaders of
+strategy by executing Algorithm 1. The convergence character- the game, the solution of the Stackelberg game is an optimal
+istics of the average net utility are shown in Fig. 5. The average response for the price announced by the sellers.
+net utility is settled at a certain value after it reaches a maxi- Fig. 7 shows the convergence characteristics of price of sellers
+mum value. The convergence process of the mismatch between to the NE. As the price of sellers approaches NE, the power
+the individual net utility and the average net utility is shown in demand from the buyers to the sellers also converges to a certain
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+PAUDEL et al.: PEER-TO-PEER ENERGY TRADING IN A PROSUMER-BASED COMMUNITY MICROGRID: A GAME-THEORETIC MODEL 6095
+
+Fig. 8. Convergence of power demand of sellers at t = 11.
+
+Fig. 11. Total power imported from the grid without BESS.
+
+Fig. 9. Convergence of welfare of sellers at t = 11.
+
+Fig. 12. Total power exported to the grid without BESS.
+
+C. Comparison of Results
+In this section, we have analyzed and compared the results of
+
+the proposed method with state of the art from various aspects
+Fig. 10. Convergence of SDR of sellers at t = 11. to evaluate its performance. At first, we have considered three
+
+cases: 1) P2G trading without BESS; 2) P2P without both DR
+value and ensures the existence of the SE in the trading process. and BESS; and 3) P2P with DR but without BESS using the
+The convergence characteristics of power demand of sellers are proposed game-theoretic model. The total power imported from
+shown in Fig. 8. The welfare of the sellers gradually increase the grid and the total power exported to the grid in the above
+and settles at a certain maximum value as shown in Fig. 9. The three cases are shown in Figs. 11 and 12, respectively. The effect
+convergence characteristics of SDR are given in Fig. 10, and of P2P trading and DR application can be observed from t = 9
+they ensures that power demand and supply match at the end of to t = 18 in Figs. 11 and 12, which is the assumed operation
+the game. time of the P2P market. In Fig. 11, the power imported from the
+
+The amount of power (in kW) buyer i can buy from seller j grid reduces with the application of P2P method and reduces
+at the equilibrium state is given as follows: further with the application of P2P method with DR using the
+
+Buyers(2, 3, 4) proposed method. Similarly, the power exported from the grid is
+[ ] reduced with the application of P2P with DR using the proposed
+
+3.31 84.38 43.56 method compared to P2G but can be seen nearly equal when
+Sellers(1, 5) .
+
+3.31 84.45 43.56 compared with P2P without DR. Hence, Figs. 11 and 12 high-
+light that the proposed methodology reduces the dependence on
+
+The actual amount of power (in kW) the buyer buys from the the grid by efficiently allocating all the available energy within
+seller as given by (24) is as follows: the community microgrid.
+
+Buyers(2, 3, 4) The overall cost of each prosumer using various approaches of
+[ ] P2P trading is given in Table I. The total cost of the community
+
+0.8141 20.7529 10.7130 microgrid without BESS is shown in Fig. 13. It consists of P2G
+Sellers(1, 5)
+
+2.4959 63.6771 32.8470 trading, P2P trading with and without DR using the proposed
+game-theoretic model, P2P without DR using the BS method
+
+The total power procured by Prosumers 2, 3, and 4 from the [13], P2P without DR using the MMR method [13], and P2P
+P2P market is 3.31, 84.43, and 43.56 kW, respectively, which without DR using the SDR method [20]. It can be observed that
+satisfies the power requirement of the buying role prosumers. the total cost from P2G trading is the highest among all methods,
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+6096 IEEE TRANSACTIONS ON INDUSTRIAL ELECTRONICS, VOL. 66, NO. 8, AUGUST 2019
+
+TABLE I
+OVERALL DAILY COST OF PROSUMERS IN VARIOUS SCENARIOS/METHODS
+
+*Indicate the prosumer with energy storage.
+
+current policies, and legal obligations are needed before it comes
+in wide applications.
+
+VIII. CONCLUSION
+
+In this paper, we have presented a game-theoretic model for
+real-time P2P energy trading in a prosumer-based community
+microgrid. A prosumer in a community involved in P2P trading
+
+Fig. 13. Total cost of community microgrid without BESS. is either a seller or a buyer. The interaction between the sellers
+and the buyers is modeled as a Stackelberg game, where sellers
+are leaders and buyers are followers. The seller selection com-
+petition among buyers is modeled as an evolutionary game, and
+
+and that from P2P trading with DR using the proposed method
+an iterative algorithm is proposed to reach the stable state in
+
+is the lowest. Column 3 of Fig. 13 indicates that the total cost
+a game. Also, the price competition among sellers is modeled
+
+from the proposed method is less than the cost obtained by the
+as a noncooperative game. A distributed iterative algorithm is
+
+existing methods even if P2P trading is implemented without
+used to reach the equilibrium states in a noncooperative game
+
+DR. Furthermore, in Fig. 13, the cost of the microgrid with
+and Stackelberg game. The proposed method is applied to a
+
+DR using the proposed method can be seen significantly less
+small community microgrid with PV and energy storage sys-
+
+compared to the cost of microgrid using P2G method. The cost
+tems. Simulation results show that each game converges to the
+
+of the microgrid with DR using the proposed method is only
+stable state using the proposed algorithms. Simulation results
+
+88.13% of the cost in P2G trading. Therefore, we can say that
+also show that the proposed model is effective in handling P2P
+
+the proposed game-theoretic model is effective in handling the
+energy trading in a community microgrid. The cost of the mi-
+
+P2P trading in a prosumer-based community microgrid on a
+crogrid is significantly reduced with P2P energy trading in both
+
+daily basis.
+cases: 1) with BESS; and 2) without BESS, as compared to the
+
+The EDC of the battery is 2.45 SGD as given by (7). The
+cost in conventional P2G trading. This paper can be extended by
+
+deployment of BESS is feasible only if the cost saving due to
+considering the P2P network of several community microgrids
+
+the use of BESS is higher than the EDC. Compared to base case
+as well as the stochastic nature of prosumers.
+
+(i.e., P2G trading without BESS), Prosumers 2 and 5 can save
+0.08 and 0.12 SGD, respectively, in P2G trading with BESS.
+When all the prosumers in the community participate in P2P REFERENCES
+trading using the proposed method without both DR and BESS,
+Prosumers 2 and 5 can save 27.39 and 23.14 SGD, respectively. [1] M. V. Kirthiga, S. A. Daniel, and S. Gurunathan, “A methodology for trans-
+
+forming an existing distribution network into a sustainable autonomous
+If they participate in P2P without DR but with BESS, Prosumer micro-grid,” IEEE Trans. Sustain. Energy, vol. 4, no. 1, pp. 31–41, Jan.
+2 can save 25.67 SGD and Prosumer 5 can save 21.97 SGD. 2013.
+It can be seen that the saving for the prosumers who installed [2] H. Kanchev, D. Lu, F. Colas, V. Lazarov, and B. Francois, “Energy man-
+
+agement and operational planning of a microgrid with a PV-based active
+BESS is higher when they participate in P2P trading without generator for smart grid applications,” IEEE Trans. Ind. Electron., vol. 58,
+BESS. This is because when they participate in the P2P market, no. 10, pp. 4583–4592, Oct. 2011.
+the priority is to sell the excess energy in the P2P market. They [3] N. C. Ekneligoda and W. W. Weaver, “Game-theoretic cold-start transient
+
+optimization in dc microgrids,” IEEE Trans. Ind. Electron., vol. 61, no. 12,
+cannot fully utilize the battery capacity. It is not necessary that pp. 6681–6690, Dec. 2014.
+all the prosumers have flexible loads; so, the case without DR [4] S. Park, J. Lee, S. Bae, G. Hwang, and J. K. Choi, “Contribution-based
+is chosen for analysis. This study shows that participating in energy-trading mechanism in microgrids for future smart grid: A game
+
+theoretic approach,” IEEE Trans. Ind. Electron., vol. 63, no. 7, pp. 4255–
+P2P energy trading in a community could be an alternative to 4265, Jul. 2016.
+installing the cost-intensive energy storage systems. But, the [5] R. Krishnan, M. Smith, and R. Telang, “The economics of peer-to-peer
+final conclusion cannot be drawn from the single case study networks,” J. Inf. Technol. Theory Appl., vol. 5, pp. 31–44, 2003.
+
+[6] C. Zhang, J. Wu, C. Long, and M. Cheng, “Review of existing peer-to-
+because the P2P market is not matured yet. Several intensive peer energy trading projects,” Energy Procedia, vol. 105, pp. 2563–2568,
+studies and modifications regarding energy trading structures, 2017.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+PAUDEL et al.: PEER-TO-PEER ENERGY TRADING IN A PROSUMER-BASED COMMUNITY MICROGRID: A GAME-THEORETIC MODEL 6097
+
+[7] C. Long, J. Wu, C. Zhang, M. Cheng, and A. Al-Wakeel, “Feasibility Amrit Paudel (S’16) received the B.E. degree
+of peer-to-peer energy trading in low voltage electrical distribution net- in electrical and electronic engineering from
+works,” Energy Procedia, vol. 105, pp. 2227–2232, 2017. Pokhara University, Pokhara, Nepal in 2012, and
+
+[8] M. R. Alam, M. St-Hilaire, and T. Kunz, “An optimal P2P energy trading the M.E. degree in energy engineering from
+model for smart homes in the smart grid,” Energy Efficiency, vol. 10, Asian Institute of Technology, Bangkok, Thai-
+pp. 1475–1493, 2017. land, in 2016. He is currently working toward
+
+[9] C. Zhang, J. Wu, M. Cheng, Y. Zhou, and C. Long, “A bidding system the Ph.D. degree in electrical engineering with
+for peer-to-peer energy trading in a grid-connected microgrid,” Energy Nanyang Technological University, Singapore.
+Procedia, vol. 103, pp. 147–152, 2016. His current research interests include micro-
+
+[10] Y. Hong, S. Goel, and W. M. Liu, “An efficient and privacy-preserving grid energy management systems, peer-to-peer
+scheme for P2P energy exchange among smart microgrids,” Int. J. Energy energy trading, game theory, and distribution
+Res., vol. 40, pp. 313–331, 2016. level electricity market.
+
+[11] J. Murkin, R. Chitchyan, and D. Ferguson, Goal-Based Automation of
+Peer-to-Peer Electricity Trading. New York, NY, USA: Springer-Verlag,
+2018, pp. 139–151.
+
+[12] Y. Zhou, J. Wu, C. Long, M. Cheng, and C. Zhang, “Performance evalu-
+ation of peer-to-peer energy sharing models,” Energy Procedia, vol. 143,
+pp. 817–822, 2017.
+
+[13] C. Long, J. Wu, C. Zhang, L. Thomas, M. Cheng, and N. Jenkins, “Peer-
+to-peer energy trading in a community microgrid,” in Proc. IEEE Power Kalpesh Chaudhari (S’15) received the B.E.
+Energy Soc. Gen. Meet., Jul. 2017, pp. 1–5. degree in electrical engineering from Sardar Pa-
+
+[14] N. Liu, M. Cheng, X. Yu, J. Zhong, and J. Lei, “Energy sharing provider tel College of Engineering, Mumbai, India, in
+for PV prosumer clusters: A hybrid approach using stochastic program- 2013. Since 2015, he has been working toward
+ming and Stackelberg game,” IEEE Trans. Ind. Electron., vol. 65, no. 8, the Ph.D. degree in electrical engineering with
+pp. 6740–6750, Aug. 2018. Nanyang Technological University, Singapore.
+
+[15] J. Lee, J. Guo, J. K. Choi, and M. Zukerman, “Distributed energy trading in He is currently working as a Researcher with
+microgrids: A game-theoretic model and its equilibrium analysis,” IEEE National Renewable Energy Laboratory, Golden,
+Trans. Ind. Electron., vol. 62, no. 6, pp. 3524–3533, Jun. 2015. Colorado, USA. His research interests include
+
+[16] H. Wang, T. Huang, X. Liao, H. Abu-Rub, and G. Chen, “Reinforcement agent-based modeling, autonomous energy sys-
+learning in energy trading game among smart microgrids,” IEEE Trans. tems, energy trading, and grid integration for
+Ind. Electron., vol. 63, no. 8, pp. 5109–5119, Aug. 2016. electric vehicle charging stations.
+
+[17] S. Maharjan, Q. Zhu, Y. Zhang, S. Gjessing, and T. Basar, “Depend-
+able demand response management in the smart grid: A Stackelberg
+game approach,” IEEE Trans. Smart Grid, vol. 4, no. 1, pp. 120–132,
+Mar. 2013.
+
+[18] S. Maharjan, Q. Zhu, Y. Zhang, S. Gjessing, and T. Baar, “Demand re-
+sponse management in the smart grid in a large population regime,” IEEE
+Trans. Smart Grid, vol. 7, no. 1, pp. 189–199, Jan. 2016.
+
+[19] B. Chai, J. Chen, Z. Yang, and Y. Zhang, “Demand response management Chao Long (M’15) received the B.Sc. degree
+with multiple utility companies: A two-level game approach,” IEEE Trans. in electrical engineering from Wuhan University,
+Smart Grid, vol. 5, no. 2, pp. 722–731, Mar. 2014. Wuhan, China in 2008, and the Ph.D. degree in
+
+[20] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, and J. Lei, “Energy-sharing model electrical engineering from Glasgow Caledonian
+with price-based demand response for microgrids of peer-to-peer pro- University, Glasgow, U.K. in 2014.
+sumers,” IEEE Trans. Power Syst., vol. 32, no. 5, pp. 3569–3583, Sep. From August 2013 to May 2015 he was a
+2017. Research Associate with the University of
+
+[21] W. Tushar, C. Yuen, H. M. Rad, T. K. Saha, H. V. Poor, and K. L. Wood, Manchester, Manchester, U.K. He is presently
+“Transforming energy networks via peer to peer energy trading: Potential a Research Associate with Cardiff University,
+of game theoretic approaches,” IEEE Sig. Process. Mag., vol. 35, no. 4, Cardiff, U.K. His research interests include ac-
+pp. 90–111, Jul. 2018. tive control and management of power distribu-
+
+[22] C. Long, J. Wu, Y. Zhou, and N. Jenkins, “Peer-to-peer energy sharing tion networks and plug-in electric vehicles, peer to peer energy trading,
+through a two-stage aggregated battery control in a community microgrid,” and blockchain technology.
+Appl. Energy, vol. 226, pp. 261–276, 2018.
+
+[23] S. X. Chen, H. B. Gooi, and M. Q. Wang, “Sizing of energy storage
+for microgrids,” IEEE Trans. Smart Grid, vol. 3, no. 1, pp. 142–151,
+Mar. 2012.
+
+[24] P. Samadi, A. H. Mohsenian-Rad, R. Schober, V. W. S. Wong, and J.
+Jatskevich, “Optimal real-time pricing algorithm based on utility maxi-
+mization for smart grid,” in Proc. IEEE 1st Int. Conf. Smart Grid Commun.,
+Oct. 2010, pp. 415–420. Hoay Beng Gooi (SM’95) received the B.S.
+
+[25] D. Niyato, E. Hossain, and Z. Han, “Dynamics of multiple-seller and degree from National Taiwan University, Taipei
+multiple-buyer spectrum trading in cognitive radio networks: A game- City, Taiwan, in 1978, the M.S. degree from the
+theoretic modeling approach,” IEEE Trans. Mobile Comput., vol. 8, no. 8, University of New Brunswick, Fredericton, NB,
+pp. 1009–1022, Aug. 2009. Canada, in 1980, and the Ph.D. degree from
+
+[26] J.-J. E. Slotine, and W. Li, Applied Nonlinear Control, vol. 199, no. 1. Ohio State University, Columbus, OH, USA, in
+Upper Saddle River, NJ, USA: Prentice-Hall, 1991. 1983, all in electrical engineering.
+
+[27] Y. Wang, W. Saad, Z. Han, H. V. Poor, and T. Baar, “A game-theoretic He is an Associate Professor with the
+approach to energy trading in the smart grid,” IEEE Trans. Smart Grid, School of Electrical and Electronic Engineer-
+vol. 5, no. 3, pp. 1439–1450, May 2014. ing, Nanyang Technological University, Singa-
+
+[28] Y. Zhou, J. Wu, and C. Long, “Evaluation of peer-to-peer energy sharing pore. His current research interest focuses on
+mechanisms based on a multiagent simulation framework,” Appl. Energy, microgrid energy management systems dealing with storage, electricity
+vol. 222, pp. 993–1022, 2018. market, and spinning reserve.
+
+[29] “Tesla Powerwall,” Tesla, Palo Alto, CA, USA, 2018. [Online]. Available:
+https://www.tesla.com/powerwall, Accessed on: Jul. 20, 2018.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:56:00 UTC from IEEE Xplore.  Restrictions apply.

@@ -1,0 +1,1152 @@
+﻿Received 4 March 2024, accepted 2 April 2024, date of publication 12 April 2024, date of current version 30 April 2024.
+Digital Object Identifier 10.1109/ACCESS.2024.3387850
+
+Techno-Economic Assessment of Peer to Peer
+Energy Trading: An Egyptian Case Study
+MONA ZEDAN1,2, MORSY NOUR 3,4, GABER SHABIB4,5, ZIAD M. ALI 6, (Member, IEEE),
+ABDULLAH ALHARBI6, AND AL-ATTAR ALI MOHAMED 1
+1Department of Electrical Engineering, Faculty of Engineering, Aswan University, Aswan 81542, Egypt
+2Higher Institute of Engineering and Technology, King Marriott, Alexandria 23713, Egypt
+3Institute for Research in Technology (IIT), ICAI School of Engineering, Comillas Pontifical University, 28015 Madrid, Spain
+4Department of Electrical Engineering, Faculty of Energy Engineering, Aswan University, Aswan 81528, Egypt
+5Higher Institute of Computer, King Marriott, Alexandria 23713, Egypt
+6College of Engineering at Wadi Addawaser, Prince Sattam bin Abdulaziz University, Al-Kharj 11991, Saudi Arabia
+
+Corresponding author: Ziad M. Ali (dr.ziad.elhalwany@aswe.edu.eg)
+
+This work was supported by Prince Sattam bin Abdulaziz University under Project PSAU/2023/01/25317.
+
+ABSTRACT Peer-to-peer (P2P) energy trading has emerged as an innovative approach for selling electricity
+from prosumer to consumer at the distribution level. This paper is the first to conduct a techno-economic
+assessment of P2P energy trading in Aswan, Egypt. Different scenarios under different electricity tariffs,
+which consider photovoltaic systems, energy storage systems, and electric vehicles deployment, are analyzed
+to assess the performance of P2P trading considering different distributed energy resources (DERs) installa-
+tions. The variety of these scenarios enables a thorough analysis of P2P trading and a clear comprehension
+of how P2P trading impacts distribution networks. The study offers new perspectives on the impacts of
+implementing P2P trading on the distribution network since it uses a real demand profiles. Results show
+that P2P energy trading can reduce community electricity costs, improve self-consumption by reducing
+exports to distribution system operator, and rise self-sufficiency compared to home energy management
+system (HEMS). The distribution network operation limits are not violated in any of the studied scenarios
+and electricity tariffs. The impacts on the distribution network for P2P trading scenarios and equivalent
+HEMS are very similar for flat tariff. However, for time of use tariff, P2P trading scenarios with flexible
+devices result in higher impacts on the distribution network than the equivalent HEMS.
+
+INDEX TERMS P2P energy trading, energy community, local electricity market, transactive energy, impacts
+on distribution networks.
+
+NOMENCLATURE S̄ESS and SESS ESS upper and lower levels of storage
+Sets levels.
+t ∈ T Time step t at time horizon T . S̄EV and SEV EV upper and lower levels of storage
+h, p ∈ H House h and peer p in a community H . level.
+Scalars ηcEss ESS charging efficiency.
+ψP2P P2P trade loss facto. ηdEss ESS discharging efficiency.
+C̄Ess and D̄Ess ESS upper levels of charging and dis- ηcEV EV charging efficiency.
+
+charging powers. ηdEV EV discharging efficiency.
+C̄EV and D̄EV EV upper levels of charging and discharg- Parameters
+
+ing power.
+Dem(t,h) Demand of house h at time step t .
+PV (t,h)
+
+The associate editor coordinating the review of this manuscript and PV generation of house h at time step t .
+p(t)approving it for publication was Barbara Guidi . G Import price at time step t .
+
+
+ 2024 The Authors. This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 License.
+For more information, see https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+VOLUME 12, 2024 58317
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+p(t)E Export price at time step t . and energy flow are bidirectional, compared to unidirectional
+P(t,h)n Net active power demand of house h at time flow in the traditional power system [3]. Furthermore, the cost
+
+step t . of purchasing electricity from distribution system operators
+a(t) Binary parameter that indicates whether or not (DSO) is higher than the feed-in tariff to sell electricity back
+
+an electric vehicle is connected to the charger. to DSO [4], giving customers an incentive to trade with
+Variables one another before dealing with DSO. Customers are further
+I (t,h) encouraged to establish a local peer-to-peer energy trading
+P2P P2P energy purchased by house h at time step t .
+X (t,h→p) market due to the reduction of the feed-in tariff subsidy in
+p,P2P P2P energy sold by house hz to peer p at time
+
+several countries.
+step t .
+
+X (t,h) P2P energy trading presents a viable measure from the
+P2P P2P energy sold by house h at time step t .
+I (t,h←p) power system operational perspective to manage significant
+p,P2P P2P energy purchased by house h from peerpz DERs penetration in the future [5]. The edge of power sys-
+
+at time step t . tems is home to a wide range of DERs, each with its own
+X (t,h)
+P2P P2P energy sold by house h to peer p at time types, features, capabilities, locations, and owners. Due to
+
+step t . these facts, managing DERs conventionally and centrally
+G(t,h) Energy purchased from DSO by house h at is impracticable and costly. If suitable P2P energy trading
+
+time step t . platforms are created, DERs by themselves may be able to
+E (t,h) Energy sold toDSO from house h at time step t . improve the local power balance in addition to maximiz-
+S(t,h) ing social welfare [6]. This could reduce uncertainty and
+Ess ESS energy stored of house h at time step t .
+S(t,h)EV EV energy stored of house h at time step t . release pressure on the upstream power grid [7]. In addition,
+D(t,h) DERs in P2P energy trading markets can provide numer-
+Ess ESS discharge power of house h at time step t .
+
+ous ancillary services that support the primary power grid
+D(t,h)
+EV EV discharge power of house h at time step t .
+
+C (t,h) through specialized contract ormechanism designs [8]. Home
+Ess ESS charge power of house h at time step t . energy management systems (HEMS) are also introduced,
+
+C (t,h)
+EV EV charge power of house h at time step t . enabling prosumers and consumers to individually optimize
+
+their energy consumption and reduce electricity costs. End
+customers can utilize this technique to shift their load to
+
+I. INTRODUCTION off-peak times and use cheap electricity. This might be
+The rapidly increasing penetration of distributed energy thought to be appropriate when the penetration of DERs in
+resources (DERs) connected to low voltage (LV) or medium the distribution network is low.
+voltage (MV) levels, such as photovoltaic systems (PV), The paper is organized as follows: The following section
+energy storage systems (ESS), electric vehicles (EVs), and presents a literature review and summarizes the contribution
+flexible loads, has resulted in a paradigm shift in the power of the paper. Section III presents the P2P trading model and
+systems industry [1]. the evaluation of impacts on the LV distribution network.
+
+The increase in DERs is altering the game from techno- Section IV describes the studied LV distribution network,
+logical and commercial viewpoints [2]. From a technological demand profiles, generation profiles, DERs characteristics,
+point of view, critical challenges for the planning, opera- electricity prices, and the studied scenarios under different
+tions, and protection of modern power systems are presented tariffs. Section V discussed the results of the seven studied
+due to the bidirectional power flow caused by distributed scenarios and the assessment of the impacts on the LV distri-
+generators and the extreme intermittency and randomness bution network. Finally, conclusion is given in section VI.
+of distributed renewable power generation. Flexible DERs
+(i.e., ESS, EVs, etc.) offer system operators new measures to
+address challenges. From a commercial point of view, DERs II. LITERATURE REVIEW
+are connected to large numbers of small users at the ends of Local energy trading has been considered an efficient solution
+power systems and diversify the power supply, providing a that enables prosumers to trade in their excess renew-
+chance for localized energy markets to emerge and develop. able generation within their local energy market, promotes
+The power system is confronting a transition to a more decen- self-consumption and self-sufficiency of local renewable gen-
+tralized model from its traditional structure by introducing eration, and reduces energy costs.
+an innovative type of trading in distribution networks called Recent years have seen the deployment of multiple case
+peer-to-peer (P2P) energy trading. studies for P2P market implementation in various countries
+
+P2P trading is a next-generation energy trading technique around the world [9], [10]. In Europe, in a case study in
+dependent on the sharing economy concept. Customers with Germany, an optimal business model for a sustainable P2P
+DERs—referred to as ‘‘prosumers’’ since they may generate energy trading platform is developed. Business models assist
+and consume electricity—are able to trade and share energy households in increasing their level of energy independence,
+with one another directly through P2P energy trading. It is reducing their reliance on the public grid, and achieving
+different from conventional energy trading in that both cash cost savings [11]. Another study used a real data of an
+
+58318 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+energy community in the Netherlands. The P2P multi-energy Focusing on Egypt, the viability of an energy trading
+market benefits most individuals and increases overall eco- system is demonstrated through a case study of the distribu-
+nomic benefits for all peers [12]. P2P energy trading offers a tion system in Alexandria after being optimally divided into
+trading algorithm that is more cost-effective, according to a islands. Results demonstrate how implementing blockchain
+case study on residential buildings in Steinkjer, Norway, and technology for energy trading has reduced energy costs [24].
+London, UK, since it often encourages trade and reduces grid The positive impact of applying the P2P energy trading sys-
+imports [13]. A series of case studies that were performed tem on energy costs at the parking lot of the Arab Academy
+on a real-world distribution network show that P2P trading for Science and Technology and Martine Transport campus
+helps prosumers in different communities in Finland save an with PV distributed generation and plug-in hybrid elec-
+average of 17.09% on their net energy costs [14]. tric vehicles [25]. The viability of implementing P2P-based
+In America, a case study of 75 members in a community optimal energy management in a smart railway flexible sub-
+
+in New York, USA, shows that prosumers can successfully station, accounting for various traction system energy sources
+engage in P2P transactions by reducing their costs by 24% and the wayside distribution network, with an improvement
+and offering superior performance in terms of both economic in the energy economy of the system [26]
+and technical parameters [15]. By simulating eight homes In this context, a case study in Aswan, Egypt, is proposed,
+in a community with real-world data and implementing the as it is the city with the highest solar irradiance in Egypt and a
+technique on a Canadian microgrid, the distribution system high potential for small PV installations. This is the first paper
+operator saves an average of $1.02 million by avoiding trans- to present the effective implementation of P2P energy trading
+former upgrades because the permissioned blockchain-based in Aswan. The proposed architecture is tested and validated
+renewable energy trading system can lower peak demand by in seven different case studies under different tariffs based on
+up to 48 kW (62%) [16]. onemonth of realistic energy consumption data for residential
+
+In Asia, a P2P market clearing model based on auctions consumers in Aswan.
+is being suggested in Malaysia to demonstrate the viabil- Most of the previous studies focused on the market design
+ity and prospective of the suggested P2P energy trading of P2P energy trading. However, other studies tried to under-
+model and encourage users to trade energy [17]. A case stand the impact of P2P energy trading on LV distribution
+study focusing on rural India showed how P2P local energy networks. According to [27], an appropriate level of peer-to-
+markets might help rural areas develop economically by peer trade has no large effect on the network’s operation. The
+providing users with a supply of electricity that would oth- community’s peak demand increased as a result of commu-
+erwise be disconnected during outages of the main power nity energy trading [28]. In all scenarios, the transformer is
+grid [18]. A user-centric cooperative strategy that increases just lightly loaded. Some lines exceed the limit of violations,
+user engagement in P2P energy trading is described in while most are weakly loaded. At some nodes, voltage mag-
+the Higashi-Fuji demonstration experiment, which was car- nitude and voltage unbalance were over the allowed limits.
+ried out in Japan. Consumers could buy renewable energy According to results in [29], the suggested Nega Watt P2P
+whenever it was available, and prosumers could sell their trading can maintain total power loss and voltage profiles
+excess electricity locally [19]. An effective real-time opera- within acceptable ranges, reducing the need for network
+tion method for prosumers based on optimization is proposed protection structures necessary for voltage regulation and
+to achieve the local energy supply-demand balance while minimise prosumers electricity costs. The results in [30]
+reducing daily operating costs and making use of all of demonstrate that the P2P market’s grid operation is unaf-
+their flexible energy resources. The case study was car- fected when the system is equipped with only PVs. When
+ried out for 94 prosumers in a Chinese urban community decentralized ESS was available, P2P trading increased volt-
+microgrid [20]. age fluctuations and losses (14%) in the local area compared
+
+In Africa, in case studies fromBurkina Faso, Cote d’Ivoire, to no local market. On the other hand, the local market
+Gambia, Liberia, Mali, and Senegal, a decentralized energy results in overall cost savings for the consumer and pro-
+system based on blockchain is suggested to accelerate the vides the framework for developing pricing strategies (such
+electrification of rural and urban areas by enhancing ser- as managing losses) that are specific to DSO operations.
+vice delivery, reducing generation costs, and reducing cyber Results in [31] demonstrate that energy is shared between
+security risks in sub-Saharan Africa [21]. In a case study in users under the P2P scheme without violating network con-
+South Africa, a P2P energy trading scheme reduced the oper- straints and those users can still benefit financially from
+ating costs of prosumers by regulating internal energy trading the P2P architecture. Analysis in [32] demonstrates that
+between the prosumers, increasing the usage of energy from lower-priority distributed generators are susceptible to exces-
+renewable energy sources, and decreasing the use of electrical sive curtailment levels when combined with autonomous
+energy supplied [22]. In order to improve community energy P2P trading. P2P transactions have been shown in [33]
+sharing in Tunis, an intelligent P2P energy trading strategy to successfully reduce network loss and relieve network
+including smart homes, non-smart homes, and a local energy congestion in the distribution network. In [34], it is discov-
+pool is proposed [23]. ered that on a typically sunny day, the difference between
+
+VOLUME 12, 2024 58319
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+P2P and non-P2P scenarios in 24-hour network losses is DERs operational constraints, and energy balance con-
+negligible for a large-sized distribution network with notice- straints. P2P energy trading aims to increase revenue from
+able residential users. Through self-consumption and energy selling excess energy to DSO while minimizing the costs of
+arbitrage, energy storage leverages smart homes gains signif- purchasing energy from DSO as stated in (1) as proposed
+icantly [35]. However, during the winter, the voltage stability in [35], [38], and [39].
+of the network is decreased by energy storage operations
+under the smart community-based electricitymarket. It can be ∑ ∑ ( )
+seen that the impacts are different depending on the LV distri- Min p(t) , )
+
+· G(t h p(t)E · E
+(t,h)
+
+−
+t h G 1t (1)
+
+bution network’s condition, installed DERs, DER penetration In P2P scenarios, the sum of house revenues from selling
+levels, etc. Therefore, in this paper, an Egyptian case study energy locally equals the sum of house purchase costs, so the
+is considered with real demand data and several operation objective function does not include them.
+scenarios. P2P trading enables the direct trade of energy between
+
+Contributions to this study include the following: all peers in the community, regardless of how physically
+• Model a P2P energy trading within a community con- connected they are. Therefore, at each time step t, the import
+taining PV, ESS, and EVs connected to an unbalanced of house h from peer p equals the export of peer p to house h
+LV distribution network. as represented in (2).
+
+• An assessment of the techno-economics of coordinated
+I (t,h←p)
+
+DERsmanagement using P2P energy trading andHEMS p = ψP2P
+· X (t,p→h)
+
+p ∀p ̸= h,∀t ∈ T ,∀h ∈ H (2)
+under different tariffs considering an Egyptian case
+
+ψP2P stands for P2P trading loss factor; 5% losses are con-
+study.
+
+sidered (ψP2P
+= 0.95).
+
+• Evaluate the impacts of P2P energy trading and HEMS
+Any consumer in the community can purchase energy from
+
+on the LV distribution network.
+any house that has DERs installed. The total energy sold
+
+III. MODELLING APPROACH through P2P trade X (t,h)P2P from any house h ∈ H , at each
+time step t, is the sum of energy exported X (t,h→p)
+
+Network operators need to simulate the effects of P2P energy p,P2P from this
+trading on distribution networks and possible impacts on net- house h to anothe∑r peer p ∈ H , as represented by (3).
+work reliability and performance in order to gain acceptance X (t,h) X (t,h→p)
+
+P2P = p̸=h p,P 2P ∀t ∈ T ,∀h ∈ H (3)
+of this emerging DER management approach.
+
+The modeling approach used in this study consists of two The total purchased energy I (t,h)P2P by any house h ∈ H , at each
+distinct cascading steps. A centralized P2P optimization is
+
+time step t , is the sum of energy imported I (t,h←p)
+
+∑ p,P2P by this
+carried out in the first step, and the output represents the
+
+house h from another peer p ∈ H as represented in (4).
+energy dispatches of houses. A 3-phase AC power flow is
+carried out in the second step to assess its effects on the I (t,h) I (t,h←p)
+
+P2P = p̸=h p,P 2P ∀t ∈ T ,∀h ∈ H (4)
+physical grid according to the outputs of the first step. It is
+considered that themarket and the power flowmodels operate A constraint to ensure that the sum of houses energy sales
+at an hourly resolution. The optimization problem is solved must be equal to the sum of houses energy purchases, consid-
+using linear programming. ering the P2P trading losses at the LV distribution network,
+
+Matlab was used for P2P energy trading optimization. The is represen∑ted in (5).
+power flow is carried out using Pandapower software [36], ∑
+
+ψP2P , )
+· X (t h
+
+=
+h P2P I (t,h) ∈ ( )
+
+h P2P ∀t T 5
+[37]. Matlab’s inputs (first step) include the demand profiles
+for all houses in the LV network, PV generation profiles, A P2P price is considered to be limited between import and
+and DERs ratings, along with electricity (import and export) export prices, making it beneficial for all participants to trade
+prices. The prosumers’ net demand profile required for power energy locally. Energy is purchased from peers at a price
+flow as well as DER dispatch are the market’s output. Pan- that is lower than that of import price of DSO, and it is
+dapower’s inputs (second step) include houses net demand sold to consumers at a price higher than that of feed in tariff
+profiles and the LV distribution network data, which perform (FIT).
+a 3-phase power flow. Pandapower’s outputs include voltage For scenarios including batteries (ESSs), for each battery,
+magnitude in various phases, the value of voltage unbalance, there are upper and lower rates for charging and discharging,
+and component loading. Figure 1 shows a schematic diagram represented by (6) and (7). 0 is the lower rate for both charging
+for the P2P energy trading optimization and impacts assess- and discharging powers. Equation (8) represents the lower
+ment. and upper levels of energy stored in kWh for each battery.
+
+The state-of-charge of the batteries will stay between 20%
+A. P2P TRADING MODEL and 100%to extend their life span.
+The P2P trading model is treated as a linear multi-period
+
+0 ⩽ C (t,h)
+optimization problem and is subjected to a set of constraints ESS ⩽ C̄ESS ∀t ∈ T ,∀h ∈ H (6)
+that are broadly categorized as P2P trading constraints, 0 ⩽ D(t,h)
+
+ESS ⩽ D̄ESS ∀t ∈ T ,∀h ∈ H (7)
+
+58320 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 1. Schematic diagram for P2P energy trading optimization and impacts assessment
+
+SESS ⩽ S(t,h)ESS ⩽ S̄ESS ∀t ∈ T ,∀h ∈ H (8) to the LV distribution network, a(t) has a value of 1, and when
+disconnected, it is 0.
+
+The state-of-charge for each battery in each time step depends When an electric vehicle is used for transportation, the
+on the state-of-charge for the previous time step as well as state-of-charge of the battery decreases, and the initial value
+the charge and discharge rates for this time step. The stored of the state-of-charge once the electric vehicle begins charg-
+energy for each battery in a time step t(is repres)ented by (9). ing depends on the state-of-charge when the electric vehicle
+
+is disconnected from the grid and driving distance. The stored
+S(t,h)ESS = S(t−1,h)ESS + ηcEsS · C
+
+(t,h)
+EsS 1t 1/ηd (t,h)
+
+− EsS · DEss 1t energy at a time step t for each electric vehicle that is
+∀t ∈ T ,∀h ∈ H (9) connected to the grid is calculated by (1(3). )
+
+S(t,h)S(t−1,h) EV = S(t−1,h)EV + ηcEV · C
+(t,h)
+EV 1t 1/ηd (t,h)
+
+− EV · DEV 1t
+ESS is the stored energy at time step (t − 1). Day 1 starts
+with a random value for each battery that is more than or equal ∀t ∈ T ,∀h ∈ H (13)
+to 2.7 kWh (20% state-of-charge). The final battery storage
+level value from day 1 is used as the battery storage level S(t−1,h)EV is the stored energy at time step (t − 1). On day 1,
+for day 2’s first hour. Any other day operates by the same each electric vehicle starts with an initial energy storage that
+principle. is randomly greater than or equal to 4.8 kWh (20% state-of-
+
+For scenarios including electric vehicles (EVs), for each charge). The last value of day 1’s electric vehicle storage level
+electric vehicle, there are upper and lower rates of charg- is used as the electric vehicle storage level for day 2’s first
+ing and discharging, represented in (10) and (11). 0 is hour. Any other day is equivalent in concept. From 5 p.m. to
+the lower rate for both charging and discharging powers. 8 a.m. next day, the electric vehicles are connected to the grid
+Equation (12) represents the lower and upper levels of the and are driven for transportation the rest of the day. The state-
+energy stored in kWh for each electric vehicle. The state-of- of-charge of each electric vehicle battery value at departure
+charge of the electric vehicle battery will stay between 20% time (8 a.m.) should not be less than 75%.
+and 100%. The energy balance equation in the P2P trading model
+
+is represented in (14). This constraint ensures that, at each
+0 ⩽ C (t,h) house h, at each time step t, the supply equals the demand.
+
+EV ⩽ C̄EV · a(t) ∀t ∈ T ,∀h ∈ H (10)
+0 ⩽ D(t,h)
+
+EV ⩽ D̄EV · a(t) ∀t ∈ T ,∀h ∈ H (11) G(t,h)
++ I (t,h)P2P + PV
+
+(t,h)
++ D(t,h)
+
+Ess + D
+(t,h)
+EV
+
+SEV ⩽ S(t,h)EV ⩽ S̄EV ∀t ∈ T ,∀h ∈ H (12) ≥ E (t,h)
++ X (t,h)
+
+P2P + Dem
+(t,h)
++ C (t,h)
+
+Ess + C
+(t,h)
+EV
+
+∀t ∈ T ,∀h ∈ H (14)
+The binary parameter a(t) indicates whether or not an elec-
+tric vehicle is connected to the LV distribution network for By removing some terms, (14) will be different for other
+charging at time step t . When an electric vehicle is connected houses with other DERs installed or without DERs.
+
+VOLUME 12, 2024 58321
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+For HEMS scenarios, which do not involve energy trading,
+the objective function for each house h, at each time step t ,
+is represen∑ted b(y (15). )
+
+Min p(t) ) (t
+· G(t p ) E (t)
+
+t G − E · 1t ∀t ∈ T (15)
+
+DERs constraints are represented by (6) to (13).
+The objective function subjected to energy balance con-
+
+straints for each house h, at each time step t , represented
+by (16).
+
+G(t,h)
++ PV (t,h)
+
++ D(t,h)
+ESS + D
+
+(t,h)
+EV ≥ E
+
+(t,h)
++ Dem(t,h)
+
++ C (t,h)
+ESS + C
+
+(t,h)
+EV ∀t ∈ T ,∀h ∈ H (16)
+
+B. EVALUATION OF IMPACTS ON THE LV DISTRIBUTION
+NETWORK
+A power flow model is the next step to be performed once FIGURE 2. The studied IEEE European LV distribution network schematic
+the P2P trading model and HEMS have determined the opti- diagram.
+
+mal decision. The power flow analyzes the effects of DERs
+dispatches resulting from the P2P trading and HEMS on the
+distribution network. The net active power demand is the sum
+of the capacity imported to the connection point minus the
+capacity exported from the connection point. Therefore, the
+net active power demand of each house h, at each time step t,
+is represented by (17).
+
+P(t,h)n = G(t,h)
++ I (t,h)P2P − E
+
+(t,h)
+− X (t,h)
+
+P2P ∀t ∈ T ,∀h ∈ H
+(17)
+
+P(t,h)n is an input that Pandapower software receives to run
+the power flow. Both battery and electric vehicle charging and
+discharging are assumed to occur behind the node connection
+point; they are not included in the equation. The P2P trading
+model considers only the trade of active power and ignores
+reactive power. Therefore, the power flow considers a 0.95 pu
+power factor.
+
+FIGURE 3. Aggregate demand profile for 55 houses in 48 hours.
+IV. CASE STUDY
+P2P trading impacts on the LV distribution network are is multiplied by a random number between 0.6 and 1.3 to
+investigated using a case study carried out on IEEE Euro- generate 55 profiles for the houses. A one-hour-resolution
+pean low voltage test feeder [40], which is supplied by an sample is used for the load profiles. The consumption profiles
+11 kV/0.416 kV substation with a capacity of 800 kVA and for June 2020 were used. Aggregated demand profiles for
+delta/grounded-star winding connections. 55 houses in 48 hours are shown in Figure 3.
+
+The LV distribution network is connected to 55 single-
+phase consumers, each with a unique connection point. Each 2) PV GENERATION PROFILES
+consumer’s connection point is identified by its number and PV generation historical data for Aswan was retrieved from
+colour (phase A in red, phase B in blue, and phase C in the Renewables.ninja website [41]. The website uses the
+green). For phases A, B, and C, there are 21 consumers, NASA MERRA-2 database, which has meteorological data
+19 consumers, and 15 consumers connected, respectively, for the area going back to 2019 [42]. PV generation’s power
+as shown in Figure 2. rating is 3 kW. 60% of prosumers have installed PV in the
+
+community (33 PV). PV generation for one house in 48 hours
+A. INPUTS DESCRIPTIONS is shown in Figure 4.
+1) DEMAND PROFILES
+The profiles are measurements of Aswan consumers. The 3) BATTERY (ESS) CHARACTERISTICS
+measurement is from the transformer’s point of connection. Batteries with a 13.5 kWh energy rating are installed.
+From this data, the real power of the three phases is added, An inverter with a nominal power of 5 kW restricts
+divided by the total number of consumers, and then the profile both charging and discharging. Both charging efficiency
+
+58322 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 4. PV generation for one house in 48 hours.
+FIGURE 5. Import and export prices in 48 hours.
+
+ηcEss and discharging efficiency ηdEss are 95%. 40% of
+prosumers have installed batteries in the community electricity is disclosed in advance and is constant. It features
+(22 ESS). two price ranges: a low price range lasting from 12 p.m. to
+
+8 a.m. and a high price range lasting the remainder of the
+4) ELECTRIC VEHICLE (EV) CHARACTERISTICS day. In this real-life case, we apply seven scenarios with the
+Electric vehicles are equipped with 24 kWh batteries and following details:
+3.6 kW chargers. Both charging efficiency ηcEV and dis-
+charging efficiency ηdEV are 96%. Electric vehicles have 1) BASE SCENARIO
+bidirectional chargers that allow for either energy absorption This scenario demonstrates that there is no PV, batteries,
+(G2V) or injection (V2G). 33% of prosumers have installed or electric vehicles installed in any house. Consumers pur-
+electric vehicles in the community (18 EVs). Table 1 displays chase their electricity from DSO at a fixed tariff.
+the DERs installed at each house.
+
+2) PV SCENARIO
+5) ELECTRICITY PRICES This scenario assumes that PV is installed on most of
+Egyptian prices for selling and buying energy to and from the houses. PV generation, or DSO, can meet the house’s
+DSO are applied. Prosumers purchase based on DSO tariffs demand. They can sell any excess PV generation to DSO and
+and sells based on FIT prices in Egypt. Purchasing prices for receive the FIT price. PV-equipped houses are unable to trade
+2022–2023 are obtained from the Egyptian Electric Utility their excess generation locally to other houses.
+and Consumer Protection Regulatory Agency (EgyptERA)
+[43] and selling prices from [44]. Import and export prices for 3) PV-P2P SCENARIO
+48 hours are shown in Figure 5 for flat and time of use (ToU) This scenario assumes that PV is installed in most of
+tariffs. Currently, only flat tariff is used in Egypt. However, the houses. The houses’ PV generation, other community
+future regulations may adopt ToU to encourage consumers to prosumers, or DSO meet the houses’ consumption. If no
+shift part of their loads to low price hours. Therefore, ToU is consumers in the community are ready to purchase energy at
+investigated in this study. that time, the PV owners can sell excess generation to DSO.
+
+B. SCENARIOS DESCRIPTIONS 4) PV+ESS-HEMS SCENARIO
+In order to accurately represent the impact of DSO tariffs on This scenario assumes some prosumers who had PV now
+DER integration, we compare the P2P market with regard to have a house battery. No energy trading is allowed. HEMS
+flat and ToU tariffs. A FIT is used as an export tariff. manages the PV and the battery of each house to lower
+
+The flat tariff is constant over the year and time-invariant. electricity costs and increase revenues.
+Therefore, this type of price does not encourage consumers to
+make demand responses. The ToU tariff, on the other hand, 5) PV+ESS-P2P SCENARIO
+divides the 24 hours of the day into a number of time blocks, This scenario assumes some houses have installed PV and
+each with a number of hours. For each block, the price of a battery. If no consumers are in the market for purchasing
+
+VOLUME 12, 2024 58323
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+TABLE 1. The installed DERs at each house.
+
+energy at that time, owners can sell excess PV generation or results in a longer trade period. Since the prices (export and
+stored energy to DSO. The battery might be charged from the import tariffs) are constant at all hours in the day, local trade
+PV house, purchased from DSO, or from other prosumers. occurs continuously throughout the day. However, the case
+
+with a ToU tariff shows that prosumers trade when they can
+6) PV+ESS+EV-HEMS SCENARIO achieve better economic benefits. At night, prosumers may
+This scenario assumes PV, batteries, and electric vehicles are not be willing to trade as they prefer to charge batteries and
+installed in some houses. No energy trading is allowed, and electric vehicles at low prices or to meet their own demand.
+HEMSmanages each house’s PV, battery, and electric vehicle To demonstrate how different houses meet their electricity
+to increase revenues and lower the cost of electricity. demands and howDERs react in various scenarios, the opera-
+
+tions of different houses are provided for the scenarios under
+7) PV+ESS+EV-P2P SCENARIO study. There are no DERs in house 4, only PV generation in
+This scenario assumes some houses have PV, batteries, and house 24, PV and ESS in house 48, and PV, ESS, and EV in
+electric vehicles installed. PV-owners can store PV genera- house 54.
+tion in batteries and electric vehicles, they can trade it with
+prosumers, or sell excess PV generation to DSO. Batteries
+and electric vehicles might be charged based on the energy 1) OPERATION FOR HOUSES WITH NO DERs
+of PV installed at the house, energy purchased from another For houses with no DERs, when there is no P2P, house
+prosumers, or energy purchased directly from DSO. 4 meets all its demand from DSO, as shown in Figure 6(a).
+
+Once P2P trading is implemented, a large quantity of demand
+V. RESULTS AND DISCUSSIONS is met by purchasing from other prosumers in the community
+Presentations of the results are divided into three parts. The because P2P prices are lower than DSO prices. Purchasing
+first part explains how various housing types—with or with- from prosumers occurs in the PV-P2P scenario when excess
+out DERs—meet their electricity demands andmanage DERs PV generation is present at other houses in the community.
+in various scenarios under different tariffs. Then, there is a The house demand is covered by DSO at night and early in
+comparison of the scenarios that were studied in the second themorningwhen there is no PV generation in the community
+part. The third part shows how various scenarios affect the LV houses, as depicted in Figure 6(b). With the presence of
+distribution network. batteries owned by other prosumers in the PV+ESS-P2P
+
+scenario, which charge during periods when PV generation
+A. COMMUNITY HOUSES OPERATION is high or when prices are low and discharge during periods
+Using seven different scenarios, a detailed analysis was con- when prices are high, it can be noticed that purchasing from
+ducted. A customer with no DER assets and no access to prosumers occurs over a longer period of time than in the
+energy trading is regarded as the base scenario. Other scenar- PV-P2P scenario, as seen in Figure 6(c). The presence of
+ios are organized according to the combination of DER assets batteries and electric vehicles owned by other prosumers in
+owned by prosumers, self-optimization, and the availability the PV+ESS+EV-P2P scenario causes purchasing from pro-
+of energy trading within the community. For all scenarios, sumers to take longer period than PV-P2P scenario, while on
+DSO tariffs (flat and ToU) impact the DER integration and some days, prosumers prefer to charge batteries and electric
+community energy trading. Figures 6–9 depict that a flat tariff vehicles during early hours to utilize stored electricity for the
+
+58324 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 6. Operation of house 4. (a) Non-P2P scenarios, (b) PV-P2P scenario, (c) PV+ESS-P2P scenario, (d) PV+ESS+EV-P2P scenario.
+
+rest of the day to meet their demand rather than sell them to in the PV-P2P scenario, as seen in Figure 7(d). In scenarios
+other houses in the community, as depicted in Figure 6(d). involving batteries and electric vehicles, purchasing from
+House 4 has the ability to participate in P2P trading and prosumers occurs over a longer period of time in a flat tariff
+lowers its electricity costs by purchasing electricity from than in a ToU tariff.
+other prosumers in the community at lower cost than DSO
+cost, despite not having any DERs. It can be noticed that, 3) OPERATION FOR HOUSES WITH PV AND ESS
+in scenarios including batteries and electric vehicles, purchas- For houses with PV and batteries, in HEMS scenarios, house
+ing from prosumers occurs over a longer period of time in a 48 almost meets its demand through PV generation during
+flat tariff than in a ToU tariff. the day and discharging batteries at night. Limited electricity
+
+is purchased from DSO, and excess PV generation is either
+2) OPERATION FOR HOUSES WITH PV ONLY utilized for charging the battery or sold to DSO, as shown
+For houses with PV only, when there is no P2P, house 24 sells in Figure 8(a). In P2P scenarios, house 48 meets its demand
+all of its excess PV generation to DSO and purchases the through PV generation during the day and battery discharge
+electricity it needs from DSO during the night, as shown at night and during periods of low PV generation, as depicted
+in Figure 7(a). Once P2P trading is implemented, house in Figure 8(b) and (c). House 48 promotes selling excess
+24 in a PV-P2P scenario sells excess PV generation to other PV generation or battery discharge to consumers rather than
+consumers who are ready to purchase electricity or DSO DSO, so DSO purchases less electricity. The prosumer is dis-
+if no other houses need this energy, and it purchases the charging their batteries for self-consumption or selling them
+electricity it needs from DSO during the night, as depicted in the community. In all scenarios, the prosumer is mainly
+in Figure 7(b). Figure 7(c) illustrates that the presence of self-sufficient during PV generation and battery discharge
+batteries at other houses in the community in the PV+ESS- during the day and night. The differential pricing under the
+P2P scenario causes house 24 to sell a larger quantity of ToU tariff has resulted in batteries and electric vehicles not
+excess PV generation locally to other houses who are ready to discharging at low price hours of DSO because the P2P
+purchase electricity, selling it to DSO at timeswhen no houses energy trading prices are low at these hours as well.
+want to purchase, and purchasing electricity from other pro-
+sumers to meet its demand, as their prices are lower than 4) OPERATION FOR HOUSES WITH PV, ESS, AND EV
+those of DSO. The presence of a battery and electric vehicle For houses with PV, ESS, and EV, Figures 9(a) and (b)
+in the PV+ESS+EV-P2P scenario, house 24, met a larger illustrate how house 54, in the PV+ESS+EV-HEMS
+quantity of demand from other houses in the community than and PV+ESS+EV-P2P scenarios, respectively, meets a
+
+VOLUME 12, 2024 58325
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 7. Operation of house 24. (a) Non-P2P scenarios, (b) PV-P2P scenario, (c) PV+ESS-P2P scenario, (d) PV+ESS+EV-P2P scenario.
+
+FIGURE 8. Operation of house 48. (a) Non-P2P scenarios, (b) PV+ESS-P2P scenario, (c) PV+ESS+EV-P2P scenario.
+
+significant percentage of demand through PV generation discharge to other consumers instead of selling to DSO. In the
+during the day and battery/electric vehicle discharging at PV+ESS+EV-P2P scenario, the battery and electric vehicle
+night and when PV generation is low. House 54 prefers of house 54 engage in electricity trading by purchasing elec-
+to sell PV generation, battery discharge, or electric vehicle tricity from DSO at lower costs, discharging at higher costs,
+
+58326 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 9. Operation of house 54. (a) PV+ESS+EV-HEMS scenario, (b) PV+ESS+EV-P2P scenario.
+
+or selling electricity to other houses. In the ToU tariff, in the b: OPERATION COSTS UNDER A ToU TARIFF
+HEMS scenarios, prosumers want to charge batteries and Table 3 shows that P2P scenarios reduced the community
+meet electric vehicle mobility needs at night due to a cheaper electricity costs, compared to the equivalent HEMS scenar-
+import tariff, whereas in the P2P scenarios, prosumers are ios.Moreover, P2P scenarios with flexible devices have lower
+getting ready for trading times. This situation is different from community costs at ToU tariff than the equivalent scenarios at
+the flat tariff because the daily price for trading is constant. flat tariff. This is a result of the ToU tariff pricing differences,
+
+which increase energy arbitrage provision through batteries,
+B. SCENARIOS TECHNO-ECONOMIC COMPARISON electric vehicles, and P2P trading. Moreover, the price at
+This section compares the investigated scenarios in terms of off-peak hours is lower than the price at these hours in flat
+operation costs, energy imports/exports, demand covered by tariff. The ToU tariff provides a greater economic benefit for
+DERs, total energy trading, and peak grid consumption. community energy trading than the flat tariff.
+
+1) OPERATION COSTS
+Since the optimization model aims to reduce electricity- 2) ENERGY IMPORTS AND EXPORTS
+related costs for the entire community, DERs significantly Since the community has the ability to utilize the gener-
+reduce the community’s electricity costs for the two electric- ated electricity more effectively, P2P scenarios result in less
+ity tariffs. Tables 2 and 3 present the total community costs dependence on DSO imports. Figure 10(a) shows the amount
+for the simulation period for each scenario and are compared of energy purchased from DSO in P2P scenarios for the two
+with the HEMS scenario for the two electricity tariffs. The electricity tariffs. It demonstrates that there are hours where
+costs and revenues of the community from DSO imports and there are no imports from DSO in P2P scenarios, where
+exports are also given. prosumers meet their demand by utilizing their own DERs or
+
+purchasing from other prosumers at lower prices than DSO.
+a: OPERATION COSTS UNDER A FLAT TARIFF As the prosumers prioritize trading in the community over
+Results in Table 2 show that P2P reduces electricity costs by exporting to DSO, the amount exported to DSO in all sce-
+8.58% for PV-P2P scenario, 15.82% for the PV+ESS-P2P narios with P2P trading is much less than the equivalent
+scenario, and 11.76% for the PV+ESS+EV-P2P scenario HEMS scenarios. Figure 10(b) demonstrates that, in P2P
+for community compared to the equivalent HEMS scenarios. scenarios, a limited amount of energy is sold to DSO for
+This result from the local generation of electricity, reducing the two electricity tariffs. This shows how P2P trading can
+the community’s reliance on centrally provided electricity by increase the energy community self-consumption. Tables 2
+DSO. and 3 present the total energy imports and exports from and
+
+VOLUME 12, 2024 58327
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+TABLE 2. Results of the different scenarios studied for flat tariff.
+
+TABLE 3. Results of the different scenarios studied for ToU tariff.
+
+to DSO through P2P trading for the two electricity tariffs for involved, P2P trading increases community self-sufficiency,
+the simulation period. where DERs meet 64.27% of demand for the PV+ESS-P2P
+
+scenario and 40.54% of demand for the PV+ESS+EV-P2P
+a: ENERGY IMPORTS AND EXPORTS UNDER A FLAT TARIFF scenario. These values are significantly higher than equiva-
+Results in Table 2 show that P2P trading reduced the energy lent HEMS scenarios.
+purchased from DSO by 17.24% for the PV-P2P scenario,
+41.46% for the PV+ESS-P2P scenario, and 32.48% for b: ENERGY IMPORTS AND EXPORTS UNDER A ToU TARIFF
+the PV+ESS+EV-P2P scenario compared to the equivalent Results in Table 3 show that P2P trading reduced the energy
+HEMS scenarios. purchased from DSO by 17.24% for the PV-P2P scenario,
+
+Furthermore, P2P trading decreased the energy sold to 39.73% for the PV+ESS-P2P scenario, and 31.54% for
+DSO by 30.68% for the PV-P2P scenario, 97.69% for the the PV+ESS+EV-P2P scenario compared to the equivalent
+PV+ESS-P2P scenario, and 91.61% for the PV+ESS+EV- HEMS scenarios. The ToU tariff increases the energy pur-
+P2P scenario compared to the equivalent HEMS scenarios chased fromDSO for P2P scenarios compared to the flat tariff
+and substantially promoted community self-consumption by because of the high energy purchased fromDSO during hours
+encouraging houses of the community to meet their own of low prices under ToU tariff to charge batteries and elec-
+consumption through trade of local generation. At the time tric vehicles for energy arbitrage or to meet electric vehicle
+P2P was introduced, most PV generation was traded in the mobility needs.
+community and 37.17% of demand is covered by DERs for Furthermore, P2P trading decreased the energy sold to
+PV-P2P scenario. When batteries and electric vehicles are DSO by 30.68% for the PV-P2P scenario, 96.66% for the
+
+58328 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 10. Comparison of the studied scenarios over 3 days.
+
+PV+ESS-P2P scenario, and 91.06% for the PV+ESS+EV- and at night. Figure 10(c) shows the total energy traded in
+P2P scenario compared to the equivalent HEMS scenarios. P2P scenarios for the two electricity tariffs. The ToU tariff
+The ToU tariff increased the amount of energy sold to DSO allows for energy arbitrage because of having different prices
+compared to the flat tariff for P2P scenarios with the presence at off-peak and peak hours, thus increasing the total energy
+of batteries and electric vehicles, due to their energy arbitrage traded compared to a flat tariff.
+attributes (importing electricity at low price hours, storing it,
+and then using it for self-consumption or selling it to other 4) PEAK GRID CONSUMPTION
+houses at high price hours through P2P trading or selling it Since the distribution network needs to be sized for peak
+to DSO at hours with high price). Moreover, the ToU tariff capacity, this value of peak consumption is very important
+decreased community self-sufficiency, where DERs meet a for DSO. Tables 2 and 3 present that installing PV did
+slightly lower percentage of demand than in a flat tariff, not change the peak demand of the community (the values
+63.21% for the PV+ESS-P2P scenario (about 1.06%) and provided for peak demand represent the highest aggregate
+39.71% for the PV+ESS+EV-P2P scenario (about 0.83%). demand for imports from the external grid via the transformer
+The differential pricing under the ToU tariff has resulted in for the community in one time step) for the two electricity
+batteries and electric vehicles being utilized for energy arbi- tariffs since the peak demand of inflexible loads occurs at
+trage, which has led to more energy exports to earn revenue night when there is no PV generation as shown in Figure 3,
+through the feed-in tariff. Figure 10, and Figure 11. However, the integration of electric
+
+vehicles does result in a large increase in peak value com-
+3) TOTAL ENERGY TRADING pared to base scenario.
+Tables 2 and 3 present the total energy traded through P2P
+trading for the two electricity tariffs for the simulation period. a: PEAK GRID CONSUMPTION UNDER A FLAT TARIFF
+There will be an increase in the trading period and the Results in Table 2 and Figure 10(a) show that, the peak
+amount of traded energy between prosumers when batteries consumption is the same for the base scenario, PV, and
+and electric vehicles are installed, since prosumers can charge PV-P2P scenarios since the peak of inflexible loads occurs
+batteries and electric vehicles during periods of high PV at night. With the presence of batteries in PV+ESS-HEMS
+generation and sell them during periods of low PV generation and PV+ESS-P2P scenarios, the energy stored at batteries
+
+VOLUME 12, 2024 58329
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 11. Comparison of the studied scenarios over 1 month.
+
+covered part of the community demand at night. As a result attributes of batteries and electric vehicles or simultaneous
+the peak consumption is reduced by 37.15% in these two charging of batteries and electric vehicles. P2P scenarios with
+scenarios compared to the base, PV, and PV-P2P scenarios. batteries and electric vehicles have higher peak consumption
+The additional load that electric vehicles cause on the grid that the equivalent HEMS as shown in Figure11.
+in the PV+ESS+EV scenarios leads to an increase in the
+peak of grid consumption by 48.43% compared to the base C. IMPACTS ON THE LV DISTRIBUTION NETWORK
+scenario. This is a result of the larger energy storage capacity High DER penetration on the LV distribution networks could
+provided by the size of the electric vehicle batteries. This result in a violation of network constraints [45]. Therefore,
+results in a doubling of peak grid consumption in compari- it is imperative to understand how the integration of DERs
+son to PV+ESS scenarios. The charging of electric vehicles impacts the LV distribution network. Tables 5 and 5 show
+usually occurs at early day hours to satisfy mobility needs at the voltage values for the three phases, the maximum voltage
+departure time. unbalance factor (VUF), the maximum transformer loading,
+
+and the maximum line loading recorded during the simula-
+b: PEAK GRID CONSUMPTION UNDER A ToU TARIFF tion period for all studied scenarios for the two electricity
+Results in Table 3 show that the peak consumption was not tariffs. The same physical energy flow occurs in both PV and
+affected by the tariff in base, PV, and PV-P2P scenarios PV-P2P scenarios; hence, both have identical impacts on the
+because there are no flexible devices installed that could LV distribution network.
+change their behavior. However, the ToU tariff increased
+the peak of grid consumption, compared to the base sce- 1) IMPACTS ON VOLTAGE VARIATIONS
+nario, by 56.40% for the PV+ESS-P2P scenario, 48.43% for The LV distribution network under study is unbalanced,
+PV+ESS+EV-HEMS, and 163.26% for the PV+ESS+EV- and each phase includes a unique set of prosumers with
+P2P scenario. These are a result of the energy arbitrage distinct characteristics. Each phase’s voltage is recorded
+
+58330 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+TABLE 4. Results of P2P energy trading impacts on the LV distribution network for flat tariff.
+
+TABLE 5. Results of P2P energy trading impacts on the LV distribution network for ToU tariff.
+
+simultaneously. The voltage being displayed was measured as consumers change their consumption patterns to reduce
+at the load 53 connecting point, which is where the line the cost of electricity due to the different pricing levels in
+ends; as high voltage variations are anticipated at this node the ToU tariff especially with P2P scenarios in the presence
+(the voltage variation on the feeders’ end nodes is typically of batteries and electric vehicles. Moreover, prosumers in
+higher than that on other nodes near the transformer). When the HEMS scenarios are charging batteries at night because
+the local demand is high, the LV distribution networks may of the cheaper import tariff, whereas in the P2P scenarios,
+have a high voltage drop, and when the local generation is prosumers are preparing for trade periods. This situation is
+high, they might encounter a voltage rise. According to EN different with the flat tariff due to the constant daily price
+50160, the voltage of the LV distribution network must be for trading. Therefore, the minimum voltage values in the
+between 0.90 and 1.10 pu. Figure 12 shows the voltage values PV+ESS-P2P and the PV+ESS+EV-P2P scenarios are only
+over three days for the two electricity tariffs. All scenarios under 1 pu when using a ToU tariff as given in Table 4 and
+exhibit voltage variations across the day. Since all excess Table 5.
+PV is injected into the grid, the voltage variations in the PV
+and PV-P2P scenarios for the two electricity tariffs remain 2) IMPACTS ON VOLTAGE PHASE UNBALANCE
+unchanged and they recorded higher maximum voltage vari- The load connected to the 3-phases is balanced at optimal
+ation than base scenario. The voltages increased at noon due operating conditions, and the neutral line has no current
+to the PV energy injection into the grid. The PV+ESS+EV- flowing, which reduces losses in power. However, there is
+HEMS and PV+ESS+EV-P2P scenarios exhibit sharp and always an imbalance in the loads connected to each phase
+sudden changes due to large variations in the load and gener- of the distribution networks. Due to the relatively identical
+ation profiles. This high voltage variation happens when high consumption patterns of customers within a given geographic
+energy is imported from DSO to charge batteries and electric area, it is simple to keep the phase imbalance level within
+vehicles at low prices or to meet electric vehicle mobility acceptable limits by dispersing the loads equally at each
+needs. These changes are more obvious with the ToU tariff phase. With the installation of various single-phase DERs,
+
+VOLUME 12, 2024 58331
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 12. Phase voltages (a) Flat tariff, (b) ToU tariff.
+
+this situation is anticipated to significantly change.Moreover, vehicles. Furthermore, no scenario for the two electricity
+DER owners’ consumption and production patterns could tariffs exceeds the permitted level and P2P scenarios result
+vary as a result of P2P trading. The impact of P2P energy in higher VUF values than the equivalent HEMS scenarios.
+trading on LV distribution network voltages can be measured
+using a voltage unbalance factor (VUF), which measures the 3) IMPACTS ON THE TRANSFORMER AND LINE LOADING
+variations between the magnitudes of the voltages for each The installation of PV in the PV and PV-P2P scenarios
+phase. Based on symmetrical components of the voltage, the reduced the energy imported from DSO because part of
+IEC [46] defines the voltage unbalance factor (VUF), which the community demand is covered by the PV generation.
+corresponds to the ‘‘true definition’’ of voltage imbalance as However, the community’s peak demand occurs at night,
+given in (18). when there is no PV generation. That’s why the maximum
+
+VUF = (V2/V1) ∗ 100(%) (18) transformer loading doesn’t change with the presence of PV
+generation in the community, as given in Tables 4 and 5.
+
+V1 and V2 stand for the phase voltages’ positive and negative Figure 14 depicts the transformer loading for the studied sce-
+sequences, respectively. The maximum permitted level for narios over 3 days for the two electricity tariffs. All scenarios
+VUF is 2%. result in low transformer loading, and the maximum loading
+
+Figure 13 shows the VUF values for the studied scenarios in the PV+ESS+EV-P2P scenario was 13.40% in the flat
+over three days for the two electricity tariffs and themaximum tariff and 25.64% in the ToU tariff. The PV+ESS-P2P sce-
+VUF values are given in Table 4 and 5 for the two electricity nario results in the lowest transformer loading in the flat tariff
+tariffs. The VUF values are recorded at the connection point (5.09%), as the excess PV generation is stored in batteries and
+of load 53, which is at the line’s end, and anticipate high volt- used at night or sold to other houses in the community instead
+age variations. VUF remained below 1%on the flat tariff in all of purchasing from DSO. Transformer loading increased in
+scenarios and the presence of flexible devices and P2P energy ToU to 14.74% as the peak of grid consumption is increased.
+trading increase the VUF value. While in the ToU tariff, VUF The equivalent HEMS scenarios in the ToU tariff recorded
+has increased, as can be seen for the PV+ESS-P2P scenario a lower transformer loading than P2P scenarios, as the peak
+to reach 1.074% and the PV+ESS+EV-P2P scenario to reach of grid consumption is lower than the P2P scenario. In the
+1.919%. This occurs mostly because electric vehicles and flat tariff, the PV+ESS+EV-P2P scenario recorded the same
+batteries are charged simultaneously during times of low loading as the equivalent HEMS scenario, as they have the
+electricity prices or to meet the mobility needs of electric same peak of grid consumption.
+
+58332 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 13. Voltage unbalance factor (a) Flat tariff, (b) ToU tariff.
+
+FIGURE 14. Transformer loading (a) Flat tariff, (b) ToU tariff.
+
+FIGURE 15. Line loading (a) Flat tariff, (b) ToU tariff.
+
+Figure 15 shows the loading of the line connected to the 4) IMPACTS ON DIFFERENT SCENARIOS USING BOXPLOT
+LV side of the transformer for the studied scenarios over REPRESENTATIONS: A COMPARISON
+3 days, and Tables 4 and 5 show the maximum line loading This section presents a statistical study of voltage variations,
+for the two electricity tariffs. Equal current capacity exists transformer loading, line loading, and voltage unbalance, for
+across all of the network’s lines. This maximum loading the simulated period.
+occurs when batteries and electric vehicles are charged at the Figure 16 shows that the voltage at all phases is within
+same time. It can be noticed that line loading increases in acceptable limits for the two electricity tariffs for the entire
+the ToU tariff compared to the flat tariff in the PV+ESS-P2P simulation period. In flat tariff, the presence of DERs in
+scenario (43.97%) and PV+ESS+EV-P2P scenario (76.82%) the community increases the voltage variations compared to
+as batteries and electric vehicles simultaneously charge dur- base scenario. Similarly, in Tou tariff, the presence of DERs
+ing a period of low electricity prices. The equivalent HEMS in the community increases the voltage variations compared
+scenarios recorded a lower line loading than P2P scenarios, to base scenario. Moreover, P2P scenarios with batteries or
+and it has the same value in the two electricity tariffs. electric vehicles result in higher voltage variations than the
+
+VOLUME 12, 2024 58333
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+FIGURE 16. Comparison of the voltage variations impacts of different scenarios using boxplot representations (a) Flat tariff, (b) ToU tariff.
+
+FIGURE 17. Comparison of the transformer loading, line loading, and phase unbalance impacts of different scenarios using boxplot
+representations (a) Flat tariff, (b) ToU tariff.
+
+equivalent HEMS. Phase b has the highest voltage variations 1.05 pu in the base scenario and rise with the PV genera-
+and phase c has the lowest voltage variations. The voltages tion reaching a level above 1.06 pu. In the PV+ESS-P2P
+are always lower than 1.08 pu. The voltages are less than and PV+ESS+EV-P2P scenarios, battery and electric vehicle
+
+58334 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+charging and discharging, along with the opportunity to trade Future research could assess the impacts of P2P energy
+within the community, increase the voltage levels and tend trading on different levels of power systems (i.e., generation
+to fluctuate more. Comparing P2P and HEMS scenarios with and transmission). Moreover, approaches for mitigating the
+the same resources, P2P is inducing more voltage variations. impacts of P2P energy trading on distribution networks could
+
+Figure 17 shows the loading for transformers and lines be studied.
+and the voltage unbalance factor for the two electricity tariffs
+for the entire simulation period. For the PV+ESS+EV-P2P REFERENCES
+scenario with a high impact on the LV distribution net- [1] A. Zhou, M. Yang, T. Wu, and L. Yang, ‘‘Distributionally robust energy
+work,the transformer’s average load is 7% for most of the management for islanded microgrids with variable moment informa-
+hours throughout themonth for the two electricity tariffs, with tion: An MISOCP approach,’’ IEEE Trans. Smart Grid, vol. 14, no. 5,
+
+pp. 3668–3680, Sep. 2023, doi: 10.1109/TSG.2023.3236019.
+outliers reaching a maximum of 13.40% in the flat tariff and [2] Y. Zhou, J. Wu, C. Long, and W. Ming, ‘‘State-of-the-art analysis and
+25.64% in the ToU tariff. Similarly, the line’s average load is perspectives for peer-to-peer energy trading,’’ Engineering, vol. 6, no. 7,
+less than 20% for most of the hours over the month for the pp. 739–753, Jul. 2020, doi: 10.1016/j.eng.2020.06.002.
+
+two electricity tariffs, with outliers of 39.31% in the flat tariff [3] K. Umer, Q. Huang, M. Khorasany, M. Afzal, and W. Amin, ‘‘A
+novel communication efficient peer-to-peer energy trading scheme for
+
+and 76.82% in the ToU tariff. Comparing P2P and HEMS enhanced privacy in microgrids,’’ Appl. Energy, vol. 296, Aug. 2021,
+scenarios with the same resources, P2P scenarios result in Art. no. 117075, doi: 10.1016/j.apenergy.2021.117075.
+more loading of transformer and lines than HEMS in ToU [4] P. A. Gbadega and Y. Sun, ‘‘Centralized peer-to-peer transactive
+
+energy market approach in a prosumer-centric residential smart grid
+tariff. The VUF is 0.732% for most of the hours during the environment,’’ Energy Rep., vol. 8, pp. 105–116, Nov. 2022, doi:
+month for the PV+ESS+EV-P2P scenario in the flat tariff 10.1016/j.egyr.2022.10.080.
+and is less than 1% with outliers with a maximum of 1.919% [5] M. E. Honarmand, V. Hosseinnezhad, B. Hayes, and P. Siano, ‘‘Local
+
+in the ToU tariff. P2P scenarios result in higher values of VUF energy trading in future distribution systems,’’ Energies, vol. 14, no. 11,
+p. 3110, May 2021, doi: 10.3390/en14113110.
+
+compared to the equivalent HEMS scenarios. [6] J. Li, D. Xu, J. Wang, B. Zhou, M. H. Wang, and L. Zhu, ‘‘P2P multi-
+grade energy trading for heterogeneous distributed energy resources and
+flexible demand,’’ IEEE Trans. Smart Grid, vol. 14, no. 2, pp. 1577–1589,
+Mar. 2023, doi: 10.1109/TSG.2022.3181703.
+
+VI. CONCLUSION [7] S. Rezaei and A. Ghasemi, ‘‘Stochastic scheduling of resilient intercon-
+This paper studied seven operation scenarios where different nected energy hubs considering peer-to-peer energy trading and energy
+DER types and techniques for managing DERs (P2P and storages,’’ J. Energy Storage, vol. 50, Jun. 2022, Art. no. 104665, doi:
+
+10.1016/j.est.2022.104665.
+HEMS) are considered. Moreover, the electricity pricing (flat [8] Y. Zhou, J. Wu, G. Song, and C. Long, ‘‘Framework design and optimal
+tariff and ToU tariff) effect on the performance of P2P energy bidding strategy for ancillary service provision from a peer-to-peer energy
+trading and HEMS and on the LV distribution network are trading community,’’ Appl. Energy, vol. 278, Nov. 2020, Art. no. 115671,
+
+analyzed, considering a realistic Egyptian case study. The doi: 10.1016/j.apenergy.2020.115671.
+[9] L. Nasrat, M. Zedan, A.-A. Ali, and G. Shabib, ‘‘Review on energy trading
+
+results demonstrated P2P’s effectiveness over HEMS in low- of community-based projects around the world,’’ in Proc. 23rd Int. Middle
+ering electricity costs, lowering energy purchases from DSO, East Power Syst. Conf. (MEPCON), Cairo, Egypt, Dec. 2022, pp. 1–8, doi:
+and increasing self-consumption. The economic benefit of 10.1109/MEPCON55441.2022.10021688.
+
+[10] M. Nour, J. P. Chaves-Ávila, and Á. Sánchez-Miralles, ‘‘Review of
+P2P energy trading is higher under the ToU tariff compared to blockchain potential applications in the electricity sector and challenges
+the flat tariff. Compared to HEMS, P2P scenarios have higher for large scale adoption,’’ IEEE Access, vol. 10, pp. 47384–47418, 2022,
+peak demands on energy imported from DSO in ToU tariff. doi: 10.1109/ACCESS.2022.3171227.
+
+The impacts of P2P trading on the LV distribution network [11] M. Karami and R. Madlener, ‘‘Business models for peer-to-peer
+energy trading in Germany based on households’ beliefs and pref-
+
+are compared to HEMS for the two electricity tariffs. The erences,’’ Appl. Energy, vol. 306, Jan. 2022, Art. no. 118053, doi:
+study showed that for voltage variations and voltage phase 10.1016/j.apenergy.2021.118053.
+
+unbalance, no scenario exceeded the permitted level for the [12] N. Wang, Z. Liu, P. Heijnen, and M. Warnier, ‘‘A peer-to-peer mar-
+ket mechanism incorporating multi-energy coupling and cooperative
+
+two electricity tariffs and the highest impacts are observed behaviors,’’ Appl. Energy, vol. 311, Apr. 2022, Art. no. 118572, doi:
+for PV+ESS+EV-P2P scenario for ToU tariff. Furthermore, 10.1016/j.apenergy.2022.118572.
+
+for P2P scenarios, the transformer and lines are more loaded [13] J. Heilmann, M. Wensaas, P. C. del Granado, and N. Hashemipour,
+‘‘Trading algorithms to represent the wholesale market of energy commu-
+
+than HEMS in ToU tariff. Results indicated that the continu- nities in Norway and England,’’ Renew. Energy, vol. 200, pp. 1426–1437,
+ous charging of batteries and electric vehicles during times Nov. 2022, doi: 10.1016/j.renene.2022.10.028.
+of low pricing or to meet electric vehicle mobility needs [14] M. Khorasany, A. S. Gazafroudi, R. Razzaghi, T. Morstyn, and M. Shafie-
+
+is the reason for these P2P-related impacts. These changes Khah, ‘‘A framework for participation of prosumers in peer-to-peer energy
+trading and flexibility markets,’’ Appl. Energy, vol. 314, May 2022,
+
+are more obvious with the ToU tariff as consumers change Art. no. 118907, doi: 10.1016/j.apenergy.2022.118907.
+their consumption patterns to reduce their electricity costs, [15] B. Zhang, Y. Du, X. Chen, E. G. Lim, L. Jiang, and K. Yan, ‘‘Potential
+considering the different pricing levels in the ToU tariff. benefits for residential building with photovoltaic battery system partici-
+
+pation in peer-to-peer energy trading,’’ Energies, vol. 15, no. 11, p. 3913,
+The case study demonstrates that the chosen energy trading May 2022, doi: 10.3390/en15113913.
+system has a non-negligible impact on the physical quantities [16] S. Saxena, H. E. Z. Farag, A. Brookson, H. Turesson, and H. Kim,
+that network users’ trade. Therefore, network constraints may ‘‘A permissioned blockchain system to reduce peak demand in res-
+
+idential communities via energy trading: A real-world case study,’’
+be violated more frequently depending on the mechanism IEEE Access, vol. 9, pp. 5517–5530, 2021, doi: 10.1109/ACCESS.2020.
+utilized and the same resource conditions. 3047885.
+
+VOLUME 12, 2024 58335
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+[17] Y. H. Yap, Jinnie, W.-S. Tan, N. A. Ahmad, C.-L. Wooi, and [36] Pandapower 2.3.0 Documentation. Accessed: Jul. 10, 2023. [Online].
+Y.-K. Wu, ‘‘Motivational game-theory P2P energy trading: A case Available: https://pandapower.readthedocs.io/en/v2.3.1/index.html
+study in Malaysia,’’ in Proc. 2nd Int. Conf. Smart Power Internet [37] L. Thurner, A. Scheidler, F. Schäfer, J.-H. Menke, J. Dollichon, F. Meier,
+Energy Syst. (SPIES), Bangkok, Thailand, Sep. 2020, pp. 480–485, doi: S. Meinecke, and M. Braun, ‘‘Pandapower—An open-source Python tool
+10.1109/SPIES48661.2020.9243056. for convenient modeling, analysis, and optimization of electric power sys-
+
+[18] C. Etukudor, B. Couraud, V. Robu, W.-G. Früh, D. Flynn, and C. Okereke, tems,’’ IEEE Trans. Power Syst., vol. 33, no. 6, pp. 6510–6521, Nov. 2018.
+‘‘Automated negotiation for peer-to-peer electricity trading in local [Online]. Available: https://ieeexplore.ieee.org/document/8344496
+energy markets,’’ Energies, vol. 13, no. 4, p. 920, Feb. 2020, doi: [38] A. Lüth, J. M. Zepter, P. C. del Granado, and R. Egging, ‘‘Local
+10.3390/en13040920. electricity market designs for peer-to-peer trading: The role of battery
+
+[19] Y. Takeda, Y. Nakai, T. Senoo, and K. Tanaka, ‘‘Designing a user-centric flexibility,’’ Appl. Energy, vol. 229, pp. 1233–1243, Nov. 2018, doi:
+P2P energy trading platform: A case study—Higashi-Fuji demonstration,’’ 10.1016/j.apenergy.2018.08.004.
+Energies, vol. 14, no. 21, p. 7289, Nov. 2021, doi: 10.3390/en14217289. [39] M. Nour, J. Pablo Chaves-Ávila, M. Troncia, and Á. Sánchez-Miralles,
+
+[20] X. Wang, Z. Wang, Y. Mu, Y. Deng, and H. Jia, ‘‘Rolling horizon ‘‘Mitigating the impacts of community energy trading on distribution net-
+optimization for real-time operation of prosumers with peer-to-peer works by considering contracted power network charges,’’ IEEE Access,
+energy trading,’’ Energy Rep., vol. 9, pp. 321–328, Mar. 2023, doi: vol. 12, pp. 26991–27004, 2024, doi: 10.1109/ACCESS.2024.3365630.
+10.1016/j.egyr.2022.10.438. [40] Resources—IEEE PES Test Feeder. Accessed: Jun. 20, 2023. [Online].
+
+[21] O. Samuel, A. Almogren, A. Javaid, M. Zuair, I. Ullah, and Available: https://cmte.ieee.org/pes-testfeeders/resources/
+N. Javaid, ‘‘Leveraging blockchain technology for secure energy trading [41] Renewables.Ninja. Accessed: Jul. 17, 2023. [Online]. Available:
+and least-cost evaluation of decentralized contributions to electrification https://www.renewables.ninja
+in Sub-Saharan Africa,’’ Entropy, vol. 22, no. 2, p. 226, Feb. 2020, doi: [42] M. M. Rienecker, ‘‘MERRA: NASA’s modern-era retrospective analysis
+10.3390/e22020226. for research and applications,’’ J. Climate, vol. 24, no. 14, pp. 3624–3648,
+
+[22] K. Kusakana, ‘‘Optimal peer-to-peer energy management between Jul. 2011, doi: 10.1175/jcli-d-11-00015.1.
+grid-connected prosumers with battery storage and photovoltaic sys- [43] Egyptian Electric Utility and Consumer Protection Regulatory
+tems,’’ J. Energy Storage, vol. 32, Dec. 2020, Art. no. 101717, doi: Agency (EgyptERA). Accessed: Jul. 18, 2023. [Online]. Available:
+10.1016/j.est.2020.101717. http://egyptera.org/ar/Tarrif2022N.aspx
+
+[23] M. Mahmoud and S. B. Slama, ‘‘Peer-to-peer energy trading case study [44] Behira Electricity Distribution Co. Accessed: Jul. 18, 2023. [Online].
+using an AI-powered community energy management system,’’ Appl. Sci., Available: https://www.bedc.gov.eg/newsun_product_system/
+vol. 13, no. 13, p. 7838, Jul. 2023, doi: 10.3390/app13137838. [45] M. Nour, J. P. Chaves-Ávila, G.Magdy, and Á. Sánchez-Miralles, ‘‘Review
+
+[24] A. El-Zonkoly, ‘‘Feasibility of blockchain-based energy trading within of positive and negative impacts of electric vehicles charging on elec-
+islanded microgrids in Alexandria, Egypt,’’ J. Energy Eng., vol. 147, tric power systems,’’ Energies, vol. 13, no. 18, p. 4675, Sep. 2020, doi:
+no. 3, Jun. 2021, Art. no. 04021009, doi: 10.1061/(ASCE)EY.1943- 10.3390/en13184675.
+7897.0000754. [46] Assessment of Emission Limits for Harmonics, Interharmonics, Voltage
+
+[25] M. A. El Din, A. El Zonkoly, and O. M. Hebala, ‘‘Energy trading Fluctuations andUnbalance for the Connection of Disturbing Installations
+strategy incoporating electric vehicles,’’ in Proc. 13th Int. Symp. Adv. to LV Power Systems, document IEC 61000-3-14, IEC: Geneva, Switzer-
+Topics Electr. Eng. (ATEE), Bucharest, Romania, Mar. 2023, pp. 1–4, doi: land, 2011. [Online]. Available: https://webstore.iec.ch/publication/4147
+10.1109/ATEE58038.2023.10108240.
+
+[26] A. El-Zonkoly, ‘‘Optimal P2P based energy trading of flexible smart
+inter-city electric traction system and a wayside network: A case study
+in Alexandria, Egypt,’’ Electr. Power Syst. Res., vol. 223, Oct. 2023,
+Art. no. 109708, doi: 10.1016/j.epsr.2023.109708.
+
+[27] B. P. Hayes, S. Thakur, and J. G. Breslin, ‘‘Co-simulation of electricity
+distribution networks and peer to peer energy trading platforms,’’ Int. J. MONA ZEDAN received the B.Sc. degree in
+Electr. Power Energy Syst., vol. 115, Feb. 2020, Art. no. 105419, doi:
+10.1016/j.ijepes.2019.105419. electrical engineering from the Faculty of Energy
+
+[28] M. Nour, J. P. Chaves-Ávila, M. Troncia, A. Ali, and Á. Sánchez-Miralles, Engineering, Aswan University, Aswan, Egypt,
+‘‘Impacts of community energy trading on low voltage distribu- and the M.Sc. degree in electrical engineering
+tion networks,’’ IEEE Access, vol. 11, pp. 50412–50430, 2023, doi: from the Faculty of Engineering, Aswan Univer-
+10.1109/ACCESS.2023.3278090. sity, where she is currently pursuing the Ph.D.
+
+[29] M. I. Azim, W. Tushar, and T. K. Saha, ‘‘Cooperative negawatt P2P energy degree. She is also an Assistant Lecturer with the
+trading for low-voltage distribution networks,’’ Appl. Energy, vol. 299, Higher Institute of Engineering and Technology,
+Oct. 2021, Art. no. 117300, doi: 10.1016/j.apenergy.2021.117300. King Marriott, Alexandria, Egypt. Her research
+
+[30] M. F. Dynge, P. C. del Granado, N. Hashemipour, and M. Korpås, ‘‘Impact interest includes peer-to-peer energy trading.
+of local electricity markets and peer-to-peer trading on low-voltage grid
+operations,’’ Appl. Energy, vol. 301, Nov. 2021, Art. no. 117404, doi:
+10.1016/j.apenergy.2021.117404.
+
+[31] J. Guerrero, A. C. Chapman, and G. Verbic, ‘‘Decentralized P2P energy
+trading under network constraints in a low-voltage network,’’ IEEE
+Trans. Smart Grid, vol. 10, no. 5, pp. 5163–5173, Sep. 2019, doi:
+10.1109/TSG.2018.2878445. MORSY NOUR received the bachelor’s degree
+
+[32] M. Jenkins and I. Kockar, ‘‘Impact of P2P trading on distributed generation in electrical power engineering from Aswan Uni-
+curtailment in constrained distribution networks,’’ Electr. Power Syst. Res., versity, Aswan, Egypt, and the M.Sc. degree in
+vol. 189, Dec. 2020, Art. no. 106666, doi: 10.1016/j.epsr.2020.106666. electrical engineering from Budapest University
+
+[33] H. Liu, J. Li, S. Ge, X. He, F. Li, and C. Gu, ‘‘Distributed day- of Technology and Economics, Budapest, Hun-
+ahead peer-to-peer trading for multi-microgrid systems in active distri- gary. He is currently pursuing the Ph.D. degree
+bution networks,’’ IEEE Access, vol. 8, pp. 66961–66976, 2020, doi: in electrical engineering with Comillas Pontifi-
+10.1109/ACCESS.2020.2983645.
+
+[34] M. I. Azim, W. Tushar, and T. K. Saha, ‘‘Investigating the impact cal University, Madrid, Spain. Since 2013, he has
+of P2P trading on power losses in grid-connected networks with pro- been a Teaching Assistant with the Faculty of
+sumers,’’ Appl. Energy, vol. 263, Apr. 2020, Art. no. 114687, doi: Energy Engineering, Aswan University. He is also
+10.1016/j.apenergy.2020.114687. a Research Assistant with the Institute for Research in Technology (IIT),
+
+[35] A. Saif, S. K. Khadem,M. F. Conlon, and B. Norton, ‘‘Impact of distributed Comillas Pontifical University. His research interests include the integration
+energy resources in smart homes and community-based electricity mar- of electric vehicles into electric power systems, load frequency control,
+ket,’’ IEEE Trans. Ind. Appl., vol. 59, no. 1, pp. 59–69, Jan. 2023, doi: blockchain applications in the electricity sector, and peer-to-peer energy
+10.1109/TIA.2022.3202756. trading.
+
+58336 VOLUME 12, 2024
+
+
+
+M. Zedan et al.: Techno-Economic Assessment of P2P Energy Trading
+
+GABER SHABIB received the B.Sc. degree in and material science. He has also conducted research in FACTS, which
+electrical engineering from Al-Azhar University, involves developing advanced power electronics technologies to enhance the
+theM.Sc. degree in electrical engineering from the controllability and stability of electrical power systems. In addition, he has
+King Fahad University of Petroleum and Miner- contributed to the field by introducing a stochastic multi-period transmission
+als, Dhahran, Saudi Arabia, in December 1985, expansion planning (SMTEP) model that considers uncertainties and the
+and the Ph.D. degree from Menoufia Univer- reliability of the power system. He has also conducted research on prediction
+sity, Egypt, in 2001. In October 1982, he joined schemes for 5G communication systems. His research in power systems
+the Department of Electrical Engineering, King encompasses a wide range of topics and has made significant contributions to
+Fahad University of Petroleum and Minerals, as a the field. His work has contributed to improving the efficiency and reliability
+Research Assistant. In November 1987, he joined of power transmission and distribution networks. A complete list of his recent
+
+Qassim Royal Institute, Qassim, Saudi Arabia, as a Lecturer. In 1999, works can be found on his Scopus link. Finally, he is one of the top 2% of
+he joined the Faculty of Energy Engineering, Aswan University, Egypt. authors, according to the Stanford University database, in 2022.
+From 2006 to 2007, he was a Visiting Professor with the Digital Control
+Laboratory, Tsukuba University, Japan. From 2019, he joined the Higher
+Institute of Computer, King Marriott, Alexandria, Egypt. His research inter-
+ests include power system stability, control, self-tuning control, fuzzy logic ABDULLAH ALHARBI received the bachelor’s
+techniques, and digital control techniques all as applied to power systems. degree from Prince Sattam bin Abdulaziz Uni-
+
+versity (PSAU), in 2012, and the master’s and
+Ph.D. degrees from the University of Denver, in
+2016 and 2023, respectively. He is currently an
+
+ZIAD M. ALI (Member, IEEE) received the B.Sc. Assistant Professor with PSAU. His research inter-
+and M.Sc. degrees in electrical engineering from ests include innovating the sizing, molding, and
+the Faculty of Engineering, Assiut University, management of energy storage systems for energy
+Assuit, Egypt, in 1998 and 2003, respectively, and and ancillary services markets.
+the Ph.D. degree from Kazan State Technical Uni-
+versity, Kazan, Tatarstan, Russia, in 2010. He was
+a Demonstrator with the Faculty of Engineer-
+ing, Aswan University, Egypt; and South Valley
+University, Aswan, Egypt. He was an Assistant AL-ATTAR ALI MOHAMED received the M.Sc.
+Lecturer with the Faculty of Engineering, Aswan degree in electrical engineering from Aswan Uni-
+
+University. He was an Assistant Professor with the Faculty of Engineer- versity, Egypt, in 2013, and the Ph.D. degree
+ing, Aswan University, from 2011 to 2016; a Visitor Researcher with in electrical engineering from Elminia Univer-
+the Power System Laboratory, Kazan State Energy University, Russia, sity, Egypt, in 2016. He is currently an Associate
+from 2012 to 2013; and a Visitor Researcher with the Power System Labora- Professor and the Director of the Technology
+tory, College of Engineering, University of Padova, Italy, from 2013 to 2014. and Innovation Support Center, Aswan University.
+He is currently an Associate Professor with the Electrical Department, His research interests include artificial intelli-
+Faculty of Engineering, Aswan University, and the College of Engineering at gence applications in power system control and
+Wadi Addawasir, Prince Sattam bin Abdulaziz University, Saudi Arabia. His operation, renewable energy, smart grids, and
+research interests include power system analysis, flexible AC transmission metaheuristic optimization.
+systems (FACTS), optimization, renewable energy analysis, smart grids,
+
+VOLUME 12, 2024 58337

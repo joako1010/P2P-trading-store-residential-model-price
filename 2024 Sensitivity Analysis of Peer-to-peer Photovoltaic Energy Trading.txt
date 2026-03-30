@@ -1,0 +1,1626 @@
+﻿JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024 1993
+
+Sensitivity Analysis of Peer-to-peer Photovoltaic 
+Energy Trading in a Community Microgrid in Chile
+
+Javier Salles-Mardones, Alex Flores-Maradiaga, Rodrigo Barraza, and Mohamed A. Ahmed
+
+Abstract—Nowadays, public policies in Chile are geared to‐ I. INTRODUCTION 
+wards the promotion of distributed energy resources (DERs) 
+such as distributed photovoltaic (PV) systems. However, the pre‐ CHILE is undergoing an energy transition process to 
+vailing socioeconomic context and the lack of incentive to invest achieve sustainability in its energy sector and diversify 
+in DERs have posed a challenge to achieving the established the energy matrix towards renewable energy sources, taking 
+goals in the coming years. This paper develops a three-entity ar‐ advantage of the local abundant solar and wind resources. 
+chitecture model and decision-making algorithms for peer-to- Public policies have been implemented, including the com‐
+peer (P2P) PV energy trading. It seeks to conduct a sensitivity 
+analysis of a P2P PV energy trading system in a community mi‐ mitment to achieve carbon neutrality by 2050, and the gov‐
+crogrid, to assess the potential benefits for local communities ernmental programs, such as Casa Solar, which aimed to pro‐
+and to encourage the development of new local public policies mote investments in small distributed photovoltaic (PV) sys‐
+aimed at enhancing the profitability of DERs. Various scenarios tems for households with low assessed property values. 
+are compared, both with and without P2P market, considering These policies not only reduce the investment required to im‐
+residential customers (RCs), encompassing both consumers and 
+prosumers with PV systems, with or without battery energy prove the transmission system, which cost about 279 million 
+storage systems (BESSs), an aggregator (AG), and utility grid USD in 2023 [1], but also avoid the installation of large-
+(UG). Daily energy and economic transactions are examined scale renewable generation plants. These plants often encoun‐
+with the aim of reducing the annual electricity bills for each ter socio-environmental obstacles and substantial levels of 
+RC, enhancing the profitability of DERs for prosumers, increas‐ curtailment, which accounted for 7.63% of their generation 
+ing incomes for the AG, and exploring potential benefits for the in 2022, due to limitations in the existing transmission sys‐
+UG. The load profiles and meteorological data are collected 
+from publicly available databases, and a novel electricity pric‐ tem [2]. However, both international and local factors have 
+ing scheme is proposed based on current rates offered by the lo‐ slowed the process and affected the base generation of the 
+cal UG. The results demonstrate that the P2P market could power system. Between 2019 and 2022, the coal prices have 
+lead to a reduction in the annual electricity bills by as much as increased by 242%, oil by 53%, and liquefied gas by 600%. 
+1.76% for consumers, an increase in annual income of up to Furthermore, Chile has experienced a local severe drought 
+149% for prosumers, and a reduction in the payback period for 
+their DERs by up to 0.4 years. This paper contributes to im‐ over the past decade, resulting in a 26% reduction in hydro‐
+proving the investment in DER projects and provides a guide electric generation between 2019 and 2021, which typically 
+for extending the work to different regions of Chile and global accounts for approximately 20% of the total generation of 
+emerging economies with DER potential. the power system [3].
+
+Index Terms—Battery energy storage system (BESS), mi‐ The increases in demand have affected transmission sys‐
+crogrid, peer-to-peer (P2P) market, photovoltaic (PV) system, tems, which require the construction of new infrastructure, 
+residential customer. estimated at a cost of around 850 USD/(MW·km-1) [4]. Lo‐
+
+cal inflationary crisis has also led to an increase in input 
+Manuscript received: September 19, 2023; revised: February 4, 2024; accept‐ costs for generation projects, affecting its profitability [5]. 
+
+ed: May 8, 2024. Date of CrossCheck: May 8, 2024. Date of online publication: By 2040, the optimal installation of distributed generation 
+June 21, 2024. 
+
+This work was supported in part by the Chilean Research and Development (DG) in Chile is projected to reach around 6.22 GW, consti‐
+National Agency (ANID) through the projects ANID/FONDECYT/11200178, tuting 40% of the newly installed generation capacity in the 
+ANID/FONDECYT/1221878, and ANID/FONDAP/1523A0006, and in part by power system [6]. However, the current level of DG imple‐
+Scientific Research Initiation Program (PIIC) N° 033/2023 of the Universidad 
+Técnica Federico Santa María. mentation is far from this value, due to the lack of informa‐
+
+This article is distributed under the terms of the Creative Commons Attribu‐ tion available to residential customers (RCs) regarding the 
+tion 4.0 International License (http://creativecommons.org/licenses/by/4.0/). benefits of DG projects and the low internal rate of return 
+
+J. Salles-Mardones and A. Flores-Maradiaga (corresponding author) are with 
+the Department of Mechanical Engineering, Universidad Técnica Federico Santa (IRR) for potential investors. It is crucial and essential to en‐
+María, Valparaíso 2390123, Chile, and A. Flores-Maradiaga is also with Nordex courage the private investment and consider transitioning 
+Energy Chile, Las Condes 7550000, Chile (e-mail: javier.salles@sansano.usm.cl; from the existing system with fixed electricity rate to a dy‐
+alex.floresm@usm.cl).
+
+R. Barraza is with the Faculty of Engineering and Sciences, Universidad Ad‐ namic one that accurately reflects real-time demand.
+olfo Ibáñez, Santiago 7941169, Chile (e-mail: rodrigo.barraza@uai.cl). The global trends in microgrids and local peer-to-peer 
+
+M. A. Ahmed is with the Department of Electronic Engineering, Universidad (P2P) markets could be locally implemented, allowing RCs 
+Técnica Federico Santa María, Valparaíso 2390123, Chile (e-mail: mohamed.ab‐
+delhamid@usm.cl). to exchange surplus PV output among themselves [7]. This 
+
+DOI: 10.35833/MPCE.2023.000678 arrangement has the potential to offer more substantial com‐
+
+
+
+1994 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+pensation for surplus generation, thereby significantly en‐ buying or selling orders in the P2P market, with a microgrid 
+hancing the profitability of distributed energy resource operator overseeing transactions, managing microgrid con‐
+(DER) projects. Moreover, P2P markets offer several bene‐ sumption, and setting market prices. The results showed that 
+fits such as enhancing operational efficiencies of distribution the P2P market empowers households to invest in local PV 
+grid, increasing resilience and flexibility of the electrical sys‐ systems.
+tem to avoid failures, reducing dependence on high-voltage In [17], the study assessed the impact of local regulatory 
+transmission, improving supply quality indices, minimizing frameworks on P2P markets. The initial designs were eco‐
+losses caused by inversions of power flow direction in the nomically unattractive to RCs due to high public taxes on 
+distribution grid, and contributing to stabilizing the utility the use of the UG infrastructure. A novel market design was 
+grid (UG) frequency [8]. proposed incorporating a few legal adjustments. Simulations 
+
+Various studies have been conducted on the implementa‐ included 14 households, a large PV plant, and a microgrid 
+tion of P2P markets outside of Chile. In [9], a P2P energy operator. Data on electricity prices, PV generation, and load 
+trading model was proposed, which uses a virtual consumer were collected. The results indicated that the proposed mod‐
+management system in the UG that operates in real time. el enables the community to benefit from the P2P market. In 
+Simulations were conducted in a microgrid featuring four [18], various strategies to incentivize microgrid development 
+RCs with small PV systems. The model aimed to maximize were examined in smart energy communities, considering ar‐
+profits for participants and to enhance the return on invest‐ chitectural layers, DERs, UG integration, and local electrici‐
+ment (ROI). In [10], the advantages of P2P trading for RCs ty markets. In [19], a hierarchical blockchain architecture 
+in a community microgrid with 100 to 300 households were was developed for an electric vehicle-to-grid trading system. 
+explored. Market paradigms such as bill sharing, mid-market It facilitates intelligent electric vehicle (EV) charging and 
+rate, and auction-based pricing were introduced. The results discharging schedules to contribute to the UG load regula‐
+showed that a moderate PV penetration in P2P energy trad‐ tion and ensure fair benefit distribution among EV owners, 
+ing, coupled with diverse demand profiles, led to a signifi‐ aggregators (AGs), and the UG. Table I summarizes and 
+cant 30% reduction in electricity bills. compares previous research works on P2P energy trading.
+
+In [11], a cost-effective energy trading system was sug‐ The research on P2P energy trading is an emerging topic 
+gested for an off-grid community with DERs. Each house attracting a lot of attention with many research works and tri‐
+consists of a PV system, battery energy storage system al projects across the world [20]-[22]. To implement such so‐
+(BESS), and Intenet of Things serving for real-time energy lutions, it is essential to define the responsibilities and roles 
+data management. In [12], a cooperative mechanism cen‐ of consumers in the P2P market, as well as to develop the 
+tered on the user was developed to encourage the user in‐ P2P market policies and economic incentives for energy trad‐
+volvement in P2P energy trading. An experiment was con‐ ing [20]. Also, there is a need for policies and regulations to 
+ducted in a residential community with 19 households, in‐ incentivize the participation of DERs in the local energy 
+volving real-time measurements of demand, PV generation, market [21]. Furthermore, there is a need to analyze how 
+and BESS status. The results showed that the average P2P BESS would impact the outcomes of prosumers with PV sys‐
+market price is approximately 27% lower than the UG price. tems [22].
+In [13], the potential benefits of P2P markets for 75 house‐ In the context of Chile, current local regulations do not 
+holds integrating DERs were studied. Data on load, PV gen‐ permit the implementation of P2P markets. This restriction is 
+eration, and BESS status were collected. Real-time pricing primarily attributed to the absence of studies advocating for 
+for the UG was assumed. The results indicated that consum‐ the adoption of P2P energy trading and the lack of assess‐
+ers can reduce their electricity bills by up to 27.3%, de‐ ments regarding its potential benefits. An assessment of this 
+crease reliance on the UG, enhance self-sufficiency, and opti‐ nature has the potential not only to strengthen existing pub‐
+mize BESS usage during more profitable time periods. lic energy policies such as Casa Solar program, but also to 
+
+In [14], a P2P energy trading system was proposed, which stimulate the formulation of new policies geared towards en‐
+virtually matches energy supply and demand, while in the hancing the profitability of DG projects. This, in turn, could 
+physical layer, energy flows are traded using the existing result in benefits not only for prosumers but also for consum‐
+UG. The results demonstrated that the P2P system could ef‐ ers, potentially leading to reductions in their electricity bills.
+fectively and reliably transmit energy in a community mi‐ This paper aims to carry out a sensitivity analysis of local 
+crogrid with 20 households and 1 office. In [15], the P2P en‐ PV energy trading in a community microgrid in Chile. The 
+ergy transactions among 3 households with PV systems were main contributions are given below.
+compared with conventional methods. Weather and load data 1) Develop an architecture model for the local energy trad‐
+were collected, and the actual electricity transactions were fa‐ ing in a community microgrid. This includes the definition 
+cilitated by the UG as an intermediary, which charged a fee. of the main entities of participants and a new model for elec‐
+The results favored P2P trading as the most cost-effective ap‐ tricity prices based on the current retail prices set by the lo‐
+proach, as it enables RCs to remain in lower consumption cal utility company for the energy trading market.
+tariff ranges. In [16], a P2P energy trading model was intro‐ 2) Perform a sensitivity analysis for the local energy mar‐
+duced, considering PV generation and BESS. Thirty different ket considering RCs with PV and BESS. The meteorological 
+buildings were divided into groups with PV plus BESS, only data and electricity consumption profiles for end users are 
+PV, only BESS, and none of the above. Participants placed considered for a real case study in Viña del Mar, Chile.
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 1995
+
+TABLE I
+SUMMARY OF PREVIOUS RESEARCH WORKS ON P2P ENERGY TRADING
+
+Refer‐ Specifications
+Year Location Main contributions or results Participants
+
+ence Data collection DERs
+Maximized profits and improved Load: real-time dataset
+
+South PV: installed power of 0.4-
+[9] 2021 ROI are achieved for prosumers and 4 households PV generation: theoretical estimation
+
+Korea 7.5 kWp
+consumers Electricity prices: local bills
+
+Community electricity bills are 10-300 Load: real-time dataset PV: peak power generation 
+[10] 2017 UK
+
+reduced by 30% households PV generation: real-time dataset of 2-3.5 kWp
+P2P market is implemented in an 10 
+
+[11] 2022 Pakistan Not applicable Not applicable
+off-grid community households
+
+Load: real-time dataset PV: installed power of 4.2-
+P2P market price is 27% lower than 19 
+
+[12] 2021 Japan PV generation: real-time dataset 7.2 kWp
+the UG price households
+
+Electricity prices: power market price BESS: capacity of 9.8 kWh
+Load: real-time dataset
+
+Prosumer bills are reduced by up 
+75 PV generation: real-time dataset
+
+[13] 2022 USA to 27.3% and self-consumption 
+households Electricity prices: real-time power 
+
+is increased
+market prices
+
+20 house‐
+P2P system could securely and stably 
+
+[14] 2021 Japan holds and 1 BESS: capacity of 9.8 kWh
+transmit energy
+
+office
+Load: theoretical estimation
+
+P2P system maintains lower 
+South PV generation: theoretical estimation PV: installed power of 
+
+[15] 2020 electricity prices than grid prices and 3 households
+Korea Electricity prices: progressive rate system 3 kWp
+
+avoids energy injection into grid
+Weather data: Meteonorm software
+
+P2P system encourages users to invest 
+30 Load: real-time database PV: installed power of 
+
+[16] 2020 China in PV systems and increase 
+households PV generation: theoretical estimation 595 kWp
+
+self-consumption
+PV: installed power of 1.2-
+
+P2P market model adapts to regulatory 14 house‐ Load: real-time database
+4.1 kWp for households 
+
+[17] 2020 Germany frameworks and allows communities holds and 1 PV generation: open-source database
+and 100 kWp for PV plant
+
+to obtain benefits PV plant Electricity prices: local bills
+BESS: capacity of 4-6 kWh
+
+Different approaches are used to 
+Not 
+
+[18] 2022 Ireland incentive microgrid development in Not applicable Not applicable
+applicable
+
+smart communities
+Load: randomly generated state of charge 
+
+Blockchain architecture for an EV-to- (SoC) for EVs EV battery: capacity of 
+360000 EVs 
+
+[19] 2022 China grid system is applied, which Electricity prices: different price periods 40 kWh
+and 240 AGs
+
+generates benefits for participants during the day and incentives for EV charger: power of 7 kW
+frequency response
+
+Sensitivity analysis of local P2P PV 
+Load: annual consumption profiles of 
+
+energy trading in a community PV: installed power of 4.92 
+3.7 MWh and 3 MWh from theoretical 
+
+This microgrid is conducted, allowing for kWp and 4.1 kWp 
+2023 Chile 4 households estimation
+
+paper an economic estimate in the current BESS: capacity of 10.56 
+Electricity prices: local bills
+
+context (fixed pricing system, net kWh
+Weather data: open-source database
+
+metering, and solar resource)
+
+3) Compare the results of the local energy trading with a UG, AGs, and RCs (consumers and prosumers with PV sys‐
+conventional scenario, analyzing the profitability improve‐ tems with or without BESS). The UG establishes energy con‐
+ments for DG projects of prosumers, the reduction in elec‐ tracts with the AGs, whereas the latter maintain contracts 
+tricity bills for RCs, and the potential benefits for both the with RCs and oversee the coordination of the P2P market. 
+AG and UG. The direction of the flows indicates the payments that are be‐
+
+ing made.
+II. METHODOLOGY B. Trading Contracts of RCs
+
+A. Proposed Scheme RCs are responsible for paying their energy consumption to 
+their AG, whereas the AG must compensate RCs for their ener‐
+
+The proposed scheme corresponds to an adaptation of the 
+gy injections. The total cost C R
+
+architecture proposed in [19]. Although the architecture was T  for an RC is determined as:
+C R
+
+developed for the energy trade from EVs, the architecture T (t)=C AR
+EC (t)-C RA
+
+EI (t) (1)
+has a modular design that can be applied and adapted to dif‐ where C AR
+
+EC and C RA
+EI  are the costs of energy consumption 
+
+ferent scenarios. Figure 1 shows the main entities of the P2P from AG and energy injection into AG, respectively.
+energy trading system. The primary participants include the C AR
+
+EC is determined as:
+
+
+
+1996 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+The effective PV power generation PPV is determined as:
+PPV (t)=NLfY (t)(TPPV (t)+PLt (t)) (4)
+
+UG
+where N is the number of installed PV panels; Lf is the fac‐
+tor of system power loss, encompassing losses due to dust, 
+shading, and electrical wiring; Y is the guaranteed yield of 
+
+AG 1 … AG n PV panels by the manufacturer; TPPV is the power genera‐
+tion without factoring in losses; and PLt is the power losses 
+attributed to thermal effects in PV panels. TPPV is deter‐
+mined as:
+
+RC 1 RC i RC m RC k
+TPPV (t)=Gt (t)×EAPV × nPV (5)
+
+Cost of energy consumption from AG
+Cost of energy injection into AG Meanwhile, PLt is determined as:
+Cost of energy consumption from UG PTC
+Cost of energy injection into UG PLt (t)= (CT(t)-NOCT)× TP (t) (6)
+
+100 PV
+Incentive for AG by receiving energy
+Incentive for AG by injecting energy where PTC is the loss coefficient attributed to variations in 
+
+Fig. 1.　Schematic diagram for main entities of P2P energy trading system. temperature of PV cell concerning NOCT; and CT is the cell 
+temperature of PV panel, which is determined as:
+
+t αG
+e te
+
+C AR (t)= T (t)+ t (t)CT Amb (1 - nPV ) (7)
+EC (t)= ∫ r AR PR
+
+C (t)PPC (t)WEC dt + ∫ (1 - rC (t))P AR
+PC (t)W UR
+
+EC dt   (2) U
+ts ts
+
+2)　PV Systems and BESS Dimensioning
+where ts and te are the initial instant and the end of defined PV systems are dimensioned based on the day with the 
+time interval, respectively; rC is the fraction of energy con‐ highest load during the year, as given in (8) [23].
+sumed from the AG that is imported from the P2P market, 
+while the remainder is imported from UG; P AR L
+
+PC is the power N = cr
+
+consumed from the AG; W PR E (8)
+cr
+
+EC  is the unit price of energy im‐
+ported from the P2P market; and W UR
+
+EC  is the unit price of en‐ where Lcr is the highest daily load in the year; and Ecr is the 
+ergy imported from the UG. energy generated by a PV panel on the critical day. Besides, 
+
+C RA
+EI  is determined as: the dimensioning of BESS is carried out as given in (9) [25].
+
+te te
+
+C RA
+EI (t)= ∫ rI (t)P RA
+
+PI (t)W RP
+EI dt + ∫ (1 - rI (t))P RA
+
+PI (t)W RU
+EI dt    (3) RC
+
+t BESS = max  ∑j j
+
+Li -∑P i
+PV (9)
+
+s ts 0 £ k £ TNP ( i = 0 i = 0 )
+where rI is the fraction of energy injected into the AG that is where TNP denotes the periods that commence and conclude 
+sold in the P2P market, while the remainder is injected into moments when local generation P i
+
+PV equals the load Li. In 
+the UG; P RA
+
+PI  is the power injected into the AG; W RP
+EI  is the simpler terms, these are time intervals where Li exceeds P i
+
+PV. 
+unit price of energy sold in the P2P market; and W RU
+
+EI  is the Consequently, j represents the number of time steps within 
+unit price of energy injected into the UG. the k th period. Consequently, the required capacity of the 
+1)　PV Generation Estimation BESS RC
+
+Local PV generation is calculated for prosumers. Table II BESS corresponds to the highest value of the differ‐
+ence between the total load and local generation across all 
+
+summarizes the assumed parameters for PV systems, which periods. Table III summarizes the assumed BESS parameters 
+were obtained from previous works [23], [24]. for the RCs, derived from previous works [23], [26].
+
+TABLE II TABLE III
+PARAMETERS FOR PV SYSTEMS BESS PARAMETERS FOR RCS
+
+Parameter Symbol Value or unit Parameter Symbol Value
+Incident global irradiance* Gt W/m2
+
+Technology Lithium-ion
+Ambient temperature* TAmb ℃
+
+Lifecycle 4500 cycles
+Factor of thermal losses U 29 W/(m2 ×℃)
+
+Estimated lifespan 12.3 years
+Factor of PV system losses Lf 0.7
+
+Initial SoC 20%
+Efficiency of PV panel nPV 20%
+
+Capacity of battery bank B
+Rated power of PV panel RP c 10.56 kWh
+
+PV 410 Wp
+Standby losses S
+
+Effective area of PV panel EA l 1% per hour
+PV 1.81 m2
+
+Absorption coefficient α 0.9 The maximum SoC Mas 99%
+
+Temperature variation loss coefficient PTC -0.36% per ℃ The minimum SoC Mis 20%
+
+Rated temperature of PV cell NOCT 45 ℃ Charging efficiency Ce 90%
+
+Yield loss due to panel degradation Y Discharging efficiency D
+L 0.64% per year e 90%
+
+Initial guaranteed yield Y The maximum charging power M
+i 97% c 30% of total capacity
+
+Note: * represents data from local database [24]. The maximum discharging power Md 30% of total capacity
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 1997
+
+3)　Home Energy Management System (HEMS) Algorithms Algorithm 2: HEMS algorithm for prosumers with BESS
+The HEMS algorithm determines power transactions with Input: PPV, SoC, and L
+
+the AG (P AR
+PC and P RA
+
+PI ) and self-consumption (Sc), using input Output: P AR
+PC, P RA
+
+PI , Sc, and SoC
+parameters such as P 1: for t = 0 to T do
+
+PV, electrical load (L), and the SoC of 
+BESS (SoC). Two distinct HEMS algorithms are employed, 2:  SoC′= SoC - Sl
+
+one designed for prosumers without BESS and the other for 3:  if PPV ³ L then
+4:  DP =P
+
+those with BESS. PV - L, P AR
+PC = 0, and Sc = L
+
+B
+Algorithm 1 summarises the logic behind an HEMS de‐ 5:  if cMc ³DP then
+
+100
+signed for prosumers without BESS. At each time step t, C DP
+
+6:   if SoC′+ e £Mas then
+two possible decisions are considered depending on the pres‐ Bc
+
+DP
+ence of power surpluses or deficits, as shown in Fig. 2. 7:   P RA C
+
+PI = 0 and SoC = SoC′+ e  (Decision A)
+Bc
+
+8:   else
+Algorithm 1: HEMS algorithm for prosumers without BESS B (Ma - SoC C oC′ )
+Input: P 9:   P RA =D c s ′ )
+
+PI P -  and SoC = SoC′+ e (Mas - S
+  
+
+PV and L 100 100
+Output: P AR A
+
+PC, P R
+PI , and Sc                (Decision B)
+
+1: for t = 0 to T do 10:  end if
+2: if P 11:  else
+
+PV ³ L then
+C
+
+3:  P AR
+PC = 0, P RA
+
+PI =PPV - L, and Sc = L (Decision A) 12:  if SoC′+ eMc £Ma  then
+100 s
+
+4: else B C
+5:  P AR 13:   P RA
+
+PI =DP - cMc  and SoC = SoC′+ eMc  (Decision C)
+PC = L -PPV, P RA
+
+PI = 0, and Sc =PPV (Decision B) 100 100
+6: end if 14:  else
+7: end for B Ma ) C (Ma - SoC′ )
+
+15:   P RA s - SoC′
+PI =DP - c (
+
+ and SoC = SoC′+ e s    
+100 100
+
+               (Decision B)
+Local Local
+
+16:  end if
+generation generation
+
+17:  end if
+18: else
+
+AG AG 19:  DP = L -P RA
+PV and PPI = 0
+
+B M
+RC RC 20:  if c d ³DP then
+
+100
+(a) (b) DP × 1002
+
+Direction of power flow 21:  if SoC′- ³Mi
+B s then
+
+c De
+Absence of power flow in this direction DP × 1002
+
+22:   P AR
+PC = 0, Sc = L, and SoC = SoC′-  (Decision D)
+
+Fig. 2.　Schematic diagram illustrating potential HEMS decisions for pro‐ Bc De
+
+sumers without BESS. (a) Decision A. (b) Decision B. 23:  else
+24:   if SoC′³Mis then
+
+B (SoC′-Mi
+Algorithm 2 summarises the logic behind an HEMS for 25:   P AR s )De B SoC -Mi
+
+PC =DP - c , S + c ( ′ s )De , and  
+1002 c =PPV 1002
+
+prosumers with BESS. At each time step t, seven possible                  SoC =Mis (Decision E)
+decisions are considered depending on the availability of sur‐ 26:   else
+plus power, power deficits, and BESS constraints (see Fig. B
+
+27:   P AR
+PC =DP, Sc =PPV, SoC = SoC′, and SoC′- cMd ³Mi
+
+3). In Fig. 3, Decisions A-G have the following features. 100 s 
+
+(Decision F)
+1) Decisions A and C: local PV generation covers the 28:   end if
+
+load, and surplus is stored in the BESS. 29:  end if
+2) Decision B: a fraction of local PV generation covers 30:  else
+
+B
+the load, another fraction fully charges the BESS, and sur‐ 31:  if SoC′- cMd ³Mi
+
+100 s then
+plus is injected into the AG.
+
+32:   P AR BcMd De B e B
+3) Decision D: a fraction of the load is supplied by local PC =DP - , S cMd D
+
+, and SoC = SoC′- cMd  
+1002 c =PPV + 1002 100
+
+PV generation, and the rest comes from the BESS. (Decision G)
+
+4) Decisions E and G: the load is partially met by local 33:  else
+
+PV generation, the BESS, and the AG. 34:   if SoC >Mis then
+B SoC′-Mi )D
+
+5) Decision F: a fraction of the load is covered by local 35:   P AR s e B
+PC =DP - c (
+
+, S c (SoC′-Mis )De , and 
+1002 c =PPV + 1002
+
+PV generation, while the rest is provided by the AG.                  SoC =Mis (Decision E)
+4)　Proposed Electricity Price Market 36:   else
+
+In Chile, whereas the distribution sector is intended to be B M
+37:   P AR
+
+PC =DP, Sc =PPV, SoC = SoC′, and SoC′- c d ³Mi
+competitive, there are only two main distribution companies 100 s 
+
+(Decision F)
+that serve the majority of customers. The purchase of long- 38:   end if
+term contracts helps the distribution companies maintain the 39:  end if
+market power. This directly impacts customers, as distribu‐ 40:  end if
+
+tion companies play the dual role of both distributor and re‐ 41: end if
+42: end for
+
+tailer, explaining why fixed prices persist. 
+
+
+
+1998 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+Local Local Local market are assumed to be 93% and 134% of the UG import‐
+generation generation generation ed and injected prices, respectively. Therefore, the P2P mar‐
+
+ket enables RCs to engage in energy trading by purchasing 
+energy at a lower cost from other prosumers or selling PV 
+
+RC AG RC AG RC AG surpluses at a higher price compared with transactions with 
+BESS BESS BESS the UG.
+
+(a) (b) (c)
+C. AG Trading Contracts
+
+Local Local
+generation generation AGs act as intermediaries between RCs and the UG, gen‐
+
+erating profits through the coordination of energy transac‐
+tions in the P2P market. This involves purchasing energy 
+
+RC AG RC AG from prosumers at a lower cost than the selling price to RCs 
+BESS BESS in the P2P market, while also receiving incentives from the 
+
+(d) (e) UG for frequency response (FR) participation.
+Direction of power flow Algorithm 3 summarises the management of power flows 
+
+Absence of power flow in this direction among the AG, the UG, and RCs. The outputs consist of 
+C R
+
+Fig. 3.　HEMS decision options for prosumers with BESS. (a) Decisions A T (iR ) for each RC, the power injected from AG to UG 
+and C. (b) Decision B. (c) Decision D. (d) Decisions E and G. (e) Decision P AU
+
+PI , and the power consumed by AG from UG P UA
+PC . At each 
+
+F. time step t, three possible decisions are considered depend‐
+ing on the presence of power surplus and power deficits 
+
+To determine the prices of consumed energy (W PR
+EC ) and in‐ within the P2P market, as shown Fig. 5.
+
+jected energy (W RP
+EI ) into the P2P market, as well as the pric‐
+
+es of consumed energy (W UR
+EC ) and injected energy (W RU Algorithm 3: management of power flows among AG, UG, and RCs
+
+EI ) in‐
+Input: Dt, P AR
+
+to the UG, two scenarios are established based on P2P mar‐ PC (iR ), P RA
+PI (iR ), W PR
+
+EC , W RP
+EI , W UR
+
+EC , and W RU
+EI
+
+Output: C R
+T (iR ), P AU
+
+PI , and P UA
+
+ket availability, as shown in Table IV. If the P2P market is PC
+
+1: for t = 0 to T do
+unavailable, electricity prices are determined by the local 
+
+2:  if ∑P RA
+PI (iR ) > 0 and ∑P AR
+
+PC (iR ) > 0 then
+UG [27]. However, if the P2P market is available, electricity 
+
+3:  P2P market is available
+prices are set by the AG.
+
+4:  if ∑P RA
+PI (iR ) ³∑P AR
+
+PC (iR ) then
+TABLE IV 5:   rC = 1 and rI =∑P AR
+
+PC (iR )∑P RA
+PI (iR )
+
+UNIT ELECTRICITY PRICE FOR RCS [27]
+6:  else
+7:   rC =∑P RA
+
+PI (iR )∑P AR
+PC (iR ) and rI = 1
+
+Status of P2P market Parameter Price (USD/kWh)
+Imported energy from UG 0.19 8:  end if
+
+Unavailable 9:  else
+Injected energy into UG 0.11
+
+10:  P2P market is unvailable
+Imported energy from AG 0.18
+
+Available 11:  rC = 0 and rI = 0
+Injected energy into AG 0.14 12: end if
+
+13: for iR in RCs do
+
+Figure 4 illustrates the total energy costs of community as 14:  C RA
+EI (iR )=P RA
+
+PI (iR )[rIW
+RP
+
+EI + (1 - rI )W RU
+EI ]Dt
+
+15:  C AR
+EC (iR )=P AR
+
+PC (iR )[rCW PR
+
+a function of PV penetration in a local microgrid. EC + (1 - rC )W UR
+EC ]Dt
+
+16:  C R
+T (iR )=C AR
+
+EC (iR )-C RA
+EI (iR )
+
+24 17: end for
+CM
+
+16 BS 18: P AU
+PI = (1 - rI )∑P RA
+
+PI (iR )
+MMR
+
+8 APS 19: P UA
+PC = (1 - rC )∑P AR
+
+PC (iR )
+20: end for
+
+0
+
+-8 UG UG UG
+0 10 20 30 40 50 60 70 80 90 100
+
+PV penetration (%)
+
+Fig. 4.　Total energy costs of community v.s. PV penetration in a local mi‐
+crogrid. Local AG Local AG Local AG
+
+generation generation generation
+
+Four different market price methods are analyzed using 
+electricity market price data from [10], i.e., conventional RC RC RC RC RC RC
+
+method (CM), bill sharing (BS), mid-market rate (MMR), RC RC RC
+(a) (b) (c)
+
+and auction-based pricing strategy (APS). For a 50% PV Energy flow from PV; Energy flow from UG
+penetration in a microgrid, the MMR shows lower energy Absence of energy flow in this direction
+
+costs for RCs. According to price data from an MMR mar‐ Fig. 5.　 Schematic diagram of possible AG decisions for energy transac‐
+ket, fixed imported and injected energy prices into the P2P tions. (a) Decision A. (b) Decision B. (c) Decision C.
+
+Cost (USD/kWh)
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 1999
+
+The total cost of energy consumed by RC from AG is de‐ comes of the P2P market operation in a community mi‐
+termined as: crogrid, utilizing a 1-hour resolution. The simulations are 
+
+n conducted in Jupyter Notebook with Python 3.10.4, running 
+TC AC
+
+EC (t)=∑C AR
+EC (iRt) (10) on macOS Monterey V12.4. The hardware setup includes an 
+
+iR = 1
+Apple M1 chip, 8 GB of RAM, an 8-core CPU, and 7-core 
+
+where n is the number of RCs. Likewise, the total cost of en‐ and 8-core GPUs. The scenario under examination represents 
+ergy injected from the RC to AG is determined as: a community consisting of two prosumers, two consumers, 
+
+n and one AG responsible for coordinating the P2P market and 
+TC CA
+
+EI (t)=∑C RA
+EI (iRt) (11)
+
+iR = 1 the UG. Meteorological data for a typical meteorological 
+year (TMY) at an hourly resolution are sourced from the Ex‐
+
+Also, the cost of energy injected from AG to UG is deter‐
+plorador Solar platform [24], specific to a community locat‐
+
+mined as: ed in Viña del Mar, Chile, with 33.03°S and 71.32°W. This 
+te
+
+C AU
+EI (t)= ∫ P AU database encompasses data recorded between 2004 and 2016 
+
+PI (t)W RU
+EI dt (12)
+
+ts in Chile [28]. Furthermore, load profiles are obtained from 
+Similarly, the cost of energy consumed and paid by the open-access databases, derived from Energyplus, and fea‐
+
+AG is determined as: tured hourly resolution based on a TMY [29]. These profiles 
+te encompass consumption related to lighting, household appli‐
+
+C UA
+EC (t)= ∫ P UA
+
+PC (t)W UR
+EC dt (13) ances, and miscellaneous devices, with no significant season‐
+
+ts al variations. The proposed configuration for RCs, including 
+Additionally, an economic incentive from the UG to the prosumer 1 (P1), prosumer 2 (P2), consumer 1 (C1), and 
+
+AG is proposed, involving the receipt or injection of energy consumer 2 (C2), is shown in Table VI.
+during critical periods when FR is needed. The proposed in‐
+centive costs, as detailed in Table V, are assumed to be 10% TABLE VI
+
+PROPOSED CONFIGURATION FOR RCS
+of the energy costs set by the UG. 
+
+TABLE V Installed PV power BESS capacity Annual demand 
+RC
+
+INCENTIVE COSTS FROM UG TO AG FOR FR (kWp) (kWh) (kWh/year)
+P1 4.92 10.56 3722
+
+Parameter Symbol Cost (USD/kWh) P2 4.10 0 3022
+Incentive by receipt of energy W UA
+
+FRR 0.02 C1 0 0 3722
+Incentive by injection of energy W AU
+
+FRI 0.01 C2 0 0 3022
+
+During periods when the current load of the UG is lower A. Analysis for P2P Market Scenario
+than the average load of the past week, an increase in de‐ Sample results are generated for analysis during the peri‐
+mand is required to stabilize the grid frequency. Consequent‐ od from April 1 to 2 in the first year of operation. Figures 6-
+ly, the UG rewards AGs that consume power during this pe‐ 8 display the results for P1. Figure 6 illustrates the profiles 
+riod, which is determined as: of PV generation and electrical load for P1. Local generation 
+
+te would experience significant fluctuations, largely influenced 
+C UA
+
+FR (t)= ∫ P UA
+PC (t)W UA
+
+FRRdt (14) by meteorological conditions. Figure 7 shows that during 
+ts
+
+high PV generation hours, the BESS would reach its maxi‐
+Similarly, when the current load exceeds the average load mum SoC. During nighttime period, it would be discharged 
+
+of the past week, surplus power injections into the UG be‐ to supply the local load. Figure 8 provides insight into the 
+come necessary. Consequently, the UG will provide rewards energy transfer dynamics. On April 1, a portion of PV sur‐
+to AGs that inject power during this period, determined as: pluses would be injected into the AG for trading in the P2P 
+
+te
+
+C AU
+FR (t)= ∫ P AU market, while the remainder would be injected into the UG. 
+
+PI (t)W AU
+FRIdt (15)
+
+ts On April 2, PV surpluses would be utilized for recharging 
+Finally, the total income of AG is determined as: the BESS. Power imported from the UG would be null, pri‐
+
+TI marily owing to the self-consumption facilitated by the 
+AG (t)= TC AC
+
+EC (t)+C AU
+EI (t)+C UA
+
+FR (t)+C AU
+FR (t)- TC CA
+
+EI (t)-C UA
+EC (t)
+
+BESS.
+(16)
+
+3.5
+PV generation
+
+D. UG Trading Contract 3.0
+2.5 Electrical load
+
+The total income of UG is determined as: 2.0
+1.5
+
+TIUG (t)=C UA
+EC (t)-C AU
+
+EI (t)-C UA
+FR (t)-C AU
+
+FR (t) (17) 1.0
+0.5
+
+0
+0 4 8 12 16 20 24 28 32 36 40 44 48
+
+III. RESULTS AND DISCUSSION Time (hour)
+
+A numerical simulation is conducted to analyze the out‐ Fig. 6.　Profiles of PV generation and electrical load for P1.
+
+Power (kW)
+
+
+
+2000 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+100 2.5
+From P2P market
+
+80 2.0 From UG
+60
+
+1.5
+40
+
+1.0
+20
+
+0 0.5
+0 4 8 12 16 20 24 28 32 36 40 44 48 0
+
+Time (hour) 0 4 8 12 16 20 24 28 32 36 40 44 48
+Time (hour)
+
+Fig. 7.　SoC profile for P1.
+Fig. 11.　Power import profiles from P2P market and UG for C1.
+
+2.5 Injected into P2P market
+
+2.0 Imported from P2P market P1
+0.4
+
+Injected into UG
+1.5 P2
+
+Imported from UG 0.3
+C1
+
+1.0 Self-consumption 0.2 C2
+0.5 0.1
+
+0 0
+0 4 8 12 16 20 24 28 32 36 40 44 48
+
+-0.1
+Time (hour)
+
+-0.2
+Fig. 8.　 Profiles of self-consumption and power fluxes for P1 including 0 4 8 12 16 20 24 28 32 36 40 44 48
+
+P2P market and UG. Time (hour)
+
+Fig. 12.　Net flows for RCs.
+
+Figures 9 and 10 display the results for P2. Figure 9 
+shows the profiles of PV generation and electrical load for P2 also could achieve profits by means of self-consump‐
+P2. Figure 10 reveals a increase in power injections into tion and by injecting surplus power into the AG during sun‐
+both the P2P market and the UG compared with P1, due to ny hours. Both consumers would incur expenses for the ener‐
+the lower load and the absence of a BESS. The self-con‐ gy they consume throughout the day.
+sumption would exclusively take place during daylight Figure 13 shows the power flows in the P2P market and 
+hours, whereas during the nighttime period, there would be 
+
+between the RC and the UG. The power flows managed in 
+power imported from the UG.
+
+the P2P market would remain relatively low, peaking at 1 
+3.0 PV generation kW, in contrast to the higher power flows managed with the 
+2.5
+2.0 Electrical load UG, which could reach up to 4.5 kW. However, the in‐
+1.5 creased community consumption during periods of surplus 
+1.0
+0.5 injection into the UG would likely boost power transactions 
+
+0
+0 4 8 12 16 20 24 28 32 36 40 44 48 in the P2P market. 
+
+Time (hour) Figure 14 shows energy transaction costs and FR incen‐
+Fig. 9.　Profiles of PV generation and electrical load for P2. tives for the AG. During nighttime periods, FR incentives 
+
+would be common due to power imports from the UG, con‐
+2.5 Injected into P2P market tributing to grid frequency stabilization. Payments to the AG 
+2.0 Imported from P2P market
+
+Injected into UG for energy sales in the P2P market are shown, as well as 
+1.5
+
+Imported from UG payments to the community for acquiring PV surpluses, 
+1.0 Self-consumption which would be subsequently resold in the P2P market. 
+0.5
+
+Transactions between the community and UG would be ex‐
+0
+
+0 4 8 12 16 20 24 28 32 36 40 44 48 cluded as they have no impact on net flow of the AG. Fig‐
+Time (hour) ure 15 illustrates that the AG would earn a modest profit 
+
+Fig. 10.　 Profiles of self-consumption and power fluxes for P2 including from both P2P transaction coordination and FR incentives. 
+P2P market and UG. Nevertheless, the potential for greater revenue would exist 
+
+by incorporating additional RCs and facilitating a higher 
+Figure 11 shows the power import profiles from both the amount of P2P market transactions.
+
+P2P market and the UG for C1. Typically, power would be 
+5
+
+obtained from the P2P market during sunny hours, whereas Imported from P2P market
+
+4 Injected into P2P market
+nighttime would tend to rely on power supply of UG. In cer‐ Imported from UG
+tain situations such as at hour 8, when there are insufficient 3 Injected into UG
+
+offers in the P2P market, a portion of the load would be sat‐ 2
+
+isfied by the UG. A similar analysis can be applied to C2. 1
+Figure 12 illustrates the net flows for RCs. P1 could gen‐
+
+0
+erate profits on both days through a combination of self-con‐ 0 4 8 12 16 20 24 28 32 36 40 44 48
+
+sumption and power injections into both the P2P market and Time (hour)
+
+UG. Fig. 13.　Power plows in P2P market and between RC and UG.
+
+Power (kW) Power (kW) Power (kW) SoC (%)
+
+Net flow (USD)
+Power (kW) Power (kW)
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 2001
+
+0.2 real data from the UG. The financial results for P2P market 
+0.1 participants will also depend on the number of RCs to be 
+
+0 considered and PV penetration in the microgrid.
+-0.1 TABLE VII
+-0.2 DAILY ELECTRICITY BILLS FOR RCS AND DAILY INCOMES FOR AG AND UG
+
+0 4 8 12 16 20 24 28 32 36 40 44 48
+Time (hour) Daily electricity bill and income (USD)
+
+Imported from P2P market; Injected into P2P market Scenario Net flow
+P1 P2 C1 C2 AG UG
+
+Imported from UG; Injected into UG
+
+Without The maximum 1.86 1.51 2.25 1.83 0 7.79
+Fig. 14.　Energy transaction costs and FR incentives for AG.
+
+P2P The minimum -3.15 -1.85 1.66 1.35 0 0.51
+market Average -1.67 -0.80 1.92 1.56 0 3.14
+
+0.04
+The maximum 1.86 1.51 2.25 1.83 0.43 7.69
+
+0.03 With P2P 
+The minimum -3.18 -1.96 1.62 1.31 0.08 -0.05
+
+market
+0.02 Average -1.68 -0.90 1.89 1.53 0.27 2.63
+0.01
+
+0
+0 4 8 12 16 20 24 28 32 36 40 44 48 Table VIII presents an annual electricity bill estimate for 
+
+Time (hour) each RC in three distinct scenarios: ① without PV and P2P 
+Fig. 15.　Net flow for AG. market, ② with PV and without P2P market, and ③ with 
+
+PV and P2P market. In the first scenario, all RCs are catego‐
+rized as consumers. In the second scenario, prosumers can 
+
+B. Comparison Scenarios with and Without P2P Market fully offset their annual electricity bills through PV systems. 
+Table VII summarizes the daily electricity bills for RCs, As per local regulations, they are eligible for reimbursement 
+
+as well as the daily incomes for the AG and the UG, based from the UG at the end of the year for the surplus injections 
+on P2P market availability. For P1, the maximum daily elec‐ that exceed their annual electricity bills. In the third scenar‐
+tricity bill would remain unaffected, with only a minor im‐ io, where a P2P market is introduced, P1 and P2 could po‐
+pact on the average daily electricity bill. This is primarily tentially enhance their profits, resulting in increased reim‐
+due to limited engagement in the P2P market since a signifi‐ bursements of 13 USD and 49 USD, respectively. Converse‐
+cant portion of surplus PV power is stored in the BESS. Ben‐ ly, C1 and C2 could witness marginal reductions in their an‐
+efits would be derived primarily when the BESS reaches full nual electricity bills, approximately 1.71% and 1.75%, re‐
+capacity, enabling the injection of surplus PV power into the spectively, by participating in the P2P market. However, the 
+AG. However, such occurrences would be infrequent, typical‐ increased participation of prosumers in the community 
+ly confined to the summer months. Consequently, the mini‐ would likely lead to a greater supply of power available in 
+mum electricity bills, representing the maximum daily in‐ the P2P market, thereby enabling more significant reductions 
+come, would experience a reduction. P2 would obtain more in electricity bills for consumers.
+significant benefits from the P2P market, leading to reduc‐
+tions in both the minimum and average daily electricity TABLE VIII
+
+AVERAGE ANNUAL ELECTRICITY BILLS FOR RCS
+bills. P2 would actively participate in the P2P market, taking 
+advantage of the prioritized allocation of PV surplus for trad‐ Annual electricity bill (USD)
+ing. The maximum electricity bills would remain unaffected Scenario
+
+P1 P2 C1 C2
+as it typically occurs on days with limited solar irradiation, 
+
+Without PV and P2P market 701 569 701 569
+preventing the generation of PV surplus for injection. Con‐
+
+With PV and without P2P market -2 -33 701 569
+sumers would obtain reductions in their minimum and aver‐
+
+With PV and P2P market -15 -82 689 559
+age daily electricity bills, owing to their opportunity to buy 
+energy at a lower cost in the P2P market. However, the max‐
+imum electricity bills would be unaffected, as they would A profitability analysis of DER projects for prosumers has 
+tend to occur when the P2P market is closed, unlike the min‐ been conducted. The initial investment for P1 is 13333 USD 
+imum electricity bills, which would be prevalent during the plus the replacement of the BESS after 12 years for 9178 
+summer months when surplus energy trading is more exten‐ USD, whereas the initial investment for P2 is 3663 USD. Ta‐
+sive. In scenarios where there is neither a P2P market nor ble IX provides insights into the net present value (NPV), 
+participation in FR, the AG would not generate any income. IRR, and payback period, all projected over a 25-year hori‐
+In contrast, in scenarios involving FR and a P2P market, the zon with a discount rate of 10%. These calculations assume 
+AG would achieve an average daily income of 0.27 USD. fixed P2P market and UG electricity prices over the years. 
+Also, the average daily income for the UG would decrease P1 would exhibit the mininum variations in results when the 
+due to reduced energy sales to the community with the P2P P2P market implementation is considered, mainly because of 
+market implementation. However, potential cost savings the limited involvement. In contrast, P2, with more active 
+from avoiding infrastructure damage through FR should be participation, would experience a 1.2% increase in IRR and 
+considered, although the accurate estimation would require a 0.4-year reduction in payback period.
+
+Net flow (USD) Price (USD)
+
+
+
+2002 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+TABLE IX Annual income
+FINANCIAL COMPARISON FOR PROSUMERS (USD)
+
+766
+
+Without P2P market With P2P market
+7.4
+
+Prosumer NPV IRR Payback NPV IRR Payback 508
+(USD) (%) period (year) (USD) (%) period (year) 5.2
+
+P1 -6800 2.3 18.7 -6790 2.3 18.7 250
+P2 1922 16.6 5.8 2276 17.8 5.4 3.0 16
+
+14
+0.8 12 -8
+1.6 10 ty
+
+ o
+f P
+
+1
+
+C. Sensitivity Analysis 3.2 ac
+i
+
+h)PV p 4.8 8
+o
+
+A sensitivity analysis is conducted to assess the annual in‐ w 6.4 -267
+e  c
+
+ap
+
+r o S
+f (k
+
+W
+ P1 8.2 6
+
+ (k ES
+
+come variations for RCs, the AG, and the UG, in addition to Wp B
+)
+
+evaluating the IRRs for DER projects. It involves varying Fig. 17.　Sensitivity analysis of annual income for P2.
+the installed PV power capacities for P1 (ranging from 1.64 
+kWp to 8.20 kWp) and P2 (ranging from 0.82 kWp to 7.38 
+
+Annual income
+kWp), as well as adjusting the BESS capacity for P1 (rang‐ (USD)
+ing from 6.34 kWh to 14.78 kWh). -685
+
+Figure 16 shows that annual income of P1 would rise 
+with an increase in its installed PV power. This occurs be‐ 7.4
+
+cause a greater amount of PV surplus would be generated -690
+5.2
+
+for selling. Additionally, having a larger BESS capacity 
+would result in a higher self-consumption rate; however, it 3.0 16
+also would lead to increased standby losses. Consequently, 14 -695
+
+0.8 12
+1.6 10 ty
+
+ o
+f P
+
+1
+
+another criterion arises to determine the optimal BESS capac‐
+ity, where the highest annual income of 10.56 kWh would 3.2 ac
+
+i
+h)PV p 4.8 8
+
+o -70
+we  c
+
+ap
+
+r 6.4
+ o S
+
+f 8.2 6 (k
+W 0
+
+be achieved. Conversely, P1 could attain a higher annual in‐  P1 (k ES
+
+come if the installed PV power of P2 is reduced. This dy‐ Wp B
+)
+
+namic arises from competitive interactions in the P2P mar‐ Fig. 18.　Sensitivity analysis of annual income for C1.
+ket. When P2 injects fewer surplus amounts, P1 could sell a 
+larger surplus volume in the P2P market, thus enhancing the 
+profits. With a PV installation of 3.3 kWp, the annual elec‐ For the same reason, it is observed that with a lower 
+tricity bill for P1 would be fully covered. BESS capacity of P1, a greater benefit would be generated 
+
+for C1. The same trend applies to C2.
+Annual income
+
+Figure 19 shows that as the installed PV power of P2 in‐
+(USD)
+
+1073 creases and the BESS capacity of P1 decreases, the annual 
+income for AG would rise, due to the generation of larger 
+
+7.4
+765 PV surpluses, leading to increased energy transactions in the 
+
+5.2 P2P market. However, an optimal point emerges based on 
+398 the installed PV power of P1, with 3.3 kWp resulting in the 
+
+3.0 16 highest annual income. This would occur because, when P1 
+14
+
+installs less PV power, it would generate a higher demand in 
+0.8 61
+
+ty
+ o
+
+f P
+1
+
+12
+1.6 10
+
+3.2 ac
+i the P2P market, leading to a greater number of transactions 
+
+PV p 4.8 8
+owe 6.4  c
+
+ap h)
+-27
+
+(k
+W that benefit the AG.
+
+r o S 6
+f P 8.2 6
+
+1 (k ES
+Wp B
+
+) Annual income
+(USD)
+
+Fig. 16.　Sensitivity analysis of annual income for P1. 129
+
+7.4
+Figure 17 shows that the annual income of P2 would in‐ 120
+
+crease significantly as its installed PV power increases, mir‐ 5.2
+
+roring the trend observed in the case of P1. The annual in‐ 109
+
+come would exhibit insensitivity to the installed PV power 3.0 16
+
+and BESS capacity of P1. Similar to P1, an installed capaci‐ 14
+0.8 98
+
+ty
+ o
+
+f P
+1
+
+12
+ty of 2.5 kWp would fully offset the annual electricity bill. 1.6 10
+
+3.2 ac
+i
+
+Figure 18 shows that as the installed PV power of prosum‐ PV p 4.8 8
+owe 6.4  c
+
+ap h)
+87
+
+(k
+W
+
+r o S
+ers increases, the reduction in electricity bills for C1 would f P 8.2 6
+
+1 (k ES
+Wp B
+
+be higher. This is attributed to a greater availability of PV )
+
+surpluses to be bought in the P2P market. Fig. 19.　Sensitivity analysis of annual income for AG.
+
+PV power of P2 (kWp)
+
+PV power of P2 (kWp) PV power of P2 (kWp) PV power of P2 (kWp)
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 2003
+
+Figure 20 shows that P1 would achieve a more favorable TABLE X
+
+IRR as its installed PV power increases, due to increased sur‐ COMPUTATIONAL TIME WITH DIFFERENT NUMBERS OF RCS
+
+plus sales in the P2P market. Also, a reduction in the BESS 
+capacity for P1 would result in a higher IRR, due to the low‐ Number of RCs Computational time (s)
+
+er initial investment cost of the BESS. The installed PV pow‐ 4 32
+
+er of P2 does not significantly impact the IRR for P1. Fig‐ 10 61
+
+ure 21 demonstrates that P2 would enhance its IRR when P1 30 249
+decreases its installed PV power and augments its BESS ca‐ 100 1998
+pacity. This outcome is influenced by competitive dynamics 400 7466
+in the P2P market. Moreover, P2 benefits from increasing its 
+installed PV power up to an optimal point. The highest IRR 
+could be achieved when P2 installs PV power of 2.5 kWp, 1) This paper focuses on a small number of participants 
+primarily because a higher installed PV power entails a (condominium of four households located in Viña del Mar, 
+greater investment, and also due to the P2P market becoming Chile). The small sample size and the specific location condi‐
+saturated with surplus offers, which arises due to low demand. tions may limit the generalization of the results to other case 
+
+studies. However, further analysis is needed considering a 
+IRR (%) larger number of participants with a greater variability in de‐
+
+8.2 mand.
+2) Chile exhibits diverse climatic conditions from its 
+
+7.4
+4.5 northern to southern zones. Although a significant aspect of 
+
+5.2 this work involves investigating various simulation models 
+0.8 for P2P markets in one region, the proposed models need to 
+
+3.0 16 be extended and tested for other regions with different cli‐
+14
+
+0.8 12
+1.6 10
+
+3.2 ci
+ty
+
+ o
+f P
+
+1
+-2.9 mate conditions and different service providers for better un‐
+
+derstanding on how different factors affect the results.
+PV h)
+
+ p 4.8 8 ap
+a
+
+ow 3) Despite the absence of an optimization model, the re‐
+er 6.4
+
+ o S c
+f 8.2 6 (k
+
+W -6.6
+ P S
+
+1 (k E
+Wp B sults obtained for the sensitivity analysis and scalability of 
+
+) PV penetration still reveal useful and intriguing patterns and 
+Fig. 20.　Sensitivity analysis of IRR for P1. trends on how the economic outcomes of participants vary 
+
+according to different variables. Further extension is needed 
+IRR (%) to employ optimization models to maximize economic out‐
+
+19.8 comes for RCs.
+4) The P2P model used in this paper is based on the cur‐
+
+7.4 19.1 rent fixed pricing scheme in Chile, which may not accurate‐
+5.2 ly reflect the real-world dynamics. A comparison among dif‐
+
+18.4
+ferent electricity pricing schemes needs to be considered, 
+
+3.0 16 17.7 along with energy demand flexibility techniques such as 
+14 smart appliances and thermal loads, as well as the inclusion 
+
+0.8 12 17.0
+1.6 10 of UG revenue due to FR.
+
+3.2
+PV p 4.8 8 5) The results of P2P market serve as a valuable starting 
+
+ower 6.4 16.3
+ of P1 8.2 6 point for more sophisticated local research endeavors. These 
+
+ (kWp) endeavors could focus on refining, optimizing, and gradually 
+Fig. 21.　Sensitivity analysis of IRR for P2. adapting this technology in the current Chilean context, 
+
+which boasts a unique solar resource. Unfortunately, this re‐
+source remains underutilized due to a lack of incentives for 
+
+D. Computational Time research and policy implementation, a challenge shared by 
+Table X summarizes the computational time with different countries facing similar contexts.
+
+numbers of RCs, with 50% prosumers and 50% consumers. 
+The time remains short for the number of RCs targeted by IV. CONCLUSION 
+our work, increasing nearly linearly with lower numbers and 
+exponentially for larger number of RCs. These time reflects This paper presents a sensitivity analysis for a local PV 
+complete simulations over a 25-year horizon of DG projects, energy trading in a community microgrid to highlight the po‐
+including economic analyses, graph generation, profitability, tential positive impacts and support the development of new 
+and cash flow assessments. regulations for Chile, which may facilitate the market pene‐
+
+tration of DG based on PV systems. The proposed architec‐
+E. Limitations and Implications ture has been evaluated for a small microgrid that consists 
+
+This subsection provides detailed information related to of two prosumers, two consumers, one AG, and the UG, but 
+the limitations and the implications of the current work and the analysis and results may be extrapolated to a greater mi‐
+the direction for further extension. crogrid. The prosumers are engaged in DER projects, includ‐
+
+PV power of P2 (kWp) PV power of P2 (kWp)
+
+B
+ESS ca
+
+( p
+k aW cit
+
+h y)  of P1
+
+
+
+2004 JOURNAL OF MODERN POWER SYSTEMS AND CLEAN ENERGY, VOL. 12, NO. 6, November 2024
+
+ing PV systems with or without BESS. A comprehensive dai‐ cient, sustainable economic development in post-COVID-19 Chile. 
+
+ly and annual financial comparisons are conducted, compar‐ [Online]. Available: https://isci. cl/wp-content/uploads/2021/08/Informe-
+Final-Definitivo-Proyecto-ISCI-MEN-GDx-Covid-19.pdf
+
+ing scenarios with and without a P2P market. Prosumers [7] D. Olivares. (2022, Apr.). Analysis of the potential of distributed ener‐
+could experience an increase in their average daily income, gy resources in Chile. [Online]. Available: https://generadoras.cl/media/
+while consumers could observe a reduction in their average page-files/2012/220330
+
+[8] G. Campusano. (2013, Nov.). Impact of distributed generation on dis‐
+daily electricity bills. tribution operations. [Online]. Available: https://repositorio.uchile.cl/bit‐
+
+The results show that prosumer with PV system and stream/handle/2250/114121/cf-campusano_gg.pdf?sequence=1isAllowed
+BESS has a reduced benefit because most of its generated =y
+
+[9] S. Park, K. Cho, S. Kim et al., “Distributed energy IoT-based real-
+surpluses are stored, resulting in minimal participation in the time virtual energy prosumer business model for distributed power re‐
+P2P market. Conversely, prosumers with PV system and source,” Sensors, vol. 21, no. 13, p. 4533, Jul. 2021.
+without BESS would prioritize selling surplus PV energy in [10] C. Long, J. Wu, C. Zhang et al., “Peer-to-peer energy trading in a 
+
+community microgrid,” in Proceedings of 2017 IEEE PES General 
+the P2P market, leading to increased participation, showing a Meeting, Chicago, USA, Jul. 2017, pp. 1-5.
+rise in IRR and a reduction in payback period. With local en‐ [11] M. J. A. Baig, M. T. Iqbal, M. Jamil et al., “A low-cost, open-source 
+ergy trading, the UG would decrease its purchase of surplus peer-to-peer energy trading system for a remote community using the 
+
+energy injected from the community. Thus, DER projects internet-of-things, blockchain, and hypertext transfer protocol,” Ener‐
+gies, vol. 15, no. 13, p. 4862, Jul. 2022.
+
+and P2P markets would offer a cost-effective alternative to [12] Y. Takeda, Y. Nakai, T. Senoo et al., “Designing a user-centric P2P en‐
+address the urgent local need for increased storage capacity ergy trading platform: a case study – Higashi-Fuji demonstration,” En‐
+
+and tackle current operational challenges in the UG. None‐ ergies, vol. 14, no. 21, p. 7289, Nov. 2021.
+[13] B. Zhang, Y. Du, X. Chen et al., “Potential benefits for residential 
+
+theless, it would experience a decline in its daily income ow‐ building with photovoltaic battery system participation in peer-to-peer 
+ing to reduced energy sales to the community, which has a energy trading,” Energies, vol. 15, no. 11, p. 3913, May 2022.
+systemic benefit by reducing electrical infrastructure dam‐ [14] Y. Matsuda, Y. Yamazaki, H. Oki et al., “Demonstration of blockchain 
+
+based peer to peer energy trading system with real-life used PHEV 
+age; however, this economic saving needs to be adequately and HEMS charge control,” Energies, vol. 14, no. 22, p. 7484, Nov. 
+estimated. 2021.
+
+A sensitivity analysis is conducted on the annual income [15] M. H. Chung, “Comparison of economic feasibility for efficient peer-
+to-peer electricity trading of PV-equipped residential house in Korea,” 
+
+of participants, as well as on the IRRs of DER projects. Pro‐ Energies, vol. 13, no. 14, p. 3568, Jul. 2020.
+sumers could achieve higher annual income by installing [16] H. Huang, S. Nie, J. Lin et al., “Optimization of peer-to-peer power 
+higher PV capacities and optimizing BESS capacity. Regard‐ trading in a microgrid with distributed PV and battery energy storage 
+
+systems,” Sustainability, vol. 12, no. 3, p. 923, Jan. 2020.
+ing their IRRs, there seems to be a competitive dynamic in [17] A. Lüth, J. Weibezahn, and J. M. Zepter, “On distributional effects in 
+surplus sales in the P2P market among prosumers, where the local electricity market designs – evidence from a German case 
+PV capacity and storage capacity of one prosumer would in‐ study,” Energies, vol. 13, no. 8, pp. 1-26, Feb. 2020.
+
+terfere with the IRRs obtained by the other. For consumers, [18] R. Trivedi, S. Patra, Y. Sidqi et al., “Community-based microgrids: lit‐
+erature review and pathways to decarbonise the local electricity net‐
+
+their benefits would increase as the supply of surpluses in work,” Energies, vol. 15, no. 3, p. 918, Jan. 2022.
+the P2P market increases, namely when the installed PV ca‐ [19] Q. Luo, Y. Zhou, W. Hou et al., “A hierarchical blockchain architec‐
+
+pacity increases and the BESS capacity in prosumers de‐ ture based V2G market trading system,” Applied Energy, vol. 307, p. 
+118167, Feb. 2022.
+
+creases. The AG would also benefit by increasing the vol‐ [20] F. Bandeiras, Á. Gomes, M. Gomes et al., “Exploring energy trading 
+ume of energy transactions in the P2P market, with optimal markets in smart grid and microgrid systems and their implications for 
+points identified between surplus supply and energy demand. sustainability in smart cities,” Energies, vol. 16, no. 2, p. 801, Jan. 
+
+2023.
+Future work aims to investigate individual return/revenue [21] R. Faia, F. Lezama, J. Soares et al., “Local electricity markets: a re‐
+with a large number of participants in the local energy mar‐ view on benefits, barriers, current trends and future perspectives,” Re‐
+ket. Furthermore, extend the proposed model to adapt differ‐ newable and Sustainable Energy Reviews, vol. 190, p. 114006, Feb. 
+
+2024.
+ent regions of Chile with different service providers. [22] H. K. Lopez and A. Zilouchian, “Peer-to-peer energy trading for pho‐
+
+to-voltaic prosumers,” Energy, vol. 263, p. 125563, Jan. 2023.
+REFERENCES [23] J. Salles-Mardones, A. Flores-Maradiaga, and M. A. Ahmed, “Feasibil‐
+
+ity assessment of photovoltaic systems to save energy consumption in 
+[1] J. Araneda, N. Cáceres, M. Flores et al. (2023, Jan.). Transmission ex‐ residential houses with electric vehicles in Chile,” Sustainability, vol. 
+
+pansion proposal: 2023 transmission planning process. [Online]. Avail‐ 14, no. 9, p. 5377, Apr. 2022.
+able: https://www. coordinador. cl/wp-content/uploads/2023/01/Informe- [24] Faculty of Physical and Mathematical Sciences University of Chile, 
+PET-enero-2023.pdf Ministry of Energy. (2022, Nov.). Solar explorer. [Online]. Available: 
+
+[2] J. von Papp, F. Moraga, and A. Henríquez. (2021, Dec.). Energy cur‐ https://solar.minenergia.cl/exploracion
+tailment of wind and solar photovoltaic power plants in the National [25] M. H. Nazari, M. Bagheri-Sanjareh, and S. H. Hosseinian, “A new 
+Electric System (SEN) in Chile during 2022. [Online]. Available: https: method for energy management of residential microgrid for sizing elec‐
+//www.fraunhofer.cl/content/dam/chile/es/media-2021/cset/Vertimiento trical and thermal storage systems,” Sustainable Cities and Society, 
+
+[3] Generators of Chile. (2022, Apr.). The new challenging context for a vol. 76, p. 103482, Jan. 2022.
+sustainable and secure energy transition. [Online]. Available: https:// [26] A. Prasanna, V. Dorer, and N. Vetterli, “Optimisation of a district ener‐
+generadoras.cl/prensa/el-desafiante-nuevo-contexto-para-una-transicion- gy system with a low temperature network,” Energy, vol. 137, pp. 632-
+energetica-justa-sostenible-y-segura 648, Oct. 2017.
+
+[4] R. Mena, R. Escobar, Á. Lorca et al., “The impact of concentrated so‐ [27] General Electricity Industrial Company S. A. Chile. (2022, Dec.). CGE 
+lar power in electric power systems: a Chilean case study,” Applied supply tariffs – January 2023. [Online]. Available: https://www. cge. cl/
+Energy, vol. 235, pp. 258-283, Feb. 2019. wp-content/uploads/2022/12/Tarifas-Suministro-CGE-Enero-2023.pdf
+
+[5] Senate of the Republic of Chile. (2022, Dec.). IPOM: concerns about [28] A. Molina, M. Falvey, and R. Rondanelli, “A solar radiation database 
+the economic outlook. [Online]. Available: https://www.senado.cl/noti‐ for Chile,” Scientific Reports, vol. 7, p. 14823, Nov. 2017.
+cias/ipom/ipom-preocupacion-ante-escenario-economico [29] S. Ong and N. Clark. (2014, Nov.). Commercial and residential hourly 
+
+[6] N. Lobos, C. Villalobos, D. Olivares et al. (2021, Jan.). Assessment of load profiles for all TMY3 locations in the United States. [Online]. 
+the distributed generation industry as a driver of employment and effi‐ Available: https://dx.doi.org/10.25984/1788456
+
+
+
+SALLES-MARDONES et al.: SENSITIVITY ANALYSIS OF PEER-TO-PEER PHOTOVOLTAIC ENERGY TRADING... 2005
+
+Javier Salles-Mardones received the B. E. degree in mechanical engineer‐ Rodrigo Barraza received the B.E. degree in mechanical engineering from 
+ing from the Universidad Técnica Federico Santa María (UTFSM), Valpa‐ Universidad Técnica Federico Santa María (UTFSM), Valparaíso, Chile, in 
+raíso, Chile, in 2022. He is currently pursuing the M.Sc. degree in mechani‐ 2005, the M.Sc. and Ph.D. degrees in mechanical engineering from Universi‐
+cal engineering from UTFSM. His research interests include renewable ener‐ ty of Wisconsin-Madison, Madison, USA, in 2011 and 2015, respectively. 
+gy systems, sustainability, and energy efficiency. He is currently working as an Associate Professor at the Universidad Adolfo 
+
+Ibáñez (UAI), Santiago, Chile. Prior to joining UAI, he worked as an Asso‐
+Alex Flores-Maradiaga received the B.Sc. degrees in industrial engineering ciate Professor in UTFSM, from 2014 to 2024. His research interests in‐
+and mechanical engineering from the Honduras National University clude experimental and modelling activities in energy conversion, thermal 
+(UNAH), Tegucigalpa, Honduras, in 2005 and 2006, respectively, the M.Sc. processes, and renewable energy.
+degrees in economics and mechanical engineering from the UNAH and Uni‐
+versidad Técnica Federico Santa María (UTFSM), Valparaíso, Chile, in Mohamed A. Ahmed received the B.Sc. and M.Sc. degrees in electrical en‐
+2008 and 2010, respectively, and the Ph.D. degree in mechanical engineer‐ gineering from Minia University, Minia, Egypt, in 2003 and 2007, respec‐
+ing from the University of Quebec, Montreal, Canada, in 2018. From 2015 tively, and the Ph.D. degree in electronics and information engineering from 
+to 2023, he worked as Assistant Professor at the UTFSM. Since 2023, he is Chonbuk National University, Jeonju, South Korea, in 2014. He is currently 
+pursuing an industry-oriented career as a Wind Resource Assessment Engi‐ working as an Assistant Professor in Department of Electronic Engineering, 
+neer at Nordex-Acciona Group and continues his participation in academic Universidad Técnica Federico Santa María (UTFSM), Valparaíso, Chile. Pri‐
+and private renewable energy projects. His research interests include re‐ or to joining UTFSM, he worked as a Post-doctoral Research Fellow at Ad‐
+source assessment for wind, solar, and marine energy, cyber-physical energy vanced Communication and Network Laboratory (ADCAN), Chonbuk Na‐
+systems, renewable energy engineering, small and medium scale smart tional University, from 2014 to 2018. His research interests include wireless 
+grids, artificial intelligence (AI) applied to energy systems, and agroindustri‐ sensor network, smart grid, wind energy, electric vehicle, energy trading, 
+al-energy symbiosis. and cyber-physical system.

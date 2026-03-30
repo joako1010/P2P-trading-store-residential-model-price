@@ -1,0 +1,2424 @@
+﻿Journal of Energy Storage 84 (2024) 110881
+
+Contents lists available at ScienceDirect 
+
+Journal of Energy Storage 
+journal homepage: www.elsevier.com/locate/est 
+
+Research papers 
+
+Microgrid and participant-centric residential demand response program 
+and photovoltaic with battery-storage P2P energy trading for optimum 
+energy management using MDULPS and PPBSD-ADMM 
+Jawad Hussain a, Qi Huang a,b,*, Jian Li a, Zhenyuan Zhang a, Fazal Hussain a, 
+Syed Adrees Ahmed a, Kashif Manzoor a 
+
+a School of Mechanical and Electrical Engineering, University of Electronic Science and Technology of China, Chengdu 611731, China 
+b School of Information Engineering, Southwest University of Science and Technology, Mianyang, Sichuan 621010, China   
+
+A R T I C L E  I N F O   A B S T R A C T   
+
+Keywords: An innovative decentralized Residential Demand Response (DR) program offers an effective solution for efficient 
+Energy management energy management to save cost for both the participants and the community Microgrid (MG) and facilitate peer- 
+Energy trading to-peer (P2P) trading of excess energy of photovoltaic (PV) with battery energy storage system (BESS) between 
+Demand response (DR) prosumers and consumers residing within a community. This study aims to optimally schedule home appliances, 
+Peer-to-peer (P2P) 
+Demand reduction bid (DRB) mitigate the detrimental externality effect on tariff rates among participants, select participants for demand 
+Direct load control (DLC) reduction, select prosumers for buying energy in P2P energy trading, and protect the privacy of participants. This 
+
+study aims to optimally schedule home appliances, mitigate the detrimental externality effect on tariff rates 
+among participants, select participants for demand reduction, select prosumers for buying energy in P2P energy 
+trading, and protect the privacy of participants. This novel approach combines the advantages of demand 
+response under the multi-time of use (TOU) pricing and the incentive-driven demand reduction bidding mech
+anism under direct load control (DLC) to reduce electricity demand, minimize electricity costs for enrolled 
+participants, and save cost for the community MG by offering a minimum incentive to participants. The inte
+gration of the Home Energy Management System (HEMS) and Advanced Metering Infrastructure (AMI) enables a 
+dynamic and responsive energy management system, fostering a more active role for participants in optimizing 
+their individual energy usage patterns and incentivizing participants to adjust their energy consumption based on 
+a demand reduction bidding strategy. The detrimental externality effect on tariff rates is managed among par
+ticipants with varying utilization levels through a multi-dynamic utilization level pricing scheme (MDULPS). This 
+study utilizes a novel non-cooperative game design strategy, incorporating a Nash equilibrium approach to 
+achieve the optimum schedule of smart home appliances and the selection of participants for demand reduction 
+with the lowest possible demand reduction bids. The economically selection of preferred prosumer for buying 
+energy considering consumer utility in P2P energy trading scheme is accomplished using Prosumer Preference 
+Based Segmented Distributed Alternating Direction Method of Multipliers (PPBSD-ADMM). The proposed ap
+proaches for energy management and energy trading are more feasible in terms of preserving participants' 
+privacy compared to other state-of-the-art strategies. Finally, analytical and simulation results show that the 
+proposed demand response and P2P energy trading schemes are suitable and effective and have benefits with 
+regards to prosumer cost savings of up to 54.55 %, consumer cost savings of up to 33.28 %, and MG cost savings 
+of up to 34.65 %.   
+
+1. Introduction electricity could pose a potential challenge in the future [1]. To address 
+the issue of rising energy consumption, demand response (DR) systems 
+
+The demand for electricity has risen in recent years due to the growth have received a lot of interest in recent times as an advantageous means 
+in population and industrialization. However, the generation of for managing electricity, especially throughout high-demand hours. 
+
+* Corresponding author at: School of Mechanical and Electrical Engineering, University of Electronic Science and Technology of China, Chengdu 611731, China. 
+E-mail address: hwong@swust.edu.cn (Q. Huang).  
+
+https://doi.org/10.1016/j.est.2024.110881 
+Received 5 October 2023; Received in revised form 31 January 2024; Accepted 7 February 2024   
+Available online 19 February 2024
+2352-152X/© 2024 Elsevier Ltd. All rights reserved.
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Demand response schemes provide various advantages to the power grid ηb Participant's income level 
+[2] and consumers by encouraging users to have control over their en ηc Participant's load curtailment level 
+ergy usage [3,4]. The objective for DR is centered on turning peak de E Elasticity 
+mand to normal demand either transferring load or curtailment [5]. B(ΔPt) Incentive function (¢) 
+Peak demand minimization can be achieved using time-based tariffs, WS
+
+n The operational sensitivity of appliance at time (t ∈ T, z ∈ Z)
+,(t,z)
+
+also known as price-based DR (PBDR) [6], and rewards/compensation, 
+Rn Payoffs 
+
+also known as incentive-based DR (IBDR) [7]. PBDR focuses on pricing 
+indicators to have an effect on participant habits. The tariff for elec Variables 
+tricity may vary at different time periods according to the grid's demand 
+and supply patterns [8–10]. Electricity tariff rises during events of 
+
+λTOU
+n,(t,z) Tariff of electricity for nth 
+
+increased demand or limited availability, notifying participants to participant 
+PS
+
+minimize their usage. In contrast, when demand becomes lower or t,z Total demand at tth and zth hour (kW) 
+supply is abundant, the price reduces, signaling that there is an appro PS
+
+n The accumulated demand of nth participant 
+,(t,z)
+
+priate time for participants to raise their use of electricity [11]. IBDR PS,max
+n Maximum demand of nth participant 
+
+schemes provide incentives to participants to participate in the reduc ,(t,z)
+λn,t Tariff rate of nth participant at tth hour (¢/kWh) 
+
+tion of electricity by changing their usage patterns [12–14]. The 
+λn,z Tariff rate for cross-elastic load at zth 
+
+extended need for electricity and scarcity of non-renewable energy re hour (¢/kWh) 
+λo
+
+sources, along with environmental and economic concerns, has caused a t Nominal tariff rate at tth hour (¢/kWh) 
+rapid increase in distributed energy resources (DERs), and the concept of Pt Demand at tth hour (kW) 
+
+ΔPt Change in demand at tth 
+self-generation has emerged [15,16]. With the increasing integration of period (kW) 
+
+λA
+distributed generation systems and advanced energy storage systems t Incentives obtained at tth hour (¢/kWh) 
+
+λA
+n,t Incentives of nth 
+
+like batteries, residential participants now have the ability to generate participant at tth hour (¢/kWh) 
+and utilize their self-generated energy and even share it with other users λA
+
+n,z Incentives of nth participant at zth hour (¢/kWh) 
+[17]. This evolution towards DERs transforms household participants ESEL
+
+n,t Self-elasticity of nth participant at the tth hour 
+into proactive prosumers [18]. The proposed study addresses several ECEL
+
+n Cross elasticity of nth participant at a zth hour 
+issues: firstly, the economic challenge of minimizing electricity bills ,(t,z)
+
+through the optimal scheduling of home appliances; secondly, the social C(Pt) Participant's benefit at tth hour (¢) 
+issue concerning the detrimental externalities affecting tariff rates PCEL
+
+n Cross-elastic load demand (kW) 
+PSEL
+
+among participants; thirdly, the business problem of cost-saving for the n Self-elastic load demand (kW) 
+MG, achieved by optimal selecting participants who submitted the P(g,n),(t,z) Demand reduction levels by participants of G group level 
+
+( )
+lowest incentive bids price for demand reduction, as provided by the f P(g,n),(t,z) Demand reduction bids for the nth participant of G group 
+MG; fourthly, the economic concern of cost-saving for both prosumers level 
+and consumers through the optimal selection of prosumers and con
+sumers; and finally, the issue of participant privacy. Acronyms 
+
+Nomenclature DR Demand response 
+DRB Demand reduction bid 
+
+Sets and indices PBDRP Price-based demand response 
+IBDRP Incentive-based demand response 
+
+T Total time period for self-elastic load scheduling HEMS Home energy management system 
+Z Total time period for cross-elastic load scheduling AMI Advanced metering infrastructure 
+N Total number of participants in a community TOU Time of use 
+L Various kinds of smart loads MDULPS Multi-dynamic utilization level pricing scheme 
+aCEL
+
+n cross-elastic appliances PCZ Price consistency zone 
+aSEL
+
+n self-elastic appliances The authors in [19], proposed a DR program with an appropriate 
+Ai Set of cross-elastic appliances pricing strategy to persuade various participants to engage in DR for the 
+t Time period for self-elastic load [t = 1,2,…,24] selection of price plans aimed at minimizing electricity costs for par
+z Time period for cross-elastic load [k = 1,2, …,24] ticipants. The authors in [20], proposed a PBDR program using a genetic 
+g Group of participants according to MDULPS g = 1,2,…,G algorithm (GA) to save costs for participants by load management. In 
+I Phases (time intervals according to TOU), i = 1,2,…,6 [21], the PBDR scheme encompassing multi-time-of-use (Multi-TOU) 
+n Total Participants (n ∈ N) and multi-critical peak pricing (Multi-CPP) strategies is proposed to 
+
+address challenges associated with peak demand and reduce costs for 
+participants. In [22], PBDR and IBDR schemes are employed using a 
+
+Parameters dynamic programming approach to save the costs for participants and 
+encourage participants in the DR program, respectively. The authors in 
+
+PS Appliances load in (kW). [23], proposed an IBDR program with the employment of a Home En
+Pyx,t Consumer demand in P2P trading 
+λo ergy Management System (HEMS) aimed at achieving optimal sched
+
+Nominal tariff rate (¢/kWh) 
+Po uling of appliances for a smart home (SH). In [24], PBDR and IBDR 
+
+Initial demand (kW) schemes are employed to minimize electricity demand at peak hour load 
+λR Energy price from renewable source (¢/kWh) time. Participants are provided incentives for reducing their electricity 
+λB Energy price from battery storage (¢/kWh) consumption at peak hour load, while paid penalties for exceeding it. 
+λU Energy price from utility energy (¢/kWh) The strategies used in [19–24] focused only on cost savings for partici
+ΨA Incentive weighting parameter pants and did not consider the cost savings for the electricity supplier. 
+D Participant's income Appliance scheduling may be administered through either a 
+Do
+
+t Participant's income when demand is nominal centralized or a decentralized approach. A centralized approach entails 
+ηa Participant's load level the engagement of a centralized entity responsible for coordinating 
+
+2
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+participants' load scheduling, with the goal of reducing demand during prioritize peer autonomy and offer the advantage of reduced transaction 
+peak hour periods and to balance supply and demand. This centralized costs depending on every preferred prosumer's electricity transaction 
+organization plays a central key role commonly identified as a market rate. Additionally, centralized systems encounter challenges related to 
+operator (MO) or system operator (SO) [25]. In centralized strategy, the the privacy of peers' information. 
+optimization problem is initially resolved in a centralized manner by the These centralized problems in P2P energy trading were solved uti
+centralized entity, following which signals are transmitted to each lizing a number of distributed methodologies, including the alternate 
+participant. The authors in [26], introduced the residential DR program, direction method of multipliers (ADMM), gradient-based, and 
+employing a distribution system operator (DSO) as the central controller consensus-based techniques. The ADMM technique was employed in 
+under the day-ahead and real-time energy market scenarios, aiming to [40] to investigate multi-class power trading. As a result, when trying to 
+save costs for participants by scheduling home appliances. Similarly, the set tariffs for each electricity type, data is required to be shared with this 
+authors in [27], proposed a three-level DR scheme aimed at enhancing central entity. In [41], the ADMM methodology is employed to clear the 
+electricity consumption optimization and mitigating electricity expenses market. The involvement of a community manager becomes essential to 
+with the help of DSO as a central entity. The authors in [28], developed a conduct the computations during the pricing update phase. The process 
+comprehensive DR strategy coupled with an incentive-compatible bids of scheduling DERs is executed through Blockchain [42], with the 
+mechanism within a microgrid. This strategy employs a central mana communication phase being facilitated by the utilization of a central 
+gerial unit to facilitate seamless coordination between participants and entity. In [43], a pool-based approach within the market framework is 
+the grid system, with the aim of encouraging participants to participate adopted to broaden the array of available market components. However, 
+in DR and reducing energy costs for participants. Furthermore, the au it is worth noting that while pool-based marketplaces provide an 
+thors in [29], proposed a demand response (DR) management approach extended selection, they do not achieve complete decentralization as the 
+that relies on a central coordinated authority. This authority is respon supervision of trading necessitates the presence of a community oper
+sible for efficient coordination in controlling the load of buildings. The ator. None of these approaches are full decentralization due to specific 
+authors in [30], introduced PBDR and IBDR techniques with the computations requiring involvement from a central entity. Conse
+employment of a centralized authority to strategically schedule loads quently, these approaches do not meet the privacy participants within 
+and save costs for participants. In [31], an IBDR program with a baseline P2P trading systems. The authors in [44] proposed a decentralized P2P 
+load mechanism is proposed to manage the load with the employment of energy trading strategy to clear the market in a decentralized manner 
+system operator (SO). The strategies employed in [26–31] are based on a using the primal-dual gradient technique. The authors in [45], strate
+centralized approach, which violates the participants' privacy. More gically employed the Relaxed Consensus and Innovation (RCI) strate
+over, these strategies focused only on cost savings for participants, gically to facilitate energy trading between prosumers and consumers, 
+without considering cost savings for the electricity supplier. with a small quantity of data to be shared. A peer-centric P2P structure is 
+
+Within a decentralized framework, each participant possesses the proposed in [46], that does not require any assistance from other parties. 
+autonomy to schedule their individual load. In [32], a Multiagent In [47], a Differential Privacy (DP) approach is proposed for preserving 
+Reinforcement Learning (MARL) approach is proposed with the participants' privacy in P2P energy trading among prosumers. This 
+employment of leader-follower strategy to organize household appli approach necessitates the sharing of data with the retailer for the pur
+ance usage, aiming to minimize participants' costs. The authors in [33] pose of establishing tariffs applicable to all participants. The strategies in 
+implement a distributed management framework within a community [40–47] did not incorporate the selection of prosumers and consumers, 
+setting. This system proposes a collective appliance scheduling strategy, which is essential for achieving effective cost savings for both parties. 
+aiming to minimize costs through coordinated actions among the com The abovementioned PBDR and IBDR programs primarily focus on 
+munity members. The authors in [34], implement the application of the reducing energy usage, without considering the participant decision- 
+Stackelberg cooperative game in a DR program, establishing a cooper making processes and behavior interventions under PBDR, as well as 
+ative model between a retailer and participants. This model strategically the MG decision-making processes under IBDR programs. This research 
+focuses on optimizing the aggregate cost for participants. This model proposes both participant-centric and MG-centric demand response 
+strategically focuses on optimizing the aggregate cost for participants. mechanisms in the energy management system, ensuring optimal energy 
+The retailer plays a central role in setting the payment structure based consumption as well as saving costs for both participants and the MG. 
+on each participant's consumption profile. However, the methods dis The authors in [6,20,23,26] have introduced a uniform energy pricing 
+cussed in [32–34] adopt a distributed approach, yet they do not fully strategy for participants with varying energy consumption levels. The 
+embrace decentralization. principal challenge associated with these approaches revolves around 
+
+A microgrid (MG) is a vital component of electric energy distributed the concept of a “detrimental externality” among participants with 
+system comprised of distributed generators, loads, and energy storage varying energy utilization levels. This concept indicates that an increase 
+units. Community MGs can disconnect from the main grid and provide in demand from one participant adversely affects the tariff rates for all 
+electricity in case of system breakdowns [35]. Additionally, they also other participants. The Multi-Dynamic Utilization Level Pricing Scheme 
+provide a flexible structure that facilitates trading between prosumers (MDULPS) is proposed to address the detrimental externality challenge 
+and consumers [36]. In a community MG, prosumers and consumers can arising among participants. The authors in [22–24,28,31] offer in
+directly trade electricity, and they may have control over their respec centives to participants based on the extent of demand reduction ach
+tive output and consumption. Conventionally, electricity flows in a ieved. However, the MG lacks the capability to efficiently select 
+unidirectional path from centralized power plants to consumers through participants for demand reduction with minimum demand reduction 
+the grid. In contrast, peer-to-peer (P2P) energy trading empowers in bidding (DRB) incentives rate to save cost for the MG. This paper in
+dividuals or entities equipped with DERs (such as solar panels, wind corporates the selection of participants for demand reduction with the 
+turbines, or batteries) to supply surplus energy they produce directly to least DRB price to save cost for the MG. In [32–34], the energy man
+neighboring consumers requiring electricity [37,38]. P2P energy trading agement systems are distributed, yet they fall short of achieving fully 
+is adaptable to both centralized and decentralized frameworks [39]. In decentralized system. In [32], the model necessitates both leaders and 
+the centralized model, an intermediary third-party entity or platform followers to share their consumption schedules, compromising partici
+facilitates energy transactions among participants. In contrast, the pant privacy. In [33], there is a cooperative sharing of scheduled data 
+decentralized model enables direct P2P interactions, eliminating the among participants. In [34], the information pertaining to both pricing 
+requirement for a central intermediary. Centralized systems entail the and scheduling is shared among participants and the retailer at a single 
+potential drawback of concentrating control in a single point, which time frame. This study proposes a fully decentralized mode. It employs a 
+could lead to a higher cost of energy. In contrast, decentralized systems non-cooperative game based on the Nash equilibrium for individual load 
+
+3
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 1. Community microgrid framework  
+
+scheduling with a particular emphasis on preserving the privacy of the 2) A novel PBDR program under the TOU pricing and IBDR program 
+participants. Furthermore, the proposed P2P energy trading approach is under the direct load control is proposed in order to decrease elec
+more efficient compared to current decentralized approaches, particu tricity demand, lower costs, and benefit the community MG in order 
+larly in addressing privacy preservation concerns and enabling con to save cost by providing a minimum incentive to participants across 
+sumers to purchase energy from preferred prosumers based on both each stage level of participants.  
+selling price and consumer utility. In [41], the consumer shares its data 3) A statistical optimum scheduling approach employing the Nash 
+with the community manager. In [44,45], every consumer required to equilibrium strategy with a non-cooperative dynamic energy game 
+share both costs and energy with all their peers, without the option to scheme is proposed to optimally schedule home appliances in order 
+choose a specific prosumer for purchasing energy. In the proposed P2P to lower costs and select participants for load reduction with minimal 
+energy trading strategy, photovoltaic (PV) and battery energy storage demand reduction bids. 
+system (BESS) energy trading occurs between only neighboring peers. 4) The cost saving for consumers by the selection of preferred pro
+The price or energy information is shared just with the neighboring sumers for purchasing varying degree of energy by consumers, 
+peers, avoiding the sharing of price or energy information with all considering both the selling price they offer and the consumer's 
+prosumers. Consequently, there is a significant reduction in both data utility using colored-based segmented P2P PV-BESS energy trading.  
+sharing and data violations, thereby enhancing the privacy protection of 5) These strategies are also implemented on a wide range of networks to 
+participants. Additionally, the strategy provides the flexibility to exhibit the validity and reliability of the proposed approaches for DR 
+economically select a preferred prosumer for buying energy by con programs and P2P energy trading. 
+sumer according to their utility using Prosumer Preference Based 
+Segmented Distributed Alternating Direction Method of Multipliers The remaining sections of the paper are arranged as follows: Section 
+(PPBSD-ADMM). The selection of a preferred prosumer is carried out 2 introduces the demand response system framework of the community 
+using a segmentation strategy based on node coloring method. Our microgrid. Section 3 presents Multi-dynamic utilization level pricing 
+proposed approaches offer several distinct advantages: 1) Significant scheme for minimizing detrimental externality problems among par
+reduction in electricity bills, cost saving for both participants and the ticipants. Section 4 describes the load scheduling and P2P energy 
+MG, reduction in network congestion. 2) A decentralized scheme for P2P trading for cost minimization objective functions. Section 5 introduced a 
+energy trading enhances participants' privacy and save cost for con solution methodology for scheduling load and optimization algorithm 
+sumers by selection of economically preferred prosumer for buying en for demand reduction bids and P2P energy trading algorithm. Section 6 
+ergy considering consumer utility. 3) The smart contract autonomously presents simulation results and a discussion. Finally, Section 7 presents 
+executes the entire process without requiring any involvement from conclusion. 
+additional entities or external intermediaries. This paper presents the 
+following contributions.  2. System model 
+
+1) A multi-dynamic utilization level pricing scheme (MDULPS) based The primary goal of this paper is to achieve a reduction in electricity 
+on TOU pricing is proposed to solve the detrimental externality issue costs by implementing appliance scheduling methodology utilizing dy
+on price rates among participants of various utilization levels and namic tariff strategies as well as P2P energy trading between prosumers 
+reduce network congestion.  and consumers to get satisfaction. The system framework for the purpose 
+
+4
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Table 1 
+Appliances' category.  
+
+Appliance Appliance 
+category 
+
+Self elastic Lights, fan, refrigerator, mobile charger, LED-TV, electric stove 
+etc. 
+
+Cross elastic Electric water heater, air conditioner, water dispenser, 
+dishwasher, washing machine, dryer, microwave etc.  
+
+of energy management and peer-to-peer (P2P) energy scheduling in the 
+system is shown in Fig. 1. The flow of electricity is visually represented 
+by the continuous black solid line, whereas the interactions between 
+participants, the SO, and the MG are denoted by the presence of doted 
+purple lines whereas the communication among prosumers and con
+sumers is depicted through the inclusion of dashed red lines. Both the 
+System Operator Management Policy (SOMP) and the Home Energy 
+Management System (HEMS) serve as integral controllers employed to 
+organize the scheduling of appliances within residential settings. For the 
+purpose of balancing supply and demand, the system operator (SO) 
+exchanges tariff information in the network system and sends a 
+recommendation signal for scheduling appliances. Advanced Metering 
+Infrastructure (AMI) is employed as HEMS for the bilateral exchange of 
+data between participants and SO. Fig. 2. Flow chart of MDULPS strategy.  
+
+2.1. System specifications and optimization programs PS
+n = PCEL
+
+n +PSEL
+n (3)  
+
+The system network consists of 10 participants. Furthermore, its ∑G ∑T,Z
+
+effectiveness is also examined in the context of a larger network system, PS
+(g,n),(t,z) = PS
+
+(g,n),(t,z) (4)  
+encompassing a total of 100 participants. The optimization programs are g=1 t=1
+
+as: 1) energy management using DR program to minimize cost for par z=1
+
+ticipants, 2) DLC program using demand reduction bidding (DRB) 
+strategy to select participants for load reduction in order to save cost for where PS e
+
+(g nes the entire aggregating demand profile for N 
+,n d fi
+),(t,z)
+
+MG, 3) PPBSD-ADMM based P2P energy trading approach for trading participants of G group levels. A total of 10 participants are considered 
+energy in a decentralized way to preserve participants' privacy. for the proposed system. t ∈ T denotes the operation time for self-elastic 
+
+appliances, while z ∈ Z indicates the operation time for cross-elastic 
+2.2. Classification of smart appliances load appliances. The peak demand is presented in (5). 
+
+Ppeak
+Two primary categories of appliances are self-elastic and cross- = maxPS
+
+(g,n),(t,z) (5)  
+elastic appliances. Appliances that operate only in either an “on” or 
+“off” state and cannot shift from one time frame to another. These ap 3. Multi-dynamic utilization level pricing scheme 
+pliances are sensitive during a single period and are known as self-elastic 
+appliances. Conversely, it is possible to shift certain appliances can be 3.1. Tariffs of energy for participants of various groups 
+shifted from one time frame to another. This behavior, known as multi- 
+period sensitivity, is characterized by the term “cross elasticity”. Ap The literature study indicates that most DR programs adopt a uni
+pliances exhibiting this behavior are referred to as cross-elastic appli form TOU tariff structure for participants having different demand levels 
+ances. Examples of both self-elastic and cross-elastic appliances are and demand reduction levels. The main concern lies in the detrimental 
+illustrated in Table 1. The HEMS is responsible for the scheduling and externality collectively experienced by participants, signifying that an 
+regulation of cross-elastic appliances within predefined time interval (Z increase in participant demand leads to adverse effects on the price rates 
+= 24). These appliances are strategically rescheduled across different for other participants. MDULPS is designed to mitigate the detrimental 
+time frames to effectively minimize electricity costs. The battery b ∈ B is externality effect among all participants. This scheme integrates two key 
+also a cross elastic load in terms of charging. The charging of battery can elements: the Utilization Allocation (UA) for each participant and a 
+be scheduled from peak to off-peak demand period. The load profile dynamic pricing model based on consumption levels. Specifically, 
+pertaining to cross-elastic appliances is described in (1): MDULPS adjusts prices based on the monitoring of participant con
+
+( ) sumption levels, offering variable energy prices during different periods. 
+∑ ∑ ∑
+
+PCEL
+n = PsCEL Adjustments in the tariff rate and UA within this scheme are dependent 
+
+n + Pb
+n (1) 
+
+n∈N sCEL∈SCEL b∈B on the energy consumption time and extent of energy usage. 
+A comprehensive flowchart depicting the operational framework of 
+
+Self-elastic appliances cannot be scheduled from one time frame to the MDULPS strategy is shown in Fig. 2. The community microgrid has a 
+another at any time intervals (T = 24). The demand profile for self- wide range of pricing to represent multiple levels of energy use. Par
+elastic appliances is described in (2). The total load profile of self ticipants can select their own tariff pattern. A price consistency zone 
+elastic and cross elastic appliances is defined in (3), and total load profile (PCZ) is defined as a range around the demand level that equals twice 
+at time t ∈ T, and z ∈ Z is presented in (4). the utilization allocation (UA). The term “UA” encompasses both posi
+
+∑ ∑
+PSEL
+
+n = PsSEL
+n (2)  tive (UA+) and negative (UA− ) values. (UA+) is designated for utiliza
+
+n∈N sSEL∈SSEL tion during off-peak demand periods when consistent pricing is 
+applicable, while (UA− ) is allocated for employment during peak 
+
+5
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Table 2 
+Tariff and incentive rates for participants (¢/kWh).  
+
+Phase Time interval Renewable energy tariff Energy storage tariff Utility tariff Tariff Bids price 
+
+Level 1 Level 2 Level 3 Level 1 Level 2 Level 3 
+
+Phase 1 00–05 (12 AM–05 AM) Not available 17.495  22.326  17.495  19.245  20.994 1.750 2.099 2.275 
+Phase 2 05–08 (05 AM–08 AM) Not available Not available  14.826  14.826  16.309  17.791 1.483 1.780 1.928 
+Phase 3 08–18 (08 AM–06 PM) 8.996 19.16  22.326  8.996  9.896  10.795 – – – 
+Phase 4 18–20 (06 PM–08 PM) Not available Not available  14.826  14.826  16.309  17.791 1.483 1.780 1.928 
+Phase 5 20–22 (08 PM–10 PM) Not available 19.16  25.989  19.16  21.076  22.992 1.916 2.299 2.491 
+Phase 6 22–24 (10 AM–12 AM) Not available 17.495  25.989  17.495  19.245  20.994 1.750 2.099 2.275  
+
+demand periods. Participants are segmented into three groups, 
+segmented by their cumulative power level, degree of load reduction, 
+and participation level in the IBDRP and PBDRP. The Algorithm 1 cus
+tomizes the tariff for different groups. 
+
+3.2. Group level 1 participant's tariff ⎧
+⎪ λR = 9.896 if χR = 1
+⎨
+
+Participants categorized under group level 1 exhibit a higher pro λK λB = 19.245 if χR = 0, χB = 1andχB < χU
+nm,(t,z) = ⎪ λU = 16.309 if χR = 0, χB = 0andχU = 1 (7)  
+
+pensity to engage with IBDRP in comparison to PBDRP. They actively ⎩ λU > λB > λR otherwise
+reduce their peak-demand period load and, in return, benefit from a 
+reduced electricity tariff as well as higher incentive offerings compared 
+to the remaining two participant groups. The TOU tariff rate, provided 3.4. Group level 3 participant's tariff 
+by the MG to the participants of group level 1 is described in (6). 
+
+⎧ Participants of group level 3 predominantly engage with PBDRP 
+⎪ λR = 8.996 if χR = 1 over IBDRP. These participants exhibit limited load curtailment dur
+⎨ λB
+
+λK = 17.495 if χR = 0, χB = 1andχB < χU
+nm,(t,z) = ⎪ λU = 14.826 if χR = 0, χB = 0andχU = 1 (6)  ing peak hours, resulting in the highest electricity tariff rate and 
+
+⎩ minimal incentive rewards than the participants of the other two 
+λU > λB > λR otherwise groups. The TOU tariff rate for the participants of group level 3 is 
+
+described in (8). 
+⎧
+
+3.3. Group level 2 participant's tariff R
+⎪ λ = 10.795 if χR = 1
+⎨ λB = 20.994 if χR = 0, χB = 1andχB < χU
+
+λK
+nm,(t,z) = ⎪ λU = 17.791 if χR = 0, χB = 0andχU = 1 (8)  
+
+Participants of group level 2 exhibit uniform responsiveness to both ⎩
+PBDRP and IBDRP. They undertake partial load curtailment during peak λU > λB > λR otherwise
+hours, entailing a higher electricity tariff compared to participants of 
+group level 1, while receiving incentives of lesser magnitude than those where λk
+
+nm,(t,z) denotes the energy tariff. λR, λB and λU represent the en
+of group level 1 participants. The TOU tariff rate for the participants of ergy tariffs pertaining to renewable sources, battery storage, and the 
+group level 2 is described in (7). utility grid, respectively. χR and χB serve the purpose of determining the 
+
+6
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Table 3 
+Prosumers' and consumers' requirements for trading.  
+
+Prosumers' specifications Consumers' specifications 
+
+Prosumers' nodes αm,t βm,t pmin
+m,t pmax
+
+m,t Consumers' nodes δn,t ωn,t pmin
+n,t pmax
+
+n,t 
+( ) ( )
+
+¢/kWh2 (¢ /kWh) (kW) (kW) ¢/kWh2 (¢/kWh) (kW) (kW)
+
+1  0.084  5.21  0  5.77  1  0.072  8.21  0  5.88  
+2  0.075  6.35  0  2.17  2  0.084  11.21  0  7.54  
+3  0.051  7.98  0  1.42  3  0.045  13.24  0  6.63  
+4  0.079  8.25  0  0.57  4  0.063  9.31  0  6.41  
+5  0.064  6.87  0  2.79  5  0.051  10.57  0  6.85  
+6  0.073  6.42  0  0.26  6  0.081  11.65  0  5.93  
+7  0.082  5.35  0  6.84  7  0.083  12.16  0  5.24  
+8  0.044  8.14  0  4.82  8  0.043  12.95  0  2.95  
+9  0.065  6.53  0  5.23  9  0.064  10.35  0  6.35  
+10  0.053  8.02  0  5.14  10  0.052  11.11  0  5.74  
+11  0.075  6.14  0  5.29  11  0.074  8.31  0  7.68  
+12  0.068  6.84  0  4.96  12  0.072  8.38  0  6.84  
+13  0.067  6.78  0  5.26  13  0.064  9.45  0  6.53  
+14  0.071  6.44  0  5.79  14  0.074  8.24  0  7.82  
+15  0.064  7.24  0  4.86  15  0.065  10.85  0  6.57  
+16  0.063  7.15  0  5.56  16  0.064  9.74  0  6.55  
+17  0.068  6.74  0  3.24  17  0.067  11.03  0  7.44  
+18  0.058  7.73  0  4.82  18  0.053  11.33  0  6.93  
+19  0.067  6.75  0  5.12  19  0.066  10.99  0  6.72  
+20  0.065  6.45  0  5.36  20  0.046  12.97  0  3.11  
+21  0.077  8.14  0  3.14  21  0.075  8.14  0  7.55  
+22  0.084  5.35  0  6.21  22  0.081  10.79  0  4.86  
+23  0.054  7.94  0  4.56  23  0.052  11.13  0  5.73  
+24  0.067  6.68  0  5.32  24  0.068  11.22  0  7.62  
+25  0.073  6.33  0  5.26  25  0.071  8.45  0  7.83  
+26  0.055  7.44  0  4.19  26  0.051  11.52  0  6.22  
+27  0.084  5.95  0  6.34  27  0.082  11.25  0  4.98  
+28  0.045  7.97  0  4.68  28  0.045  12.88  0  3.63  
+29  0.068  6.83  0  5.02  29  0.063  9.73  0  7.11  
+30  0.067  6.57  0  4.85  30  0.064  9.64  0  6.23  
+31  0.058  7.64  0  4.23  31  0.073  8.98  0  7.92  
+32  0.065  6.35  0  3.13  32  0.054  11.23  0  6.97  
+33  0.074  6.53  0  5.72  33  0.074  8.24  0  7.48  
+34  0.074  6.35  0  5.31  34  0.063  10.25  0  6.45  
+35  0.048  8.14  0  4.72  35  0.045  12.93  0  3.44  
+36  0.069  6.43  0  3.31  36  0.064  9.88  0  7.28  
+37  0.081  5.75  0  6.35  37  0.082  11.34  0  5.24  
+38  0.082  5.31  0  6.07  38  0.086  11.23  0  5.37  
+39  0.064  6.44  0  4.57  39  0.065  10.02  0  7.44  
+40  0.058  7.83  0  4.68  40  0.054  10.98  0  6.75  
+41  0.074  6.42  0  5.27  41  0.073  8.75  0  7.93  
+42  0.065  6.43  0  3.28  42  0.068  11.31  0  7.68  
+43  0.062  6.75  0  4.84  43  0.065  9.68  0  6.92  
+44  0.045  8.07  0  4.93  44  0.044  10.97  0  3.75  
+45  0.085  5.15  0  6.72  45  0.085  11.32  0  5.97  
+46  0.055  7.78  0  4.87  46  0.055  11.33  0  6.24  
+47  0.063  6.52  0  5.15  47  0.063  9.85  0  6.83  
+48  0.068  6.31  0  4.97  48  0.064  9.75  0  7.35  
+49  0.084  5.18  0  6.46  49  0.077  8.14  0  7.58  
+50  0.057  7.82  0  4.92  50  0.082  10.98  0  4.93  
+
+accessibility of renewable generation and battery storage within the energy trading. The first four parameters for prosumers and consumers 
+community microgrid. χU serves as a decision parameter for buying in Table 3 regarding each scenario, sourced from [44] to ensure a fair 
+energy from the utility grid. The community microgrid contains the comparison, while the remaining parameters are based on assumptions. 
+renewable source, battery storage, and also connected with the utility 
+grid. The community microgrid provides the renewable source energy at 3.5. Smart contract 
+λR price rate and battery storage energy at λB price rate to the partici
+pants. Community microgrid provide the utility energy to the partici In an energy management system, the MG establishes contracts 
+pants at λU price rate under circumstances where the community with all participants, regarding the pricing and incentive strategies for 
+microgrid lacks access to renewable and battery generation, or when the different group levels of participants. Table 2 presents the pricing and 
+utility electricity tariff is lower than that of battery energy storage. incentive rates for all group levels of participants. It is assumed that 
+Table 2 illustrates the electricity tariffs and incentive rates applicable to HEMSs are installed in every home and operate according to the smart 
+various participant groups. Incentives are granted to participants as a contract agreement. The HEMS autonomously manage a home's en
+reward for the effective reduction of their energy consumption from ergy, considering the MDULPS strategy. These contracts are as 
+peak and mid-peak demand periods towards off-peak demand periods. follows: 
+Table 3 presents the prosumers and consumers requirements for P2P 
+
+7
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+• The MG supplies electricity to participants from different group (
+levels at TOU pricing, in accordance with the MDULPS strategy.  ∑∑ ∑24 Po ( )
+
+PS (g,n),t
+(g,n),(t,z) = Po
+
+(g,n),(t,z) + ESEL
+(g,n),t λ(g,n),t − λo
+
+(g,n),t + λA
+(g,n),t
+
+• TOU pricing rates may vary according to the demand of participants.  g∈G n∈N t λo
+=1 (g,n),t
+
+)
+• Participants agree to reduce or shift their electricity usage during ∑24 Po ( )
+
+peak periods in response to requests from the MG.  (g,n),t
++ ECEL o
+
+(g,n),(t,z) λ
+• Participants have the option to refrain from reducing demand based t λo (g,n),z − λ(g,n),z + λA
+
+(g,n),z
+=1,z=1,t∕=z (g,n),z
+
+on the load's sensitivity.  (13) 
+• Participants are incentivized for reducing their electricity demand.  Within a community microgrid, PS
+
+n,(t,z) signifies the collective aggre
+• If a participant exceeds their contracted group level demand, the MG gate demand profile encompassing N customers as in (14). 
+
+will alter the group level of that participant. 
+⎛
+
+∑24 Po ( )⎞
+(g,n),t
+
+3.6. Elasticity-based electricity demand ⎜Po
+(g,n),(t,z) + ESEL
+
+(g,n),t λ(g,n),t − λo
+(g,n),t +ψAλA
+
+(g,n),t ⎟
+∑∑⎜ n),t ⎟
+
+PS ⎜ t λo
+=1 (g, ⎟
+
+(g,n),(t,z) = ⎜ ⎟
+The price elasticity of energy demand quantifies the extent to which g ⎜
+
+∈G n∈N⎝ ∑24 Po ( ) ⎟
+(g,n),t
+
+the quantity of electricity fluctuates after reacting to fluctuations in its + ECEL o ⎠
+(g,n),(t,z) λ
+
+t λo (g,n),z − λ(g,n),z +ψAλA
+(g,n),z
+
+=1,z=1,z∕=t (g,n),z
+price. Even a minor decrease in demand (ΔP) during a peak and mid- (14)  
+peak demand period can exert a substantial influence on the elec
+tricity price (Δλ). The price elasticity is formulated as in (9). where ΨA represents the incentive variables that vary based on the de
+
+λo ∂P gree of load reduction according to the demand reduction bidding 
+E = .∂ (9) 
+
+Po λ strategy. This particular model represents the attributes of a load that 
+exhibits responsiveness to alterations in incentives and pricing. 
+
+The demand for self-elastic or non-schedulable appliances remains 
+unchanged across all operational periods within the time interval 
+denoted as t 4. Methodology for load scheduling 
+
+∈ T. These appliances cannot be strategically rescheduled to 
+off-peak periods for cost-saving purposes [48], and the elasticity asso
+ciated with the self-elastic load is referred to as “self-elasticity” [49]. The In an innovative semi-automated framework, participants are 
+demand profile for the self-elastic load over a 24-h period can be empowered to arrive at the ultimate decision after considering recom
+rewritten as in (10). mendations from the system operator management policy (SOMP), 
+
+financial advantages, and the appliance's sensitivity. The comprehensive 
+∑24 o structure of the DR process is illustrated in Fig. 2. The MG sends a tariff 
+
+PSEL o SELPt ( o )
+t = Pt + Et o λt − λt + λA
+
+t (10) and incentive rate signal to the participant and to the system operator 
+t=1 λt
+
+management policy (SOMP), encompassing all groups of participants. 
+The demand for cross-elastic or schedulable load can be adjusted SOMP sends a load scheduling or reduction recommendation to the 
+
+between different time intervals to effectively reduce the electricity participant after analyzing the demand profile, the tariff, and incentive 
+bill [48] and the term “cross-elasticity” denotes the elasticity linked rates according to the group assigned to the participant by the MG after 
+with the cross-elastic load [49]. Cross-elastic load categories require a the participation level in the DR program. The participants want com
+strategic scheduling approach that prioritizes load shifting within plete authority over their actions in response to the DR signal received 
+specified time intervals marked as z ∈ Z, empowering participants from the MG. HEMS is used as a decision system that has the ability to 
+with the ability to manage their energy costs effectively. The demand accept or reject the recommendation received by the system operator 
+profile for the cross-elastic load can be rewritten as in (11). management policy (SOMP). Upon receiving the tariff signal from the 
+
+MG and recommendation from SOPM, the HEMS makes a decision for 
+∑24 o
+
+PCEL
+t scheduling or reduction in demand based on economic benefits and 
+,z = Po A)
+
+z + ECELPt (
+t,z λ − o
+
+z + λz (11) 
+t λo z λ
+=1,z=1,z∕=t z sensitivity of the appliance. The decision taken by the HEMS is then sent 
+
+The combined demand profile encompassing both the self and cross- back to the MG as a response notification. Upon receiving a positive 
+elastic loads can be written as in (12). response from the participant, the microgrid updates this feedback and 
+
+proceeds with further calculations. In case of a negative response, the 
+∑24 Po Po microgrid also performs additional computations and subsequently 
+
+Ps t ( o ) ∑24
+
+t,z = Po
+t,z + ESEL
+
+t o λt − λt + λA t ( o A)
+t + ECEL
+
+t,z o λz − λz + λ transmits a reduction signal to other participants. 
+t t λ z
+
+t=1 λ
+=1,z=1,z∕=t z
+
+(12) 
+The formulation of the overall demand for n participants within the 4.1. Cost minimization object function 
+
+context of DR is expressed as in (13). 
+The objective function is to minimize the operating costs of utilizing 
+
+appliances for all participants. Participants minimize their costs by 
+shifting their demand from peak demand times to off-peak demand 
+periods. The objective function is defined in (15), and the constraints 
+regarding this function for optimal operation are specified in (30)–(37). 
+
+⎛ ( ) ⎞
+∑∑ ∑ ∑
+
+h
+∑⎜ αbuy λk uy,MG
+
+(g,n),(t,z) (g,n),(t,z)P
+b
+(g,n − βh
+
+),(t,z) (g,n),(t,z)λ
+A
+(g,n),(t,z)D(g,n),(t,z) ⎟
+
+minλTOU,P2PPS ⎜ g∈G n∈N ⎟
+(g,n),(t,z) (g,n),(t,z) = ⎜ k∈K h∈H
+
+⎝ ∑ ∑ ⎟ (15)   
+t∈T , buy,P2P uy,P2P ll ⎠
+
+,P2P
+z + γbuy
+∈Z, y,x,tλy,x,t Pb
+
+y,x,t − δsell sell,P2P se
+x,y,tλx,y,t Px,y,t
+
+t∕=z x∈NPr y∈NC
+
+8
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+that an alternative load of a smaller size be removed. The requested data 
+where λk will be submitted back to the MG for consideration or rejection. MG may 
+
+(g,n),(t,z) represents the energy rate, which varies based on the 
+type of generated energy, Pbuy,MG
+
+(g,n denotes the electricity purchased accept or reject it, depending on the group level agreement of 
+),(t,z) participant. 
+
+from the MG for operating appliances and charging the battery. Dh
+(g,n),(t,z) In the load reduction scenario, MG does not specify which loads 
+
+signifies the difference between the baseline demand and the real de should be removed from the network. Instead, it transmits a request to 
+mand during peak hours ℎ in the interval t,z. λA
+
+(g,n),(t,z) denotes the the participant to lower its energy usage by a specified quantity. Ac
+incentive or penalty price. Participants earn incentives for scheduling or cording to the rule of the contract, the participant has the authority to 
+reduction in demand, while they bear penalties for increasing their de approve, partially approve, or disapprove of the request. The decision- 
+mand beyond the baseline load. Pbuy,P2P
+
+y,x,t represents the power bought by making process becomes more challenging in this circumstance 
+because the participant is now in charge of identifying prospective loads 
+
+consumer y at the price rate λbuy,P2P
+y,x,t from prosumer x, while Psell,P2P
+
+x,y,t de that can be removed. This necessitates a comprehensive examination of 
+notes the power sold by prosumer x to the consumer y at the price rate all available possibilities and comparing them to the SOMP. It involves 
+λbuy,P2P
+
+x,y,t . αbuy
+(g,n , βh
+
+),(t,z) (g,n),(t,z), γ
+buy
+y,x,t and δsell
+
+x,y,t represent the decision compo identifying the optimal solution and transmitting an acknowledgment to 
+nents that govern the power bought from the MG, the reduction in de the MG. In contrast to the preceding situation, in which the MG's 
+mand, the buying of power from prosumers, and the selling of power to response was binary (Yes or No) but in this scenario, the response may 
+consumers, respectively. The representation for buying power from the take the form of a consistent value representing the total amount of 
+MG and from prosumers are presented in (16). kilowatts reduced by the participant. The essential factors considered for 
+
+load reduction are dependent on the specified criteria:  
+
+( )
+∑ ∑∑∑ ∑ ∑
+
+Pbuy,MG
++ buy, PS b
+
+− P ,home PPV,home
+(g,n P P2P
+
+),(t,z) y,x,t = (g,n),(t,z) (t −
+(t,z + λbuy,P2P
+
+) y,x,t Pbuy,P2P
+y,x,t (16)   
+
+,z)
+t∈T , g∈G n∈N s∈S b∈B x∈NPr
+z∈Z,
+t∕=Z
+
+where PS represents the demand for home appliances, including 
+(g,n),(t,z • The scale of the load.  
+
+)
+
+BESS. Pb,home • The sensitivity of the interrupted load.  
+(t,z and PPV,home e o e
+
+(t t
+,z d n  the self-utilization of battery power and 
+
+) ) • How long it will take to start the load after the interruption. 
+PV power at home, respectively. NPr represents the total number of 
+prosumers. The amount of electricity required from the MG is calculated 4.3. System operator management policy 
+as the difference between household consumption and the self- 
+generated power utilized at home. Psell,P2P
+
+x,y,t represents the power sup The SO needs to be aware of the Demand Reduction Bid (DRB) 
+plied to consumers in a P2P manner. The power sold to consumers can submitted by all N participants for each time period. Consequently, 
+be represented as in (17). different demand levels representing potential curtailment options for 
+
+( ) the nth participant are indicated as in (18). 
+∑∑ ∑
+
+Psell,P2P { }
+x,y,t = Pb,sell
+
+x,y,t +PPV,sell
+x,y,t (17)  
+
+y∈NC t∈T b∈B P(g,n),(t,z) = p1
+(g,n),(t,z) , p2
+
+(g,n),(t,z) ,…, pL
+(g,n),(t,z) (18)  
+
+( ) { ( ) ( ) ( )}
+where Pb,sell e o e  the power from the battery, and Pb,sell
+
+(t t
+,z d n s represents the 
+) (t,z) f P(g,n),(t,z) = f p1 2
+
+(g,n),(t,z) , f p L
+(g,n),(t,z) ,…, f p(g,n),(t,z) (19) 
+
+PV power sold by prosumers to consumers in a P2P trading manner. NC 
+represents the total number of consumers. Eq. (19) depicts the associated bids. The challenge in decision- 
+
+making for the MG involves determining the extent of demand reduc
+tion for all N participants of all G group levels of participants within the 
+
+4.2. Customer side demand response scenarios specified interval is presented in (20). 
+⎡ ⎤
+
+The proposed DR is structured as to effectively address and respond P(1,1),(t,z) P(1,2),(t,z) ⋯ P(1,n),(t,z)
+⎢
+
+P ⎢P(2,1),(t,z) P(2,2),(t,z) ⋯ P
+to the two scenarios outlined below. The responses of these scenarios are (2,n t ⎥
+
+),( ,z)
+(G,N),(t,z) = ⎥
+
+⎣ ⋮ ⋮ ⋯ ⋮ ⎦ (20) 
+based on the contract agreement between participants and the MG ac P(g,1),(t,z) P(g,2),(t,z) ⋯ P(g,n),(t,z)
+cording to the group levels of participants.  
+
+The respective set of bids' prices for the N participants of G group 
+• Scenario 1: Load shutdown  levels can be represented as in (21). 
+• Scenario 2: Load reduction ( ) ( ) ( )
+
+⎡ f P(1,1),(t,z) f P(1,2),(t,z) ⋯ f P(1,n),(t,z) ⎤
+( ) ( ) ( )
+
+The MG conveys a load shutdown notification to the participant, ( ) ⎢ f P(2,1),(t,z) f P(2,2),(t,z) ⋯ f P(2,n),(t,z) ⎥
+f P ⎥
+
+(G,N ⎢
+),(t,z) = ⎣ ⋮ ⎦ (21) 
+
+requesting particular loads (usually large) to be cut off from the system. ⋮ ⋮ ⋯
+As per the agreement, the participant possesses the authority to either ( ) ( ) ( )
+
+approve or decline this request. After enrolling in this program, it be f P(g,1),(t,z) f P(g,2),(t,z) ⋯ f P(g,n),(t,z)
+
+comes the MG's responsibility to consistently transmit the updated terms The DRB corresponding to various potential cumulative demand 
+of the incentive/penalty rate to the participant. The participant utilizes levels CP(k) within the specified time period is derived by solving the 
+this information, in conjunction with the SOMP, to conduct a compre subsequent optimization problem as in (22). 
+hensive cost-benefit analysis with the aim to make a choice as to 
+whether to accept or reject it. The participant has the option not to 
+accept the specified load reduction request. Instead, they may request 
+
+9
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+∑G ∑N ( ) presented in (30). 
+F(CP) = min f pl
+
+(g,n),(t,z) ∀l = 1,…, L
+pl ∈Pl
+(g,n),(t,z) (g,n),(t,z) g=1 n=1 (22) ∑NC ( ) ∑NPr ( )
+
+max λy Py,t − λx Px,t (29)  
+s.t. CP(k) = p* Px,t ,Py,t
+
+(G,1),(t,z) + p*
+(G,2),(t,z) + … + p*
+
+(G,N),(t,z) y=1 x=1
+
+The value p*
+(g,n),(t,z) ∈ P(g,n),(t,z) signifies the optimum demand reduc Pxy,t = Pyx,t ∀x ∈ NPr, y ∈ NC (30) 
+
+tion level for the nth participant, aimed at achieving a cumulative de
+mand reduction of p Watts, and the respective optimum price bid for that The constraint in (30) originates from the equilibrium of demand and 
+
+( ) supply. This constraint indicates that the energy sold by prosumer x to 
+participant is represented by f p* *
+
+(g,n),(t,z) ∈ P(g,n),(t,z). consumer y should be equal to the energy purchased by consumer y from 
+prosumer x, thereby ensuring a balance between demand and supply. 
+
+4.4. Peer-to-peer energy trading The relation between Px,t and Px,y,t, as well as between Py,t and Py,x,t is 
+presented in (31). 
+
+Prosumers can sell excess energy to customers through P2P trading. ∑NC ∑NPr
+
+The selling rate of this energy is typically determined using the quadratic Px,t = Px,y,t, Py,t = Py,x,t (31)  
+convex function as presented in (23) [44]. y=1 x=1
+
+( )
+λx,t px,t = α 2
+
+x,tpx,t + βx,tpx,t + γx where, P
+,t (23)  x,t indicates the cumulative power that peered prosumer x de
+
+livers to every peered individual consumer y, whereas Py,t denotes the 
+where px,t denotes the total energy traded by prosumer x, which presents cumulative power that every peered consumer y acquired from all 
+the energy supplied to each consumer y. The defined price functions αx,t , peered prosumers x. 
+βx,t and γx,t express the willingness of a prosumer to sell a given amount 
+of electric energy at a particular period of time [44]. According to the 5. Solution methodology for optimization algorithm 
+kind of generation, the amount of consumption by consumers and the 
+level of dangers it can accept, each prosumer might possess specific 5.1. Constraints for load scheduling 
+requirements. The profit of the prosumer from trading its energy is 
+formulated as in (24). Constraints C1 and C2 are designed to enforce a limitation on pur
+
+∑( ) ( ) chasing power during each time interval from the MG. These specific 
+Profitx,t = λx,y,tPx,y,t − λx,t Px,t (24)  constraints play a vital role in ensuring that the electricity obtained from 
+
+y∈NPr the MG remains consistently below the maximum peak demand, while 
+where Profitx,t represents the profit of prosumer from selling energy to also maintaining above the minimum power level during off-peak hours 
+consumers. P as presented in (32). 
+
+x,y,t denotes the traded energy, and λx,y,t represents the 
+associated price in the trading between prosumer x and consumer y. The C1 : PS
+
+(g,n),(t,z) ≤ PS,max
+
+minimum and maximum generated energy of prosumer is described in (g,n),(t,z) (32)  
+(25). C2 : PS
+
+(g,n),(t,z) ≥ PS,min
+(g,n),(t,z)
+
+Pmin
+x,t ≤ Px,t ≤ Pmax
+
+x,t (25) 5.1.1. Decision parameters 
+Pmin Constraint C3 presented in (33), determines when to buy energy from 
+
+x represents the minimum while Pmax
+x indicates the maximum 
+
+power limit applicable to the prosumer. The utility function represent MG. Participants buy energy from MG when the decision component is 
+ing the consumer's satisfaction upon using the electricity bought from 1, and refrain from buying if it is 0. Constraint C4 serves as the deter
+the prosumer is formulated as in (26) [44]. minative factor for either incentives or penalties. Consequently, partic
+
+ipants face penalties if their actual load exceeds the baseline load during 
+⎧ /
+
+2
+( ) ⎨ωy,t − μ peak demand hours, and conversely, obtain incentives if their actual 
+
+y,tPy,t Py,t < ωy,t 2ωy,t
+λy Py,t = / / (26) load falls below the baseline load. Whenever the value of βh
+
+n,(t,z) is 1, 
+⎩ω2
+
+y,t 2μy,t Py,t ≥ ωy,t 2ωy,t participants received incentives, whereas a penalty is incurred when the 
+The consumers' demand is denoted by Py,t at time t and each con value of βh
+
+n,(t,z) is 0. Constraint C5 governs the decision to buy energy 
+sumer's response to price variations is defined by the particular pa from prosumers. Consumers buy energy from prosumers if the decision 
+rameters ωy,t and μy,t. The profit of consumer y is described as the component is 1, and do not buy if it is 0. Similarly, constraint C6 dictate 
+difference between the utility derived from the consumed energy and the decision to sell energy to consumers. Prosumer sell energy to con
+the bill paid to the prosumer for this energy, as presented in (27). sumers when the decision component is 1, and do not sell if it is 0. 
+
+( ) ∑( )
+Profity,t = λy,t Py,t − λy,x,tPy,x,t (27) C3 : αbuy
+
+(g,n),(t,z ∈ {0, 1}
+)
+
+x∈NC C4 : βh
+(g,n),(t,z) ∈ {0, 1}
+
+(33)  
+The minimum and maximum required energy of a consumer from C5 : γbuy
+
+y,x,t ∈ {0, 1}
+prosumers is represented in (28). C6 : δsell
+
+x,y,t ∈ {0, 1}
+Pmin
+
+y,t ≤ Py,t ≤ Pmax
+y,t (28) 
+
+5.1.2. Priority order for appliance operation 
+Pmin
+
+y and Pmax
+y represent the minimum and maximum energy that a An appliance is allowed to operate when an earlier one has finished 
+
+consumer is willing to demand from prosumers, respectively. The energy its operation period of time. For example, a dryer can start once the 
+required by each consumer is presented in Table 3. The principal goal of washer has successfully completed its operational process. These types 
+P2P energy trading within the proposed system is to achieve the highest of loads are classified within the Si category as presented in (34). 
+possible profit for the whole community. Maximizing the profit of the ∑
+entire community is also the objective function of the proposed system C7 : αs
+
+(g,n),(t,z) = 1 (34)  
+as presented in (29). The objective of maximizing profit is obtained by s∈Si
+
+adding (24) and (27). The constraint for the objective function is 
+
+10
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+5.1.3. Peak demand reduction B. Stage 2 
+The DR program gives rewards throughout peak and mid-peak- 
+
+demand intervals, aiming to motivate a reduction in demand from the In the second stage, participants of stage 2 are regarded as a unified 
+( )
+
+specified baseline. HEMS plays a key role in achieving a reduction in 
+( ) composite participants, encompassing a composite bid of F cpi
+
+(1,n),(t,z)
+power consumption lower than the baseline load Ph
+
+bl as in (35), thereby 
+assigned to cpi
+
+providing a benefit to its participants by reducing their electricity bills. 1 t for all values of i = 1,…, l. Now, the objective is to 
+( ,n),( ,z)
+
+determine the optimal reduction cpi
+2 n for the composite participant 
+( , ),(t,z)
+
+∑24
+C cpi* and participants of group level 2, pi* , such as in (41). 
+
+8 : Dh
+(g,n),(t,q) = Ph
+
+bl − PS
+(g,n),(t,z) (35)  (1,n),(t,z) (2,n),(t,z)
+
+t=1,z=1,t∕=z ( ) [ ( ) ( ) ]
+F cpi l
+
+(2,n),(t,z) = min F cpl
+(1,n),(t,z) + f p(2,n),(t,z) (41) 
+
+whenever participants reduce their load below the baseline load, cpi +pl
+n =cpi
+
+(1,n),(t,z) (2, ),(t,z) 2,(t,z)
+
+causing Dh
+(g o become positive and they become eligible for in
+,n t
+),(t,z) Stage 2 maintains the value assigned to pi* i*
+
+(1,n),(t,z), p2,(t,z), and 
+centives. Conversely, whenever increases their demand is above the ( )
+
+baseline load results in a negative value of Dh and pay penalties. F cpi
+(2,n),(t,z) for each decreased demand level cpi
+
+(2,n),(t,z).  
+(g,n),(t,z)
+
+5.1.4. Load sensitivity C. Stage (N) 
+Constraint C9, as presented in (36), is important in defining the load's (
+
+sensitivity for the reduction in demand. If the load is classified as very F cpi) represents the minimum cumulative demand reduction bid 
+sensitive Ws from participants of all group levels, aiming to curtail the aggregated 
+
+n , it is not changed even in the recommendation from the 
+,(t,z)
+
+SOMP system. This limitation makes sure that sensitive loads are not load cpi such as in (42). 
+unintentionally disconnected. ( ) [ ( ) ( ) ]
+
+F cpi = min F cpl l
+(G− 1,N),(t,z) + f p(G,N),(t,z) (42) 
+
+C s
+9 : α(g,n),(t,z) = Ws
+
+(g,n),(t,z)αs
+(g,n),(t,z) ∀t ∈ T, ∀z ∈ Z (36)  
+
+The outcome of the Gth stage yields cpi and p*i
+(G,N),(t,z) as in (43). 
+
+5.1.5. Battery operational constraints p*i *i
+Constraints C (1,N),(t,z) + p(2,N),(t,z) +…+ p*i
+
+(G,N),(t,z) = cpi (43)  
+10 and C11 are presented in (37), ensure that the BESS's 
+
+charging and discharging power be less than Pb,ch
+max and Pb,Dch
+
+max respectively. 
+5.3. Incentive based participant selection and appliance scheduling based 
+
+C10 : 0 ≤ Pb,ch
+t ≤ Pb,ch
+
+max.x
+b,ch
+t ; ∀b ∈ B, ∀t ∈ T on Nash equilibrium strategy 
+
+ch ch (37) 
+C ,Dch
+
+11 : 0 ≤ Pb,D
+t ≤ Pb,D
+
+max .xb
+t ; ∀b ∈ B,∀t ∈ T
+
+The proposed algorithm serves the purpose of addressing both 
+The decision parameters xb,ch
+
+t and xb,Dch
+t indicate either the BESS is appliance scheduling and the optimal selection of participants of highest 
+
+operating in charging or discharging modes respectively. The limitation DRB stage for reduction in demand in order to maximize the benefit for 
+against simultaneously BESS's charging and discharging are imple the participants and minimize the offered incentives by the community 
+mented as in (38). MG. To resolve the cost minimization issue in (15), centralized 
+xb,ch optimization-based approach is used while taking into account the 
+
+t + xb,Dch
+t ≤ 1, ∀b ∈ B,∀t ∈ T (38) 
+
+constraints in (32)–(39). Participants within a community engage in a 
+The power discharged from BESSs can either be utilized to meet the non-cooperative game to enhance their respective payoffs. Three factors 
+
+reduced demand or offered for sale to consumers as in (39). are taken into account for every participant in order to reduce energy 
+Pb,Dch b,sell consumption, which are as follows:  
+
+t .ηb,Dch = Pt +Pb,home
+t , ∀b ∈ B,∀t ∈ T (39)  
+
+5.2. Optimization algorithm for demand reduction bids 1) Players: Every participant has enrolled in a community MG network 
+and N refers to a team of players.  
+
+The issue needs to be reconfigured it into a multi-stage decision- 2) Strategies: Every participant decides on their energy consumption 
+making scenario to effectively address the problem using dynamic pro pattern with the objective of maximizing their own payoff while 
+gramming. The algorithm's primary objective is to optimize MG's overall community MG identify the minimum cumulative reduction bids 
+profit by identifying the minimum cumulative reduction bids from from participants across various potential cumulative demand levels 
+participants across various potential cumulative demand levels CPi to maximize its payoff.  
+
+∀i =
+1 3) Payoffs: Through the utilization of (44) and (45), every participant 
+,…, I. The issue is partitioned into N-1 distinct stages.  
+
+seeks to maximize their payoff by minimizing the energy usage cost 
+A. Stage 1 while considering the defined constraints in (32–39) while commu
+
+nity MG seeks the minimum cumulative reduction bids participants 
+During stage 1, the objective involves identifying the optimal with the aim to achieve demand reduction and minimize incentiv
+
+reduction value p*l for participants of group 1 according to ized payments. 
+(1,n),(t,z)
+
+MDULPS, in a manner that minimizes the aggregate incentive payment 
+( ) Participants' payoffs are determined by every player's distinctive 
+
+to the participant. F cpi represents the total incentives offered 
+(1,n),(t,z) power usage profile, whereas for the community Microgrid, the payoffs 
+
+for minimizing cpi amounts of demand as in (40). are influenced by the selection of participants with the lowest cumula
+(1,n),(t,z) tive reduction bids. The cumulative power profile is divided into the 
+
+( ) [ ( ) ]
+F cpi power consumption schedule for the nth stage of participants, denoted 
+
+(1,n),(t,z) = min f pl
+(1,n),(t,z) (40) 
+
+pl
+n t cpi
+
+(1, ),( ,z =
+) (1,n),(t,z) as Ps ereas, the power profile for the others participants is 
+
+(g,n),(t,z wh
+)
+
+( ) represented as PS rder to reduce costs for participants and to 
+Stage 1 maintains the value assigned to p*i i − (g,n),(t in o
+
+,z)
+(1,n),(t,z) and F cp(1,n),(t,z) for 
+
+reduced offered incentives by the community MG. The participants' 
+each decreased demand level cpi
+
+(1,n),(t,z).  payoffs are formulated according to Eq. (44), whereas those for the 
+Microgrid (MG) are established based on Eq. (45). 
+
+11
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+( )
+
+( ) ∑ ∑ 5.4. Distribution algorithms for scheduling load 
+ℑn P(g,n),(t,z) ,P− (g,n),(t,z) = λk
+
+(g,n),(t,z) PS
+(g,n),(t,z) (44)  
+
+g∈G t∈T ,z∈Z,t∕=z We introduce two algorithms utilized by HEMS, SO, and the com
+( ) [ ( ) ( ) ] munity MG. These algorithms are strategically designed to attain a Nash 
+
+ℑ i
+n cp(g,n),(t,z) , cpi l
+
+− (g,n),(t,z) = F cp l
+(G− 1,N),(t,z) + f p(G,N),(t,z) (45)  equilibrium, enabling the determination of an optimal load-shifting 
+
+schedule and the identification of participants offering the lowest cu
+where P− (g,n),(t,z) = P(g,n),(t,z),…,P(g,n− 1),(t,z),P(g,n+1),(t,z)…,P(G,N),(t,z) repre mulative reduction bids. These algorithms empower each participant to 
+sents the load consumption pattern for each players except player n. utilize their most effective solution approach in order to demonstrate their 
+Participants optimize their electricity usage schedule based on payoffs scheduled pattern. This iterative process continues until a state of equi
+and game techniques to minimize the electricity bill, while the MG se librium is successfully attained. Algorithm 2 is tasked with updating the 
+lects participants with the lowest reduction bids to minimize incentives load vector, tariffs of electricity, and specified energy accessibility. 
+for load reduction during specific periods. Conversely, Algorithm 3 is applied to revise the scheduled vector and 
+
+The Nash equilibrium technique is employed within a non- cumulative power level, aiming to achieve the least cumulative reduction. 
+
+Algorithm 3: HEMS and MG operation for all participants
+1: ( , ),( , )is the power utilization vector for all participants of the Gth group while for other groups are −( , ),( , )
+
+2:
+( , ),( , )is cumulative power level for all participants of Gth group while for others groups is −( , ),( , )
+
+3: Initialize ( , ),( , ), −( , ),( , ), ( , ),( , ) and −( , ),( , )
+
+4: Repeat
+5: for all participants of all stage levels do
+6: Apply the least DRB algorithm for (22)
+7: HEMS applies branch and bound computation for (15) upon receiving SOMP and demand reduction notification
+8: if ( , ),( , ) corresponding to (46) fluctuates, then
+9: Continually update ( , ),( , )
+
+10: Send an updated ( , ),( , ) response signal to MG 
+11: MG compute ( , ),( , ) and sends a reduction signal to the participants of the next group
+12: end if
+13: if a control notification is received, then
+14: ( , ),( , ) requires to updated using (46)
+15: end if
+16: until no reduction notification is obtained from MG
+
+cooperative game comprising multiple players to ensure that no 5.5. PPBSD-ADMM based P2P energy trading approach 
+participant can enhance their payoffs by deviating from their respective 
+
+( )
+usage schedule P* N ∈  s
+
+(g n ∀  h u q
+,n ;∀ ∈ , g G . T e s b e uent problem of The Prosumer Preference Based Segmented Distributed Alternating 
+) Direction Method of Multipliers (PPBSD-ADMM) approach involves the 
+
+choosing the participant in (22) with the lowest bid price and the selection of preferred prosumers for purchasing energy, considering 
+problem of minimizing costs stated in (15) are both solved by Nash both the selling price they offer and the consumer's utility. The selection 
+equilibrium as in (46). depends on the selling prices set by prosumers and the consumers' 
+( ) ( )
+
+ℑn P* willingness to pay in order to satisfy their utility. Consumers select the 
+(g,n),(t,z) ;P*
+
+− (g,n),(t,z) ≥ ℑn P *
+(g,n),(t,z) ;P− (g,n),(t,z)
+
+( ) ( ) (46)  prosumer who offers the optimal combination of price and utility, 
+ℑ cp*i
+
+n leading to maximization of profits according to Eq. (27). P2P trading 
+(g,n),(t,z) , cp*i ≥ ℑn cpi *i
+
+− (g,n),(t,z) (g,n),(t,z) , cp− (g,n),(t,z)
+allows participants to supply or buy energy from other prosumers 
+individually in a decentralized way and share data exclusively with their 
+peer nodes and avoid central coordination. This methodology ensures 
+data access is limited to neighboring nodes. This significantly reduces 
+
+12
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 3. Reduction in demand from various participants.  
+
+the required communications in respective iterations, which is influ nodes q. It serves as the price function for a prosumer node according to 
+enced by the number of peer nodes for every participant. The recom (23), while illustrates its role as the consumer utility function for a 
+mended approach is adapted from the improved version of ADMM [50]. consumer node according to (26). Nodes of the same color are grouped 
+ADMM is not explicitly applicable for (47), the problem needs to be in a segmentation with each other. The constraints are defined as ATj =
+manipulated. In the proposed PPBSD-ADMM based P2P energy trading 0, where A ∈ Rq2×E stands for the network matrix of the nodes within the 
+approach, segments are established for neighboring (peer) nodes, structure and this matrix is constructed by separating into sub-vectors. 
+thereby restricting power trading only among neighboring nodes. This is In matrix A, each row is dedicated to representing an edge, wherein 
+achieved through the application of node coloring method to each the xyth and yxth positions are assigned values of 1 and − 1, respectively. 
+segmented node. In this study, the application of node coloring has All other entries in the matrix are considered as 0, signifying the absence 
+resulted in a decrease in the number of iterations and convergence time. of edges. The generalized version of ADMM to resolve this problem in a 
+The network graphs can be denoted as H = (j,ℯ), where j = {1,2,…, J} distributed as well as decentralized manner is handled with an extended 
+represents the group of nodes and ℯ ⊆ j × j is the group of edges. A form of ADMM in (48), if Ri is the function of color q with the identical 
+prosumer is denoted as a node, while the communication network link is number of Bi matrices. 
+graphically represented by an edge. The two nodes that are linked by an 
+edge are referred to as neighboring nodes. Ii represents the group of ∑I ( )
+
+colors allocated to the nodes. The segmentation of nodes according to max Ri ji,t ji ∈ JI , i = 1,…, I
+j1 ,…,JI i=1
+
+their colors can be formulated as in (47): ∑I (48)  
+S.t. Biji,t = 0
+
+∑C ∑ ( )
+min f i=1
+
+q Jq,t ji ∈ JI , i = {1,…, I}
+j1 ,…,ji i=1 q∈II ( )
+
+(47)  ∑ ( )
+where j and R
+
+∑I i ji,t = fq Jq,t are the decision parameters. The 
+S qϵIi
+.t. AT
+
+i Ji = 0
+i=1 modified ADMM iterations progress through the following sequential 
+
+steps as in (49)–(52): 
+( )
+
+where fq jq,t signifies the pricing of utility function of all individual 
+
+13
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 4. Demand after cross-elastic load scheduling.  
+
+1 ( )
+jk+
+1 = argmin L δ j1, jk
+
+2,…, jk
+2; λk (49)  where BT T
+
+j1∈J1 1B1 = A1A1. After performing a series of computations, we 
+∑⃦ ⃦
+
+obtained the following: jT T ⃦ ⃦2
+
+k ( 1B1B1j1 = ⃦∇qjq⃦ . ∇q represents a diago
+j +1 + k k) q∈i
+2 = argmin L k 1
+
+δ j1 , j , jk
+2 3,…, jI ; λ (50)  1
+
+j2∈J2 nal matrix for node q, containing only 1's for peer nodes and 0's for all 
+( other nodes. The second term is BT T
+
+jk+1 + 1 1 ) 1Bi = A1Ai and it gives referring to 
+I = argmin L k 1
+
+δ j1 , jk+
+2 ,…, jk+
+
+I− 1 , jI ; λk (51)  ∑ ∑ ∑
+jI∈JI jT I T
+
+1 i=2B1Bij
+k
+i = − q∈i y∈N jT
+
+q q Wyqjy where Wyq is a matrix with the yjth 
+
+component having the value 1 and the rest having the value 0. The end 
+∑I
+
+λk+1 = λk + δ B k+1 term of (54) can be excluded because it is independent of j
+ij 1 and there is 
+
+i (52)  
+i=1 not a diagonal matrix. The second term of (53) is λkT ( )
+
+B1j1 = A T
+1λk j1 =
+
+∑∑
+⃦ ⃦ kT
+
+∑ ( ( ) ) ⃦ 2 
+∑ ⃦ y∈N λ vT ase, ν th iagonal matrix. 
+
+q qy y jq. In this c y is the y column of a d
+where, j I
+
+L q∈I1
+δ( ; λ) = i=1 R j TB δ I
+
+i i + λ iji + ⃦ ⃦
+2⃦ i=1Biji⃦ represents the 
+
+In this case, νy is the yth column of a diagonal matrix. λ is separated 
+augmented Lagrange function for Eq. (48). The modified ADMM is ( )
+
+across its edge: λ = …, λxy,… . Where λxy is related to all constraints 
+subsequently employed to address the optimization problem presented pxy = pyx. Therefore, the total number of constraints will determine the 
+in (47) which has the format of (48). The modified steps for j1 = j1,…, ji1 number of implied λs. For example, ρk ∑
+
+are performed as in (53). q = y∈N λk ∈ ℝq is a 
+q qyνy, where νy
+
+vector having only one element (1 for peers) and zero for all other en
+⃦ ⃦ tries and (53) can be reformulated as (55). 
+
+jk+1 ∑ ( ) T δ⃦⃦ ∑I ⃦2
+
+1 = argmin fq jq,t + λk B1j1 + B k⃦ (53)  ( )T
+j 2⃦
+
+B1j1 + ij
+⃦ i ⃦⃦
+
+1∈J1 q∈I1 i=2 ∑ ( ) ∑ ∑ ⃦
+jk+1
+1 = argmin fq jq,t + ρk δ∑⃦
+
+⃦
+q − δ Wyqjk
+
+y jq + ∇qjq⃦
+2 (55) 
+
+where B T j1∈J1 q∈I1 q∈I1 y 2
+∈Nq q∈I1
+
+1 = A1. The 3rd term of (53) can be further extended as in (54). 
+⃦ ⃦2 It can be concluded that (55) divided into I1 optimization sub issues 
+
+δ δ⃦ I ⃦
+jT T ∑
+
+I
+BT ⃦∑ for the initial color. For each trading, the required power-defined point 
+
+2 1 BT
+1 B1j1 + δj1 1 Bij
+
+k
+i + ⃦ B ⃦
+
+ij
+k
+⃦ (54)  
+
+i 2⃦ i ⃦
+=2 i=2 among prosumer x and consumer y can be computed as in (56), and (57) 
+
+respectively. 
+
+14
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 5. Total demand of different participants after load scheduling.  
+
+color perform in order. When nodes receive information from their 
+jk+1 jk+1
+
+1 − βx
+xy = 6) 
+
+2α (5  peers, they are able to start operations. Consequently, steps 6 and 7 can 
+x
+
+be executed, thereby enabling automatic collaboration. Nodes may start 
+operating as they obtain the data from their peers. Thus, steps 6 and 7 
+
+jk+1 ωy − jk+1
+1
+
+xy = 57)
+2μ (  can be carried out, and collaboration is automatically accomplished. The 
+
+y PPBSD-ADMM algorithm is as: 
+Nodes of similar color perform task in parallel while nodes of varying 
+
+15
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 6. Demand reduction and scheduling.  
+
+6. Simulations results and discussion 
+
+6.1. Selection of participants for demand reduction according to DRB 
+
+The Direct Load Control (DLC) strategy is proposed to a compre
+hensive evaluation for demand reduction within the framework of a 
+power system comprising ten participants. This strategy aims to reduce 
+the MG's costs by providing minimal incentives to participants for de
+mand reduction during various time intervals. Participants establish and 
+submit their incentive bid prices for demand reduction to the MG. Data 
+regarding these submitted incentive bid prices from all levels of par
+ticipants are presented in Table 2. The MG evaluates these bids, and 
+creates the stages for combining participants from different levels for 
+demand reduction, as detailed in Section 5.2. However, the MG selects 
+participants offering the lowest incentive bid prices for demand reduc
+tion, thus optimizing its cost savings. The bids generally incorporate 
+both the requested price at a specific time and the available capacity for 
+demand reduction. This study motivates participants to suggest load 
+reductions at prices they consider suitable for potential curtailment. The 
+reduction in demand from various participants is shown in Fig. 3. 
+
+6.1.1. Case study 
+In case 1, participants 1, 6, and 7 are evaluated as top-priority par
+
+ticipants for demand reduction across all CPs levels, owing to their 
+lowest bids prices submitted to the MG. Conversely, participants 3, 5, 
+and 10 are identified as the lowest priority, attributed to their submis
+sion of the highest bids prices for demand reduction. In case 2, partici
+pant 1 registers a 20 % increase in their bid rate, resulting in their 
+reclassification to a stage level 2 participant. In case 3, participant 3 
+increased its bids prices by 10 %, which results in classified as stage level 
+3 participant. In case 4, participant 3 reduced their bids prices by 25 %, 
+which classify them as a stage level 1 participant as shown in Fig. 3. 
+
+Table 2 illustrates the incentive rate as a bid price that participants 
+submit to the MG for six different phases of the day. Participants adjust 
+their demand based on the overall demand of cross-elastic load, the 
+group level of MDULPS, and the stage level determined by cumulative 
+reduction bids. The algorithm encompasses a cumulative power reduc
+tion range from 1 kW to 61.976 kW, achieved by all participants across 
+four distinct cases. This range is attributed to the potential scenario 
+where all participants are engaged in power curtailment, enabling the 
+algorithm to achieve a collective total load reduction of up to 61.976 kW 
+within a specific interval. After the execution of the algorithm, MG 
+suggests the exact power potential to the participants that need to be 
+curtailed for every potential CP level within the specified time period. 
+The outcomes and a detailed discussion of these four cases are presented 
+in Appendix A. 
+
+16
+
+Table 4 
+Total reduction in demand and scheduled demand.  
+
+Participants Total demand (kW) after Total reduction in demand after (kW) Total scheduled demand after (kW) 
+
+Without Non-management HEMS optimum SO Non-management HEMS optimum SO Non-management HEMS optimum SO 
+scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling 
+
+Participant 1  39.811  32.645  32.644  32.644  7.166  7.167  7.167  11.826  13.629  14.644 
+Participant 2  35.754  30.031  30.029  30.031  5.723  5.725  5.723  7.401  10.227  10.837 
+Participant 3  38.916  33.461  33.460  33.461  5.455  5.456  5.455  8.953  11.504  11.963 
+Participant 4  38.318  32.187  32.187  32.187  6.131  6.131  6.131  11.421  13.408  14.585 
+Participant 5  38.537  33.142  33.142  33.142  5.395  5.395  5.395  7.575  10.056  10.382 
+Participant 6  40.422  33.146  33.146  33.146  7.276  7.276  7.276  11.137  12.328  12.916 
+Participant 7  36.695  30.089  30.089  30.089  6.606  6.606  6.606  8.144  9.2  9.751 
+Participant 8  38.553  32.385  32.385  32.385  6.168  6.168  6.168  9.454  10.895  11.121 
+Participant 9  38.26  32.136  32.136  32.136  6.124  6.124  6.124  8.151  9.073  9.405 
+Participant 10  42.344  36.416  36.416  36.416  5.928  5.928  5.928  9.297  10.965  10.691 
+Whole 3937.454  3270.795  3270.795  3270.795  666.659  666.659  666.659  1172.429  1285.601  1372.093  
+
+community  
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 7. Bill of participants including self-elastic load.  
+
+6.2. Participant optimum and SOMP scheduling of schedulable loads various phase intervals. The SO forwards a reduction recommendation 
+to the participant upon receiving the tariff rate, load reduction, or 
+
+The demand before scheduling, after participants' non-management shutdown notification from the community MG. Participants have the 
+scheduling, after HEMS optimum scheduling, and after SOMP sched option to either accept or decline the recommendation provided by the 
+uling is shown in Fig. 4. The optimum schedule for all levels of partic SO. 
+ipants is accomplished by addressing the sub-objectives in (15) and MG sends a reduction and tariff notification to the participant and 
+incorporating all constraints from (32)–(39). The testing period for this the SO. Subsequently, the participant autonomously schedules its load 
+task initiates at midnight, 12:00 AM. The cumulative demand from without management. Following this, the SO transmits a reduction in 
+different participants varies across distinct time intervals. Participants demand recommendation signal to the participant according to the 
+modify their load allocation in accordance with the TOU pricing listed in SOMP. The HEMS then evaluates the recommendation based on the 
+Table 2 and with the terms outlined in their contract agreements for constraints in (32)–(39), deciding to accept or reject it. Consequently, 
+different time phase interval. The tariff for electricity obtained from the the HEMS adeptly takes charge and manages the load in a manner that 
+community MG during phase 3 due to the presence of renewable energy aligns effectively with the response to the received recommendation. 
+resource is the most economical. Participants transfer their cross-elastic Table 4 provides a comprehensive representation of the total demand 
+loads from the peak and mid-peak demand phases to the off-peak de before and after participants' non-management and HEMS optimal 
+mand phase in order to minimize electricity costs and maximize scheduling, as well as after the SO scheduling. 
+incentives. Fig. 6 illustrate a comprehensive analysis of the total reduction in 
+
+demand and scheduled demand during different phases of a day ach
+ieved by participation in the DR program. The total decrease in demand 
+
+6.3. Participants' optimum and SOMP scheduling including non- signifies reductions during peak and mid-peak demand periods, while 
+schedulable load scheduled demand during phase 3, illustrates the strategic redistribution 
+
+of reduced demand from peak and mid-peak periods to the off-peak 
+Fig. 5 depicts the without scheduling, the participants' non- demand period. Participants 1, 6, and 7 demonstrate the highest per
+
+management scheduling, HEMS optimum scheduling, and SOMP centage of reduction in demand according to MDULPS and participation 
+scheduling for various participants incorporating self-elastic lads for 
+
+17
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+in the least DRB stage level 1 as shown in Fig. 6. Conversely, participants 
+2, 4, 8, and 9 display a relatively lower percentage of demand reduction 
+compared to level 1 participants. Similarly, participants 3, 5, and 10 
+exhibit the lowest percentage of demand reduction, distinguishing them 
+from the other two participant levels in the DR program. 
+
+6.4. Electricity bills 
+
+Participants strategically reduce and adjust their load to decrease 
+their energy bills. Fig. 7 illustrates the electricity bill received from the 
+community MG for without scheduling and after participants, HEMS 
+optimum and SO scheduling. The electricity bill is directly influenced by 
+the degree of demand reduction during peak demand time. In Fig. 7, the 
+time frame 0–12 corresponds to 12 AM to 12 PM, while 13–24 represents 
+1 PM to 12 AM. The time for the simulations starts at 12 AM. Participants 
+decreased their demand during peak demand periods from 0 to7 (12 AM 
+to 7 AM) and 19 to 24 (7 PM to 12 AM) while increasing their demand 
+during the off-peak demand period from 8 to 18 (8 AM to 6 PM). 
+
+Table 5 presents the electricity bill subsequent to scheduling, 
+accompanied by the corresponding reductions achieved, and a 
+comprehensive overview of incentives or penalties. This comprehensive 
+analysis encompasses various scenarios, including cases without 
+scheduling, outcomes subsequent to participant-driven non-manage
+ment scheduling, optimization through HEMS scheduling, and SO 
+recommendation scheduling using SOMP. 
+
+The cumulative energy demand of all participants for 24 h before and 
+after the implementation of cross-elastic load scheduling is depicted in 
+Fig. 8. Fig. 8(a) shows the cumulative demand after only cross-elastic 
+load scheduling, while Fig. 8(b) illustrates the cumulative demand 
+including self-elastic load. 
+
+The cumulative bills before and after the scheduling of each partic
+ipant for 24 h are shown in Fig. 9. Specifically, Fig. 9(a) illustrates the 
+bill after the scheduling of cross-elastic load scheduling only, whereas 
+Fig. 9(b) depicts the scenario with cross-elastic scheduling incorporating 
+self-elastic load. 
+
+6.5. Simulation setup for peer-to-peer power trading 
+
+Two different P2P energy trading scenarios are considered for 
+quantitative study in order to verify the proposed methodology. The 
+communication networking for both cases is shown in Fig. 10. The first 
+scenario examines the proposed network system with 10 participants, 
+whereas the second scenario pertains to a larger-scale network 
+comprising 100 participants and employs a 10-color segmentation 
+approach. Simulations are performed in MATLAB 2022b using a work
+station with a 13th Gen Intel® Core™ i5-13400 processor, 1 TB NVME 
+SSD, and 32 GB RAM DDR4 2400 MHz. The local optimization problem 
+for each node is solved by CVX toolbox in MATLAB using built-in 
+fmincon solver. 
+
+In scenario 1, four prosumers actively engage in selling their surplus 
+energy to a group of six consumers within a P2P network. In scenario 2, 
+the energy trading among 100 participants employed a communication 
+network design characterized by a 10 color-based segmentation strat
+egy. The number of iterations and convergence time for both scenarios 
+are presented in Table 6. 
+
+DERs are allocated as part of the strategy to maximize the profit by 
+charging the batteries from PV and discharge the batteries during peak 
+demand periods as shown in Fig. 11. If they charge their batteries by 
+buying energy from the MG, their profit decreases. This also lowers the 
+profits of other consumers because prosumers who buy energy at higher 
+prices from the MG to charge their batteries will sell it at higher prices, 
+reducing profits for all. Prosumers utilize PV generated energy both to 
+charge their batteries and for operation of home appliances. If a pro
+sumer's demand is less than the self-generated energy, surplus energy 
+will be sold to other consumers. Conversely, if the demand exceeds self- 
+generated energy, the prosumer will first buy energy from other 
+
+18
+
+Table 5 
+Total bill, reduction in the bill, and incentives including self-elastic load.  
+
+Participants Total bill (¢) after Reduction in bill (¢) after Incentives/penalties (¢) after 
+
+Without Participant HEMS optimum SO Participant HEMS optimum SO Participant HEMS optimum SO 
+scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling scheduling 
+
+Participant 1  564.372  344.117  333.466  324.495  220.255  230.906  239.877  32.664  35.351  37.164 
+Participant 2  537.317  369.219  342.054  336.122  168.098  195.263  201.195  24.14  29.655  30.852 
+Participant 3  646.943  450.406  427.213  421.933  196.537  219.73  225.01  29.328  34.402  35.426 
+Participant 4  542.543  383.55  369.134  359.205  158.993  173.409  183.338  32.981  36.39  38.548 
+Participant 5  617.097  440.673  418.042  414.892  176.424  199.055  202.205  25.83  30.773  31.439 
+Participant 6  558.763  349.644  339.577  335.567  209.119  219.186  223.196  30.937  31.268  33.947 
+Participant 7  487.223  310.411  304.127  300.566  176.812  183.096  186.657  25.013  26.592  27.443 
+Participant 8  577.996  384.147  369.84  367.425  193.849  208.156  210.571  28.747  31.603  32.07 
+Participant 9  557.871  372.317  364.717  362.137  185.554  193.154  195.734  26.626  28.3  28.887 
+Participant 10  677.025  470.156  454.313  456.483  206.869  222.712  220.542  30.734  34.12  33.606 
+Whole 61,705.589  38,864.633  37,785.52  36,968.677  22,840.956  23,920.069  24,736.912  3445.015  3664.967  3832.277  
+
+community  
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 8. Total demand of all participants.  
+
+Fig. 9. Total bill of all participants.  
+
+Fig. 10. Communication networks.  
+
+Fig. 12(a) shows that at distinct time intervals, consumers buy 
+Table 6 varying proportions of energy from various prosumers based on their 
+Iterations and convergence time in P2P energy trading.  individual utility as presented in (26) and the corresponding energy bills 
+
+Simulation results Scenario 1 Scenario 2 being paid by consumers to the corresponding prosumers are shown in 
+Number of iterations  59  55 Fig. 12(b). 
+Converging time (sec)  3.68  32.55  Fig. 13 illustrate the various percentage of buying electricity from 
+
+various prosumers. Table 7 presents the aggregate generation from 
+prosumers who have excess energy and show willingness to sell. If no prosumers and the subsequent energy distribution to consumers. Each 
+prosumer has excess energy, energy will be purchased from the MG. The prosumer's generation cost and selling price are distinct, contributing to 
+requirements of both prosumers and consumers are presented in Table 3. the varied dynamics inherent in the system. Table 8 presents the 
+Prosumers sell their energy at a price that matches the consumers' aggregated demand patterns of consumers, encompassing the buying of 
+willingness to pay, based on their utility of consumers. The tariff de electricity, and the corresponding cost paid to various prosumers. The 
+pends on the selling prices set by prosumers and the consumers' will distinct proportions of electricity purchased by individual consumers 
+ingness to pay in order to satisfy their utility. Prosumers select the from various prosumers depend on the selling price of prosumers and the 
+consumer who offering an optimal price to maximize their profit, ac buying utility of consumers. 
+cording to (24). Table 9 presents a comprehensive financial aspect, encompassing the 
+
+19
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 11. Consumers demand from prosumers.  
+
+Fig. 12. Demand and electricity bill of consumers in P2P trading.  
+
+initial bill prior to scheduling, the subsequent bill reflecting the effects of 6.6. Comparative analysis 
+HEMS scheduling, consumers' purchasing costs, and prosumers' selling 
+costs in P2P energy trading, participants' saved cost, and MG saved cost. The convergence time and the number of iterations vary with 
+Additionally, the table provides an insightful overview of the cumulative changes in the value of the controlling parameter, δ. It is advisable to 
+reduced costs achieved through the implementation of the DR program select δ values between 0.6 and 1.6 to maintain a reasonable iteration 
+and the P2P energy trading scheme. Participants 1 to 4 are identified as count. The effects of variations in the controlling parameter on the 
+prosumers, while Participants 5 to 10 are consumers. Fig. 14 shows the iteration numbers for all techniques is illustrated in Fig. 15. Strategies 
+comparative percentage of benefits received to individual participants such as DBET, DP, and RCI require more iterations compared to ADMM 
+for participating in DR and P2P energy trading. and our proposed strategy, as depicted in Fig. 15. 
+
+20
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Consumer 1 Consumer 2 Consumer 3
+Prosumer 1 Prosumer 2 Prosumer 1 Prosumer 2
+
+Prosumer 3 Prosumer 4
+Prosumer 3
+
+30 39
+58 42 45 55
+
+31
+
+(a) (b) (c)
+
+Consumer 4 Consumer 5 Consumer 6
+Prosumer 2 Prosumer 3 Prosumer 1 Prosumer 2
+
+Prosumer 3 Prosumer 4
+Prosumer 4 Prosumer 3
+
+38 32 33 25 27 40
+29 30
+
+(d) (e) (f)
+
+Fig. 13. Preference percentage of buying energy from various prosumers.  
+
+Table 7 
+Prosumers' self-demand and cost of selling energy.  
+
+Prosumer 
+
+Node Prosumer Total Self- Demand by Generation Selling Total generation Self-consumed Total sold 
+ID generation demand consumer price price cost cost cost 
+
+1 Pp1  16.187  7.167  9.02  4.966  8.557  80.385  35.591  77.184 
+2 Pp2  14.384  5.725  8.659  6.067  9.010  87.268  34.734  78.018 
+3 Pp3  15.932  5.456  10.476  7.451  9.120  118.709  40.653  95.541 
+4 Pp4  15.473  6.131  9.342  7.732  9.286  119.637  47.405  86.750  
+
+Table 8 
+Consumers' demand and cost of buying energy from prosumers.  
+
+Consumer 
+
+Node Consumer ID Total demand Demand from prosumers Cost of buying energy from prosumers Total cost 
+
+Pp1 Pp2 Pp3 Pp4 Pp1 Pp2 Pp3 Pp4 
+
+5 PC1  5.395 – – 2.266 3.129 – – 20.666 29.056  49.722 
+6 PC2  7.276 2.838 2.255 2.183 – 24.285 20.318 19.909 –  64.512 
+7 P3  6.606 3.633 2.973 – – 31.088 26.787 – –  57.875 
+8 PC4  6.168 – – 2.467 3.701 – – 22.499 34.367  56.866 
+9 PC5  6.124 – 1.653 1.959 2.512 – 14.894 17.866 23.326  56.086 
+10 PC6  5.928 2.549 1.778 1.601 – – 21.812 16.019 14.601  52.432  
+
+Scalability is an essential consideration for P2P marketplaces, proposed strategy proves to be more scalable than the other strategies 
+particularly when applied in real-world scenarios involving a greater considered. 
+number of participants. The complexity of the algorithm for each node 
+and the number of communications depends on the number of peers 6.7. Privacy preservation comparison 
+involved in trading. Our proposed methodology addresses these chal
+lenges by imposing a limitation on nodes, allowing them to engage only Tables 10 and 11 present a comparative analysis focused on the 
+with their neighboring peers. The effectiveness of our approach in preservation of participant data privacy within energy management and 
+reducing the number of communications between prosumers and con P2P energy trading systems. The comparative analysis is between the 
+sumers is demonstrated in Fig. 16. This demonstrates the scalability of proposed approach and the state-of-the-art approaches. In energy 
+our proposed method. The number of communications is not increasing management and trading, participant privacy has become a paramount 
+in an exponential way as increasing in the other state-of-the-art strate concern due to the extensive data required optimal solution for calcu
+gies. This benefit is due to the color segmentation approach, which lating optimal outcomes through algorithms. In Table 10, the algorithm 
+effectively limits the trading peers for each participant. However, our in [32] necessitates the collection of data from both leaders and 
+
+21
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+followers for scheduling home appliances, which potentially compro
+mises prosumer privacy. In [33], participants engage in a cooperative 
+model, sharing their scheduled data among themselves as well as with 
+the retailer. In [34], participants only share data with the retailer but 
+they exchange both demand and pricing data at a single timeslot. In 
+contrast, the proposed decentralized approach allows each participant 
+to independently manage their load. In this model, participants avoid 
+sharing data with others, only communicating either price or load data 
+with the MG at a single timeslot, thereby enhancing privacy. 
+
+In Table 11, which addresses P2P energy trading systems, various 
+information sharing and decentralization strategies are analyzed. The 
+Table 11 is structured into two distinct parts. In the first part, focuses on 
+quantitative comparisons, a comparative analysis of quantitative aspects 
+is conducted, while the second part focuses on qualitative evaluations. 
+The proposed algorithm is better than the DBET, RCI, and DP ap
+proaches in terms of achieving convergence with fewer iterations. Its 
+rapid convergence is attributed to its foundation in the ADMM approach, 
+distinguishing it from other approaches based on gradient and sub 
+gradient techniques. Moreover, compared to other existing methods, 
+this algorithm necessitates considerably fewer communications, which 
+not only enhances operational efficiency but also significantly increases 
+privacy. The qualitative comparison is provided in the second part of 
+Table 11. The algorithm in [41], requires prosumers to share their data 
+with other prosumers and the community manager, especially during 
+the price updating phase. In [44], there is an exchange of either price or 
+energy data, depending on whether the participants are prosumers or 
+consumers. The algorithm in [45], requires sharing of both price and 
+energy data at a specific timeslot. The approach in [47] is similar, where 
+energy and price data are not shared with all prosumers at a single 
+timeslot, but this data is also communicated with a retailer central au
+thority for the setting of tariff rate. In contrast, the proposed PPBSD- 
+ADMM approach adopts a more decentralized system, where partici
+pants share either price or energy data only with their neighboring 
+nodes and abstain from sharing any data with a central entity. 
+
+6.8. Managerial implications for informing policymakers and politicians 
+
+Policymakers in the energy system play a crucial role in establishing 
+rules and policy structures, which, in turn, define the framework for 
+energy management. The managerial implications for policymakers 
+include recommendations on regulatory structures, rewards, and long- 
+term plans to achieve goals such as cost savings, energy conservation, 
+sustainability, and resilience. Politicians endorse and support policies 
+that resonate with their constituents' preferences. The outcomes of the 
+proposed strategies can guide policymakers in structuring policies and 
+regulations that foster efficient energy management, cost savings, and 
+community resilience. These aspects are essential for long-term eco
+nomic and environmental well-being. The key managerial implications 
+for informing policymakers and politicians are as follows: 
+
+• The community managers can advocate to policymakers and politi
+cians the advantages of adopting modern technologies such as HEMS 
+and AMI for energy management. This advocacy will contribute to 
+the development of a flexible and responsive energy management 
+system, thereby empowering individuals to manage their energy 
+consumption more efficiently and to actively engage in DR programs.  
+
+• The community manager encourages policymakers and politicians 
+by informing them about the advantages of the MDULPS in miti
+gating the detrimental external effects on tariff rates among partic
+ipants. Policymakers may consider implementing MDULPS 
+mechanisms to mitigate these effects and ensure fair cost-sharing 
+among participants with varying energy utilization levels.  
+
+• The community manager highlights the superior efficacy of the 
+proposed energy management and trading frameworks in protecting 
+participants' privacy compared to existing advanced strategies. It is 
+essential for policymakers to establish regulations that guarantee 
+
+22
+
+Table 9 
+Total reduced cost from the DR program and P2P trading.  
+
+Participants Bill before Bill after HEMS Self-generated Total sold cost to consumers Purchased cost Total cost from DR + P2P Total cost after Participants Microgrid saved 
+scheduling scheduling consumption cost by P2P trading from P2P energy trading incentives saved cost cost 
+
+Participant 1  564.372  333.466 35.591 77.184 –  291.873  256.522  307.85  195.555 
+Participant 2  537.317  342.054 34.734 78.018 –  298.77  269.115  268.202  165.608 
+Participant 3  646.943  427.213 40.653 95.541 –  372.325  337.923  309.02  184.304 
+Participant 4  542.543  369.134 47.405 86.750 –  329.789  293.399  249.144  137.019 
+Participant 5  617.097  418.042 – – 49.722  467.764  436.991  180.106  168.282 
+Participant 6  558.763  339.577 – – 64.512  404.089  372.821  185.942  187.918 
+Participant 7  487.223  304.127 – – 57.875  362.002  335.41  151.813  156.504 
+Participant 8  557.996  369.84 – – 56.866  426.706  395.103  162.893  176.553 
+Participant 9  557.871  364.717 – – 56.086  420.803  392.503  165.368  164.854 
+Participant 10  677.025  454.313 – – 52.432  506.745  472.625  204.4  188.592 
+Whole 61,705.589  37,785.52 – – 6016.411  43,801.931  40,136.964  21,568.625  20,255.102  
+
+community  
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Fig. 14. Percentage benefits from demand response and P2P trading.  
+
+Table 10 
+Comparing privacy preservation in energy management.  
+
+Parameters MARL MINLP SG Proposed 
+[32] [33] [34] 
+
+Information shared with ✓ ✓ ✘ ✘ 
+players 
+
+Information shared with the ✓ ✓ ✓ ✓ 
+supplier 
+
+Players' privacy ✓ ✓ ✓✓ ✓✓✓ 
+Completely decentralized ✓ ✓ ✓✓ ✓✓✓ 
+Fewer information shared ✓ ✓ ✓✓ ✓✓✓  
+
+Table 11 
+Comparing privacy preservation in P2P energy trading.  
+
+Parameters ADMM DBET RCI DP Proposed 
+[41] [44] [45] [47] 
+
+Number of iterations 56 174 395 145 59 
+Fig. 15. Effect of (δ) on iterations.  Number of 3258 4224 23,854 3885 2045  
+
+communications 
+
+Characteristics 
+Data exchange with all ✓ ✓ ✓ ✘ ✘ 
+
+players 
+Data shared with the ✓ ✘ ✘ ✓ ✘ 
+
+central entity 
+players' privacy ✘ ✓✓ ✓ ✓ ✓✓ 
+Completely ✘ ✓✓ ✓ ✓ ✓✓ 
+
+decentralized 
+Fewer information ✓ ✓✓ ✓ ✓✓ ✓✓✓  
+
+shared 
+
+secure management of participant information. This will build trust 
+among participants and encourage broader acceptance of decen
+tralized energy systems.  
+
+• The community manager informs policymakers that the non- 
+cooperative dynamic game strategy, utilizing the Nash equilibrium 
+approach, has been successful in optimizing the scheduling of smart 
+home appliances and in the selection of participants for demand 
+reduction. Policymakers are encouraged to consider policies that 
+promote understanding and participation in game theory-based 
+
+Fig. 16. Effects of the number of prosumers on communications.  methods for more efficient energy management solutions. 
+
+23
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+Policymakers can explore policy that encourage participants about Authors' statement 
+game theory for efficient energy management solutions.  
+
+• The community manager recommends policymakers consider the We confirm that this manuscript has not been published previously 
+benefits of adopting prosumer preference-based approaches in P2P and is not under consideration for publication elsewhere. For submis
+energy trading. Policymakers can explore this strategy in structuring sion, all authors have approved the manuscript for publication, and 
+policies to maximize the profits of both prosumers and consumers. there is no conflict of interest exists in the submission. 
+
+These findings can serve as a foundation for policymakers to advo CRediT authorship contribution statement 
+cate for the adoption of similar DR and P2P energy trading programs, 
+highlighting the economic advantages for both individuals and the Jawad Hussain: Writing – review & editing, Writing – original draft, 
+wider community. Politicians endorse and support these policies that Visualization, Validation, Software, Methodology, Investigation, 
+resonate with their constituents' preferences. Conceptualization. Qi Huang: Writing – review & editing, Visualization, 
+
+Supervision, Methodology. Jian Li: Writing – review & editing, Visu
+7. Conclusions and future work alization, Conceptualization. Zhenyuan Zhang: Writing – review & 
+
+editing, Conceptualization. Fazal Hussain: Writing – review & editing. 
+This paper has investigated the effectiveness of the novel residential Syed Adrees Ahmed: Writing – review & editing. Kashif Manzoor: 
+
+demand response program for efficient energy management, in Writing – review & editing. 
+conjunction with behavioral interventions based on MDULPS and DRB 
+mechanisms and P2P energy trading to sell excess self-generated energy Declaration of competing interest 
+between prosumers and consumers using HEMS and AMI technologies. 
+The advantage of this approach is optimum reduction in electricity bills, The authors declare the following financial interests/personal re
+cost saving for both participants and the MG, reduction in network lationships which may be considered as potential competing interests: 
+congestion and autonomously execution of the entire process without Qi Huang reports financial support was provided by Science and 
+requiring any involvement from additional entities or external in Technology Innovation Talent Program of Sichuan Province (Grant No. 
+termediaries. A decentralized scheme for P2P energy trading enhances 22CXRC100). Qi Huang reports a relationship with Science and Tech
+participants' privacy and save cost for consumers by selection of nology Innovation Talent Program of Sichuan Province that includes: 
+economically preferred prosumer for buying energy considering con funding grants. 
+sumer utility. The intelligent HEMS system receives outside data (energy 
+tariff information, demand reduction directives from MG, and sched Data availability 
+uling recommendations from SO) and executes them according to 
+SOMP, and then decides whether to follow or decline a DR request from Data will be made available on request. 
+the MG. The coordination of residential participants with community 
+MG under the DLC scheme using least DRB pricing strategy, assists the Acknowledgments 
+MG in managing demand during peak demand time periods. The se
+lection of participants with the least demand reduction bid pricing for This research is partially supported by Natural Science Foundation of 
+the proposed incentive-based DLC scheme is accomplished through the China (Grant No. U23A20651). 
+implementation of dynamic programming methods. The optimal 
+scheduling of smart home appliances and the selection of participants Appendix A 
+for demand reduction is achieved through an innovative non- 
+cooperative game design strategy, incorporating a Nash equilibrium Table A.1 displays the varying CP levels of demand reduction 
+approach. The economically selection of preferred prosumer for buying assigned to various participants for case 1 and case 2. Meanwhile, 
+energy considering consumer utility is achieved using PPBSD-ADMM. In Table A.2 presents the outcomes for Case 3 and Case 4. Suppose an MG 
+the proposed P2P energy trading approach, segments are established for initiates a request to the DLC algorithm for a load reduction of 15 kW 
+neighboring (peer) nodes, thereby restricting power trading only among within a specific time period. In Case 1, Participants 1, 6, and 7 are 
+neighboring nodes. This is achieved through the application of node designated as high-priority for power reduction across all CPs due to 
+coloring method to each segmented node. This significantly reduced the their submission of the most conservative bids prices for load curtail
+number of peer nodes for every participant as well as the required ment. In contrast, Participants 3, 5, and 10 are considered low-priority, 
+communications in respective iterations. Finally, the results show that having submitted the highest bid prices for load curtailment. Conse
+prosumers of stage levels 1, 2, and 3 saved costs by up to 54.5 %, 50 %, quently, the algorithm allocates a DRB to achieve a 5 kW reduction each 
+and 47.8 %. Consumers of stage levels 1, 2, and 3 saved costs up to 33.27 from Participants 1, 6, and 7, without making adjustments for the others, 
+%, 29.64 %, and 30.19 %. MG saved costs from participants of stage as shown in Table A.1 and Fig. 3(a). In Case 2, the algorithm targets a 
+levels 1, 2, and 3 by up to 34.65 %, 30.82 %, and 28.49 % respectively. 7.276 kW reduction from Participant 6 and 6.606 kW from Participant 7, 
+The community manager recommends policymakers about the benefits both high-priority in this scenario. Minor reductions of 0.024 kW are 
+received from implementing these proposed strategies in the DR pro allocated to Participants 1, 4, and 8, and a 0.023 kW reduction to 
+gram and P2P energy trading. Policymakers can explore these strategies Participant 2, with no adjustment for Participants 3, 5, and 10, as they 
+when formulating policies to achieve goals such as cost savings, energy are low-priority, as detailed in Table A.1 and Fig. 3(b). In Case 3, the 
+conservation, sustainability, and resilience. Politicians are encouraged algorithm aims for a 5 kW reduction each from Participants 1, 6, and 7, 
+to endorse policies that resonate with their constituents' preferences. as presented in Table A.2 and illustrated in Fig. 3(c). Here, Participants 
+
+Our future work will incorporate a customer behavior-based demand 1, 6, and 7 are high-priority, whereas Participants 5 and 10 are low- 
+response model to minimize network congestion. Additionally, we plan priority. In Case 4, Participants 1, 3, 6, and 7 are highly prioritized, 
+to use distributed ledger technology, such as Blockchain, to improve each undergoing a 3.75 kW reduction, as indicated in Table A.2 and 
+security, transparency, and the efficiency of transactions. Moreover, P2P Fig. 3(d). 
+trading of multi-vectors, including electricity, hydrogen, heat, and 
+cooling power within a community, can be employed to maximize the 
+profits of both prosumers and consumers. 
+
+24
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+25
+
+Table A.1 
+Selection of participants for the reduction in demand according to DRB.  
+
+Case 1 Case 2 
+
+CP P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10  
+
+1  0.334  0  0  0  0  0.334  0.333  0  0  0  0  0  0  0  0  0.5  0.5  0  0  0  
+2  0.667  0  0  0  0  0.667  0.666  0  0  0  0  0  0  0  0  1  1  0  0  0  
+3  1  0  0  0  0  1  1  0  0  0  0  0  0  0  0  1.5  1.5  0  0  0  
+4  1.333  0  0  0  0  1.334  1.333  0  0  0  0  0  0  0  0  2  2  0  0  0  
+5  1.667  0  0  0  0  1.667  1.666  0  0  0  0  0  0  0  0  2.5  2.5  0  0  0  
+6  2  0  0  0  0  2  2  0  0  0  0  0  0  0  0  3  3  0  0  0  
+7  2.334  0  0  0  0  2.333  2.333  0  0  0  0  0  0  0  0  3.5  3.5  0  0  0  
+8  2.667  0  0  0  0  2.667  2.666  0  0  0  0  0  0  0  0  4  4  0  0  0  
+9  3  0  0  0  0  3  3  0  0  0  0  0  0  0  0  4.5  4.5  0  0  0  
+10  3.333  0  0  0  0  3.334  3.333  0  0  0  0  0  0  0  0  5  5  0  0  0  
+11  3.667  0  0  0  0  3.667  3.666  0  0  0  0  0  0  0  0  5.5  5.5  0  0  0  
+12  4  0  0  0  0  4  4  0  0  0  0  0  0  0  0  6  6  0  0  0  
+13  4.334  0  0  0  0  4.333  4.333  0  0  0  0  0  0  0  0  6.5  6.5  0  0  0  
+14  4.667  0  0  0  0  4.667  4.666  0  0  0  0.024  0.023  0  0.024  0  7.276  6.606  0.024  0.023  0  
+15  5  0  0  0  0  5  5  0  0  0  0.224  0.223  0  0.224  0  7.276  6.606  0.224  0.223  0  
+16  5.334  0  0  0  0  5.333  5.333  0  0  0  0.424  0.423  0  0.424  0  7.276  6.606  0.424  0.423  0  
+17  5.667  0  0  0  0  5.667  5.666  0  0  0  0.624  0.623  0  0.624  0  7.276  6.606  0.624  0.623  0  
+18  6  0  0  0  0  6  6  0  0  0  0.824  0.823  0  0.824  0  7.276  6.606  0.824  0.823  0  
+19  6.334  0  0  0  0  6.333  6.333  0  0  0  1.024  1.023  0  1.024  0  7.276  6.606  1.024  1.023  0  
+20  6.697  0  0  0  0  6.697  6.606  0  0  0  1.224  1.223  0  1.224  0  7.276  6.606  1.224  1.223  0  
+21  7.167  0  0  0  0  7.227  6.606  0  0  0  1.424  1.423  0  1.424  0  7.276  6.606  1.424  1.423  0  
+22  7.167  0.237  0  0.238  0  7.276  6.606  0.238  0.238  0  1.624  1.623  0  1.624  0  7.276  6.606  1.624  1.623  0  
+23  7.167  0.487  0  0.488  0  7.276  6.606  0.488  0.488  0  1.824  1.823  0  1.824  0  7.276  6.606  1.824  1.823  0  
+24  7.167  0.737  0  0.738  0  7.276  6.606  0.738  0.738  0  2.024  2.023  0  2.024  0  7.276  6.606  2.024  2.023  0  
+25  7.167  0.987  0  0.988  0  7.276  6.606  0.988  0.988  0  2.224  2.223  0  2.224  0  7.276  6.606  2.224  2.223  0  
+26  7.167  1.237  0  1.238  0  7.276  6.606  1.238  1.238  0  2.424  2.423  0  2.424  0  7.276  6.606  2.424  2.423  0  
+27  7.167  1.487  0  1.488  0  7.276  6.606  1.488  1.488  0  2.624  2.623  0  2.624  0  7.276  6.606  2.624  2.623  0  
+28  7.167  1.737  0  1.738  0  7.276  6.606  1.738  1.738  0  2.824  2.823  0  2.824  0  7.276  6.606  2.824  2.823  0  
+29  7.167  1.987  0  1.988  0  7.276  6.606  1.988  1.988  0  3.024  3.023  0  3.024  0  7.276  6.606  3.024  3.023  0  
+30  7.167  2.237  0  2.238  0  7.276  6.606  2.238  2.238  0  3.224  3.223  0  3.224  0  7.276  6.606  3.224  3.223  0  
+31  7.167  2.487  0  2.488  0  7.276  6.606  2.488  2.488  0  3.424  3.423  0  3.424  0  7.276  6.606  3.424  3.423  0  
+32  7.167  2.737  0  2.738  0  7.276  6.606  2.738  2.738  0  3.624  3.623  0  3.624  0  7.276  6.606  3.624  3.623  0  
+33  7.167  2.987  0  2.988  0  7.276  6.606  2.988  2.988  0  3.824  3.823  0  3.824  0  7.276  6.606  3.824  3.823  0  
+34  7.167  3.237  0  3.238  0  7.276  6.606  3.238  3.238  0  4.024  4.023  0  4.024  0  7.276  6.606  4.024  4.023  0  
+35  7.167  3.487  0  3.488  0  7.276  6.606  3.488  3.488  0  4.224  4.223  0  4.224  0  7.276  6.606  4.224  4.223  0  
+36  7.167  3.737  0  3.738  0  7.276  6.606  3.738  3.738  0  4.424  4.423  0  4.424  0  7.276  6.606  4.424  4.423  0  
+37  7.167  3.987  0  3.988  0  7.276  6.606  3.988  3.988  0  4.624  4.623  0  4.624  0  7.276  6.606  4.624  4.623  0  
+38  7.167  4.237  0  4.238  0  7.276  6.606  4.238  4.238  0  4.824  4.823  0  4.824  0  7.276  6.606  4.824  4.823  0  
+39  7.167  4.487  0  4.488  0  7.276  6.606  4.488  4.488  0  5.024  5.023  0  5.024  0  7.276  6.606  5.024  5.023  0  
+40  7.167  4.737  0  4.738  0  7.276  6.606  4.738  4.738  0  5.224  5.223  0  5.224  0  7.276  6.606  5.224  5.223  0  
+41  7.167  4.987  0  4.988  0  7.276  6.606  4.988  4.988  0  5.424  5.423  0  5.424  0  7.276  6.606  5.424  5.423  0  
+42  7.167  5.237  0  5.238  0  7.276  6.606  5.238  5.238  0  5.624  5.623  0  5.624  0  7.276  6.606  5.624  5.623  0  
+43  7.167  5.487  0  5.488  0  7.276  6.606  5.488  5.488  0  5.849  5.725  0  5.848  0  7.276  6.606  5.848  5.848  0  
+44  7.167  5.725  0  5.742  0  7.276  6.606  5.742  5.742  0  6.099  5.725  0  6.098  0  7.276  6.606  6.098  6.098  0  
+45  7.167  5.725  0  6.076  0  7.276  6.606  6.075  6.075  0  6.97  5.725  0  6.131  0  7.276  6.606  6.168  6.124  0  
+46  7.167  5.725  0.268  6.131  0.267  7.276  6.606  6.168  6.124  0.268  7.167  5.725  0.267  6.131  0.267  7.276  6.606  6.168  6.124  0.268  
+47  7.167  5.725  0.601  6.131  0.601  7.276  6.606  6.168  6.124  0.601  7.167  5.725  0.601  6.131  0.6  7.276  6.606  6.168  6.124  0.601  
+48  7.167  5.725  0.934  6.131  0.934  7.276  6.606  6.168  6.124  0.935  7.167  5.725  0.934  6.131  0.934  7.276  6.606  6.168  6.124  0.934  
+49  7.167  5.725  1.268  6.131  1.267  7.276  6.606  6.168  6.124  1.268  7.167  5.725  1.267  6.131  1.267  7.276  6.606  6.168  6.124  1.268  
+50  7.167  5.725  1.601  6.131  1.601  7.276  6.606  6.168  6.124  1.601  7.167  5.725  1.601  6.131  1.6  7.276  6.606  6.168  6.124  1.601  
+51  7.167  5.725  1.934  6.131  1.934  7.276  6.606  6.168  6.124  1.935  7.167  5.725  1.934  6.131  1.934  7.276  6.606  6.168  6.124  1.934  
+52  7.167  5.725  2.268  6.131  2.267  7.276  6.606  6.168  6.124  2.268  7.167  5.725  2.267  6.131  2.267  7.276  6.606  6.168  6.124  2.268  
+53  7.167  5.725  2.601  6.131  2.601  7.276  6.606  6.168  6.124  2.601  7.167  5.725  2.601  6.131  2.6  7.276  6.606  6.168  6.124  2.601  
+54  7.167  5.725  2.934  6.131  2.934  7.276  6.606  6.168  6.124  2.935  7.167  5.725  2.934  6.131  2.934  7.276  6.606  6.168  6.124  2.934 
+
+(continued on next page) 
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+26
+
+Table A.1 (continued ) 
+Case 1 Case 2 
+
+CP P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10  
+55  7.167  5.725  3.268  6.131  3.267  7.276  6.606  6.168  6.124  3.268  7.167  5.725  3.267  6.131  3.267  7.276  6.606  6.168  6.124  3.268  
+56  7.167  5.725  3.601  6.131  3.601  7.276  6.606  6.168  6.124  3.601  7.167  5.725  3.601  6.131  3.6  7.276  6.606  6.168  6.124  3.601  
+57  7.167  5.725  3.934  6.131  3.934  7.276  6.606  6.168  6.124  3.935  7.167  5.725  3.934  6.131  3.934  7.276  6.606  6.168  6.124  3.934  
+58  7.167  5.725  4.268  6.131  4.267  7.276  6.606  6.168  6.124  4.268  7.167  5.725  4.267  6.131  4.267  7.276  6.606  6.168  6.124  4.268  
+59  7.167  5.725  4.601  6.131  4.601  7.276  6.606  6.168  6.124  4.601  7.167  5.725  4.601  6.131  4.6  7.276  6.606  6.168  6.124  4.601  
+60  7.167  5.725  4.934  6.131  4.934  7.276  6.606  6.168  6.124  4.935  7.167  5.725  4.934  6.131  4.934  7.276  6.606  6.168  6.124  4.934  
+61.976  7.167  5.725  5.456  6.131  5.395  7.276  6.606  6.168  6.124  5.928  7.167  5.725  5.456  6.131  5.395  7.276  6.606  6.168  6.124  5.928   
+
+Table A.2 
+Selection of participants for the reduction in demand according to DRB.  
+
+Case 3 Case 4 
+
+CP P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10  
+1  0.334  0  0  0  0  0.334  0.333  0  0  0  0.25  0  0.25  0  0  0.25  0.25  0  0  0  
+2  0.667  0  0  0  0  0.667  0.666  0  0  0  0.5  0  0.5  0  0  0.5  0.5  0  0  0  
+3  1  0  0  0  0  1  1  0  0  0  0.75  0  0.75  0  0  0.75  0.75  0  0  0  
+4  1.333  0  0  0  0  1.334  1.333  0  0  0  1  0  1  0  0  1  1  0  0  0  
+5  1.667  0  0  0  0  1.667  1.666  0  0  0  1.25  0  1.25  0  0  1.25  1.25  0  0  0  
+6  2  0  0  0  0  2  2  0  0  0  1.5  0  1.5  0  0  1.5  1.5  0  0  0  
+7  2.334  0  0  0  0  2.333  2.333  0  0  0  1.75  0  1.75  0  0  1.75  1.75  0  0  0  
+8  2.667  0  0  0  0  2.667  2.666  0  0  0  2  0  2  0  0  2  2  0  0  0  
+9  3  0  0  0  0  3  3  0  0  0  2.25  0  2.25  0  0  2.25  2.25  0  0  0  
+10  3.333  0  0  0  0  3.334  3.333  0  0  0  2.5  0  2.5  0  0  2.5  2.5  0  0  0  
+11  3.667  0  0  0  0  3.667  3.666  0  0  0  2.75  0  2.75  0  0  2.75  2.75  0  0  0  
+12  4  0  0  0  0  4  4  0  0  0  3  0  3  0  0  3  3  0  0  0  
+13  4.334  0  0  0  0  4.333  4.333  0  0  0  3.25  0  3.25  0  0  3.25  3.25  0  0  0  
+14  4.667  0  0  0  0  4.667  4.666  0  0  0  3.5  0  3.5  0  0  3.5  3.5  0  0  0  
+15  5  0  0  0  0  5  5  0  0  0  3.75  0  3.75  0  0  3.75  3.75  0  0  0  
+16  5.334  0  0  0  0  5.333  5.333  0  0  0  4  0  4  0  0  4  4  0  0  0  
+17  5.667  0  0  0  0  5.667  5.666  0  0  0  4.25  0  4.25  0  0  4.25  4.25  0  0  0  
+18  6  0  0  0  0  6  6  0  0  0  4.5  0  4.5  0  0  4.5  4.5  0  0  0  
+19  6.334  0  0  0  0  6.333  6.333  0  0  0  4.75  0  4.75  0  0  4.75  4.75  0  0  0  
+20  6.697  0  0  0  0  6.697  6.606  0  0  0  5  0  5  0  0  5  5  0  0  0  
+21  7.167  0  0  0  0  7.276  6.606  0  0  0  5.25  0  5.25  0  0  5.25  5.25  0  0  0  
+22  7.167  0  0  0.317  0  7.276  6.606  0.317  0.317  0  5.515  0  5.456  0  0  5.515  5.514  0  0  0 
+
+(continued on next page) 
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+27
+
+Table A.2 (continued ) 
+Case 3 Case 4 
+
+CP P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P1 P2 P3 P4 P5 P6 P7 P8 P9 P10  
+
+23  7.167  0  0  0.650  0  7.276  6.606  0.651  0.650  0  5.848  0  5.456  0  0  5.848  5.848  0  0  0  
+24  7.167  0  0  0.984  0  7.276  6.606  0.984  0.983  0  6.181  0  5.456  0  0  6.182  6.181  0  0  0  
+25  7.167  0  0  1.317  0  7.276  6.606  1.317  1.317  0  6.515  0  5.456  0  0  6.515  6.514  0  0  0  
+26  7.167  0  0  1.650  0  7.276  6.606  1.651  1.650  0  6.969  0  5.456  0  0  6.969  6.606  0  0  0  
+27  7.167  0  0  1.984  0  7.276  6.606  1.984  1.983  0  7.167  0.123  5.456  0.124  0  7.276  6.606  0.124  0.124  0  
+28  7.167  0  0  2.317  0  7.276  6.606  2.317  2.317  0  7.167  0.373  5.456  0.373  0  7.276  6.606  0.373  0.373  0  
+29  7.167  0  0  2.650  0  7.276  6.606  2.651  2.650  0  7.167  0.623  5.456  0.624  0  7.276  6.606  0.624  0.624  0  
+30  7.167  0  0  2.984  0  7.276  6.606  2.984  2.983  0  7.167  0.873  5.456  0.874  0  7.276  6.606  0.874  0.874  0  
+31  7.167  0  0  3.317  0  7.276  6.606  3.317  3.317  0  7.167  1.123  5.456  1.124  0  7.276  6.606  1.124  1.124  0  
+32  7.167  0  0  3.650  0  7.276  6.606  3.651  3.650  0  7.167  1.373  5.456  1.373  0  7.276  6.606  1.373  1.373  0  
+33  7.167  0  0  3.984  0  7.276  6.606  3.984  3.983  0  7.167  1.623  5.456  1.624  0  7.276  6.606  1.624  1.624  0  
+34  7.167  0  0  4.317  0  7.276  6.606  4.317  4.317  0  7.167  1.873  5.456  1.874  0  7.276  6.606  1.874  1.874  0  
+35  7.167  0  0  4.650  0  7.276  6.606  4.651  4.650  0  7.167  2.123  5.456  2.124  0  7.276  6.606  2.124  2.124  0  
+36  7.167  0  0  4.984  0  7.276  6.606  4.984  4.983  0  7.167  2.373  5.456  2.373  0  7.276  6.606  2.373  2.373  0  
+37  7.167  0  0  5.317  0  7.276  6.606  5.317  5.317  0  7.167  2.623  5.456  2.624  0  7.276  6.606  2.624  2.624  0  
+38  7.167  0  0  5.650  0  7.276  6.606  5.651  5.650  0  7.167  2.873  5.456  2.874  0  7.276  6.606  2.874  2.874  0  
+39  7.167  0  0  5.984  0  7.276  6.606  5.984  5.983  0  7.167  3.123  5.456  3.124  0  7.276  6.606  3.124  3.124  0  
+40  7.167  0.132  0.132  6.131  0.132  7.276  6.606  6.168  6.124  0.132  7.167  3.373  5.456  3.373  0  7.276  6.606  3.373  3.373  0  
+41  7.167  0.382  0.382  6.131  0.382  7.276  6.606  6.168  6.124  0.382  7.167  3.623  5.456  3.624  0  7.276  6.606  3.624  3.624  0  
+42  7.167  0.632  0.632  6.131  0.632  7.276  6.606  6.168  6.124  0.632  7.167  3.873  5.456  3.874  0  7.276  6.606  3.874  3.874  0  
+43  7.167  0.882  0.882  6.131  0.882  7.276  6.606  6.168  6.124  0.882  7.167  4.123  5.456  4.124  0  7.276  6.606  4.124  4.124  0  
+44  7.167  1.132  1.132  6.131  1.132  7.276  6.606  6.168  6.124  1.132  7.167  4.373  5.456  4.373  0  7.276  6.606  4.373  4.373  0  
+45  7.167  1.382  1.382  6.131  1.382  7.276  6.606  6.168  6.124  1.382  7.167  4.623  5.456  4.624  0  7.276  6.606  4.624  4.624  0  
+46  7.167  1.632  1.632  6.131  1.632  7.276  6.606  6.168  6.124  1.632  7.167  4.873  5.456  4.874  0  7.276  6.606  4.874  4.874  0  
+47  7.167  1.882  1.882  6.131  1.882  7.276  6.606  6.168  6.124  1.882  7.167  5.123  5.456  5.124  0  7.276  6.606  5.124  5.124  0  
+48  7.167  2.132  2.132  6.131  2.132  7.276  6.606  6.168  6.124  2.132  7.167  5.373  5.456  5.373  0  7.276  6.606  5.373  5.373  0  
+49  7.167  2.382  2.382  6.131  2.382  7.276  6.606  6.168  6.124  2.382  7.167  5.623  5.456  5.624  0  7.276  6.606  5.624  5.624  0  
+50  7.167  2.632  2.632  6.131  2.632  7.276  6.606  6.168  6.124  2.632  7.167  5.725  5.456  5.923  0  7.276  6.606  5.924  5.923  0  
+51  7.167  2.882  2.882  6.131  2.882  7.276  6.606  6.168  6.124  2.882  7.167  5.725  5.456  6.131  0.173  7.276  6.606  6.168  6.124  0.174  
+52  7.167  3.132  3.132  6.131  3.132  7.276  6.606  6.168  6.124  3.132  7.167  5.725  5.456  6.131  0.673  7.276  6.606  6.168  6.124  0.674  
+53  7.167  3.382  3.382  6.131  3.382  7.276  6.606  6.168  6.124  3.382  7.167  5.725  5.456  6.131  1.173  7.276  6.606  6.168  6.124  1.174  
+54  7.167  3.632  3.632  6.131  3.632  7.276  6.606  6.168  6.124  3.632  7.167  5.725  5.456  6.131  1.673  7.276  6.606  6.168  6.124  1.674  
+55  7.167  3.882  3.882  6.131  3.882  7.276  6.606  6.168  6.124  3.882  7.167  5.725  5.456  6.131  2.173  7.276  6.606  6.168  6.124  2.174  
+56  7.167  4.132  4.132  6.131  4.132  7.276  6.606  6.168  6.124  4.132  7.167  5.725  5.456  6.131  2.673  7.276  6.606  6.168  6.124  2.674  
+57  7.167  4.382  4.382  6.131  4.382  7.276  6.606  6.168  6.124  4.382  7.167  5.725  5.456  6.131  3.173  7.276  6.606  6.168  6.124  3.174  
+58  7.167  4.632  4.632  6.131  4.632  7.276  6.606  6.168  6.124  4.632  7.167  5.725  5.456  6.131  3.673  7.276  6.606  6.168  6.124  3.674  
+59  7.167  4.882  4.882  6.131  4.882  7.276  6.606  6.168  6.124  4.882  7.167  5.725  5.456  6.131  4.173  7.276  6.606  6.168  6.124  4.174  
+60  7.167  5.132  5.132  6.131  5.132  7.276  6.606  6.168  6.124  5.132  7.167  5.725  5.456  6.131  4.673  7.276  6.606  6.168  6.124  4.674  
+61.976  7.167  5.725  5.456  6.131  5.395  7.276  6.606  6.168  6.124  5.928  7.167  5.725  5.456  6.131  5.395  7.276  6.606  6.168  6.124  5.928   
+
+
+
+J. Hussain et al.                                                                                                                                                                                              J  o  u r  n a  l  o  f  E  n  e r g  y   S t o  r a  g e 84 (2024) 110881
+
+References [26] X. Kou, F. Li, J. Dong, M. Olama, M. Starke, Y. Chen, H. Zandi, A comprehensive 
+scheduling framework using SP-ADMM for residential demand response with 
+
+[1] J. Hussain, M. Hussain, S. Raza, M. Siddique, Power quality improvement of grid weather and consumer uncertainties, IEEE Trans. Power Syst. 36 (4) (2020) 
+-connected wind energy system using DSTATCOM-BESS, Int. J. Renew. Energy Res. 3004–3016. 
+9 (3) (2019) 1388–1397. [27] V.C. Pandey, N. Gupta, K.R. Niazi, A hierarchical price-based demand response 
+
+[2] B. Gülkaya, T. Gökçek, Y. Ateş, A.R. Boynueğri, Microgrid frequency regulation and framework in distribution network, IEEE Trans. Smart Grid 13 (2) (2021) 
+optimal sizing of emergency generator considering VSG coupled electric vehicles, 1151–1164. 
+Electr. Power Compon. Syst. (2023) 1–15. [28] Z. Zhang, Y. Huang, Z. Chen, W.J. Lee, Integrated demand response for microgrids 
+
+[3] B. Dey, S. Misra, Microgrid system energy management with demand response with incentive-compatible bidding mechanism, IEEE Trans. Ind. Appl. 59 (1) 
+program for clean and economical operation, Appl. Energy, Appl. Energy 334 (2022) 118–127. 
+(2023) 120717. [29] W.T. Li, C. Yuen, N.U. Hassan, W. Tushar, C.K. Wen, K.L. Wood, Demand response 
+
+[4] D. Liu, Z. Qin, H. Hua, Y. Ding, J. Cao, Incremental incentive mechanism design for management for residential smart grid: from theory to practice, IEEE Access 3 
+diversified consumers in demand response, Appl. Energy 329 (2023) 120240. (2015) 2431–2440. 
+
+[5] C. Zhang, Y. Xu, Z.Y. Dong, K.P. Wong, Robust coordination of distributed [30] E. Heydarian-Forushani, M.P. Moghaddam, M.K. Sheikh-El-Eslami, M. ShafieKhah, 
+generation and price-based demand response in microgrids, IEEE Trans. Smart Grid A stochastic framework for the grid integration of wind power using flexible load 
+9 (5) (2017) 4236–4247. approach, Energ. Conver. Manage. 88 (2014) 985–998. 
+
+[6] K. McKenna, A. Keane, Residential load modeling of price-based demand response [31] D. Muthirayan, E. Baeyens, P. Chakraborty, K. Poolla, P.P. Khargonekar, A minimal 
+for network impact studies, IEEE Trans. Smart Grid 7 (5) (2015) 2285–2294. incentive-based demand response program with self-reported baseline mechanism, 
+
+[7] A. Fraija, K. Agbossou, N. Henao, A discount-based time-of-use electricity pricing IEEE Trans. Smart Grid 11 (3) (2019) 2195–2207. 
+strategy for demand response with minimum information using reinforcement [32] B.C. Lai, W.Y. Chiu, Y.P. Tsai, Multiagent reinforcement learning for community 
+learning, IEEE Access 10 (2022) 54018–54028. energy management to mitigate peak rebounds under renewable energy 
+
+[8] S. Oh, J. Kong, Y. Yang, A multi-use framework of energy storage systems using uncertainty, IEEE Trans. Emerg. Topics Comput. Intell. 6 (3) (2022) 568–579. 
+reinforcement learning for both price-based and incentive-based demand, Int J. [33] B. Rajasekhar, N. Pindoriya, W. Tushar, C. Yuen, Collaborative energy 
+Electr. Power Energy Syst. 144 (2023) 108519. management for a residential community: a non-cooperative and evolutionary 
+
+[9] S.M. Sarvestani, M. Jooshaki, M.F. Firuzabad, Incorporating direct load control approach, IEEE Trans. Emerg. Topics Comput. Intell. 3 (3) (2019) 177–192. 
+demand response into active distribution system planning, Appl. Energy 339 [34] M. Latifi, A. Khalili, A. Rastegarnia, S. Sanei, Fully distributed demand response 
+(2023) 120897. using the adaptive diffusion—Stackelberg algorithm, IEEE Trans. Industr. Inform. 
+
+[10] G. Zhang, Y. Niu, K. Zhang, Multi-level distributed demand response study for a 13 (5) (2017) 2291–2301. 
+multi-park integrated energy system, Energy Rep. 9 (2023) 2676–2689. [35] M. Uddin, M.F. Romlie, M.F. Abdullah, A novel peak shaving algorithm for 
+
+[11] V. Venizelou, N. Philippou, M. Hadjipanayi, G. Makrides, V. Efthymiou, G. islanded microgrid using battery energy storage system, Energy 196 (2020) 
+E. Georghiou, Development of a novel time-of-use tariff algorithm for residential 117084. 
+prosumer price-based demand side management, Energy 142 (2018) 633–646. [36] H. Görgülü, Y. Topçuoğlu, A. Yaldız, T. Gökçek, Y. Ateş, O. Erdinç, Peer-to-peer 
+
+[12] B. Mohandes, M.S. El Moursi, N. Hatziargyriou, Incentive based demand response energy trading among smart homes considering responsive demand and interactive 
+program for power system flexibility enhancement, IEEE Trans. Smart Grids 12 (3) visual interface for monitoring, Sustain. Energy, Grids Netw. 29 (2022) 100584. 
+(2020) 2212–2223. [37] Y. Xia, Q. Xu, Y. Huang, P. Du, Peer-to-peer energy trading market considering 
+
+[13] H.A. Aalami, M.P. Moghaddam, G.R. Yousefi, Demand response modeling renewable energy uncertainty and participants’ individual preferences, Int. J. 
+considering interruptible/curtailable loads and capacity market programs, Appl. Electr. Power Energy Syst. 148 (2023) 108931. 
+Energy 87 (1) (2010) 243–250. [38] S. Suthar, S.H.C. Cherkuri, N.M. Pindoriya, Peer-to-peer energy trading in smart 
+
+[14] C.L. Dewangan, V. Vijayan, D. Shukla, An improved decentralized scheme for grid: frameworks, implementation methodologies, and demonstration projects, 
+incentive-based demand response from residential customers, Energy 284 (2023) Electr. Power Syst. Res. 214 (2023) 108907. 
+128568. [39] M. Yaghoubi, M. Mehdinejad, M. Seyfi, Z. Dziong, H. Shayanfar, Fully 
+
+[15] D.H. Park, J.B. Park, K.Y. Lee, A bidding-based peer-to-peer energy transaction decentralized and competitive hybrid retail and local electricity market using peer- 
+model considering the green energy preference in virtual energy community, IEEE, to-peer energy trading, in: Demand-Side Peer-to-Peer Energy Trading, Springer 
+Access 9 (2021) 87410–87419. International Publishing, Cham, 2023, pp. 99–118. 
+
+[16] D. Yousri, H.E.Z. Farag, H. Zeineldin, Integrated model for optimal energy [40] T. Morstyn, M.D. McCulloch, Multiclass energy management for peer to-peer 
+management and demand response of microgrids considering hybrid hydrogen- energy trading driven by prosumer preferences, IEEE Trans. Power Syst. 34 (5) 
+battery storage systems, Energ. Conver. Manage. 280 (2023) 116809. (2018) 4005–4014. 
+
+[17] M.H. Ghodusinejad, H. Yousefi, Peer-to-Peer Energy Trading in Multi-Carrier [41] F. Moret, P. Pinson, Energy collectives: a community and fairness based approach 
+Energy Systems, Springer International Publishing, In Demand-Side Peer-to-Peer to future electricity markets, IEEE Trans. Power Syst. 34 (5) (2018) 3994–4004. 
+Energy Trading, Cham, 2023, pp. 183–201. [42] E. Munsing, J. Mather, S. Moura, Blockchains for decentralized optimization of 
+
+[18] E.A. Soto, L.B. Bosman, E. Wollega, Peer-to-peer energy trading: a review of the energy resources in microgrid networks, IEEE Conf. Control Technol. Applic. 
+literature, Appl. Energy 283 (2021) 116268. (CCTA) (2017) 2164–2171. 
+
+[19] H. Yang, J. Zhang, J. Qiu, A practical pricing approach to smart grid demand [43] A. Esmat, M. de Vos, Y. Ghiassi-Farrokhfal, A novel decentralized platform for 
+response based on load classification, IEEE Trans. Smart Grid 9 (1) (2016) peer-to-peer energy trading market with blockchain technology, Appl. Energy 282 
+179–190. (2021) 116123. 
+
+[20] M.B. Rasheed, M. Awais, T. Alquthami, I. Khan, An optimal scheduling and [44] M. Khorasany, Y. Mishra, G. Ledwich, A decentralized bilateral energy trading 
+distributed pricing mechanism for multi-region electric vehicle charging in smart system for peer-to-peer electricity markets, IEEE Trans. Ind. Electron. 67 (6) (2019) 
+grid, IEEE Access 8 (2020) 40298–40312. 4646–4657. 
+
+[21] M. Muratori, G. Rizzoni, Residential demand response: dynamic energy [45] E. Sorin, L. Bobo, P. Pinson, Consensus-based approach to peer-to-peer electricity 
+management and time-varying electricity pricing, IEEE Trans. Power Syst 31 (2) markets with product differentiation, IEEE Trans. Power Syst. 34 (2) (2018) 
+(2015) 1108–1117. 994–1004. 
+
+[22] D. Ellman, Y. Xiao, Incentives to manipulate demand response baselines with [46] J. Kim, Y. Dvorkin, A P2P-dominant distribution system architecture, IEEE Trans. 
+uncertain event schedules, IEEE Trans. Smart Grid 12 (2) (2020) 1358–1369. Power Syst. 35 (4) (2019) 2716–2725. 
+
+[23] F. Wang, B. Xiang, K. Li, X. Ge, H. Lu, J. Lai, Smart households’ aggregated [47] S.A. Ahmed, Q. Huang, Z. Zhang, J. Li, W. Amin, M. Afzal, Optimization of social 
+capacity forecasting for load aggregators under incentive-based demand response welfare and mitigating privacy risks in P2P energy trading: differential privacy for 
+programs, IEEE Trans. Ind. Appl. 56 (2) (2020) 1086–1097. secure data reporting, Appl. Energy 356 (2024) 122403. 
+
+[24] J. Hussain, Q. Huang, J. Li, Z. Zhang, F. Hussain, S.A. Ahmed, K. Manzoor, [48] P.T. Baboli, M. Eghbal, M.P. Moghaddam, Customer behavior based demand 
+Optimization of social welfare in P2P community microgrid with efficient response model, IEEE Power Energy Soc. Gen. Meet. (2012) 1–7. 
+decentralized energy management and communication-efficient power trading, [49] M. Nijhuis, M. Babar, M. Gibescu, S. Cobben, Demand response: social welfare 
+J. Energy Storage 81 (2024) 110458. maximization in an unbundled energy market case study for the low-voltage 
+
+[25] W. Amin, Q. Huang, K. Umer, Z. Zhang, M. Afzal, A.A. Khan, S.A. Ahmed, networks of a distribution network operator in the Netherlands, IEEE Trans. Ind. 
+A motivational game-theoretic approach for peer-to-peer energy trading in Appl. 53 (1) (2016) 32–38. 
+islanded and grid-connected microgrid, Int. J. Electr. Power Energy Syst. 123 [50] D.R. Han, A survey on some recent developments of alternating direction method 
+(2020) 106307. of multipliers, J. Oper. Res. Soc. China (2022) 1–52. 
+
+28

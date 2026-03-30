@@ -1,0 +1,1234 @@
+﻿Renewable Energy 207 (2023) 177–193
+
+Contents lists available at ScienceDirect 
+
+Renewable Energy 
+journal homepage: www.elsevier.com/locate/renene 
+
+Peer-to-peer energy sharing and trading of renewable energy in smart 
+communities ─ trading pricing models, decision-making and 
+agent-based collaboration 
+Yuekuan Zhou a,b,c,d,*, Peter D. Lund e 
+
+a Sustainable Energy and Environment Thrust, Function Hub, The Hong Kong University of Science and Technology (Guangzhou), Nansha, Guangzhou, 511400, 
+Guangdong, Hong Kong, China 
+b Department of Mechanical and Aerospace Engineering, The Hong Kong University of Science and Technology, Clear Water Bay, Hong Kong, China 
+c HKUST Shenzhen-Hong Kong Collaborative Innovation Research Institute, Futian, Shenzhen, Hong Kong, China 
+d Division of Emerging Interdisciplinary Areas, The Hong Kong University of Science and Technology, Clear Water Bay, Hong Kong, China 
+e Department of Applied Physics, School of Science, Aalto University, P.O.Box 15100, FI-00076, Aalto, Espoo, Finland   
+
+A R T I C L E  I N F O   A B S T R A C T   
+
+Keywords: Peer-to-peer (P2P) energy sharing can complement other energy management strategies needed in the energy 
+Peer-to-peer (P2P) energy sharing and trading transition to clean energy such as renewables. The recent advances in artificial intelligence, machine learning 
+Trading pricing and internet of things can provide cutting-edge solutions to dynamic information interaction and power ex
+Blockchain change, enabling efficient P2P energy sharing and trading schemes. However, the current electricity market fails 
+Machine learning 
+Decision-making to comprehensively consider devices degradation costs and transmission losses, fairness distribution and allo
+Multi-stakeholders cation on cost-benefit model, synergistic collaborations and operations for different stakeholders. Here, a 
+
+comprehensive review on P2P energy sharing and trading is presented covering novel system configurations, 
+energy sharing and marginal/trading price mechanisms, and decision-making in dynamic P2P energy trading 
+combined with synergistic collaboration and operation among key stakeholders. Significances of this review 
+include comprehensive consideration on internal trading pricing, fairness distribution and allocation with active 
+participation in P2P energy sharing, synergistic collaborations and operations with mutual economic benefits. 
+Modelling tools for P2P energy trading platforms for real applications are also reviewed. The review shows that 
+P2P when optimally designed can provide win-win economic benefits to all related stakeholders such as pro
+sumers, consumers, retailers, and aggregators with fair access to distributed energy resources. The P2P energy 
+sharing can improve the system efficiency, reduce energy storage capacity and primary energy consumption, 
+improve renewable penetration, avoid energy quality devaluation and mitigate stressed grid power together with 
+voltage support and congestion management for the local power grid. Employing blockchain technology im
+proves the automation level in P2P thus decreasing human interactions improving the security with transparent, 
+tamper-proof and secure systems, and accelerating real-time settlements with smart contracts. Synergistic 
+collaboration and operation among stakeholders can ensure economic benefits for each participant, fair energy 
+distribution and cost allocation, and decrease reliance on retailers or aggregators. The results presented provide 
+cutting-edge guidelines for increasing the use and acceptance of smart and fair P2P energy sharing and trading 
+frameworks.   
+
+system scale, renewable energy systems can be classified into centralized 
+1. Introduction (e.g. PV and wind farms) and decentralized power systems (e.g. building 
+
+mounted wind turbines, building integrated PV). Compared to the 
+Deployment of renewable energy and improvement in energy effi centralized systems, the decentralized power systems [1] show advan
+
+ciency [1] an effective carbon offset strategy, which can contribute to tages through avoiding investments and losses in long-distance power 
+achieving carbon-neutrality targets worldwide. Depending on the transmission, high space utilization for renewable energy supply, 
+
+* Corresponding author. Sustainable Energy and Environment Thrust, Function Hub, The Hong Kong University of Science and Technology (Guangzhou), Nansha, 
+Guangzhou, 511400, Guangdong, Hong Kong, China. 
+
+E-mail addresses: yuekuanzhou@ust.hk, yuekuan.zhou@outlook.com (Y. Zhou).  
+
+https://doi.org/10.1016/j.renene.2023.02.125 
+Received 26 May 2022; Received in revised form 6 November 2022; Accepted 25 February 2023   
+Available online 2 March 2023
+0960-1481/© 2023 Elsevier Ltd. All rights reserved.
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+been studied, e.g. in terms of market paradigms and approaches for price 
+Nomenclature forming, theory-based pricing mechanisms, and price-based energy 
+
+management for profit maximization. Zhou et al. [20] compared the 
+Abbreviations economic performance between the supply and demand ratio (SDR), 
+BIPVs Building Integrated Photovoltaics mid-market rate and bill sharing methods. The self-consumption can be 
+BS Bill Sharing improved and peak demand hours can be reduced by P2P trading [21]. 
+BNE Bayesian Nash equilibrium The proposed model improved in the community and reduced the. 
+CDA Continuous double auction Tushar et al. [22] adopted the mid-market rate as the pricing mechanism 
+DRL Deep reinforcement learning for P2P trading for coalition stability and prosumers’ benefits. Bill 
+DSO Distribution system operator sharing strategy [23] is effective for P2P energy sharing. Theories for 
+ELM Extreme Learning Machine dynamic pricing mainly include game theory, auction theory and bar
+ESP Energy sharing provider gaining theory. Bhatti and Broadwater [24] developed a 
+ECO Energy Cost Optimization non-cooperative game model with Nash equilibrium to promote market 
+EI Equality index reliability and fairness. However, the internal trading pricing approach 
+MDP Markov Decision Process used in academia fails to consider the associated costs with renewable 
+MMR Mid-Market Rate energy system depreciation, energy transmission loss and associated 
+ML Machine Learning infrastructures. Furthermore, the cost-benefit models for P2P energy 
+P2G Power-to-grid sharing considering fairness distribution and allocation strategies are 
+PV Photovoltaics rare to eliminate inequality and encourage the participation willingness 
+PISO Prediction-integration strategy optimization of stakeholders. 
+P2P Peer-to-peer Decision-making approaches on dynamic P2P energy trading can be 
+PI Participation willingness index classified into rule-based P2P energy trading [25], stochastic 
+SDR Supply and demand ratio decision-making approach [26], dynamic iteration-based decision-
+VTI Value tapping index  making [27] and machine learning based market prediction [28]. By 
+
+adopting Nash-type game theory, Jing et al. [25] investigated fair 
+pricing strategies for energy trading within a small community. The 
+optimized variables included energy trading behavior, operational 
+
+flexible ownership by either building owners or investors, etc. Further strategy, and demand response schedule. In order to partly offset wind 
+more, power supply from the decentralized renewable systems can power deviation, Vahedipour-Dahraie et al. [26] adopted a stochastic 
+provide peer-to-peer (P2P) energy sharing [2,3] and cover stochastic decision-making approach to determine the optimal energy purchase 
+energy demand of district buildings to overcome the spatiotemporal and reserve capacity offering to a wind power producer. By adopting the 
+intermittence in renewable energy supply thus also reducing the power bilevel stochastic model (i.e., the upper level maximizes the wind power 
+fluctuations and ramping rate of electricity in the grid. Compared to producer’s profits and the lower level minimizes demand response 
+other energy management strategies such as demand-side management, aggregators’ costs.), the cost-optimal strategy could be developed for 
+power-to-X conversion and energy storage, the P2P energy sharing helps P2P energy trading. However, a comprehensive review of trading stra
+to avoid power losses during battery charging process, energy quality tegies and dynamic decision-making approaches is still rare. Further
+losses n the power-to-X conversion process, unfair access to distributed more, dynamic power trading and internal sell/buy price face the 
+energy resources [4,5], grid infrastructure limits, and it has a high po convergence challenge to reach equilibrium. 
+tential for mitigating the stress from grid import/export. However, for There are several review articles in the field, and the limitation of the 
+low-carbon energy transition, the P2P energy sharing is highly depen existing review papers are listed in Table 1. Researchers mainly focused 
+dent on public preferences, engagement and participation willingness in on advanced business model [29], market designs [3], smart contracts 
+energy futures [6,7]. and auction [30], optimal P2P energy sharing schedule [31], and in
+
+The main objectives of P2P energy sharing are to cover stochastic centives for P2P energy trading [32]. However, associated costs (like 
+energy demands with high penetration of renewable energy, stabilize depreciation of renewable systems, battery degradation), fairness dis
+the grid power under integration of intermittent renewable energy tribution, synergistic collaborations and operations have not been suf
+supply and improve the economic performance. The underlying mech ficiently studied. 
+anism is to cover the demand of neighborhood buildings with surplus Based on the above-mentioned literature review, several knowledge 
+renewable energy in a geographically different building. The main ad and scientific gaps were noticed.  
+vantages of P2P energy sharing mainly include system efficiency im
+provements [8], reduction in required energy storage capacity [9] and • In terms of peer-to-peer energy sharing and trading, the internal 
+primary energy consumption [9], high renewable penetration with trading pricing approach often fails to consider the costs associated 
+decreased energy loss in storage and transmission processes [10], to renewable system depreciation, energy transmission losses and 
+avoidance on devaluation of energy quality and mitigated grid pressure associated infrastructures;  
+for energy interactions [11]. P2P based electricity market design can • Cost-benefit models for P2P energy sharing fail to address fairness 
+promote the decarbonization with renewable and storage technologies distribution and allocation, leading to unfairness and willingness of 
+[12], improve system efficiency [13], reliable trading with PV forecast stakeholders; 
+error and uncertainty [14], and reduce losses, voltage support and • In terms of convergence towards dynamic pricing equilibrium, syn
+congestion management for local power grid [15]. Simulation tools ergistic collaborations and operations are necessary for mutual 
+mainly include MATLAB/Simulink [16], TRNSYS [9], Python/Matlab economic benefits, whereas the current literature is very limited. 
+Interface [17] and Homer [18]. In terms of the cogeneration energy 
+sharing of surplus heat and electricity, Hirvonen et al. [9] indicated that The originality and novelty of this study address above-mentioned 
+cogeneration energy sharing strategy can reduce the required storage scientific gaps.  
+capacity and primary energy consumption by 1–9%. The price-based 
+demand response strategy can guide the dynamic energy sharing with • A state-of-the-art progress and development on P2P trading, in 
+cost saving and improved PV sharing [16]. particular in terms of decentralized system formulation, modelling 
+
+Internal trading pricing with utility business models [19] has widely and energy sharing mechanism, approaches for marginal/trading 
+
+178
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Table 1 
+Summary and comparison of state-of-the-art review papers.  
+
+Studies System Results Contribution Limitation 
+
+Capper Community differences and similarities on energy Five gaps are clearly provided: 1) physical Fails to consider the costs associated to 
+et al. market models constraints; 2) market design & operation; 3) renewable system depreciation, energy 
+[33] scalability; 4) information security; 5) market transmission losses and associated 
+
+participant privacy. infrastructures 
+Tushar peer-to-peer retailers’ involvement in electricity An advanced business model with collective benefits Lack of fairness distribution and allocation 
+
+et al. market market with decision-making to shift the unwillingness to willingness in P2P strategies to encourage stakeholders’ 
+[29] characteristics market participation participation 
+
+Tushar connected pilot project on P2P trading P2P sharing in electricity market Fail to consider degradation costs, no fairness 
+et al. communities distribution and allocation, and no 
+[34] synergistic collaborations 
+
+Sousa et al. P2P in P2P is more popular in consumer- Motivation, market designs and potential challenges No degradation costs, no fairness distribution 
+[3] community centric market in P2P market and allocation 
+
+markets 
+Vieira and microgrid blockchain technologies and agent- autonomous P2P energy trading with smart No synergistic collaborations and operations 
+
+Zhang based system are critical technologies contracts and auction 
+[30] for P2P energy trading 
+
+Chen et al. dynamic optimal P2P energy sharing schedule, The proposed network structure is effective in No fairness distribution and allocation 
+[31] network network operations and energy energy efficiency and cost saving. strategies 
+
+structures utilization 
+Zhou et al. P2P energy market design, trading platforms, Role and responsibility of prosumers; taxes, fees and No synergistic collaborations and operations  
+
+[32] trading physical infrastructure, information incentives for P2P energy trading, vulnerable 
+and communication technology customers protection 
+
+price. P2P based electricity market design approaches are reviewed trading before going through more details. 
+to promote the decarbonization, improve system efficiency, reliable 
+trading with PV forecast error and uncertainty, provide loss reduc 2.1. Research framework 
+tion, voltage support and congestion management for local power 
+grid;  Peer-to-peer energy sharing and trading show many benefits over 
+
+• Dynamic power trading strategies and decision-making approaches demand-side management, power-to-X conversion and energy storage, 
+are also systematically reviewed targeting towards to find an equi including decrease in power loss and energy quality, high renewable 
+librium between the dynamic power trading quantity and internal penetration. A state-of-the-art review is conducted as shown in Fig. 1. 
+sell/buy price;  There are four main parts, including novel system configuration, 
+
+• Synergistic collaborations and operations between multi- modelling and energy sharing mechanism, approaches for marginal/ 
+stakeholders were reviewed to better understand the mutual eco trading price, decision-making on dynamic P2P energy trading, syner
+nomic benefits, including prosumer-centric and consumer-centric gistic collaborations and operations. The P2P energy trading platform 
+energy trading, retailer and utility company, agent-based tech normally consists of distributed renewable systems, prosumers, con
+niques in energy sharing and economic dispatch. sumers, electrochemical battery, hydrogen storage and plug-in electric 
+
+vehicles. Modelling tools for P2P energy trading platform mainly 
+This review is divided into four main sections. The first section gives include MATLAB/Simulink [35,36], TRNSYS [37,38] and Python tools 
+
+a comprehensive literature review on novel system configurations, [8]. As the driving force for dynamic energy trading behavior, margin
+modelling and energy sharing mechanism in a district energy commu al/trading pricing making approaches include market paradigms and 
+nity. In the second section, approaches for marginal/trading pricing and theory-based pricing. The former mainly include supply and demand 
+theory-based pricing for P2P sharing are systematically reviewed. The ratio (SDR), Mid-Market Rate (MMR) and Bill Sharing (BS) methods 
+marginal/trading pricing approaches include supply and demand ratio, [20], and the latter mainly include game theory [24], auction 
+mid-market rate and bill sharing methods. Theory-based pricing ap theory-based pricing [39] and bargaining theory-based pricing [40]. 
+proaches mainly include game theory, auction theory-based pricing and However, the associated costs need to be considered in the internal 
+bargaining theory-based pricing. In the third section, strategies for dy pricing making process such as renewable system depreciation, energy 
+namic P2P energy trading and decision-making are reviewed from the transmission loss, associated infrastructures (e.g., battery), etc. During 
+perspectives of rule-based, stochastic decision-making, dynamic itera the dynamic energy trading process, decision-making approaches on 
+tion and machine learning based market prediction. In the fourth sec dynamic P2P energy trading can mainly be classified into rule-based P2P 
+tion, multi-stakeholders based synergistic collaborations and operations energy trading, stochastic decision-making approach [26], dynamic 
+are reviewed to ensure economic benefit of each participant, fair energy iteration-based decision-making [27] and machine-learning based 
+distribution and cost allocation, decreased reliance on retailers or market prediction [28]. In addition, considering the diversity in energy 
+aggregators and so on. Lastly, challenges, outlook and recommendations use behavior of consumers and intermittency of renewable energy 
+on P2P energy trading in the electricity market are provided. This re generation, synergistic collaboration and operation will be reviewed 
+view can provide cutting-edge guidelines for increasing the use and among prosumers and consumers to improve mutual economic benefits. 
+acceptance of smart and fair P2P energy sharing and trading 
+frameworks. 
+
+2.2. System assessment criteria 
+2. Methods 
+
+Value tapping index. System assessment criteria for P2P energy 
+This section aims to provide an overview research framework, sys sharing include economic indices (i.e., the value tapping index, partic
+
+tem assessment criteria and underlying mechanism of dynamic ipation willing and equality) and technical indices (i.e. energy balance, 
+iteration-based decision-making. The objective is to provide readers an power flatness and self-sufficiency). The value tapping index (VTI) is a 
+overall concept and preliminary recognition on P2P energy sharing and nondimensional index to assess whether the P2P energy sharing is 
+
+economical competitive or not. The mathematical equation of VTI is 
+
+179
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Fig. 1. A holistic overview of the research framework. Four main areas are included, i.e., I) novel system configuration, modelling and energy sharing mechanism; II) 
+approaches for marginal/trading price; III) decision-making on dynamic P2P energy trading; IV) synergistic collaborations and operations. 
+
+shown in Eq. (1). ∑N ∑N
+|incom
+
+value EI = 1 − n=1 m=1 en − incomem|
+∑ (
+
+2N N 3) 
+VTI P2P sharing − valuenon− P2P sharing
+
+= (1)  
+valuemax − value m=1incomen
+
+non− P2P sharing
+In term of technical indices, the energy balance index quantifies the 
+
+where the valueP2P sharing and valuenon− P2P sharing refer to total income of dynamic energy equilibrium between renewable, demand, storage and 
+prosumers under P2P energy sharing without P2P energy sharing. power grid. Power flatness measures the stability of dynamic power in 
+
+Participation willingness index (PI). The participation willingness the energy system. The self-sufficiency refers to the proportion of energy 
+index (PI) refers to the proportion of prosumers with more economic demands covered by renewable energy in the P2P energy sharing 
+benefits in P2P energy sharing. The mathematical equation is shown in framework. 
+Eq. (2). 
+
+N
+PI lower,cost
+
+= (2)  2.3. Dynamic iteration-based decision-making for P2P energy trading 
+N
+
+where N In the P2P energy trading platform driven by transaction prices, 
+lower,cost refers to total number of participators with lower cost in 
+
+the P2P energy sharing than that without P2P energy sharing. N is the mutual influence between energy trading price and transacted energy 
+total number of prosumers. quantity can be noticed, i.e., the internal P2P energy trading price is 
+
+Equality index (EI). The equality index (EI) quantifies the income dependent on the surplus renewable energy, demand shortage, the real 
+distribution among prosumers and reflects the income equality within transacted energy between peers, and so on. Meanwhile, the real 
+the population, as calculated by Eq. (3): transacted energy between peers is dependent on the dynamic P2P en
+
+ergy trading price. Therefore, quantity and price-based dynamic itera
+tions are necessary for decision-making on P2P power trading flows 
+
+Fig. 2. Schematic diagram for P2P sharing community with integrated transportation systems: (a) with intermediate retailers; (b) automatic energy trading platform 
+without intermediate retailer. 
+
+180
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+between different participators. Fig. 2 shows a schematic diagram for with the Bayesian Nash equilibrium (BNE) algorithm to identify the 
+P2P sharing community with integrated transportation systems. In the dynamic pricing. By adopting the call-auction method, participants’ 
+system with intermediate retailers, as shown in Fig. 2(a), in order to get profit of with-game-theory can be improved. 
+economic profits, the retailer will purchase low-price electricity from 
+utility grid or distributed renewable systems, and sell it to building 3.2. Modelling development, simulation tools and constraints 
+owners with load shortage at a high price. In the system without inter
+mediate retailers, as shown in Fig. 2(b), the economic profits are only In order to set up the P2P energy sharing platform, simulation tools 
+allocated between building owners and utility power company. mainly include MATLAB/Simulink [16], TRNSYS [9], Python/Matlab 
+
+(Note: G2B/B2G refer to grid-to-building and building-to-grid. G2V Interface [17] and Homer [18]. Table 3 summarises the modelling 
+refers to grid-to-vehicle. Cimp and Cexp refer refer to power cost of grid development and simulation tools on P2P energy sharing. Based on the 
+import and export; Csell,P2P and Cbuy,P2P refer to selling and buying prices in P2P blockchain-based distributed double auction trade mechanism, Hayes 
+energy trading; Csell,EVs and Cbuy,EVs refer to selling and buying prices of EVs.) et al. [17] co-simulated power distribution networks with P2P energy 
+
+trading. Thakur et al. [49] developed coalition formation algorithms for 
+3. Novel system configuration, modelling and energy sharing energy trade among microgrids, under the blockchain mechanism. Re
+mechanism sults showed that compared to a centralized coalition formation algo
+
+rithm, the distributed algorithm is superior in convergence, coalition 
+This section aims to holistically review system configuration, structure and scalability. Yebiyo et al. [50] studied dynamic energy 
+
+modelling and assessment criteria, together with market design. The transactions between consumers and prosumers to improve the eco
+objective is to provide readers a systematic approach for multi-energy nomic benefits. Results showed that the cost savings are 6.4% and 49.1% 
+system configuration, mathematical modelling tools, multi-metric for consumers and prosumers, respectively. In terms of the cogenerative 
+assessment criteria and P2P market design. energy sharing on surplus heat and electricity, Hirvonen et al. [9] 
+
+indicated that the cogenerative energy sharing strategy can reduce the 
+3.1. Source-grid-load-storage framework with structural configurations storage capacity and primary energy consumption by 1–9%. The 
+
+price-based demand response strategy can provide guidelines on dy
+With widespread deployment of distributed renewable systems, P2P namic energy sharing with cost saving and improved PV penetration 
+
+energy sharing with battery and hydrogen storages [41] is an effective [16]. 
+strategy to improve the self-consumption of renewable energy [42], 
+enhance the self-sufficiency of district demands [37], and stabilize the 3.3. Energy sharing mechanism and system assessment criteria 
+power of local micro-grid [38]. Soto et al. [43] comprehensively 
+reviewed the current status and challenges for P2P energy trading. This The ultimate objective for P2P energy sharing is to overcome the 
+review stressed P2P energy trading with multidisciplinary collaboration. spatiotemporal intermittence in renewable energy supply due to uneven 
+Research literature have often focused on residential P2P energy sharing distribution of renewable energy resources considering the stochastic 
+networks consisting of distributed renewable systems (e.g., solar PV, characteristics of the energy demand of buildings. The underlying 
+wind turbine, etc.), battery storage and plug-in vehicles, for cost profit mechanism is to cover demands of neighborhood buildings with surplus 
+improvement of participants and ancillary services provision. energy from a geographically different building. 
+
+Table 2 lists several P2P energy sharing systems with different ap Liu et al. [53] adopted VTI to analyse the economic performance of 
+proaches and energy sharing mechanisms. Zepter et al. [44] studied different micro-grids in terms of congestion mitigation and network loss 
+synergistic functions between peer-to-peer trade and residential storage reduction. Long et al. [54] developed a two-stage aggregated battery 
+for P2P energy sharing. By adopting a two-stage stochastic programming control for micro-grid based P2P energy sharing. Hahnel et al. [55] 
+approach and the sequenced decision-making under renewable gener studied participation willingness in P2P networks. In the case study with 
+ation and spot prices, the P2P trade and battery storage can contribute to tailored policy instruments, 77.4% of participants show high willingness 
+cost savings at around 60%. Han et al. [45] adopted the game theory to join the P2P energy trading. In terms of the income equality 
+
+Table 2 
+P2P energy sharing system.  
+
+Studies Renewable Energy storages Plug-in Approaches Energy sharing Conclusion 
+systems vehicles mechanism 
+
+Zepter et al. PV and wind Battery ─ Synergies of peer-to-peer Energy trading based on The combined P2P trade and battery 
+[44] turbine trade and residential storage day-ahead and intraday storage can lead to cost savings of almost 
+
+with two-stage stochastic spot prices. 60%. 
+programming approach 
+
+Arsoon and Wind turbine ─ ─ Decentralized energy P2P sharing among P2P networked operation mode 
+Moghaddas- management and information networked microgrids outperforms individual operation mode. 
+Tafreshi [46] sharing 
+
+Han et al. [45] Distributed Distributed ─ Game theory with the Call-auction method Participants’ profit of with-game-theory 
+energy battery energy Bayesian Nash equilibrium with the trading was higher than without-game-theory. 
+generators storage system (BNE) algorithm for dynamic mechanism for 
+
+pricing maximum transaction 
+cost 
+
+Al-Obaidi et al. ─ Battery EV Decentralized energy trading Bidirectional smart EV The EV scheduling model with users’ 
+[47] under Blockchain’s smart charging preferences will offset the EV charging 
+
+contracts costs by 100%. Peer-to-peer energy 
+transactions and ancillary services 
+provision can be improved by 90% and 
+11%, respectively. 
+
+Alam et al. [48] Solar PV Battery EVs Energy Cost Optimization via Pareto optimality-based A saturated increase of cost saving can be 
+Trade (ECO-Trade) fair cost distribution noticed with the continuous increase of 
+
+renewables and storage penetration rate.  
+
+181
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Table 3 trading with PV forecast error and uncertainty [14], provide loss 
+Modelling development and simulation tools on P2P energy sharing.  reduction, voltage support and congestion management for local power 
+
+Studies Tools Approaches Mechanism Results grid [15]. Zhang et al. [15] conducted a coordinated market design to 
+provide multiple functions such as loss reduction, voltage support and 
+
+Hayes et al. Python and Co-simulation Blockchain- Moderate 
+[17] Matlab based auction level of peer- congestion management for local power grid with P2P energy trading. 
+
+Interface trade to-peer Depending on the roles of centralized and distributed energy storages, 
+mechanism trading will Lüth et al. [12] indicated that P2P trade and battery usage are critical 
+
+slightly affect elements that need to be considered for local electricity market. 
+network 
+operational Furthermore, the possibility for reserving capacity of a centralized bat
+performance. tery needs to be considered for market-based incentives. Parag and 
+
+Hawlitschek Onsite Onsite survey Strongest Economic Sovacool [13] studied the electricity market design in respect to grid 
+et al. [51] survey among 745 motives for benefits, trust, integration, P2P models and prosumer community. Results showed that 
+
+participants and against expectancy, the electricity market design can improve energy efficiency, democra
+the peer-to- and ecological 
+peer sharing sustainability tize demand-response and promote renewable energy technologies. 
+
+are critical for Cadre et al. [57] studied the impact of evolution from the variational to 
+P2P energy Generalized Nash Equilibrium on a P2P electricity market. Results 
+sharing showed that due to coordination, market liquidity and information 
+
+Yebiyo et al. Economic Total daily Energy selling Cost savings 
+[50] modelling money and buying are 6.4% and asymmetry, the P2P market design shows superior performance than the 
+
+quantification between 49.1% for classical centralized market design. Zhang et al. [14] proposed a novel 
+consumers consumers P2P Local Electricity Market for energy and uncertainty trading and 
+and and balanced 55.3% of PV forecast error. 
+prosumers, to prosumers, Approaches to P2P based electricity market design mainly include 
+improve the respectively. 
+economic the onsite survey and negotiation algorithms. Ableitner et al. [58] 
+benefits. studied the impact of user behavior on the P2P electricity market using 
+
+Perger et al. Willingness- Energy Community Battery the onsite survey approach. Research results showed that 30% re
+[52] to-pay tool sharing on PV power storage can spondents would like to actively set prices, 35% respondents prefer 
+
+total PV sharing for decrease grid 
+generation, overall imported automated prices under information system, and 35% respondents show 
+instead of profitability power by 15% no response to the survey. Moret et al. [59] developed negotiation al
+prosumer’s PV improvement and annual gorithms for energy transactions and management in consumer-centric 
+surplus marginal electricity markets, with respect to large number of participants and 
+
+emission presence of asynchronicities. Results highlight the necessity for hybrid 
+savings by 
+38%. approaches and sparsification on negotiation processes. From the 
+
+Hirvonen TRNSYS Cogenerative Sharing of The primary demand-side management, Dang et al. [60] developed a demand-side 
+et al. [9] energy sharing surplus heat energy load management strategy under the blockchain-based market, and 
+
+and consumption indicated that 18.9% of total cost can be saved. 
+electricity can be 
+with minimal reduced by 
+storage 1–9% with the 4. Approaches for marginal/trading price and economic 
+capacity adoption of incentives for P2P sharing 
+
+energy sharing 
+technique. Depending on the internal price setting, internal trading mechanisms 
+
+Liu et al. MATLAB/ An equivalent Price-based The model is 
+[16] Simulink cost model demand verified to be can be mainly classified into supply-to-demand ratio mechanism, mid- 
+
+incorporating response for cost saving market mechanism and bill sharing mechanism. Furthermore, consid
+economic cost dynamic and improving ering battery cycling aging in distributed energy systems, the auction 
+and users’ energy PV energy theory-based pricing bargaining mechanism with dynamic pricing will 
+willingness sharing sharing. 
+
+Ma et al. Homer Information of Automatic Incentives can become popular in smart energy systems with flexibility. Based on the 
+[18] bids and sales energy be provided to real-time energy consumption and electricity purchase rates of pro
+
+for P2P trading both private sumers and consumers, electricity trading prices have been identified to 
+trading between and public guarantee the economic benefits [61]. This section aims to compre
+
+producers microgrids  hensively review the underlying mechanism and mathematical quanti
+and 
+consumers fication approaches of each trading price strategy, and present the 
+
+necessity of battery cycling aging in benefit allocation, through the 
+dynamic pricing. 
+
+distribution among all participators, Chakraborty et al. [56] proposed a 
+negotiation-based strategy to improve the system efficiency and 4.1. Market paradigms 
+fairness. 
+
+For an efficient energy management system, energy suppliers can 
+3.4. Peer-to-peer trading-based designs in local electricity market smartly adjust their onsite power generation, management and prices, in 
+
+according to operating conditions, and the consumers will respond 
+With the increased deployment of distributed renewable systems and accordingly by rescheduling their demands for profit maximization. Due 
+
+associated electricity infrastructures, P2P sharing and trading become to the mutual interaction and impact, the natural game theory can be 
+necessary to motivate more end-users’ participation. Electricity market applied for trading strategy analysis [62]. Nash equilibrium is an 
+design can promote P2P trading with reduced reliance on power grid, effective state that players can improve the overall performance by 
+and it involves multidisciplinary research and multiple efforts from changing its action multilaterally. Depending on coordination or 
+system planner, operator, policy-maker and so on. P2P based electricity competition among each participant, game theory include noncooper
+market design can promote the decarbonization with renewable and ative and cooperative games. The noncooperative game is mainly 
+storage technologies [12], improve system efficiency [13], reliable applied in distributed energy trading with competitive providers and 
+
+182
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+consumers, and the cooperative game is mainly applied in energy proposed a bidding model with consideration of operational constraints 
+trading participants for cooperation with effective communication net and battery degradation. Through the bi-level optimization, prosumers’ 
+works. Bhatti and Broadwater [24] developed a non-cooperative game benefits can be maximized in the upper level, and the storage degra
+model with Nash equilibrium to promote market reliability and fairness. dation can be minimized in the lower level. Furthermore, renewable 
+Results showed that the proposed market can increase local generation, system depreciation, energy transmission loss and associated in
+improve payoffs (profits) for the participating players, and decrease frastructures need to be considered, when developing internal pricing. 
+market clearing prices. However, the current literature provides limited studies on related 
+
+topics. Future studies need to update the internal trading price model, 
+4.2. Theory-based pricing with compensations on associated depreciation costs of renewable and 
+
+storage systems, energy transmission loss, through price-based or 
+The auction theory-based pricing mechanism is to maximize utility incentive-based programs. 
+
+benefits, whereas the bargaining theory-based pricing mechanism aims 
+to realise fair and self-enforcing cost allocations. In the academia, the 5. Strategies for dynamic P2P energy trading and decision- 
+auction theory-based pricing mechanism has been used in renewable making 
+energy management. Tang and Jain [39] proposed an auction paradigm, 
+in which renewable energy suppliers bid probability distributions of In case of P2P energy sharing and trading, critical issues include 
+generation. Cintuglu et al. [63] proposed a reverse auction model to whether or not to participate in the P2P energy trading? How to 
+obtain reliable power supply by scheduling the electricity contract be participate in the P2P energy trading (renewable or battery)? In the P2P 
+tween conventional and distributed renewable energy systems in an energy trading framework, the ultimate function of decision-making 
+hour-ahead market. Mei et al. [64] proposed an auction-theory-based models is to automatically generate bids and help each peer to decide 
+method for coalition utility of a cooperative game. whether to participate in the auction [73]. Hahnel et al. [55] studied the 
+
+In case of bargaining theory-based pricing mechanism, Fan et al. [40] customer’s participation preferences. Results indicate that customers’ 
+developed bargaining-based cooperative energy trading with fair allo trading behavior is highly dependent on electricity prices and state of 
+cation of economic benefits among participants, following Nash bar charge of energy storages. Jadhav et al. [74] developed a seller level 
+gaining theory. Compared to conventional non-cooperative game-based game and proposed a new pricing mechanism to promote fair energy 
+approach, the bargaining-based cooperative energy trading can simul trading. The proposed approach is validated to be effective in trading 
+taneously benefit consumers and energy providers. Wang and Huang fairness and system stability. 
+[65] adopted the Nash bargaining theory to design an incentive mech In this section, strategies for dynamic P2P energy trading are 
+anism for energy trading between micro-grids. In addition to dynami comprehensively reviewed, mainly including rule-based, stochastic 
+cally balancing the local power supply and demand, the energy trading decision-making, dynamic iteration-based decision-making and artifi
+between micro-grids can reduce the total cost by 13.2% and individual cial intelligence-based pricing mechanism. The objective of this Section 
+cost by 29.4%. Li et al. [66] adopted the Nash bargaining theory to is to provide audiences with underlying mechanism, current status, 
+address conflicts among economic benefits to individual participants, future challenges and prospects on strategies for P2P energy trading. 
+system reliability and security. Melendez et al. [67] developed a generic 
+Nash bargaining model for optimal electricity trading strategies among 5.1. Rule-based P2P energy trading in consumer and prosumers 
+aggregations of peers. Results show that total cost savings are equal to 
+the average price of 1.62-MWh electricity. Considering the multi-diversity constitution of various types of 
+
+Furthermore, within the P2P energy sharing micro-grid, several buildings in a community, Morstyn et al. [75] proposed a federated 
+critical factors need to be considered in P2P pricing mechanisms, e.g., power plant formed by prosumers to provide grid services. As shown in 
+renewable system depreciation, battery cycling aging, energy trans Fig. 3, the community consists of consumers (low-income house without 
+mission loss and associated infrastructures. The ignorance of these fac solar PVs), prosumer (solar PV, battery without EVs) and green pro
+tors will lead to the inaccuracy of initiated pricings with sumers with EVs. The self-organized P2P energy sharing network can 
+underestimation or overestimation of economic benefits to each improve the renewable penetration, together with the decrease of grid 
+participator, especially considering expensive battery costs in the com reliance and increase of economic benefits. 
+mercial market. 
+
+For battery cycling aging in the distributed renewable supported 5.1.1. P2P energy trading in decentralized community 
+microgrid, Zhou et al. [68] developed a battery cycling aging model to Factors that affect dynamic P2P energy trading behaviors include 
+quantify the real-time battery degradation, in respect to different energy prices and battery state of charge [55], real-time power supply 
+state-of-discharge and number of cycles. The proposed strategy can and demand [76], fair-trading process [77], and etc. Liu et al. [78] 
+effectively improve the battery relative capacity from 0.94 to 0.986. proposed a price-based demand response model for P2P sharing. The 
+From the life-cycle perspective, Zhou and Cao [69] studied the practical case study shows that the price-based demand response model 
+techno-economic performances of an energy sharing system with can save PV prosumers’ costs and improve the PV energy sharing in the 
+renewable depreciation. The results showed that the cycling aging will district community. By adopting the Nash-type game theory, Jing et al. 
+devalue the system performance, and advanced energy sharing strategy [25] investigated the fair pricing strategies for electricity and heating 
+with economic incentives is quite necessary. Furthermore, renewable trading within a small community, as shown in Fig. 4. The optimized 
+energy transition [70] necessitates the advanced energy management variables include energy trading behavior, operational strategy, and 
+strategies for battery storage management. Beltran et al. [71] adopted demand response schedule. Results showed that compared to standalone 
+the rain flow counting algorithm to quantify the number of cycles and systems, 4.9% cost saving can be realized in the fairness-based energy 
+battery cycling aging of various batteries in a grid-connected PV plant. It trading. In order to improve the P2P energy sharing efficiency, Cui et al. 
+can be noticed, the current literature provides quite a few studies, in [79] developed a two-phase model, in which optimal energy-sharing 
+terms of quantitative impact of battery cycling aging on economic profiles of prosumers were to minimize the global energy costs in the 
+profits and participators’ behaviors in the P2P energy sharing. Actually, first stage, and equilibrium-based energy-sharing prices were identified 
+with adoption of P2P energy sharing to enhance both renewable pene considering interests of each prosumer. 
+tration of intermittent renewable supply and self-sufficiency on sto
+chastic demands, less pressure will be put on the battery storage, so that 5.1.2. P2P energy trading with electric vehicle battery storages 
+the service lifetime of battery will be prolonged. Nizami et al. [72] In addition to buildings in the community, the consideration on 
+
+183
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Fig. 3. Distribution network for P2P energy sharing. Low-income household refers to most of buildings in current situation. Philanthropic prosumer refers to 
+buildings with onsite renewable supply systems, e.g., BIPVs and micro wind turbines. Green prosumer refers to the building with electric vehicle integration. 
+Prosumers are willing to sell their renewable energy to either consumers or main grid to get economic benefits. 
+
+Fig. 4. P2P energy trading between residential and commercial prosumers with demand-side management in multi-energy systems [25,80]. Heating network and 
+power grid can effectively connect geographically different energy stations (e.g. commercial and residential energy stations) for district energy sharing and trading. 
+
+vehicles in P2P energy trading has also attracted increasing interests building, electric vehicles (EVs) and a charging station under a dynamic 
+recently, especially with the electrification in both buildings and pricing mechanism. Results showed that compared to P2G energy 
+transportations. Alvaro-Hermana et al. [81] studied the cost-optimal trading, the P2P energy trading can decrease the total cost of prosumers 
+P2P energy trading in electric vehicle systems, in accordance with grid by 23.2%, improve the self-consumption of PV generation by 10%, and 
+electricity price and mobility constraints of vehicles. In the case study, ensure 100% participation willingness of prosumers. Through the power 
+the proposed trading system can reduce the energy cost by 71%. Aznavi dispatch on grid, wind and PV charging station, Bokopane et al. [83] 
+et al. [82] studied P2P energy trading among a PV integrated office developed a coordinated charging framework for P2P renewable 
+
+184
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+charging stations of EVs. The P2P energy sharing model is a 1) Decision-making on dynamic power trading, dependent on internal 
+cost-effective charging scheme and can meet vehicle users’ satisfaction. trading price and energy trading quantity;  
+
+For P2P electricity trading among plug-in hybrid EVs, consortium 2) The intermediate retailers win maximum economic benefits while 
+blockchain technology [27] was adopted for transaction security and the prosumers lose the benefits due to nontransparent information 
+privacy protection, and the electricity pricing was solved by an iterative exchange between the ‘energy seller’ and the ‘energy buyer’. In 
+double auction mechanism to maximize the social welfare. It can be addition, in order to promote the energy transaction between re
+noticed that there are limited studies on P2P energy sharing and trading tailers and prosumers with buy-in energy at low price and sell-out 
+between district buildings and vehicle fleets. The roles of prosumers, energy at high price, the intermediate retailers might adopt incen
+consumers and vehicles in the P2P energy trading framework are worthy tive policies, such as ‘those who sell electricity fast to the retailer can get 
+to be investigated, and economic incentives for promoting their partic extra bonus’, and ‘those who buy later from the retailer will suffer from 
+ipations are necessary to be explored, especially considering the battery price penalty’.  
+depreciation cost of plug-in EVs. Furthermore, decision-making on dy 3) The fair distribution of economic benefits for each participator with 
+namic energy trading flow between buildings and vehicles needs to be the consideration of energy transmission loss and cost of micro-grid. 
+considered, to improve economic profits of all participators with 
+consideration on battery depreciation costs. 
+
+Fig. 5 demonstrates a structural configuration of a P2P energy 5.2. Stochastic decision-making approach 
+trading platform between community buildings and transportations. 
+P2P energy sharing within community can promote the spatiotemporal Fluctuation in renewable generations and stochastic demands 
+power migration to reach the regional energy balance with better require stochastic decision-making approach for optimal power flow 
+matching performances between intermittent renewable power supply [26] and dynamic energy trading behavior [84,85]. In order to offset 
+and stochastic demands. The integration of transportation in the com part of wind power deviation, Vahedipour-Dahraie et al. [26] adopted 
+munity can provide auxiliary services for buildings, and transfer the stochastic decision-making approach to determine the optimal 
+distributed renewable energy to vehicles. Several challenges need to be purchase energy from and sell reserve capacity to a wind power pro
+noticed and investigated, regarding the integrated P2P energy trading ducer. By adopting the bilevel stochastic model (i.e., the upper level 
+platform.  maximizes the wind power producer’s profit and the lower level mini
+
+mizes demand response aggregators’ costs.), the cost-optimal strategy 
+can be developed for P2P energy trading. Chen et al. [86] adopted a 
+stochastic Leader-follower Game Approach, in which subjective load 
+
+Fig. 5. Structural configuration of P2P energy trading for community and transportation. P2P sharing community can be formed with different types of stakeholders 
+(office, hotel, commercial and residential building owners), based on the already existed powerline. Transportation energy systems can complement the existed 
+powerline for spatiotemporal energy sharing and trading. The power grid is to dynamically balance the distributed renewable energy and district energy demands. 
+
+185
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+strategies are for prosumers, while a dynamic pricing scheme with profit trading system [98]. Main functions of blockchains include transparent, 
+is initiated for an energy sharing provider. By adopting the differential tamper-proof and secure systems for novel business solutions and smart 
+evolution algorithm to solve the game discreteness resulting from social contracts (see Fig. 7). 
+attributes of prosumers, the Stackelberg equilibrium can be reached, and 
+the social behavior of prosumers can be effectively considered. In order 
+to reduce the electrical demand at peak hours, Tushar et al. [84] 5.4. Others 
+formulated a cooperative Stackelberg game, with centralized power 
+systems (leader) for pricing setting and energy trading behavior change, In addition, dynamic iteration-based decision-making and AI market 
+and prosumers (followers) with response accordingly. Through the prediction in P2P energy trading have also attracted researchers’ in
+unique and stable Stackelberg equilibrium, a derived closed-form terests. In terms of iteration-based decision-making, Zhang et al. [99] 
+expression was developed for the selection of leaders’ strategy and the applied iterative double auction to adjust individual transaction vol
+prosumers chose their equilibrium coalition structure. Xiao et al. [85] umes and market equilibrium price, and to maximize the social weal
+developed a stochastic energy trading game for optimal decision making fare. Results showed that the proposed iterative double auction 
+on energy trading behavior. Energy transaction between buyer and algorithm can improve the hourly social welfare from − $37.41 to 
+seller can be well matched. -$29.06 by 22.3%. Wang et al. [100] integrate multi-agent dynamic 
+
+game in decision-making transactions. The transaction platform can 
+provide complementation and coorporation among building owners, 
+
+5.3. Blockchain application in energy trading for integrated community grid corporation and distributed renewable system owners. Tushar et al. 
+and transportation energy systems [101] developed a coalition formation game framework with economic 
+
+benefits to prosumers. 
+Blockchain technology has been widely applied in energy trading With respect to AI for market prediction, Babaei and Bamdad [102] 
+
+and privacy protection [87]. In order to keep the fair balance between developed an artificial neural network (ANN) model to evaluate risk and 
+economic efficiency and information privacy, Esmat et al. [88] proposed return to help decision-making on P2P lenders. Compared to a tradi
+a novel decentralized platform, consisting of the market layer and the tional model, the ANN model can help make better decisions on risk and 
+blockchain layer, as shown in Fig. 6. Various market products can be return investment. Combination of machine learning with physical 
+traded in the market layer. Market trading results are securely stored in models [103] is more helpful for complex nonlinear behavior learning 
+the blockchain layer. Main functions of the blockchain layer include a and computational load. Chen et al. [104] adopted Extreme Learning 
+high level of automation, decrease in human interaction, security, and Machine to establish the straightforward relationship between prosumer 
+fast real-time settlements with smart contracts [89]. bidding actions and market responses, enabling the joint optimization 
+
+In terms of blockchain technology application in P2P energy trading with flexible energy soruces. Qiu et al. [105] applied multi-agent deep 
+platform, Mengelkamp et al. [92] designed a blockchain-based micro reinforcement learning to address the P2P trading via multi-agent co
+grid energy market for information transmission. Okoye et al. [93] ordination. The approach can promote operating cost, peak demand and 
+developed a blockchain-enhanced transaction model to address unde computational time. 
+sired inherent delay on energy transaction. Peck and Wagman [94] 
+developed an energy trading platform for energy sharing and trading of 6. Synergistic collaboration and operation among multi- 
+neighbor rooftop solar power systems. Brousmiche et al. [95] applied stakeholders 
+blockchain and Vehicle-to-Grid Technology to support the P2P energy 
+market. Li et al. [96] applied an energy blockchain to address the se In the active distribution network with P2P energy trading, multi- 
+curity and privacy in untrusted and nontransparent energy markets. The stakeholders are involved, including prosumers, consumers, external 
+proposed credit-based payment scheme can guarantee the security and retailer, utility company and distribution system operators. Synergistic 
+efficiency in P2P energy trading. In order to address the energy cheating collaborations and operations between multi-stakeholders can ensure 
+attack from energy sellers to already paid consumers, Li et al. [77] the economic benefit of each participant, fair energy distribution and 
+developed an anonymous authentication for privacy protection and a cost allocation, decreased reliance on retailers or aggregators and so on. 
+timed-commitments-based mechanism for trading fairness. Dong et al. Rodrigues et al. [106] comparatively studied the optimal battery energy 
+[97] developed a game-theoretic approach with accurate energy transfer storage sizing for P2P energy sharing community, in respect to different 
+signal to achieve the self-sufficiency of blockchain. The proposed ownership structures. Results showed that compared to the energy 
+approach can enhance trading efficiency, reduce communication loss sharing provider (ESP) based structure, the user owned structure is more 
+and protect privacy information. Challenges and opportunities of economically competitive. In this section, multi-stakeholders based 
+blockchain technology have also been studied, in distributed P2P energy synergistic collaborations, operations and optimizations have been 
+
+Fig. 6. Decentralized trading platform [88,90].  
+
+186
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Fig. 7. (a) Blockchain-based P2P trading and off-chain; (b) side-chain solutions [91]. Both individuals sign the transaction contract using digital signatures. Smart 
+contract will calculate and update the payment price, based on tariff and energy import/export. Consensus mechanism in the P2P trading will be applied, 
+authenticated and validated. All off-chain transactions are recorded using a side-chain. 
+
+clarified including prosumer-centric and consumer-centric energy incentivise players’ participation with maximized economic welfare. 
+trading, retailer and utility company, agent-based techniques in energy Results showed that the proposed technique shows lower data exchange 
+sharing and economic dispatch, and optimal cost distribution. Readers and faster convergence than other P2P trading methods. For autono
+can clearly learn how prosumer-centric and consumer-centric energy mous consumer-centric energy trading market, Liu et al. [108] applied 
+markets work, roles of external retailer and utility company, and deep Q-Learning (DQN) for P2P decision-making with increased prof
+fundamental roles of agent-based techniques in energy sharing and itability. Orlandini et al. [109] developed a coordinated framework 
+economic dispatch. between P2P markets and distribution system operator (DSO) in the 
+
+consumer-Centric Market. Trade-off between prosumers P2P trans
+6.1. Bilateral prosumer-centric and consumer-centric energy trading actions and grid operation can be achieved. Patnam and Pindoriya [110] 
+
+studied a demand response strategy in a consumer-centric electricity 
+Tushar et al. [22] adopted a game theoretic approach to guarantee market, integrating EVs, heating, ventilation and air conditioning, and 
+
+the prosumers’ benefits in peer-to-peer (P2P) energy trading. Khorasany renewable systems, as demonstrated in Fig. 8. The demand response 
+et al. [107] designed a decentralized bilateral energy trading platform to involves retailor/aggregator, householders, aggregated buildings and 
+
+Fig. 8. Multi-level demand response (DR) in a consumer-centric energy market [110,111]. The DR in multi-levels (retailor/aggregator, householders, aggregated 
+buildings and appliance schedules) will change the consumer-centric electricity market. 
+
+187
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+appliance schedules. grid parity, the trading market can be useful with the improvement on 
+Tushar et al. [112] studied a prosumer-centric P2P energy trading self-consumption. Saxena and Abhyankar [122] proposed an 
+
+scheme, with intelligent participation of batteries for economic benefits. agent-based bilateral transactive market through the mechanism that 
+Results indicated that prosumers can still benefit from the peer-to-peer behaviours’ negotiation between sellers and buyers is reached by agent 
+trading even without storage, and smart participation of batteries is technology. By penalizing the energy trading exceeding the contract’s 
+quite important with consideration of battery degradation cost. Morstyn scope with imbalance prices, the social welfare can be maximized and 
+et al. [113] systematically reviewed different prosumer-centric market imbalance cost can be minimized. Mahmood et al. [123] developed a 
+design frameworks. Wu et al. [114] studied User-Centric Peer-to-Peer multi-agent-based sharing power economy for demand coverage 
+Energy Trading with auction theory for energy allocation. Simulation through the price-based dynamic judgement between grid importation 
+results on 15 simulated residential users validated the reasonability and and battery discharging, depending on ‘time of use’ and ‘state of charge’ 
+effectiveness of the proposed technique. of battery. Results indicated significant financial benefits of ‘sharing 
+
+power economy’ with the application of proposed agent-based tech
+6.2. External retailer and utility company-based energy trading niques. Gomes et al. [124] developed an agent-based platform with a 
+
+P2P transaction auction model and five independent agents, i.e., office 
+Patnam and Pindoriya [110] reviewed demand response in buildings. With the prediction on energy consumption and generation, 
+
+consumer-centric electricity market. Both direct load control, as shown using hour-ahead forecasting algorithms, each agent can actively 
+in Fig. 9(a), and coordinated control, as shown in Fig. 9(b) with power participate in the transaction auctions and reduce the operating cost. 
+and communication links, have been formulated. Compared to the direct Rahman and Oo [125] designed an agent-based energy management and 
+load control, the coordinated control shows reduced reliance on retailers control system for power sharing with communication on local and 
+or aggregators. Zhou et al. [115] studied the P2P energy trading with neighbor information exchange. The agent-based information commu
+ancillary service provide by electric vehicles, and concluded that reve nication for power flow control can improve the power supply reli
+nue for the customers can be improved in the community. ability. Wang et al. [126] designed a multi-Agent Architecture Design 
+Vahedipour-Dahraie et al. [26] designed a framework with renewable framework for P2P control, with primary secondary and tertiary con
+producers provided reserve capacity from demand response aggregators. trols. The information exchange between neighbouring agents can 
+The cost of the demand response aggregators can be minimized through improve the reliability and effectiveness. 
+optimal bidding. Zhang et al. [116] designed a multi-leader (retailers) 
+multi-follower (consumers) game model in energy trading in microgrids. 7. Outlook and recommendations 
+A trustworthy trading market can be established by constraining the 
+selfish retailers. In the academia, researchers focused on P2P energy sharing [127] 
+
+Guerrero et al. [118] formulated a transactive energy platform, as and trading [128], synergistic energy sharing [129], dynamic pricing 
+shown in Fig. 10, for the comparison among uncoordinated, coordinated [130], initiative strategies [131], optimal market framework [132], 
+and P2P approaches. The framework consists of independent system collaborative and competitive trading algorithms [133], 2-round auc
+operator, distribution system operator, intermediate retailer and tion for trading cost saving [134], and so on. However, several critical 
+aggregator, and end-users. Main functions of retailers include market issues remain unresolved, such as devices depreciation costs and trans
+price and energy-use schedule. The aggregators will provide control mission losses, fairness cost-benefit distribution and allocation, syner
+signals to end-users for smart operation. Results can enable practitioners gistic collaborations and operations among different stakeholders. 
+to select a tailored approach in accordance to specific power network Compared to the already published articles, this study shows dif
+and integration problem. ferences and significance as shown below.  
+
+1) underlying mechanism on an equilibrium between dynamic power 
+6.3. Agent-based techniques in energy sharing and economic dispatch trading quantity and internal sell/buy price was explored and 
+strategy implemented in dynamic power trading strategies and decision- 
+
+making approaches;  
+Shamsi et al. [120] developed an economic dispatch algorithm to 2) mutual win-to-win economic benefits with synergistic collaborations 
+
+reduce the operation costs of passive and active agents. Chen et al. [121] are provided to incentivise multi-stakeholders’ proactivity and 
+developed a multi-agent-based model for distributive PV trading mar market vitality, with respect to prosumer-centric and consumer- 
+ket. Results showed that with the tendency of descending subsidy and 
+
+Fig. 9. Demand response (DR) architecture for interaction of (a) non-coordinated users and aggregator; (b) coordinated users and aggregator [110,117]. Dynamic 
+information and power transmission can be realized based on communication and electricity networks. Power and communication transmission is between users and 
+retailer/aggregators in the direct load control. It can also be formulated among users in the coordinated control. 
+
+188
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Fig. 10. A transactive energy framework with intermediate retailer and aggregator [118,119]. Market price and energy-use schedule are determined by retailers. The 
+aggregators will provide control signals to end-users for smart operation. Tailored approach can be selected in accordance to specific power network and integra
+tion problem. 
+
+centric energy trading on intermediate retailers, end-users and utility • Development of dynamic P2P energy trading price model coupled 
+company.  with grid pricing schemes to motivate the participation of end-users 
+
+3) decarbonization on P2P based electricity market through energy in the community-based peer energy sharing; cost-benefit models 
+efficiency improvement and power dispatch, together with service with fairness distribution and allocation strategies to eliminate the 
+provision for voltage support and congestion management for local inequality and encourage the participators’ willingness; 
+power grid. • Time-of-use peer trading management strategies for the enhance
+
+ment in power flexibility and economy of the utility grid;  
+Although P2P energy trading can ensure economic benefits to each • Consider hydrogen in district energy community for P2P energy 
+
+participant, unfair distribution of economic benefits might decrease the trading especially as hydrogen vehicles may start to enter the market 
+participation willingness. In order to guarantee the fair cost distribution (2021 MIRAI [137]);  
+for the participating households, Alam et al. [135] conducted the Pareto • Grid interactive efficient buildings and optimal energy sharing in 
+optimality to improve the neighborhoods’ benefits without sacrificing which buildings can monitor and control the power for techno- 
+their own benefits. The near-optimal cost optimization algorithm economic performance improvement;  
+through incorporating fair cost distribution in a coordinated demand • Boundary transition from peer-to-peer towards inter-city or cross- 
+side management system can improve householders’ participation regional energy sharing and trading, with exploitation of local grid 
+willingness. In a P2P energy sharing framework, Cui et al. [136] difference; 
+developed a cost reduction ratio distribution model to guarantee the • Advanced business models to incentivise multi-stakeholders’ proac
+fairness of cost distribution. Results showed that the energy cost of each tivity and market vitality. 
+building can be reduced with reduced net import energy from the main 
+grid. Based on the literature, several challenges are noticed.  8. Conclusions 
+
+• Inequality on benefit allocation demotivates the participation In this study, a comprehensive review of peer-to-peer energy (P2P) 
+willingness; sharing and trading was conducted, from aspects of trading pricing 
+
+• Internal trading price fails to consider the renewable system depre models, decision-making in dynamic trading behavior and agent-based 
+ciation, energy transmission loss and associated infrastructures;  synergistic collaboration. Cutting-edge technologies in P2P are 
+
+• Optimal energy sharing strategies from distributed generators for reviewed, such as blockchain technology for the automation level 
+total cost savings;  improvement, interdisciplinary research (e.g., game theory, auction 
+
+• P2P energy sharing may extend the service lifetime extension of theory and bargaining theory) for dynamic pricing, machine learning- 
+battery storage and the associated economic benefits;  based market prediction and stochastic decision-making on trading be
+
+• Mutual influence between the dynamic power trading and internal haviors. P2P has several benefits over other energy management stra
+sell/buy price requires dynamic iteration to reach the equilibrium tegies such as reducing energy losses and losses in energy quality, but 
+and dynamic sell/buy price, but the convergence of the dynamic also providing help to bottlenecks in the power system. The key obser
+pricing is a major challenge considering the operational uncertainty. vations and conclusions of the review are summarised below.  
+
+Future studies could focus on.  1) The ultimate objectives for P2P energy sharing include improvement 
+of renewable penetration with spatiotemporal intermittence, self- 
+sufficiency on stochastic energy demands of district buildings, 
+
+189
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+mitigated fluctuation and enhanced stability of power grid, and so Acknowledgements 
+on. The underlying mechanism is to cover the demands of neigh
+borhood buildings with onsite surplus renewable energy in a This work is supported by The Hong Kong University of Science and 
+geographically different building.  Technology. All copyright licenses have been successfully applied for all 
+
+2) Simulation tools for P2P energy sharing and trading in the local cited graphics, images, tables and/or figures. This work was supported 
+electricity market include MATLAB/Simulink, TRNSYS, Python/ by the Hong Kong University of Science and Technology (Guangzhou) 
+Matlab Interface and Homer software. The simulation framework startup grant (G0101000059). This work was supported by Regional 
+indicates that P2P energy sharing can improve the system efficiency, joint fund youth fund project (P00038-1002) and HKUST(GZ)-enterprise 
+reduce the required energy storage capacity and primary energy cooperation project (R00017-2001). This work was also supported in 
+consumption, enable high renewable penetration with decreased part by the Project of Hetao Shenzhen-Hong Kong Science and Tech
+energy loss, avoid devaluation of energy quality and mitigated grid nology Innovation Cooperation Zone (HZQB-KCZYB-2020083). 
+pressure for energy interactions, together with voltage support and 
+congestion management for local power grid. References 
+
+3) Marginal/trading pricing making approaches include market para
+digms and theory-based pricing. The former mainly includes supply [1] N. Zhou, N. Khanna, W. Feng, J. Ke, M. Levine, Scenarios of energy efficiency and 
+
+and demand ratio (SDR), Mid-Market Rate (MMR) and Bill Sharing CO2 emissions reduction potential in the buildings sector in China to year 2050, 
+Nat. Energy 3 (2018) 978–984. 
+
+(BS) methods, and the latter includes game theory, auction theory- [2] G. Vieira, J. Zhang, Peer-to-peer energy trading in a microgrid leveraged by smart 
+based pricing and bargaining theory-based pricing. However, the contracts, Renew. Sustain. Energy Rev. 143 (2021), 110900, https://doi.org/ 
+associated or ancillary costs also need to be considered in the internal 10.1016/j.rser.2021.110900. 
+
+[3] T. Sousa, T. Soares, P. Pinson, F. Moret, T. Baroche, E. Sorin, Peer-to-peer and 
+pricing making process such as renewable system depreciation, en community-based markets: a comprehensive review, Renew. Sustain. Energy Rev. 
+ergy transmission loss, associated infrastructures (e.g., battery) and 104 (2019) 367–378. 
+so on. Furthermore, mutual influence and inverse mathematical [4] A.M. Brockway, J. Conde, D. Callaway, Inequitable access to distributed energy 
+
+resources due to grid infrastructure limits in California, Nat. Energy 6 (2021) 
+relationship between dynamic power trading and internal sell/buy 892–903. 
+price propose challenges for the dynamic iteration to reach the dy [5] S. Carley, D.M. Konisky, The justice and equity implications of the clean energy 
+namic equilibrium.  transition, Nat. Energy 5 (2020) 569–577. 
+
+[6] C. Demski, A. Spence, N. Pidgeon, Effects of exemplar scenarios on public 
+4) Decision-making approaches on dynamic P2P energy trading can be preferences for energy futures using the my2050 scenario-building tool, Nat. 
+
+mainly classified into rule-based P2P energy trading, stochastic Energy 2 (2017), 17027. 
+decision-making approach, dynamic iteration-based decision-mak [7] J. Chilvers, R. Bellamy, H. Pallett, T. Hargreaves, A systemic approach to 
+
+mapping participation with low-carbon energy transitions, Nat. Energy 6 (2021) 
+ing and machine learning based market prediction. The application 250–259. 
+of blockchain technology in the P2P energy trading process can [8] Y.C. Tsao, V.V. Thanh, Toward sustainable microgrids with blockchain 
+improve the automation level, decrease the human interaction, technology-based peer-to-peer energy trading mechanism: a fuzzy meta-heuristic 
+
+improve the security with transparent, tamper-proof and secure approach, Renew. Sustain. Energy Rev. 136 (2021), 110452, https://doi.org/ 
+10.1016/j.rser.2020.110452. 
+
+systems, and accelerate real-time settlements with smart contracts. [9] J. Hirvonen, G. Kayo, A. Hasan, K. Sirén, Local sharing of cogeneration energy 
+5) Synergistic collaboration and operation can ensure economic bene through individually prioritized controls for increased on-site energy utilization, 
+
+fits to each participant, fairer energy distribution and cost allocation, Appl. Energy 135 (2014) 350–363. 
+[10] M.I. Azim, W. Tushar, T.K. Saha, Investigating the impact of P2P trading on 
+
+and the decreased reliance on retailers or aggregators. Multi- power losses in grid-connected networks with prosumers, Appl. Energy 263 
+stakeholders based synergistic collaboration and operation mainly (2020), 114687, https://doi.org/10.1016/j.apenergy.2020.114687. 
+include prosumer-centric and consumer-centric energy trading, [11] D. Neves, I. Scott, C.A. Silva, Peer-to-peer energy trading potential: an assessment 
+
+for the residential sector under different technology and tariff availabilities, 
+retailer and utility company, agent-based techniques in energy Energy 205 (2020), 118023, https://doi.org/10.1016/j.energy.2020.118023. 
+sharing and economic dispatch. [12] A. Lüth, J.M. Zepter, PC del Granado, R. Egging, Local electricity market designs 
+
+for peer-to-peer trading: the role of battery flexibility, Appl. Energy 229 (2018) 
+1233–1243. 
+
+Future studies could include internal trading price with more [13] Y. Parag, B.K. Sovacool, Electricity market design for the prosumer era, Nat. 
+comprehensive consideration of renewable system depreciation, energy Energy 1 (2016), 16032, https://doi.org/10.1038/nenergy.2016.32. 
+transmission losses and associated infrastructures. Furthermore, cost- [14] Z. Zhang, R. Li, F. Li, A novel peer-to-peer local electricity market for joint trading 
+
+of energy and uncertainty, IEEE Trans. Smart Grid 11 (2) (2020) 1205–1215, 
+benefit models for the P2P energy sharing with fairness distribution https://doi.org/10.1109/TSG.2019.2933574. 
+and allocation strategies are necessary to eliminate the inequality and [15] K. Zhang, S. Troitzsch, S. Hanif, T. Hamacher, Coordinated market design for 
+encourage the participators’ willingness. Advanced algorithms and peer-to-peer energy trade and ancillary services in distribution grids, IEEE Trans. 
+
+novel approaches need to be developed to reach the equilibrium Smart Grid 11 (4) (2020) 2929–2941, https://doi.org/10.1109/ 
+TSG.2020.2966216. 
+
+considering mutual influence between the dynamic power trading and [16] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, J. Li, Energy-sharing model with price-based 
+the internal selling/buying price. demand response for microgrids of peer-to-peer prosumers, IEEE Trans. Power 
+
+Syst. 32 (5) (2017) 3569–3583, https://doi.org/10.1109/TPWRS.2017.2649558. 
+[17] B.P. Hayes, S. Thakur, J.G. Breslin, Co-simulation of Electricity Distribution 
+
+CRediT authorship contribution statement Networks and Peer to Peer Energy Trading Platforms, vol. 115, 2020, 105419, 
+https://doi.org/10.1016/j.ijepes.2019.105419. 
+
+Yuekuan Zhou: Supervision, Project administration, Conceptuali [18] Z. Ma, K. Bloch-Hansen, J.W. Buck, A.K. Hansen, L.J. Henriksen, C.F. Thielsen, A. 
+Q. Santos, B.N. Jorgensen, Peer-to-Peer Trading Solution for Microgrids in Kenya, 
+
+zation, Methodology, Investigation, Writing – original draft, Writing – IEEE PES/IAS Power Africa, 2018, 18245248, https://doi.org/10.1109/ 
+review & editing. Peter D. Lund: Writing – review & editing. PowerAfrica.2018.8520980. 
+
+[19] S. Hall, J. Anable, J. Hardy, M. Workman, C. Mazur, Y. Matthews, Matching 
+consumer segments to innovative utility business models, Nat. Energy 6 (2021) 
+
+Declaration of competing interest 349–361. 
+[20] Y. Zhou, J. Wu, C. Long, Evaluation of peer-to-peer energy sharing mechanisms 
+
+The authors declare that they have no known competing financial based on a multiagent simulation framework, Appl. Energy 222 (2018) 
+993–1022. 
+
+interests or personal relationships that could have appeared to influence [21] R.J. Meinke, H. Sun, J. Jiang, Optimising demand and bid matching in a peer-to- 
+the work reported in this paper. peer energy trading model, in: ICC 2020 - 2020 IEEE International Conference on 
+
+Communications (ICC), 2020, 19831381, https://doi.org/10.1109/ 
+ICC40277.2020.9148652. 
+
+Data availability [22] W. Tushar, T.K. Saha, C. Yuen, P. Liddell, H. R Bean, Vincent. Poor Peer-to-peer 
+energy trading with sustainable user participation: a game theoretic approach, 
+
+The authors do not have permission to share data. 
+
+190
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+IEEE Access 6 (2018) 62932–62943, https://doi.org/10.1109/ [51] F. Hawlitschek, T. Teubner, H. Gimpel, Consumer motives for peer-to-peer 
+ACCESS.2018.2875405. sharing, J. Clean. Prod. 204 (2018) 144–157. 
+
+[23] C. Long, J. Wu, C. Zhang, L. Thomas, M. Cheng, N. Jenkins, Peer-to-peer Energy [52] T. Perger, L. Wachter, A. Fleischhacker, H. Auer, PV sharing in local communities: 
+Trading in a Community Microgrid, IEEE Power & Energy Society General peer-to-peer trading under consideration of the prosumers’ willingness-to-pay, 
+Meeting, 2017, 17543670, https://doi.org/10.1109/PESGM.2017.8274546. Sustain. Cities Soc. 66 (2021), 102634, https://doi.org/10.1016/j. 
+
+[24] B.A. Bhatti, R. Broadwater, Energy trading in the distribution system using a non- scs.2020.102634. 
+model based game theoretic approach, Appl. Energy 253 (2019), 113532, [53] H. Liu, J. Li, S. Ge, X. He, F. Li, C. Gu, Distributed day-ahead peer-to-peer trading 
+https://doi.org/10.1016/j.apenergy.2019.113532. for multi-microgrid systems in active distribution networks, IEEE Access 8 (2020) 
+
+[25] R. Jing, M.N. Xie, F.X. Wang, L.X. Chen, Fair P2P energy trading between 66961–66976. 
+residential and commercial multi-energy systems enabling integrated demand- [54] C. Long, J. Wu, Y. Zhou, N. Jenkins, Peer-to-peer energy sharing through a two- 
+side management, Appl. Energy 262 (2020), 114551, https://doi.org/10.1016/j. stage aggregated battery control in a community Microgrid, Appl. Energy 226 
+apenergy.2020.114551. (2018) 261–276. 
+
+[26] M. Vahedipour-Dahraie, H. Rashidizadeh-Kermani, M. Shafie-Khah, P. Siano, [55] U.J.J. Hahnel, M. Herberz, A. Pena-Bello, D. Parra, T. Brosch, Becoming 
+Peer-to-Peer energy trading between wind power producer and demand response prosumer: revealing trading preferences and decision-making strategies in peer- 
+aggregators for scheduling joint energy and reserve, IEEE Syst. J. 15 (1) (2021) to-peer energy communities Energy, Policy 137 (2020), 111098, https://doi.org/ 
+705–714, https://doi.org/10.1109/JSYST.2020.2983101. 10.1016/j.enpol.2019.111098. 
+
+[27] J. Kang, R. Yu, X. Huang, S. Maharjan, Y. Zhang, E. Hossain, Enabling localized [56] S. Chakraborty, T. Baarslag, M. Kaisers, Automated peer-to-peer negotiation for 
+peer-to-peer electricity trading among plug-in hybrid electric vehicles using energy contract settlements in residential cooperatives, Appl. Energy 259 (2020), 
+consortium blockchains, IEEE Trans. Ind. Inf. 13 (6) (2017) 3154–3164. 114173, https://doi.org/10.1016/j.apenergy.2019.114173. 
+
+[28] X. Xu, Y. Xu, M.H. Wang, J. Li, Z. Xu, S. Chai, Y. He, Data-driven game-based [57] H. Le Cadre, P. Jacquot, C. Wan, C. Alasseur, Peer-to-peer electricity market 
+pricing for sharing rooftop photovoltaic generation and energy storage in the analysis: from variational to Generalized Nash Equilibrium, Eur. J. Oper. Res. 282 
+residential building cluster under uncertainties, IEEE Trans. Ind. Inf. 17 (7) (2020) 753–771. 
+(2021) 4480–4491, https://doi.org/10.1109/TII.2020.3016336. [58] L. Ableitner, V. Tiefenbeck, A. Meeuw, A. Wörner, E. Fleisch, F. Wortmann, User 
+
+[29] W. Tushar, C. Yuen, T. Saha, D. Chattopadhyay, S. Nizami, S. Hanif, J.E. Alam, H. behavior in a real-world peer-to-peer electricity market, Appl. Energy 270 (2020), 
+V. Poor, Roles of retailers in the peer-to-peer electricity market: a single retailer 115061, https://doi.org/10.1016/j.apenergy.2020.115061. 
+perspective, iScience 24 (11) (2021), 103278. [59] F. Moret, T. Baroche, E. Sorin, P. Pinson, Negotiation algorithms for peer-to-peer 
+
+[30] G. Vieira, J. Zhang, Peer-to-peer energy trading in a microgrid leveraged by smart electricity markets: computational properties, in: Power Systems Computation 
+contracts, Renew. Sustain. Energy Rev. 143 (2021), 110900. Conference, PSCC), 2018, 18073287, https://doi.org/10.23919/ 
+
+[31] L. Chen, N. Liu, C. Li, S. Zhang, X. Yan, Peer-to-peer energy sharing with dynamic PSCC.2018.8442914. 
+network structures, Appl. Energy 291 (2021), 116831. [60] C. Dang, J. Zhang, C.P. Kwong, L. Li, Demand side load management for big 
+
+[32] Y. Zhou, J. Wu, C. Long, W. Ming, State-of-the-Art analysis and perspectives for industrial energy users under blockchain-based peer-to-peer electricity market, 
+peer-to-peer energy trading, Engineering 6 (7) (2020) 739–753. IEEE Trans. Smart Grid 10 (6) (2019) 6426–6435, https://doi.org/10.1109/ 
+
+[33] T. Capper, A. Gorbatcheva, Mustafa Ma, et al., Peer-to-peer, community self- TSG.2019.2904629. 
+consumption, and transactive energy: a systematic literature review of local [61] J. An, M. Lee, S. Yeom, T. Hong, Determining the Peer-to-Peer electricity trading 
+energy market models, Renew. Sustain. Energy Rev. 162 (2022), 112403. price and strategy for energy prosumers and consumers within a microgrid, Appl. 
+
+[34] W. Tushar, C. Yuen, T.K. Saha, T. Morstyn, A.C. Chapman, M.J.E. Alam, S. Hanif, Energy 261 (2020), 114335, https://doi.org/10.1016/j.apenergy.2019.114335. 
+H.V. Poor, Peer-to-peer energy systems for connected communities: a review of [62] S. Maharjan, Q. Zhu, Y. Zhang, S. Gjessing, T. Basar, Dependable demand 
+recent advances and emerging challenges, Appl. Energy 282 (2021), 116131. response management in the smart grid: a Stackelberg game approach, IEEE 
+
+[35] C. simulator, CNCSimulator Pro. CNCSimulator Pro, 2001. https://cncsimulator. Trans. Smart Grid 4 (1) (2013) 120–132. 
+info/download. [63] M.H. Cintuglu, H. Martin, O.A. Mohammed, Real-time implementation of 
+
+[36] Z. Li, A.V. Barenji, G.Q. Huang, Toward a blockchain cloud manufacturing system multiagent-based game theory reverse auction model for microgrid market 
+as a peer to peer distributed network platform Robotics and Computer-Integrated, operation, IEEE Trans. Smart Grid 6 (2) (2015) 1064–1072. 
+Manufacturing 54 (2018) 133–144. [64] J. Mei, C. Chen, J. Wang, J.L. Kirtley, Coalitional game theory based local power 
+
+[37] J. Liu, H. Yang, Y. Zhou, Peer-to-peer trading optimizations on net-zero energy exchange algorithm for networked microgrids, Appl. Energy 239 (2019) 
+communities with energy storage of hydrogen and battery vehicles, Appl. Energy 133–141. 
+302 (2021), 117578, https://doi.org/10.1016/j.apenergy.2021.117578. [65] H. Wang, J. Huang, Incentivizing energy trading for interconnected microgrids, 
+
+[38] J. Liu, H. Yang, Y. Zhou, Peer-to-peer energy trading of net-zero energy IEEE Trans. Smart Grid 9 (4) (2018) 2647–2657, https://doi.org/10.1109/ 
+communities with renewable energy systems integrating hydrogen vehicle TSG.2016.2614988. 
+storage, Appl. Energy 298 (2021), 117206, https://doi.org/10.1016/j. [66] J. Li, C. Zhang, Z. Xu, J. Wang, J. Zhao, Y.J.A. Zhang, Distributed transactive 
+apenergy.2021.117206. energy trading framework in distribution networks, IEEE Trans. Power Syst. 33 
+
+[39] W. Tang, R. Jain, Market mechanisms for buying random wind, IEEE Trans. (6) (2018) 7215–7227, https://doi.org/10.1109/TPWRS.2018.2854649. 
+Sustain. Energy 6 (4) (2015) 1615–1623. [67] K.A. Melendez, T.K. Das, C. Kwon, A Nash-bargaining model for trading of 
+
+[40] S. Fan, Q. Ai, L. Piao, Bargaining-based cooperative energy trading for electricity between aggregations of peers, Int. J. Electr. Power Energy Syst. 123 
+distribution company and demand response, Appl. Energy 226 (2018) 469–482, (2020), 106185, https://doi.org/10.1016/j.ijepes.2020.106185. 
+https://doi.org/10.1016/j.apenergy.2018.05.095. [68] Y. Zhou, S. Cao, J.L.M. Hensen, A. Hasan, Heuristic battery-protective strategy for 
+
+[41] H. Mehrjerdi, Peer-to-peer home energy management incorporating hydrogen energy management of an interactive renewables–buildings–vehicles energy 
+storage system and solar generating units, Renew. Energy 156 (2020) 183–192. sharing network with high energy flexibility, Energy Convers. Manag. 214 
+
+[42] K. Branker, E. Shackles, J.M. Pearce, Peer-to-peer financing mechanisms to (2020), 112891, https://doi.org/10.1016/j.enconman.2020.112891. 
+accelerate renewable energy deployment, Journal of Sustainable Finance & [69] Y. Zhou, S. Cao, Coordinated multi-criteria framework for cycling aging-based 
+Investment 1 (2) (2011) 138–155. battery storage management strategies for positive building–vehicle system with 
+
+[43] E.A. Soto, L.B. Bosman, E. Wollega, W.D. Leon-Salas, Peer-to-peer energy trading: renewable depreciation: life-cycle based techno-economic feasibility study, 
+a review of the literature, Appl. Energy 283 (2021), 116268, https://doi.org/ Energy Convers. Manag. 226 (2020), 113473, https://doi.org/10.1016/j. 
+10.1016/j.apenergy.2020.116268. enconman.2020.113473. 
+
+[44] J.M. Zepter, A. Lüth, P.C. Del Granado, R. Egging, Prosumer integration in [70] Y. Zhou, S. Cao, J.L.M. Hensen, An energy paradigm transition framework from 
+wholesale electricity markets: synergies of peer-to-peer trade and residential negative towards positive district energy sharing networks—battery cycling 
+storage, Energy Build. 184 (2019) 163–176. aging, advanced battery management strategies, flexible vehicles-to-buildings 
+
+[45] X. Han, L. Sun, Y. Tao, J. Zhao, G. Wang, Distributed energy-sharing strategy for interactions, uncertainty and sensitivity analysis, Appl. Energy 288 (2021), 
+Peer-to-Peer microgrid system, J. Energy Eng. 146 (4) (2020), 04020033. 116606, https://doi.org/10.1016/j.apenergy.2021.116606. 
+
+[46] M.M. Arsoon, S.M. Moghaddas-Tafreshi, Peer-to-peer energy bartering for the [71] H Beltran, J Barahona, R Vidal, J.C. Alfonso; C. Ariño; E. Pérez. Ageing of 
+resilience response enhancement of networked microgrids, Appl. Energy 261 different types of batteries when enabling a PV power plant to enter electricity 
+(2020), 114413, https://doi.org/10.1016/j.apenergy.2019.114413. markets. IECON 2016 - 42 Nd Annual Conference of the IEEE Industrial 
+
+[47] A. Al-Obaidi, H. Khani, Farag Hez, M. Mohamed, Bidirectional smart charging of Electronics Society. 16556910. DOI: 10.1109/IECON.2016.7794082. 
+electric vehicles considering user preferences, peer to peer energy trade, and [72] M.S.H. Nizami, M.J. Hossain, B.M.R. Amin, M. Kashif, E. Fernandez, K. Mahmud, 
+provision of grid ancillary services, Int. J. Electr. Power Energy Syst. 124 (2021), Transactive Energy Trading of Residential Prosumers Using Battery Energy 
+106353, https://doi.org/10.1016/j.ijepes.2020.106353. Storage Systems, IEEE Milan PowerTech, 2019, 18938921, https://doi.org/ 
+
+[48] M.R. Alam, M. St-Hilaire, T. Kunz, Peer-to-peer energy trading among smart 10.1109/PTC.2019.8810458. 
+homes, Appl. Energy 238 (2019) 1434–1443. [73] B. Zhang, Y. Du, E.G. Lim, L. Jiang, K. Yan, Design and simulation of peer-to-peer 
+
+[49] S. Thakur, J.G. Breslin, Peer to peer energy trade among microgrids using energy trading framework with dynamic electricity price, in: 29th Australasian 
+blockchain based distributed coalition formation method. Technology and Universities Power Engineering Conference, AUPEC), 2019, 19592300, https:// 
+economics of, Smart Grids and Sustainable Energy 3 (5) (2018), https://doi.org/ doi.org/10.1109/AUPEC48547.2019.211948. 
+10.1007/s40866-018-0044-y. [74] A.M. Jadhav, N.R. Patne, J.M. Guerrero, A novel approach to neighborhood fair 
+
+[50] M. Yebiyo, R.A. Mercado, A. Gillich, I. Chaer, A.R. Day, Novel economic energy trading in a distribution network of multiple microgrid clusters, IEEE 
+modelling of a peer-to-peer electricity market with the inclusion of distributed Trans. Ind. Electron. 66 (2) (2019) 1520–1531, https://doi.org/10.1109/ 
+energy storage—the possible case of a more robust and better electricity grid, TIE.2018.2815945. 
+Electr. J. 33 (2) (2020), 106709, https://doi.org/10.1016/j.tej.2020.106709. 
+
+191
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+[75] T. Morstyn, N. Farrell, S.J. Darby, M.D. McCulloch, Using peer-to-peer energy- [101] W. Tushar, T.K. Saha, C. Yuen, M.I. Azim, T. Morstyn, H.V. Poor, D. Niyato, 
+trading platforms to incentivize prosumers to form federated power plants, Nat. R. Bean, A coalition formation game framework for peer-to-peer energy trading, 
+Energy 3 (2018) 94–101. Appl. Energy 261 (2020), 114436. 
+
+[76] A. Paudel, K. Chaudhari, C. Long, H.B. Gooi, Peer-to-Peer energy trading in a [102] G. Babaei, S. Bamdad, A neural-network-based decision-making model in the 
+prosumer-based community microgrid: a game-theoretic model, IEEE Trans. Ind. peer, -to-peer lending market 27 (3) (2020) 142–150. 
+Electron. 66 (8) (2019) 6087–6097. [103] T. Morstyn, I. Savelli, C. Hepburn, Multiscale design for system-wide peer-to-peer 
+
+[77] M. Li, D. Hu, C. Lal, M. Conti, Z. Zhang, Blockchain-enabled secure energy trading energy trading, One Earth 4 (5) (2021) 629–638. 
+with verifiable fairness in industrial internet of things, IEEE Trans. Ind. Inf. 16 [104] K. Chen, J. Lin, Y. Song, Trading Strategy Optimization for a Prosumer in 
+(10) (2020) 6564–6574. Continuous Double Auction-Based Peer-To-Peer Market: A Prediction-Integration 
+
+[78] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, J. Lei, Energy-sharing model with price-based Model, vol. 242, 2019, pp. 1121–1133. 
+demand response for microgrids of peer-to-peer prosumers, IEEE Trans. Power [105] D. Qiu, Y. Ye, D. Papadaskalopoulos, G. Strbac, Scalable coordinated management 
+Syst. 32 (5) (2017) 3569–3583. of peer-to-peer energy trading: a multi-cluster deep reinforcement learning 
+
+[79] S. Cui, Y.W. Wang, Y. Shi, J.W. Xiao, An efficient peer-to-peer energy-sharing approach, Appl. Energy 292 (2021), 116940. 
+framework for numerous community prosumers, IEEE Trans. Ind. Inf. 16 (12) [106] D.L. Rodrigues, X. Ye, X. Xia, B Zhu Battery energy storage sizing optimisation for 
+(2020) 7402–7412. different ownership structures in a peer-to-peer energy sharing community, Appl. 
+
+[80] Figure 2 is reprinted from Applied Energy, R. Jing, M.N. Xie, F.X. Wang, L. Energy 262 (2020), 114498, https://doi.org/10.1016/j.apenergy.2020.114498. 
+X. Chen, Fair P2P energy trading between residential and commercial multi- [107] M. Khorasany, Y. Mishra, G. Ledwich, A decentralized bilateral energy trading 
+energy systems enabling integrated demand-side management, Copyright 262 system for peer-to-peer electricity markets, IEEE Trans. Ind. Electron. 67 (6) 
+(2018), 114551 (with permission from Elsevier). (2020) 4646–4657. 
+
+[81] R. Alvaro-Hermana, J. Fraile-Ardanuy, P.J. Zufiria, L. Knapen, D. Janssens, Peer [108] Y. Liu, D. Zhang, C. Deng, X. Wang, Deep reinforcement learning approach for 
+to peer energy trading with electric vehicles, IEEE Intelligent Transportation autonomous agents in consumer-centric electricity market, in: 2020 5th IEEE 
+Systems Magazine 8 (3) (2016) 33–44, https://doi.org/10.1109/ International Conference on Big Data Analytics, ICBDA, 2020, https://doi.org/ 
+MITS.2016.2573178. 10.1109/ICBDA49040.2020.9099946. 
+
+[82] S. Aznavi, P. Fajri, M.B. Shadmand, A. Khoshkbar-Sadigh, Peer-to-Peer operation [109] T. Orlandini, T. Soares, T. Sousa, P. Pinson, Coordinating consumer-centric 
+strategy of PV equipped office buildings and charging stations considering market and grid operation on distribution grid, in: 16th International Conference 
+electric vehicle energy pricing, IEEE Trans. Ind. Appl. 56 (5) (2020) 5848–5857. on the European Energy Market (EEM), 2019, https://doi.org/10.1109/ 
+
+[83] L. Bokopane, K. Kusakana, H.J. Vermaak, Energy Management of a Grid- EEM.2019.8916247. 
+Intergrated Hybrid Peer-To-Peer Renewable Charging Station for Electric [110] B.S.K. Patnam, N.M. Pindoriya, Demand response in consumer-centric electricity 
+Vehicles, Open Innovations Conference (OI), 2018, 18253232, https://doi.org/ market: mathematical models and optimization problems, Elec. Power Syst. Res. 
+10.1109/OI.2018.8535881. 193 (2021), 106923, https://doi.org/10.1016/j.epsr.2020.106923. 
+
+[84] W. Tushar, T.K. Saha, C. Yuen, T. Morstyn, H. Na Masood, Vincent Poor. Grid [111] Figure 6 is reprinted from Electric Power Systems Research, B.S.K. Patnam, N. 
+influenced peer-to-peer energy trading, IEEE Trans. Smart Grid 11 (2) (2020) M. Pindoriya, Demand Response in Consumer-Centric Electricity Market: 
+1407–1418. Mathematical Models and Optimization Problems, vol. 193, Copyright, 2021, 
+
+[85] Y. Xiao, D. Niyato, Z. Han, L.A. DaSilva, Dynamic energy trading for energy 106923 (with permission from Elsevier). 
+harvesting communication networks: a stochastic energy trading game, IEEE J. [112] W. Tushar, T.K. Saha, C. Yuen, M.I. Azim, T. Morstyn, H.V. Poor, D. Niyato, 
+Sel. Area. Commun. 33 (12) (2015) 2718–2734. R. Bean, A coalition formation game framework for peer-to-peer energy trading, 
+
+[86] L. Chen, N. Liu, C. Li, J. Wang, Peer-to-peer energy sharing with social attributes: Appl. Energy 261 (2020), 114436, https://doi.org/10.1016/j. 
+a stochastic leader-follower game approach, IEEE Trans. Ind. Inf. 17 (4) (2021) apenergy.2019.114436. 
+2545–2556. [113] T. Morstyn, M.D. McCulloch, Peer-to-Peer energy trading, in: E. Crisostomi, 
+
+[87] K. Gai, Y. Wu, L. Zhu, M. Qiu, M. Shen, Privacy-Preserving energy trading using B. Ghaddar, F. Häusler, J. Naoum-Sawaya, G. Russo, R. Shorten (Eds.), Analytics 
+consortium blockchain in smart grid, IEEE Trans. Ind. Inf. 15 (6) (2019) for the Sharing Economy: Mathematics, Engineering and Business Perspectives, 
+3548–3558. Springer, Cham, 2020, pp. 279–300, https://doi.org/10.1007/978-3-030-35032- 
+
+[88] A. Esmat, M. de Vos, Y. Ghiassi-Farrokhfal, P. Palensky, D. Epema, A novel 1_16. 
+decentralized platform for peer-to-peer energy trading market with blockchain [114] S. Wu, F. Zhang, D. Li, User-centric peer-to-peer energy trading mechanisms for 
+technology, Appl. Energy 282 (2021), 116123, https://doi.org/10.1016/j. residential microgrids, in: 2nd IEEE Conference on Energy Internet and Energy 
+apenergy.2020.116123. System Integration, EI2, 2018, 18363227, https://doi.org/10.1109/ 
+
+[89] D. Han, C. Zhang, J. Ping, Z. Yan, Smart contract architecture for decentralized EI2.2018.8582548. 
+energy trading and management based on blockchains, Energy 199 (2020), [115] Y. Zhou, J. Wu, G. Song, C. Long, Framework design and optimal bidding strategy 
+117417, https://doi.org/10.1016/j.energy.2020.117417. for ancillary service provision from a peer-to-peer energy trading community 
+
+[90] Figure 4 is reprinted from Applied Energy, A. Esmat, M. de Vos, Y. Ghiassi- Applied, Energy 278 (2020), 115671, https://doi.org/10.1016/j. 
+Farrokhfal, P. Palensky, D. Epema, A novel decentralized platform for peer-to- apenergy.2020.115671. 
+peer energy trading market with blockchain technology, Copyright 282 (2021), [116] X. Zhang, S. Zhu, J. He, B. Yang, X. Guan, Credit rating based real-time energy 
+116123 (with permission from Elsevier). trading in microgrids, Appl. Energy 236 (2019) 985–996. 
+
+[91] P. Wongthongtham, D. Marrable, B. Abu-Salih, X. Lin, G. Morrison, Blockchain- [117] Figure 7 is reprinted from Electric Power Systems Research, B.S.K. Patnam, N. 
+enabled Peer-to-Peer energy trading, Comput. Electr. Eng. 94 (2021), 107299. M. Pindoriya, Demand response in consumer-centric electricity market: 
+
+[92] E. Mengelkamp, J. Gärttner, K. Rock, S. Kessler, L. Orsini, C. Weinhardt, mathematical models and optimization problems, Copyright 193 (2021), 106923 
+Designing microgrid energy markets: a case study: the Brooklyn Microgrid, Appl. (with permission from Elsevier). 
+Energy 210 (2018) 870–880. [118] J. Guerrero, D. Gebbran, S. Mhanna, A.C. Chapman, G. Verbič, Towards a 
+
+[93] M.O. Okoye, J. Yang, J. Cui, Z. Lei, J. Yuan, H. Wang, H. Ji, J. Feng, A blockchain- transactive energy system for integration of distributed energy resources: home 
+enhanced transaction model for microgrid energy trading, IEEE Access 8 (2020) energy management, distributed optimal power flow, and peer-to-peer energy 
+143777–143786, https://doi.org/10.1109/ACCESS.2020.3012389. trading, Renew. Sustain. Energy Rev. 132 (2020), 110000, https://doi.org/ 
+
+[94] M.E. Peck, D. Wagman, Energy trading for fun and profit buy your neighbor’s 10.1016/j.rser.2020.110000. 
+rooftop solar power or sell your own-it’ll all be on a blockchain, IEEE Spectrum [119] Figure 8 is reprinted from Renewable and Sustainable Energy Reviews, 
+54 (10) (2017) 56–61, https://doi.org/10.1109/MSPEC.2017.8048842. J. Guerrero, D. Gebbran, S. Mhanna, A.C. Chapman, G. Verbič, Towards a 
+
+[95] K. Brousmiche, P. Menegazzi, O. Boudeville, E. Fantino, Peer-to-Peer energy transactive energy system for integration of distributed energy resources: home 
+market place powered by blockchain and vehicle-to-grid technology, in: 2nd energy management, distributed optimal power flow, and peer-to-peer energy 
+Conference on Blockchain Research & Applications for Innovative Networks and trading, Copyright 132 (2020), 110000 (with permission from Elsevier). 
+Services, BRAINS), 2020, 20056228, https://doi.org/10.1109/ [120] P. Shamsi, H. Xie, A. Longe, J.Y. Joo, Economic dispatch for an agent-based 
+BRAINS49436.2020.9223276. community microgrid, IEEE Trans. Smart Grid 7 (5) (2016) 2317–2324. 
+
+[96] Z. Li, J. Kang, R. Yu, D. Ye, Q. Deng, Y. Zhang, Consortium blockchain for secure [121] P. Chen, Y. Wu, L. Zou, Distributive PV trading market in China: a design of multi- 
+energy trading in industrial internet of things, IEEE Trans. Ind. Inf. 14 (8) (2018) agent-based model and its forecast analysis, Energy 185 (2019) 423–436. 
+3690–3700. [122] K. Saxena, A.R. Abhyankar, Agent based bilateral transactive market for emerging 
+
+[97] J. Dong, C. Song, S. Liu, H. Yin, H. Zheng, Y. Li, Decentralized peer-to-peer energy distribution system considering imbalances, Sustainable Energy, Grids and 
+trading strategy in energy blockchain environment: a game-theoretic approach, Networks 18 (2019), 100203, https://doi.org/10.1016/j.segan.2019.100203. 
+Appl. Energy 325 (2022), 119852. [123] D. Mahmood, N. Javaid, I.Ahmed N. Alrajeh, I.A. Niaz, Z.A. Khan, Multi-agent- 
+
+[98] M. Andoni, V. Robu, D. Flynn, S. Abram, D. Geach, D. Jenkins, P. McCallum, based sharing power economy for a smart community, Int. J. Energy Res. 41 (14) 
+A. Peacock, Blockchain technology in the energy sector: a systematic review of (2017) 2074–2090. 
+challenges and opportunities, Renew. Sustain. Energy Rev. 100 (2019) 143–174. [124] L. Gomes, Z.A. Vale, J.M. Corchado, Multi-agent microgrid management system 
+
+[99] C. Zhang, T. Yang, Y. Wang, Peer-to-Peer energy trading in a microgrid based on for single-board computers: a case study on peer-to-peer energy trading, IEEE 
+iterative double auction and blockchain, Sustainable Energy, Grids and Networks Access 8 (2020) 64169–64183. 
+27 (2021), 100524. [125] M.S. Rahman, Oo Amt, Distributed multi-agent based coordinated power 
+
+[100] H. Wang, T. Feng, W. Xiong, How can the dynamic game be integrated into management and control strategy for microgrids with distributed energy 
+blockchain-based distributed energy resources multi-agent transactions for resources, Energy Convers. Manag. 139 (2017) 20–32. 
+decision-making? Energy 254 (2022), 124318. [126] Y. Wang, T.L. Nguyen, Y. Xu, Q.T. Tran, R. Caire, Peer-to-Peer control for 
+
+networked microgrids: multi-layer and multi-agent architecture design, IEEE 
+
+192
+
+
+
+Y. Zhou and P.D. Lund                                                                                                                                                                                            R  e n  e w   a  b l e   E  n e  r g  y  2  07 (2023) 177–193
+
+Trans. Smart Grid 11 (6) (2020) 4688–4699, https://doi.org/10.1109/ [132] A. Paladin, R. Das, Y. Wang, Z. Ali, R. Kotter, G. Putrus, R. Turri, Micro market 
+TSG.2020.3006883. based optimisation framework for decentralised management of distributed 
+
+[127] N. Spiliopoulos, I. Sarantakos, S. Nikkhah, G. Gkizas, D. Giaouris, P. Taylor, flexibility assets, Renew. Energy 163 (2021) 1595–1611. 
+U. Rajarathnam, N. Wade, Peer-to-peer energy trading for improving economic [133] J. Heilmann, M. Wensaas, PC del Granado, N. Hashemipour, Trading algorithms 
+and resilient operation of microgrids, Renew. Energy 199 (2022) 517–535. to represent the wholesale market of energy communities in Norway and England, 
+
+[128] C Zhang, J Wu, Y Zhou, M Cheng, C Long. Peer-to-Peer energy trading in a Renew. Energy 200 (2022) 1426–1437. 
+Microgrid. Appl. Energy 220, 1-12. [134] S.V. Oprea, A. Bâra, V. Diaconita, A motivational local trading framework with 2- 
+
+[129] S. Zheng, G. Huang, A.C.K. Lai, Techno-economic performance analysis of round auctioning and settlement rules embedded in smart contracts for a small 
+synergistic energy sharing strategies for grid-connected prosumers with citizen energy community, Renew. Energy 193 (2022) 225–239. 
+distributed battery storages, Renew. Energy 178 (2021) 1261–1278. [135] M.R. Alam, M. St-Hilaire, T. Kunz, Peer-to-peer energy trading among smart 
+
+[130] Y. Zhou, Energy sharing and trading on a novel spatiotemporal energy network in homes, Appl. Energy 238 (2019) 1434–1443. 
+Guangdong-Hong Kong-Macao Greater Bay Area, Appl. Energy 318 (2022), [136] S. Cui, Y.W. Wang, Y. Shi, J.W. Xiao, A new and fair Peer-to-Peer energy sharing 
+119131. framework for energy buildings, IEEE Trans. Smart Grid 11 (5) (2020) 
+
+[131] Y. Zhou, Incentivising multi-stakeholders’ proactivity and market vitality for 3817–3826. 
+spatiotemporal microgrids in Guangzhou-Shenzhen-Hong Kong Bay Area, Appl. [137] MIRAI. https://www.toyota.com/mirai/, 2021. 
+Energy 328 (2022), 120196. 
+
+193

@@ -1,0 +1,892 @@
+﻿154 IEEE SYSTEMS JOURNAL, VOL. 17, NO. 1, MARCH 2023
+
+Peer-to-Peer Energy Trading for Residential
+Prosumers With Photovoltaic and Battery
+
+Storage Systems
+Jiatong Wang , Jiangfeng Zhang , Li Li , Member, IEEE, and Yunfeng Lin
+
+Abstract—The popularization of solar generation enables res- fN
+σ,H Category variance for households in Category H
+
+k k
+idential households to supply their loads and trade the surplus
+
+fN
+energy through residential peer-to-peer (P2P) energy trading mar- σ,h Individual variance for household h
+ket. Facing the increasing complexity of the market structure fN
+
+σ Normalized overall population variance.
+and decision-making strategies, this article proposes a P2P energy fN
+
+S Normalized social welfare function.
+trading model for residential households, and the objective is to fσ Overall population variance.
+help the centralized market coordinator optimize the benefit of
+participants under such a P2P market. To this end, a new math- fS Social welfare function.
+
+HB
+ematical model, including the rules for buying and selling energy, Number of buyers in P2P market.
+is presented. In this model, a supply function bidding mechanism HS Number of sellers in P2P market.
+is formulated to match the power supply imbalance and calculate pMCP Clearing price in P2P market.
+the market-clearing price. An optimization problem is formulated Qh Net cost of householdhwhen trading in the P2P market.
+to identify the optimal strategies for energy buying and selling,
+which consists of two parts: the first part is to maximize the xB
+
+h Charging/discharging energy for the household h’s
+social welfare; the second part is to minimize the unfair benefit BESS.
+distribution that participants can gain through P2P energy trading. xG
+
+h Energy exchange between the retailer and household h
+The case study based on the real data for four different household xP2P
+
+h Energy exchange between the P2P market and house-
+categories has revealed that households can achieve 26.38% net hold h
+cost reduction, and the proposed fair benefit distribution function xP2P
+also can fairly allocate the benefit by enforcing households’ benefit total Total energy demand from the P2P market.
+variance indexes at a low level. Parameters
+
+Index Terms—Battery energy storage system, peer-to-peer (P2P) H Household categories.
+energy trading, residential, smart grid, supply function bidding. ηch
+
+h Charging efficiency.
+ηdis
+h Discharging efficiency.
+
+NOMENCLATURE Ĉh Cost on buying energy when not attending the proposed
+Variables P2P market.
+Q̂∗
+
+h Minimum net energy cost when not attending the pro- P̂h Benefit on selling energy when not attending the pro-
+posed P2P market. posed P2P market.
+
+Ŝ Overall net cost when households are not trading in the μ1 Weighting factor on social welfare function.
+P2P market. μ2 Weighting factor on population variance function.
+
+Ec
+x̂G
+h (t) Energy exchange between the P2P market and house- h BESS capacity for household h
+
+hold h when households are not trading in the P2P fσ,max Maximum value of fσ
+market. fσ,min Minimum value of fσ
+
+Q̃h Cost saving of household h when trading in the P2P fS,max Maximum value of fS
+market. fS,min Minimum value of fS
+
+Q̃avg Average cost saving of all households when trading in H Total number of P2P market participants.
+the P2P market. h Index for household.
+
+p Electricity trading price with the utility company.
+Manuscript received 11 August 2021; revised 28 January 2022 and 26 June pFIT Feed-in-tariff price.
+
+2022; accepted 10 July 2022. Date of publication 26 July 2022; date of current pU Electricity retailing price.
+version 24 February 2023.
+
+Jiatong Wang, Li Li, and Yunfeng Lin are with the School of Electrical t Index for time interval.
+xB,ch
+
+and Data Engineering, University of Technology Sydney, Broadway, NSW h,max Maximum charging rate.
+2007, Australia (e-mail: jiatong.wang@student.uts.edu.au; Li.Li@uts.edu.au;
+
+xB,dis
+yunfeng.lin@student.uts.edu.au). h,max Maximum discharging rate.
+
+Jiangfeng Zhang is with the Department of Automotive Engineering, Clemson xL
+h Predicted energy consumption.
+
+University, Greenville, SC 29607 USA (e-mail: jiangfz@clemson.edu).
+Digital Object Identifier 10.1109/JSYST.2022.3190976 xPV
+
+h Predicted PV generation.
+
+1937-9234 © 2022 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+WANG et al.: P2P ENERGY TRADING FOR RESIDENTIAL PROSUMERS WITH PV AND BATTERY STORAGE SYSTEMS 155
+
+proposed for industrial users to reduce operational costs and
+I. INTRODUCTION CO2 emission in [13], where the underlying problem is solved
+
+IN RECENT years, the feed-in-tariff (FIT) program has been using a novel multiagent twin-delayed deep deterministic policy
+introduced around the world to promote the ongoing decar- gradient approach. However, since most of the information in the
+
+bonization of electricity systems through the installation of a decentralized market is not transparent, it is hard to evaluate the
+range of small-scale renewable generation units for residential community social welfare. Due to the same limitation, service
+households [1]. However, the tariff rate has continued to reduce providers also find it challenging to maintain and upgrade the de-
+due to the decreased installation costs and limited government centralized power system [14]. On the other hand, the centralized
+incentive budget for a large number of new installations [2], [3]. P2P market, such as pool-based market and wholesale electricity
+Consequently, residential photovoltaic (PV) owners are facing market, manages the market coordination and information ex-
+profit reduction on selling electricity in the traditional manner. change through a centralized market coordinator, who is able to
+Given this context, an efficient solution to increase the residential propose the trading strategies for market participants to realize
+gain could be achieved by encouraging the use of excess energy the optimal social welfare by solving a global optimization
+within neighborhoods. This can be realized by introducing a problem [15]. As a cutting-edge trading concept, the central-
+peer-to-peer (P2P) energy trading market. Upon the abovemen- ized P2P trading method can be adopted to either residential
+tioned background, this article aims to study how residential scenario [16] or industrial scenario [17]. Although such central-
+PV owners decide their P2P energy trading strategies to reach ized market architecture requires the complete disclosure of the
+the optimal social welfare, where a fair benefit distribution private information to the market coordinator, which may raise
+problem is also integrated into the optimal trading strategy to privacy concerns, a novel transaction model proposed in [18] can
+evaluate whether the benefit by introducing energy trading is effectively cover this issue by integrating blockchain technology
+fairly distributed to every household. and ciphertext-policy attribute-based encryption algorithm.
+
+In the traditional retail market structure, residential PV owners For centralized P2P market, an appropriate trading model is
+are only able to individually buy and sell energy with electricity essential as it determines energy trading prices and regulates the
+retailers [4]. In this way, PV owners cannot maximize the full bidding and offering rules, which will finally impact the optimal
+potentials of the solar system since the extra generated energy energy trading strategies of the market participants [19]. A
+is only tradable with electricity retailers, who are profit seekers two-level P2P energy trading model is presented for a prosumer-
+and offer low FIT price [5]. To improve the financial benefit of based community in [20] to optimize social welfare, where the
+residential prosumers, the P2P trading platform is introduced price competition among sellers is modeled as a noncooperative
+as a new market paradigm, where this novel market allows the game, and the sellers’ decision-making is modeled as an evo-
+direct energy exchange among residential households and, thus, lutionary game. A supply function equilibrium is formulated
+provides more resilience to power systems [6]. Through the P2P to clear the pool-based P2P energy trading in [21], where the
+energy trading market, residential households are able to reduce critical improvement in power balance is discussed in the case
+energy costs by sharing distributed energy resources (DERs) study by using the proposed clearing mechanism. Moreover, a
+with each other. On the other hand, due to the price advantage, supply function bidding method is proposed in [22], which is
+the energy generated from local DERs is more attractive than the able to dynamically calculate the market-clearing price (MCP),
+energy supplied from electricity retailers [7]. The combination where the effectiveness of the supply function bidding method
+of renewable energy and P2P trading market not only helps to is further validated in [23].
+relieve the pressure of energy supply for energy retailers during Previous works have adopted different centralized P2P trading
+the peak period but also improves the efficiency of the renewable mechanisms to optimize the social welfare. However, the social
+usage, making energy supply more ecofriendly [8]. welfare optimization results have no guarantee on fair benefit
+
+In the current research community, the existing P2P trading allocation for market participants. Within a scenario of multiple
+approaches can be generally adopted to two scenarios: decen- community microgrids, energy users with BESSs are able to take
+tralized P2P market and centralized P2P market. In the decen- more advantages of electricity cost reduction than those people
+tralized P2P market, the energy trading is processed directly who do not have such equipment, which may lead to the P2P
+by market participants, where a centralized market coordinator market being less attractive [24]. To motivate more energy users
+is not required since the energy trading price and quantity are to participate into the P2P market, a benefit distribution problem
+determined based on bilateral negotiations [9]. The advantages should also be considered when optimizing social welfare. Prior
+of adopting the decentralized P2P market have been explored research on fair benefit distribution for P2P market participants
+by many studies. A prominent feature of the decentralized P2P is limited but emerging. For instance, a cost distribution problem
+market is privacy protection, which has been tested in micro is proposed in [25], where the Pareto optimality is adopted
+power systems [10] and zonal power systems [11]. Moreover, a and solved by an ECO-Trade algorithm. Although enforcing
+study in [12] validates that with the limited shared information, Pareto optimality to the proposed model can ensure that no
+an optimization of the energy utilization efficiency and the residential prosumers will be worse off to improve the cost
+operational cost reduction for each integrated energy system of others, the analysis regarding the fair benefit distribution is
+can still be effectively solved using a decentralized alternating not further discussed in the case study. A sharing contribution
+direction multiplier method. Regarding the decentralized P2P rate is implemented in [26] to quantify the contribution to the
+market design, a decentralized energy trading mechanism is energy sharing and peak shaving for energy users, where the fair
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+156 IEEE SYSTEMS JOURNAL, VOL. 17, NO. 1, MARCH 2023
+
+benefit distribution problem is further formulated with a Nash
+bargaining model. However, the flexibility of the proposed P2P
+energy trading market is impacted by the assumption that P2P
+trading prices are assured to be constants.
+
+Based on the abovementioned literature review, further study
+on a fair trading price mechanism and the evaluation of benefit
+allocation are necessary. To this end, this article studies how
+a centralized market coordinator determines the strategies of
+the market participants to solve the designed social welfare
+optimization problem. In addition, a fair benefit distribution
+function is applied in the proposed P2P market model to evaluate
+if the benefit is fairly allocated to every residential client. Based
+on the designed objective, the case study shows that through the Fig. 1. Basic structure of the considered P2P market.
+proposed P2P energy trading model and optimization problem,
+the centralized market coordinator can achieve different goals
+with respect to cost reduction and fair benefit distribution based
+on the practical requirement of the market.
+
+The main contributions of this article can be summarized as
+follows.
+
+1) A centralized residential P2P energy trading market is
+proposed using the supply function method, where the
+MCP is codecided by all market participants, ensuring the
+fairness and transparency of the residential P2P market.
+
+2) Based on the proposed P2P trading model, the residen-
+tial energy trading and BESS management problem is
+formulated considering social welfare and fair benefit
+distribution.
+
+3) The case study based on the real household data reveals
+that on the premise of ensuring fair benefit distribution, a
+26.38% net cost reduction is still observed when house-
+holds are trading in the proposed P2P market. Moreover,
+the market flexibility is further explored to help the central-
+ized market coordinator realize different targets on social
+welfare and fair benefit distribution by adjusting different
+weighting factors.
+
+The rest of this article is organized as follows. The proposed
+P2P trading model for residential households, including objec-
+tive functions and related constraints, is explained in Section II.
+Detailed simulation results are discussed in Section III. Finally,
+Section IV concludes this article.
+
+II. DESIGN OF THE RESIDENTIAL P2P TRADING SYSTEM
+
+With the transit position from energy price takers to price
+makers, households within the smart grid are allowed to fairly
+trade energy through a platform provided by P2P market. In
+this article, a PV and BESS-featured smart grid is used as an
+
+Fig. 2. Flowchart of the P2P energy trading strategy.
+example to explain the proposed bidding strategy. The schematic
+of the proposed system is shown in Fig. 1. Since the data of
+PV generation and energy consumption in the case study are
+recorded hourly, the sampling time interval in this article is set A. System Description
+
+as 1 h. Therefore, there are 24 time intervals a day (T = 24) In the proposed market, residential households perform the
+for the P2P energy trading. Forward sampling is taken here in roles of market participants. During each trading period, trans-
+this article, e.g., the first time period within the 24 h is from actions are performed either between households and the utility
+0:00 A.M.to 1:00, the second time period is from 1:00 to 2:00, company, or between households. It is assumed that the con-
+etc. Notation t (t = 1,2,3...,T) is used to represent these time sidered community is geographically small, and thus, power
+periods. transmission losses are ignored. In addition, they are assumed to
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+WANG et al.: P2P ENERGY TRADING FOR RESIDENTIAL PROSUMERS WITH PV AND BATTERY STORAGE SYSTEMS 157
+
+TABLE I
+CATEGORIES OF HOUSEHOLDS
+
+own various combinations of BESS and DERs. In our proposed Fig. 3. Household h (h ∈ H1) with energy trading conditions.
+
+system, four categories of households (H ∈ H1, H2, H3, H4)
+with different types of facilities are considered, where the details
+are given in Table I. xB
+
+h (t){, and p(t) is presented as follows:
+In the proposed scenario, a smart meter is installed in every
+
+xP2P
+residential house to record the energy generation and consump- h (t) ≥ 0, buying energy from the P2P market
+tion. Residential households are also able to make P2P trading xP2P
+
+h (t{) < 0, selling energy to the P2P market
+decisions and send to the centralized market coordinator through
+the communication between the smart meter and the centralized xB
+
+h (t) ≥ 0, battery is charging
+market coordinator. The centralized market coordinator is liable xB
+
+{ h (t) < 0, battery is discharging
+to calculate the MCP by collecting the bidding strategies of the
+market participants. Then, the centralized market coordinator xG
+
+h (t)) ≥ 0, buying energy from the retailer
+announces the successful bids/offers and sends the information xG
+
+h (t)) < 0, {selling energy to the retailer
+back to the participants. During the transaction, the centralized
+market coordinator acts as an information exchanger and does pU (t), if xG
+
+h (t) ≥ 0
+not intervene in the transactions within the market. Thus, the p(t) =
+
+pFIT(t), if xG
+h (t) < 0.
+
+fairness of this market can be realized at all times.
+1) Objective Function: An objective function fo in (1) is
+
+B. Basic Trading Processes proposed to evaluate the households’ energy trading strategies in
+terms of social welfare fS and market fairness index on benefit
+
+In the market structure, households can be either a buyer distribution fσ
+or a seller. As an energy buyer, this household can buy the
+needed energy from the utility company and through the P2P fo = μ1fS + μ2fσ (1)
+market from the sellers who have intention to sell the energy. For
+those buyers who own BESS, they are also allowed to consider where weighting factors μ1 and μ2 are nonnegative, and satisfy
+discharging BESS for full or partial power supply to the energy
+demand. Therefore, the demand for an energy buyer can be from μ1 + μ2 = 1. (2)
+the local DERs, the P2P market, the utility company, and the
+
+Since there is a significant difference in the range of numer-
+discharge from the BESS. Due to the economic issue, we assume
+
+ical values between social welfare and population variance, we
+that buyers are not allowed to sell any energy to the proposed
+
+normalize them to the range [0, 1] to improve the objective sen-
+P2P market and the grid. On the other hand, as an energy seller,
+
+sitivity, where the normalized objective is expressed as follows:
+this household can sell the energy to either the P2P market or the
+utility company to earn the benefit. If this seller owns a BESS, fN
+
+o = μ1f
+N
+S + μ2f
+
+N
+σ (3)
+
+he can also choose to store the extra energy in the BESS. In the
+proposed model, it is assumed that energy sellers who own the with
+BESS are allowed to sell the energy by discharging their BESSs. {
+
+f
+fN S−f
+S = S,min
+
+To protect the benefit of buyers and keep the market electricity fS,max−f
+− S,min
+
+fN f f (4)
+σ = σ σ,min
+
+price stable, sellers are also forbidden to buy electricity from the f .
+σ,max−fσ,min
+
+P2P market and the grid.
+It is also important to ensure that the net energy cost of a ran-
+
+dom participant through the trading in the proposed P2P market
+C. Modeling of the Residential P2P Trading Market is always lower than the optimal cost when this participant is
+
+In this section, we present the structure and the model with not trading in the proposed P2P market, and the corresponding
+objective functions and related constraints of the proposed res- mathematical constraint can be found in the following:
+idential P2P trading system. An example of the energy flow ∑T
+diagram for a household with PV systems and BESS is shown (Q̂∗
+
+h(t)−Qh(t)) ≥ 0 (5)
+in Fig. 3. The parameter definition regarding xP2P
+
+h (t), xG
+h (t), t=1
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+158 IEEE SYSTEMS JOURNAL, VOL. 17, NO. 1, MARCH 2023
+
+where for each household category, which is expressed as
+
+Q̂∗
+h(t) = arg min Ŝ (6) ∑Hk fσ,h
+
+∑H ∑ fσ,H = (k ∈ [1, 2, 3, 4]). (18)
+k
+
+T Hk
+h=1
+
+Ŝ = Q̂h(t) (7)
+4) Distributed Energy Resources: In the proposed model,
+
+h=1 t=1
+solar energy is considered as the DERs where the surplus energy
+
+Q̂h(t) = p(t)x̂G
+h (t) (8) can be either sold to other households through the P2P market
+
+Qh(t) = pMCP(t)xP2P
+h (t) + p(t)xG or to the energy retailer. According to the conservation law of
+
+h (t). (9)
+energy flow (in our model, the line losses are ignored, since the
+
+In (9), the first term represents the cost/benefit when buy- residential households considered in our model are geographi-
+ing/selling energy in the P2P market; the second term represents cally close), the following energy constraint would be satisfied:
+the cost/benefit when buying/selling energy with the utility com-
+
+xPV
+h (t) + xG
+
+h (t) + xP2P
+h (t) = xL
+
+h (t) + xB
+h (t) (19)
+
+pany. In the proposed model, the value of MCP must be between
+the FIT price and grid price to attract customer participation, where
+that is {
+
+xB
+h (t) = 0, if h ∈ H2, H4
+
+pFIT (20)
+(t)< pMCP(t) < pU (t). (10) xPV
+
+h (t) = 0, if h ∈ H3, H4.
+
+Meanwhile, it should be noted, household h could never buy In (19), xPV
+h (t) and xL
+
+h (t) are predicted values based on the
+and sell electricity at the same time interval. The following historical data, which are nonnegative.
+constraint is presented that ensures the buying behavior and 5) State-of-Charge (SOC) Constraints: In the proposed
+selling behavior cannot be processed at the same time: model, the SOC of BESS in a household h (h ∈ H1, H3) can be
+
+xP2P modeled as
+h (t)× xG
+
+h (t) ≥ 0. (11)
+SOC
+
+The optimization problem is to find the best trading strategies SOC h (t− 1)× EC
+h +XB
+
+h (t)
+h(t) = (21)
+
+EC
+for households to minimize the proposed normalized function h
+
+fN
+o , which is defined as follows: where {
+
+min fN
+o . (12) xB h i xh 0
+
+XB h × ηch f B ≥
+h = xB (22)
+
+h B
+2) Social Welfare Modeling: In the modeling, the social ηdis if xh < 0
+
+h
+
+welfare is evaluated by the summation of all participants’ net
+xB,dis
+
+electricity cost, where the mathematical expression is h,max ≤ xB
+h (t) ≤ xB,ch
+
+h,max (23)
+
+∑H ∑T SOCmin
+h ≤ SOCh(t) ≤ SOCmax
+
+h . (24)
+fS = Qh(t). (13) In (21), SOCh(0) represents the initial SOC for household
+
+h=1 t=1 h’s BESS. For the designed BESS model, charging/discharging
+3) Benefit Distribution Modeling: In the P2P energy trading at the same time is prohibited since this behavior would cause
+
+market, it is essential that the earning for participants through unnecessary energy loss.
+the P2P energy trading ought to be fairly distributed. To quantify 6) MCP Computation: To make the P2P market fair and
+the extent of the fairness of the market, the benefit distribution efficient, MCP is used as the final electricity trading price. In
+function is designed to measure the variance between the overall this model, we use supply function method to derive the MCP:
+saved cost and the individual saved cost, and the definition is for a seller h at time t, the electricity could be sold to the grid and
+
+∑ P2P market. In this article, it is assumed that each seller defines
+H
+
+fσ,h
+fσ = (14) the selling strategy by the supply function xP2P
+
+h (t) (xP2P
+h (t) < 0),
+
+H then we would apply supply function mechanism to compute the
+h=1
+
+MCP. It is assumed that xP2P
+h (t) is decided by the P2P market
+
+where electricity price p(t), a variable parameter bh(t), and a constant
+f c as follows [27]:
+σ,h = (Q̃h − Q̃avg)
+
+2 (15)
+
+∑T xP2P
+h (t) = −bh(t)p(t) + c. (25)
+
+Q̃h = (Qh(t)− Q̂∗
+h(t)) (16) If the maintenance cost and operation cost of PV systems
+
+t=1 are ignored, the abovementioned supply function can be further
+H
+
+1 ∑ simplified as follows:
+Q̃avg = Q̃h. (17)
+
+H
+h=1 xP2P
+
+h (t) = −bh(t)p(t). (26)
+
+Based on individual variance defined in (15), we further propose At each time interval, buyers would submit their energy de-
+the category variance that is used to evaluate the variance index mand from the P2P market to the centralized market coordinator
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+WANG et al.: P2P ENERGY TRADING FOR RESIDENTIAL PROSUMERS WITH PV AND BATTERY STORAGE SYSTEMS 159
+
+TABLE II TABLE III
+NUMBER OF PARTICIPANTS IN EACH CATEGORY ENERGY UNIT PRICE (AU$/KWH)
+
+and sellers would submit their supply functions [proposed in
+(26)] as a bid to the centralized market coordinator. The cen-
+tralized market coordinator then clears the market according to
+the decisions of participants. For all household buyers at time B. Evaluation of the Net Cost and Variance (μ1 = μ2 = 0.5)
+t, the total amount of electricity bought from the P2P market is
+expressed as Fig. 4 reveals market participants’ net cost and variance level
+
+defined in (15). Compared with the case without any P2P energy
+H∑B(t) trading market, the overall net cost can be saved by 26.38%
+
+xP2P
+total(t) = − xP2P
+
+i (t). (27) when households trade in the proposed P2P market. On the
+i=1 other hand, such a significant cost reduction is based on the
+
+In the bidding market, MCP is determined when the supply low level of individual variance values, which indicates that the
+equals the demand. Hence, (27) is rewritten as saved cost is fairly allocated to each household. Regarding the
+
+performance of the households in each category, the households
+pMCP(t) = ∑xP2P
+
+total(t) . (28) in Category H3 and H4 generally have higher net energy costs
+HS(t)
+j=1 bj(t) than other category households who own PV systems, where
+
+Equation (28) shows that the MCP is proportional to the total the result demonstrates the significant role of DERs in reducing
+
+demand in the P2P trading market. Moreover, according to (26) electricity costs. On the other hand, BESS also plays an essential
+
+and (28), the supply function for household h can be updated as role in reducing energy costs. It is observed that households in
+CategoryH2 andH4 have lower variance values than households
+in Category H1 and H3, which means that under the scenario of
+
+xP2P
+h (t) = −∑bh(t)xP2P
+
+total . (29)
+HS(t)
+j=1 bj(t) μ1 = μ2 = 0.5, the centralized market coordinator allows more
+
+cost reduction for households with BESS to balance the social
+Equation (29) shows that the energy supply of household h to welfare and variance.
+
+P2P market is not only proportional to xP∑2P
+total and inversely pro- The role of BESSs can be further explored in Fig. 5, which
+
+portional to the overall bidding strategies HS(t)
+j=1 bi(t), but also reveals the SOC level and the average SOC for households in
+
+relevant to this prosumer’s biding option bh(t). Thus, both buy- CategoryH1 andH3. At the first 9 time intervals, the households
+ers and sellers are positively to be engaged in the MCP decision. in Category H1 and H3 charge the BESSs, where households
+
+in Category H1 emerge a faster charging speed than households
+III. CASE STUDY in Category H3 in the morning time due to the extra generated
+
+In this section, a community microgrid with 40 prosumers is power from PV systems of households in Category H1. After 10
+
+investigated as a case study to validate the proposed model. The A.M., while the average SOC of Category H1 decreases and then
+
+community microgrid is connected to a single utility grid, which keeps around constant from 2 P.M. to 6 P.M. before decreasing
+
+sells energy at the market prices and buys the energy at the FIT till midnight, the average SOC of Category H3 keeps increasing
+
+prices. The specific number of participants are given in Table II. before the night peak time. On the other hand, by comparing
+the SOC level in the last few time intervals for Category H1
+
+and H3, households in Category H3 maintain higher average
+A. Simulation Setup
+
+SOC. Although the centralized market coordinator suggests such
+In the case study, the predicted hourly PV energy demand pro- optimal energy management strategy of SOC to mitigate the
+
+files and the PV generation are based on the Ausgrid dataset [28]. excessive gap of the benefit distribution variance, the households
+The capacity of BESS is set to be 4.8 kWh, and the battery SOC with higher SOC levels are able to reduce net energy costs further
+is restricted to lie between 10% and 90%. The charging and when the market tends to emphasize more on social welfare
+discharging efficiencies are considered to be both 90% [29]. (e.g., μ1 increases and μ2 decreases), where such impact will be
+The maximum charging/discharging rate of the battery is 1 kW. analyzed at the end of the case study.
+The initial SOC for every SOC owner is set to be 0.1. The real
+grid price and FIT price from an Australian electricity retailer,
+Red Energy, are applied; see Table III. Since we only consider a C. Evaluation of P2P Energy Trading (μ1 = μ2 = 0.5)
+
+one-day scenario, the battery degradation cost is not included in Fig. 6 investigates the trading prices and quantities in different
+this case study. MATLAB built-in function FMINCON is used time intervals over the proposed P2P market. As shown in Fig. 6,
+in solving the optimization model, and YALMIP, a MATLAB there are some transactions recorded from the morning to the
+toolbox, is also used to translate the model constraints to MAT- afternoon, and the trading quantity has the rising trend until
+LAB language [30]. t = 14. This is because households start to generate lots of
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+160 IEEE SYSTEMS JOURNAL, VOL. 17, NO. 1, MARCH 2023
+
+Fig. 4. Net cost and variance level for every household in each category (µ1 = µ2 = 0.5).
+
+TABLE IV
+AVERAGE COST REDUCTION IN EACH HOUSEHOLD CATEGORY
+
+their energy cost as the P2P electricity price is lower than the
+traditional utility price. Moreover, the P2P trading quantity starts
+the declining trend from t = 14 due to the tense of DERs. There
+is no P2P energy transaction between t = 1 and t = 7 since
+there is no PV generation. However, P2P transactions are still
+recorded in low amounts after t = 20, which is contributed by
+
+Fig. 5. SOC for each household in category H1 and H3. BESS discharging. To realize the cost reduction of households
+in Category H2 and H4, the centralized market coordinator
+proposes households with BESSs to sell the stored energy to
+avoid high utility prices. However, by comparing the average
+cost reduction rate of each household category given in Table IV,
+it is observed that households with BESSs are still able to reduce
+more energy costs than others, demonstrating the key effect of
+BESSs on achieving more energy cost reduction with a wise
+charging/discharging strategy.
+
+Regarding the MCPs in a day, it can be observed that MCPs are
+heavily impacted by the utility selling price. From the morning
+to t = 14, MCPs have a decline trend caused by the abundant
+PV generation. MCP sharply rises at t = 15 when the utility
+price increases from AU$0.2420/kWh to AU$0.5225/kWh, and
+
+Fig. 6. Hourly MCP and total trading quantity over the proposed P2P market. it keeps increasing during the peak time due to the high energy
+demand and low manageable DERs.
+
+energy through PV panels, which exceeds their energy demand.
+Despite the option to charge the extra energy into the BESS for D. Evaluation of the Energy Trading With the Utility
+
+households equipped with BESS, the households also choose Company (μ1 = μ2 = 0.5)
+
+to sell some energy through the proposed P2P energy trading Fig. 7 shows the energy trading quantity with the local utility
+market, expecting more benefits than selling them to the grid company for each household category. Households in Category
+at a low FIT price. For those households who buy energy in the H1 take the least energy from the local utility company. This
+proposed P2P market, this transaction is also helpful to decrease is because the PV generation can support the energy demand,
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+WANG et al.: P2P ENERGY TRADING FOR RESIDENTIAL PROSUMERS WITH PV AND BATTERY STORAGE SYSTEMS 161
+
+Fig. 7. Total trading quantity with the utility company for each household
+category. Fig. 8. Optimization result for population variance function, social welfare,
+
+and objective function.
+
+and BESSs provide sufficient flexibility on demand side man-
+agement and arbitrage opportunity. The highest total power
+needed from the utility company is recorded at t = 19 during
+the peak time. Apart from this, another peak of the total power
+needed from the utility company is also recorded in t = 7,
+where households in Category H1 and H3 take the lead due
+to the BESS charging purpose. By contrast, compared with the
+morning and evening time, households need less energy from
+the local utility company in the afternoon, where the total energy
+trading quantity in the proposed P2P market is the highest in a
+day. Through the proposed P2P energy trading market, market
+
+Fig. 9. Optimization results for net cost and variance for each category.
+participants have a win–win solution, where energy sellers can
+sell the energy with MCPs that are significantly higher than the
+flat FIT price, and energy buyers can obtain energy with a price
+lower than the utility price. On the other hand, according to increasing, fN
+
+σ becomes bigger than fN
+S . Under this scenario, the
+
+Figs. 6 and 7, the local utility company covers the majority of centralized market coordinator will propose the optimal energy
+the total energy demand in a day, demonstrating that the local trading and management strategies that emphasize more on a
+utility company is still the main contributor to the local energy proper management of cost reduction for market participants.
+demand since the generation of the PV system is not stable and More details with respect to net cost and variance for house-
+significantly impacted by external factors, such as weather, time, holds in different categories when weighting factors are chang-
+and location. ing can be found in Fig. 9. In terms of the net cost, households
+
+in H1 and H3 show a stronger ability to reduce more cost
+than other households when μ1 increases. By contrast, although
+
+E. Evaluation of Weighting Factors households without BESSs have a significant cost reduction,
+Prior case studies have revealed the performance of the social these households find it harder to further reduce the energy
+
+welfare and variance index for the residential market partici- cost when μ1 increases. This is because households in H2 and
+pants. In this section, further investigation will be conducted to H4 are more likely to buy energy from the utility company
+analyze how the optimal social welfare and variance index will with high electricity prices due to the limitation of the energy
+change when adopting different weighting factors. sources during the night peak time. Regarding the category
+
+First, Fig. 8 illustrates the optimal result of the normalized variance index, which is defined in (18), each household cat-
+social welfare, the objective function and the benefit distribution egory shares the similar variance when μ1 is lower than 0.5.
+function based on different weighting factors. As shown in Fig. 8, However, with the increase of μ1, the optimal results reveal
+whenμ1 is close to one, the community can achieve its minimum higher category variance for households in H3 and H4. When
+overall net cost; when μ1 is close to zero, the community can μ1 = 0.9, the category variances for H3 and H4 are at the same
+achieve its minimum fair benefit distribution index. On the other level, which are 6.49 and 6.09, respectively. However, similar
+hand, when μ1 increases from μ1 = 0.1, the trend of fN
+
+σ is variance levels result in different performances of cost saving.
+increasing, but the trend of fN
+
+S is decreasing. However, the value Whenμ1 = 0.9, households inH3 can save AU$4.01 in average,
+of fN
+
+σ is always lower than fN
+S before μ1 = 0.55, indicating the w∑hile this number for households inH4 is AU$2.21 (obtained by
+
+fair benefit allocation is more important than the participants’ Hk
+h=1 Q̃h/Hk). Such discrepancy illustrates the importance of
+
+cost savings in this power system. Moreover, a turning point BESSs in achieving more energy cost reduction for residential
+exists at μ1 = 0.55, or equivalently, μ2 = 0.45. When μ1 keeps households through an appropriate BESS management strategy.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+162 IEEE SYSTEMS JOURNAL, VOL. 17, NO. 1, MARCH 2023
+
+TABLE V [6] K. Moslehi and A. B. R. Kumar, “Autonomous resilient grids in an IoT
+TOTAL TRADING QUANTITY OVER THE P2P MARKET WITH DIFFERENT landscape vision for a nested transactive grid,” IEEE Trans. Power Syst.,
+
+WEIGHTING FACTORS vol. 34, no. 5, pp. 4089–4096, Sep. 2019.
+[7] G. Sæther, P. C. del Granado, and S. Zaferanlouei, “Peer-to-peer electricity
+
+trading in an industrial site: Value of buildings flexibility on peak load
+reduction,” Energy Buildings, vol. 236, 2021, Art. no. 110737.
+
+[8] H. Kim, H. Choi, H. Kang, J. An, S. Yeom, and T. Hong, “A systematic
+review of the smart energy conservation system: From smart homes to
+sustainable smart cities,” Renewable Sustain. Energy Rev., vol. 140, 2021,
+
+The reasons causing the cost reduction when μ1 increases Art. no. 110755.
+vary, but one of the important factors is induced by more trading [9] M. Khorasany, Y. Mishra, and G. Ledwich, “A decentralized bilateral
+
+energy trading system for peer-to-peer electricity markets,” IEEE Trans.
+activity in the proposed P2P energy trading market. Table V Ind. Electron., vol. 67, no. 6, pp. 4646–4657, Jun. 2020.
+tabulates the overall energy trading quantity under the scenarios [10] M. Qu, T. Ding, W. Jia, S. Zhu, Y. Yang, and F. Blaabjerg, “Distributed
+of different weighting factors. It is observed that when μ1 goes optimal control of energy hubs for micro-integrated energy systems,”
+
+IEEE Trans. Syst., Man, Cybern. Syst., vol. 51, no. 4, pp. 2145–2158,
+bigger, households are suggested to trade more energy in the Apr. 2021.
+proposed P2P energy market to achieve lower overall net cost. [11] T. Ding, Q. Yang, Y. Wen, Y. Ning, Y. Yang, and F. Blaabjerg, “Zonally
+
+robust decentralized optimization for global energy interconnection: Case
+study on northeast asian countries,” IEEE Trans. Automat. Sci. Eng.,
+
+IV. CONCLUSION vol. 17, no. 4, pp. 2120–2129, Oct. 2020.
+[12] C. Mu, T. Ding, M. Qu, Q. Zhou, F. Li, and M. Shahidehpour, “Decentral-
+
+In this article, a residential P2P energy trading system ized optimization operation for the multiple integrated energy systems with
+and relevant rules are proposed for residential households. In energy cascade utilization,” Appl. Energy, vol. 280, 2020, Art. no. 115989.
+the P2P trading market, the proposed model considers four [13] T. Chen, S. Bu, X. Liu, J. Kang, F. R. Yu, and Z. Han, “Peer-to-peer energy
+
+trading and energy conversion in interconnected multi-energy microgrids
+categories of participants: households with RESs and BESS, using multi-agent deep reinforcement learning,” IEEE Trans. Smart Grid,
+households with RESs only, households with BESS only, and vol. 13, no. 1, pp. 715–727, Jan. 2022.
+households with none of the RES or BESS. In the proposed [14] H. Wu et al., “Data management in supply chain using blockchain: Chal-
+
+lenges and a case study,” in Proc. IEEE 28th Int. Conf. Comput. Commun.
+market, participants decide the energy procurement to enable Netw., 2019, pp. 1–8.
+them from traditional passive energy receivers to active market [15] A. Esmat, M. de Vos, Y. Ghiassi-Farrokhfal, P. Palensky, and D. Epema, “A
+participants, and the energy sellers decide the amount of energy novel decentralized platform for peer-to-peer energy trading market with
+
+blockchain technology,” Appl. Energy, vol. 282, 2021, Art. no. 116123.
+sold through P2P market by a supply function mechanism. The [16] T. Morstyn and M. McCulloch, “Multi-class energy management for
+market clearing prices are codetermined by buyers and sellers peer-to-peer energy trading driven by prosumer preferences,” IEEE Trans.
+to ensure the fairness and transparency of the proposed P2P Power Syst., vol. 34, no. 5, pp. 4005–4014, Sep. 2019.
+
+[17] C. Dang, J. Zhang, C.-P. Kwong, and L. Li, “Demand side load manage-
+market. Based on the proposed model, this article formulates ment for big industrial energy users under blockchain-based peer-to-peer
+the objective function that considers both social welfare and fair electricity market,” IEEE Trans. Smart Grid, vol. 10, no. 6, pp. 6426–6435,
+benefit distribution. Simulation results show that the proposed Nov. 2019.
+
+[18] Z. Guan, X. Lu, W. Yang, L. Wu, N. Wang, and Z. Zhang, “Achieving
+trading mechanism can efficiently reduce the electricity bills for efficient and privacy-preserving energy trading based on blockchain and
+households and ensure the fairness of the revenue distribution. ABE in smart grid,” J. Parallel Distrib. Comput., vol. 147, pp. 34–45,
+For example, when μ 2021.
+
+1 = 0.5, 26.38% of the total cost saving
+[19] O. Abrishambaf, F. Lezama, P. Faria, and Z. Vale, “Towards transactive
+
+can be achieved during keeping the fair benefit distribution energy systems: An analysis on current trends,” Energy Strategy Rev.,
+at a low level. Essentially, the centralized market coordinator vol. 26, 2019, Art. no. 100418.
+can realize different targets on social welfare and fair benefit [20] A. Paudel, K. Chaudhari, C. Long, and H. B. Gooi, “Peer-to-peer energy
+
+trading in a prosumer-based community microgrid: A game-theoretic
+distribution by adjusting different weighting factors, reflecting model,” IEEE Trans. Ind. Electron., vol. 66, no. 8, pp. 6087–6097,
+the strong flexibility of the proposed model. Aug. 2019.
+
+In future work, the proposed market will be investigated by [21] M. Zhang, F. Eliassen, A. Taherkordi, H.-A. Jacobsen, H.-M. Chung, and
+Y. Zhang, “Energy trading with demand response in a community-based
+
+considering communication delays. Besides, the uncertainty of P2P energy market,” in Proc. IEEE Int. Conf. Commun., Control, Comput.
+the energy demand and PV outputs would be considered to Technol. Smart Grids, 2019, pp. 1–6.
+enhance the accuracy of the results. [22] M. M. Jalali and A. Kazemi, “Demand side management in a smart grid
+
+with multiple electricity suppliers,” Energy, vol. 81, pp. 766–776, 2015.
+[23] N. Li, L. Chen, and M. A. Dahleh, “Demand response using linear supply
+
+REFERENCES function bidding,” IEEE Trans. Smart Grid, vol. 6, no. 4, pp. 1827–1838,
+Jul. 2015.
+
+[1] D. N.-Y. Mah et al., “Policy mixes and the policy learning process of energy [24] N. K. Meena, J. Yang, and E. Zacharis, “Optimisation framework for
+transitions: Insights from the feed-in tariff policy and urban community the design and operation of open-market urban and remote community
+solar in Hong Kong,” Energy Policy, vol. 157, 2021, Art. no. 112214. microgrids,” Appl. Energy, vol. 252, 2019, Art. no. 113399.
+
+[2] L. Poruschi, C. L. Ambrey, and J. C. Smart, “Revisiting feed-in tar- [25] M. R. Alam, M. St-Hilaire, and T. Kunz, “Peer-to-peer energy trading
+iffs in Australia: A review,” Renewable Sustain. Energy Rev., vol. 82, among smart homes,” Appl. Energy, vol. 238, pp. 1434–1443, 2019.
+pp. 260–270, 2018. [26] J. Wang, H. Zhong, C. Wu, E. Du, Q. Xia, and C. Kang, “Incentivizing
+
+[3] N. Martin and J. Rice, “The solar photovoltaic feed-in tariff scheme in distributed energy resource aggregation in energy and capacity markets:
+New South Wales, Australia,” Energy Policy, vol. 61, pp. 697–706, 2013. An energy sharing scheme and mechanism design,” Appl. Energy, vol. 252,
+
+[4] S. Jiang, C. Wan, C. Chen, E. Cao, and Y. Song, “Distributed photovoltaic 2019, Art. no. 113471.
+generation in the electricity market: Status, mode and strategy,” CSEE J. [27] S. Cló, A. Cataldi, and P. Zoppoli, “The merit-order effect in the Italian
+Power Energy Syst., vol. 4, no. 3, pp. 263–272, 2018. power market: The impact of solar and wind generation on national
+
+[5] J. Koskela, A. Rautiainen, and P. Järventausta, “Using electrical en- wholesale electricity prices,” Energy Policy, vol. 77, pp. 79–88, 2015.
+ergy storage in residential buildings–sizing of battery and photovoltaic [28] Ausgrid, Solar home electricity data.” [Online]. Available: https:
+panels based on electricity cost optimization,” Appl. Energy, vol. 239, //www.ausgrid.com.au/Industry/Innovation-and-research/Data-to-
+pp. 1175–1189, 2019. share/Solar-home-electricity-data
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+WANG et al.: P2P ENERGY TRADING FOR RESIDENTIAL PROSUMERS WITH PV AND BATTERY STORAGE SYSTEMS 163
+
+[29] I. Dusparic, A. Taylor, A. Marinescu, F. Golpayegani, and S. Clarke, Li Li (Member, IEEE) received the B.S. degree from
+“Residential demand response: Experimental evaluation and comparison the Huazhong University of Science and Technol-
+of self-organizing techniques,” Renewable Sustain. Energy Rev., vol. 80, ogy, Wuhan, China, in 1996, the M.S. degree from
+pp. 1528–1536, 2017. Tsinghua University, Beijing, China, in 1999, and
+
+[30] J. Lofberg, “YALMIP: A toolbox for modeling and optimization in MAT- the Ph.D. degree from the University of California,
+LAB,” in Proc. IEEE Int. Conf. Robot. Automat., 2004, pp. 284–289. Los Angeles, CA, USA, in 2005, all in electrical
+
+engineering.
+From 2005 to 2007, he was a Research Associate
+
+with the University of New South Wales, Kensing-
+Jiatong Wang received the B.E. degree in con- ton, NSW, Australia, at the Australian Defence Force
+trol engineering from Southwest Jiaotong University, Academy (UNSW@ADFA). From 2007 to 2011, he
+Chengdu, China, in 2015, and the M.E. degree in was a Researcher with National ICT Australia, Victoria Research Labora-
+electrical engineering from the University of Sydney, tory, Department of Electrical and Electronic Engineering, The University of
+Sydney, NSW, Australia, in 2018. He is currently Melbourne, Melbourne, VIC, Australia. In 2011, he joined the University of
+working toward the Ph.D. degree in electrical engi- Technology Sydney, Sydney, NSW, Australia, where he is currently an Associate
+neering with the University of Technology Sydney, Professor. He held several visiting positions at various universities. His research
+Sydney, NSW, Australia. interests include power systems and control theory.
+
+His research interests include power system oper- Dr. Li is currently an Associate Editor for the IET Renewable Power Gener-
+ation and planning, demand-side management, and ation, IET Generation, Distribution and Transmission, and IET Smart Grid.
+peer-to-peer energy trading market.
+
+Jiangfeng Zhang received the B.Sc. and Ph.D. de-
+grees in computing mathematics from Xi’an Jiaotong
+University, Xi’an, China, and the Ph.D. degree in elec- Yunfeng Lin received the B.E. degree from the
+tronic and electrical engineering from the University University of Electronic Science and Technology of
+of Strathclyde, Glasgow, U.K. China, Chengdu, China, in 1998, and the M.I.T degree
+
+He is currently an Associate Professor with Clem- from the University of Technology Sydney, Sydney,
+son University, Clemson, SC, USA. His research Australia. He is currently working toward the Ph.D
+interests include electric vehicles, smart grid, and degree in electrical engineering with the University
+renewable energy. of Technology Sydney, Sydney, NSW, Australia.
+
+Dr. Zhang is an Associate Editor for the IET Smart
+Grid and IET Renewable Power Generation, a Fellow
+
+of IET, and a Member of IFAC TC6.3 on Power and Energy Systems.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 05,2026 at 21:02:43 UTC from IEEE Xplore.  Restrictions apply.

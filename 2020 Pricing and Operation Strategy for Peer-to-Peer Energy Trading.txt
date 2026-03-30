@@ -1,0 +1,836 @@
+﻿SPECIAL SECTION ON KEY ENABLING TECHNOLOGIES FOR PROSUMER ENERGY MANAGEMENT
+
+Received July 9, 2020, accepted July 20, 2020, date of publication July 23, 2020, date of current version August 6, 2020.
+Digital Object Identifier 10.1109/ACCESS.2020.3011400
+
+Pricing and Operation Strategy for Peer-to-Peer
+Energy Trading Using Distribution System Usage
+Charge and Game Theoretic Model
+YUNSUN JIN 1, (Member, IEEE), JEONGHOON CHOI 2, AND DONGJUN WON 2, (Member, IEEE)
+1Korea Electrotechnology Research Institute, Changwon 51543, South Korea
+2Department of Electrical and Computer Engineering, Inha University, Incheon 22212, South Korea
+
+Corresponding author: Dongjun Won (djwon@inha.ac.kr)
+
+This work was supported in part by the Korea Electric Power Corporation under Grant R18XA01; and in part by the National Research
+Foundation of Korea (NRF) funded by the Ministry of Science, ICT, through the Energy Cloud Research and Development Program under
+Grant 2019M3F2A1073.
+
+ABSTRACT This paper proposes a game-theoretic model for peer-to-peer (P2P) energy trading between
+a consumer and a prosumer living in a community. The proposed real-time pricing model is based on the
+Stackelberg game, and the consumer and prosumer are the follower and leader in the game, respectively.
+Therefore, the prosumer first proposes the trading price and then proposes the trading quantity based on
+the optimal scheduling of the energy storage system considering the determined trading price, load profile,
+P2P trading demand, etc. Subsequently, the consumer decides to purchase quantity by adjusting his/her load
+usage according to the trading price and quantity suggested by the prosumer. In this regard, a power flow
+analysis was conducted based on the participants’ bidding strategy to analyze the changes in the electricity
+flow in a distribution system in which P2P energy trading occurs. Consequently, changes in power flow
+from the point of common coupling before and after P2P trading were verified, and the voltage stability
+of each bus was confirmed. In addition, the distribution system usage charge was calculated to reduce the
+operational burden of the distribution system operator and suggest an operation strategy that can enable P2P
+energy trading.
+
+INDEX TERMS Game-theoretic approach, Stackelberg game theory, distribution system operator, power
+flow analysis, peer-to-peer energy trading.
+
+ABBREVIATIONS AND NOMENCLATURE λlow,t Export price to the utility at time t
+A. ABBREVIATIONS γ Price update parameter
+
+PreqP2P Peer to Peer j,t Required demand of prosumer j at time t
+DER Distributed Energy Resource Pexcj,t Surplus power of prosumer j at time t
+PV Photovoltaic Rj,t(·) Revenue function of prosumer j at time t
+DSO Distribution System Operator U j,t(·) Utility function of prosumer j at time t
+ESS Energy Storage System pj Load consumption preference parameter
+PCC Point of Common Coupling of prosumer j
+SOC State of Charge P loadj,t Load consumption of prosumer j at time t [kW]
+DSUC Distribution System Usage Charge
+SMP System Marginal Price PP2Pj,t P2P trading power of prosumer j at time t
+
+[kW]
+B. NOMENCLATURE Pgrid,buyj,t Imported power from the utility of prosumer
+λj,t P2P trading price of prosumer j at time t j at time t
+λup,t Import price from the utility at time t
+
+Pgrid,sellj,t Exported power to the grid of prosumer j
+The associate editor coordinating the review of this manuscript and at time t
+
+approving it for publication was Jiayong Li. Pgenj,t Generated power of prosumer j at time t
+
+137720 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/ VOLUME 8, 2020
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+Pchaj,t ESS charging power of prosumer j at time t plants have accounted for the entire power supply; however,
+Pdch a system of several small power plants is being established,
+j,t ESS discharging power of prosumer j at time t
+
+enablingmore flexible supply regulation tomeet the changing
+SOC j,t ESS SOC of prosumer j at time t
+tstep
+
+demand.
+time step The distributed power generation system, once established,
+
+ηdch ESS discharging efficiency
+ηcha
+
+is expected to minimize the risks of the power system due to
+ESS charging efficiency
+
+Erate
+the irregular supply of renewable energy via the installation
+
+j ESS rated capacity of prosumer j [kWh] of facilities such as solar andwind power at the optimal power
+SOC j,T Final SOC level [%] generation site. These facilities mainly include small-scale
+SOC j,0 Initial SOC level [%] photovoltaic (PV) systems and small-scale wind power sys-
+SOCmin
+
+j Minimum SOC of prosumer j [%] tems, which are connected to the distribution system, and
+SOCmax
+
+j Maximum SOC of prosumer j rooftop PV systems, which are being actively installed
+Pgridmax Maximum constraint of power from the grid [10]–[13]. Various policies have been established to encour-
+Pratej ESS rated power of prosumer j [kW] age the installation of DERs owing to their various benefits.
+ucha With the increase in the number of small-scale PV instal-
+j,t Charge state variable of prosumer j at time t
+udchj,t Discharge state variable of prosumer j at time t lations, a new type of participant called the PV prosumer has
+
+appeared in the energy market [14]–[17]. Various policies
+ugrid,buyj,t Buying state variable of prosumer j at time t have been established to ensure the profitability of prosumers.
+ugrid,sellj,t Selling state variable of prosumer j at time t Among them peer-to-peer (P2P) energy trading is considered
+Ri,t(·) Revenue function of consumer i the most effective way. Efforts to deal with the prosumer’s
+U i,t(·) Utility function of consumer i energy management problem can be categorized into two
+PP2P groups: energy market bidding and dynamic pricing. Con-
+i,t P2P trading power of consumer i at time t
+αj,t Participation rate of prosumer j at time t sidering that the community is too small to be organized as
+Pgrid,buyi,t Imported power from the utility of consumer a complicated bidding market, the dynamic pricing model
+
+i at time t has been emphasized. Assuming that both consumers and
+
+p prosumers are rational, the trading participants will maxi-
+i,t Load consumption preference parameter of
+
+consumer i mize their profits in response to dynamic prices. The pricing
+model can be designed based on different approaches such
+
+P loadi,t Load consumption of consumer i at time t
+Pchange
+
+as game-theoretic methods, optimization, and reinforcement
+i,t Load adjustment of consumer i at time t learning.
+
+d i Discomfort parameter of consumer i Among them, Stackelberg game is attracting attention as
+σ 1 Participation update parameter one of the most effective methodologies because it is suit-
+γ base Voltage difference before P2P trading able for designing a price model in a smart grid with a
+γ P2P Voltage difference after P2P trading leader-follower structure, i.e., a multi-microgrid or a small
+Vbase Bus voltage before P2P trading community [15]–[18].
+VP2P Bus voltage after P2P trading Recently, the trend of P2P energy trading research is con-
+ϕp Total DSUC sidering the stability of distribution system as the optimal
+ϕbase Basic rate of DSUC bidding strategy for energy trading. Li et al. [19] has proposed
+ϕcharge Charging rate of DSUC an energy tradingmodel that considers both the economic and
+
+technical issues in the distribution system. Liang and Su [17]
+proposed an optimal bidding strategy to ensure the pro-
+
+I. INTRODUCTION sumer’s profitability while ensuring the reliable operation of
+Power systems are crucial for modern economic growth. the distribution system. In this study, the authors assumed that
+Recently, economic growth and power consumption are the distribution system operator (DSO), whomanages the dis-
+increasing proportionally. However, owing to the limitations tribution network, performs supply and demand coordination
+of the traditional power system operated by large central- through transactions with the main system, considering the
+ized power plants, new power systems have attracted con- prosumers’ bids. A game-theory-based power trading mar-
+siderable attention [1]–[4]. Moreover, with the expansion in ket operation was developed, and a Nash equilibrium point
+the strategic demand and the increase in the proportion of was derived using a relaxation algorithm through a bi-level
+renewable energy (whose supply is difficult to control) in algorithm and the Nikaido–Isoda function. In this process,
+the energy mix, the stability of the power system can no the Karush–Kuhn–Tucker condition was applied to derive the
+longer be secured by existing power generation facilities optimal bidding strategy considering the distribution system
+and vertical power supply systems [5]–[7]. Therefore, the constraints. However, because the individual trading partici-
+conversion of a power supply system into a distributed energy pants need to know information about the distribution system,
+resource (DER) has been undertaken to secure supply flexi- it is limited to consider the stability of the distribution system
+bility [8], [9]. So far, a small number of large-scale power as a limiting condition. In addition, determining the optimal
+
+VOLUME 8, 2020 137721
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+strategy without considering the stability of the distribution
+system is not purely optimal for P2P trading participants.
+
+As the P2P trading becomes active, the utility company’s
+revenues decrease, and there is also a problem of increasing
+the burden due to the deterioration of system stability and
+bidirectional power flow caused by the grid connection of
+small scale renewable energy sources [19].
+
+A number of previous studies have been conducted to
+introduce P2P trading methods based on game theory.
+In particular, the Stackelberg game was used to model the
+multi-level decision making process of the participants in
+the leader-follower structure in the oligopoly market. Each
+participant of the game tries to make its best decision to
+maximize its utility.
+
+In this paper, an innovative game-theoretic P2P energy
+trading mechanism is proposed for a prosumer-centric model.
+In the Stackelberg game, the trading price and quantity of FIGURE 1. A framework of P2P energy trading in a distribution system.
+electricity are set as interactive variables. In this model, the
+prosumer acts as a leader, and determines the trading price proposed structure, which is a difficult task for individual
+and quantity, whereas the consumer acts as a follower, and prosumers and consumers. Consequently, P2P market oper-
+adjusts its behavior in response to the prosumer’s strategy. ators assist in P2P trading, gathering the bidding strategies of
+In addition, based on the optimal trading quantity derived individual participants and informing the DSO.
+from dynamic pricing, we perform power flow analysis to The DSO owns the distribution system infrastructure and
+analyze the impact on the distribution system. Accordingly, is responsible for the reliable and stable operation of the dis-
+we propose an operational strategy to reduce the operating tribution system. Moreover, the DSO approves the P2P mar-
+burden of the system operator by suggesting a distribution ket based on the participants’ bidding strategies gathered by
+system usage charge. the P2P market operators. Thus, the DSO secures economic
+
+The main contributions of this paper are summarized as feasibility by charging distribution system usage charges for
+follows: equipment rentals to prosumers, generating revenue by using
+• A game-theoretic model is proposed for P2P energy
+
+the distribution system infrastructure.
+trading between prosumers and consumers considering
+the energy storage system ESS) applications.
+
+• An ESS optimal scheduling scheme is investigated to
+maximize the trading revenue.
+
+• Power flow analysis is performed to analyze the impact
+on the system before and after P2P trading, based on the
+optimal bidding strategy of the trading participants.
+
+• A method of deriving the distribution system usage
+charge based on the results of the power flow analysis
+is proposed.
+
+II. SYSTEM CONFIGURATION
+Figure 1 presents an overview of the prosumer-centric dis-
+tribution system, which consists of four main components:
+1) prosumers; 2) consumers; 3) P2P marker operator; and
+4) DSO.All the prosumers and consumers in a community are
+connected via bidirectional power and communication links.
+In the figure, a solid line indicates a physically connected
+power line, and a dotted line indicates a communication line.
+Furthermore, the community connects to the upstream utility
+grid through a point of common coupling (PCC). FIGURE 2. Flowchart of the P2P energy trading algorithm.
+
+In the proposed structure, the consumer is an electricity
+user without power generation facilities, and the prosumer Figure 2 shows the main flowchart for deriving the optimal
+owns a PV generator and an ESS, which allows it to control bidding strategy of the trading participants. In the proposed
+and store the generated power actively. Information on energy P2P trading model, multi-player trading is assumed con-
+transactions must be transmitted to the DSO to trade in the sidering N-prosumers and M-consumers. At this time, the
+
+137722 VOLUME 8, 2020
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+interaction between the prosumer and the consumer was B. DETERMINATION OF THE SALES QUANTITY
+modeled as a Stackelberg game. In this model, the seller is After the price is determined, individual prosumers determine
+the leader of the game and their strategy is to update the to schedule to maximize their utility, considering their sur-
+selling price(λj,t ). The price was assumed to be determined plus power, load consumption, required demand, grid energy
+by free competition among prosumers. Therefore, as shown price, P2P trading price, etc. This results in the determination
+in Equation (1), the leader adjusts the price by comparing the of the quantity traded in one hour to maximize the prosumers’
+demand allocated to him with the supply determined through revenue. The objective function and constraints for determin-
+his surplus power. ing the s{ales}quantity of the prosumers are as follows:
+
+After the seller decides the price as a strategy, they decide
+Max R P2P
+
+j,t = Uj,t + Pj,t × λj,t − P
+grid,buy
+
+the optimal trading quantity(PP2Pj,t ) in consideration of his j,t × λup,t
+utility. This is determined according to Equation (2). In the
+
++Pgrid,sellj,t × λlow,t (2)
+proposed method, the buyer is a follower who updates his
+
+Uj,t = pj × ln(Ploadstrategy considering the seller’s price and quantity. Therefore, j,t ) (3)
+the price and quantity suggested by the sellers are input subject to Pgenj,t + P
+
+grid,buy
+j,t − Pgrid,sellj,t − Pch
+
+variables of the purchase quantity determination algorithm, j,t + P
+dch
+j,t
+
+= Pregj,t + P
+load
+
+and the optimal purchase quantity considering the utility of j,t (4)
+the buyer is calculated. SOC j,t = SOC j,t−1
+
+In other words, the seller’s trading price and quantity ηchaPchaj,t − (1/ηdch)Pdchj,t
+influence the determination of the buyer’s P2P trading quan- +
+
+Erate
+tstep (5)
+
+tity. For example, if the seller suggests the selling price j
+
+very high, considering only his own revenue, the buyer may SOC j,T = SOC j,0 (6)
+react to reducing the P2P trading quantity, resulting in a Pchaj,t × u
+
+cha
+j,t ≤ P
+
+rate
+j (7)
+
+decrease in sales profit. Therefore, it is important for the Pdch
+seller to establish an appropriate strategy considering the j,t × u
+
+dch
+j,t ≤ P
+
+rate
+j (8)
+
+Pgrid,buyj,t × ugrid,buyfollowers’ reaction according to his strategy as a leader of j,t ≤ Pgridmax (9)
+the game. Pgrid,sellj,t × ugrid,sell
+
+In addition, as a final step of the overall algorithm proposed j,t ≤ Pgridmax (10)
+
+0 ≤ Pgrid,buyin this paper, buyers make their own strategies considering j,t ≤ Pgridmax (11)
+the seller’s strategy. In the buyer’s strategy, the seller partic- 0 ≤ Pgrid,sellj,t ≤ Pgridmax (12)
+ipation ratio is updated according to the Equation (28). This
+
+0 ≤ Pchaj,t ≤ P
+rate
+
+participation ratio affects the amount of demand allocated to j (13)
+the seller. In other words, it also affects the buyer’s strategy 0 ≤ Pdchj,t ≤ P
+
+rate
+j (14)
+
+decision of the seller.
+The above process is repeated until the price converges, SOCmin
+
+j ≤ SOC j,t ≤ SOCmax
+j (15)
+
+and the power flow analysis is performed according to the uchaj,t + u
+dch
+j,t ≤ 1 (16)
+
+P2P trading quantity under the condition where the price ugrid,sellj,t + ugrid,buyj,t ≤ 1 (17)
+converged, and the DSUC is determined according to how it
+
+0 ≤ uchaaffects the system. j,t ≤ 1 (18)
+0 ≤ udchj,t ≤ 1 (19)
+
+A. DETERMINATION OF THE TRADING PRICE
+0 ≤ ugrid,buyAs explained earlier, it is assumed that the free competi- j,t ≤ 1 (20)
+
+tion market principle determines the selling price among the 0 ≤ ugrid,sellj,t ≤ 1 (21)
+prosumers. Therefore, it was assumed that the principle of
+the market price in a competitive market follows ‘law of In (3), Uj,t indicates the utility according to the load con-
+demand and supply’, and based on this, it was calculated as sumption of the individual prosumers. In general, satisfac-
+Equation (1). tion with load consumption is expressed by the logarithmic
+
+Through this, if the demand for prosumers is greater than or quadratic function according to the law of diminishing
+their excess power generation, the price is high. In addition, marginal utility. Note that pj is a preference parameter indicat-
+in the opposite case, that is, when the supply is more than the ing the prosumer j’s preference for load consumption, which
+demand, the strategy is to increase the sales revenue by low- changes according to the prosumer’s unique characteristics.
+ering the price. Here, demand requested for each prosumer For example, if the utility parameter pj has a large value,
+at time t is determined by the participation ratio, which is it indicates a prosumer with a high utility for energy con-
+the buyer’s strategy. That is, it can be seen that the seller’s sumption. Thus, the prosumer’s overall profit is expressed
+strategy affects the buyer’s strategy and vice versa. as (2), which combines the cost of transaction with the system
+
+λup,t + λlow,t and P2P trading with its utility. Equations (4) to (21) are
++ γ×(Preqλ j,t − P
+
+exc
+j,t = j,t ) (1)
+
+2 the constraints of the sales energy determination algorithm.
+
+VOLUME 8, 2020 137723
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+Equation (4) is the energy balance constraint, and (5) indi- D. P2P PARTICIPATION RATIO UPDATE
+cates that the state of charge(SOC) of the ESS is determined After receiving the sales price and quantity information by the
+by the SOC of the previous time step and the ESS output seller, Buyers determine a participation ratio in the trading.
+power of the current time step. Equation (6) allows the final Through the trading participation ratio, sellers are allocated
+and initial SOCs of the ESS to be the same, and they can be a certain percentage of the demand as their trading demand.
+set to the desired value. Equations (7) and (8) are constraints Furthermore, the renewed trading demands of the sellers
+that limit the ESS output power below the rated output power. influence the pricing decision.
+Equations (9) and (10) are constraints related to the quantity
+
+αj,t = αj,t−1 +∑σ1 × Psellj,t (28)
+of trading with the main grid. Equations (11) through (21)
+are the upper and lower limits of the decision variables. B
+
+Preqj,t = αj,t × PP2P ( 9
+i i, 2 )
+
+Finally, to determine the prosumer’s P2P trading energy, ESS =1 t
+
+optimal scheduling is carried out to simultaneously satisfy the Equation (28) indicates that the prosumers’ participation
+above constraints, the demand of load consumption, and the ratio is renewed according to the quantity of trading suggested
+demands from consumers. ∑by the prosumers. Here, αj,t is the participation ratio of the
+
+buyer selecting a seller at time t , where 0 ≤ αj,t ≤ 1,
+S
+
+C. DETERMINATION OF THE PURCHASE QUANTITY j=1 αj,t = 1. According to the renewed participation ratio,
+
+As a follower of the game, the consumer decides his/her the trading demand allocated to the prosumer is determined,
+
+purchase quantity according to the sales price and quantity as shown in (29). This acts as a requested demand from the
+
+suggested by the prosumer. In this case, unlike the seller, the prosumer’s perspective, and in the next iteration, the price
+
+consumer does not own a DER such as a PV generator and is renewed by comparing the quantity of demand with the
+
+ESS, but they can adjust his/her load consumption. Therefore, surplus generated by the prosumer.
+
+a part of his/her demand is satisfied through P2P trading, E. DETERMINATION OF THE DISTRIBUTION SYSTEM
+and the remaining energy is obtained from the main grid to USAGE CHARGE (DSUC)
+satisfy his/her load consumption. The objective function and
+constraints of the purchase quantity determination algorithm Most of the previous studies focused on developing an opti-
+of the co{nsum} er are as follows:∑
+
+mal bidding strategy to maximize the participants’ trading
+profits. However, from the perspective of power system oper-
+
+R P2P S ( )
+Max ators, the effect of a transaction on the system before and after
+
+i,t = Ui,t − Pi,t × λ × α
+j j,t ,
+=1 j t
+
+P2P trading should be analyzed, to operate a stable system.
+−Pgrid,buyi,t (× λup,t ) (22) The reason is that, if the prosumers who have profited from
+
+P2P trading connect renewable power sources to the distribu-
+Ui,t=pi,t × ln Ploadi,t −P
+
+change
+−di×P
+
+change2
+i,t i,t (23) tion systems without any restrictions to increase their prof-
+
+subject to Pchange its, network problems such as local overvoltage and reverse
+i,t + Pgrid,buyi,t + PP2Pi,t = Ploadi,t (24)
+
+0 ≤ Pgrid,buy
+current may occur when power is generated. Therefore, in
+
+i,t ≤ Ploadi,t (25) this study, a DSUC is charged for the voltage fluctuations
+− Pload generated through P2P trading.
+
+i,t /2 ≤ Pchangei,t ≤ Ploadi,t /2 (26)
+0 ≤ PP2Pi,t ≤ P
+
+P2P
+max (27) γbase = |1− Vbase| (30)
+
+γP2P = |1− VP2P| (31)
+Equation (22) estimates the purchase quantity required to
+
+maximize the utility function of individual buyers. In (23), it ϕp = ϕbase − (γbase − γP2P)× ϕcharge (32)
+Ui,t indicates the utility according to the load consumption. Equation (30) indicates the difference between the voltage
+Here, a consumer who has a large utility parameter pi will of each bus and the reference voltage before P2P trading.
+increase his/her load consumption to increase his/her utility. Here, Vbase represents the voltage of each bus before P2P
+Conversely, a consumer who has a small utility parameter pi trading. Equation (31) indicates the difference between the
+will save on electricity bills by reducing his/her load con- voltage of each bus and the reference voltage after P2P trad-
+sumption. In addition, the purchase quantity of the consumer ing, where VP2P represents the voltage of each bus after P2P
+is determined according to the discomfort parameter di for trading. After the aforementioned differences are derived, the
+his/her load adjustment. The discomfort parameter for load DSUC charged to the prosumer is calculated according to the
+adjustment is set differently for each consumer, similar to difference in voltage fluctuation before and after P2P trading,
+the utility parameter, and is the input data of the user. This as shown in Equation (32). Here, γbase is the basic rate of
+considers the characteristics of the load consumption or load DSUC and is calculated as 20% of the trading revenue. ϕcharge
+adjustment of the consumer. is this value multiplied by the voltage fluctuation. The charge
+Based on the above objectives and constraints, the individ- charged according to the degree of contribution to the voltage
+
+ual consumers will calculate the hourly load adjustment, P2P stability through P2P transactions is calculated by calculating
+trading quantity, and trading quantity from the main grid to the DSUC according to the magnitude of voltage fluctuation
+maximize their revenue functions. of the corresponding bus.
+
+137724 VOLUME 8, 2020
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+III. CASE STUDY
+In this section, three cases are reviewed to verify the perfor-
+mance of the proposed P2P trading algorithm. The prosumers
+assume that they can sell their surplus power via the main
+grid and through P2P trading. All the case studies assumed
+that there were three prosumers and 15 consumers in the
+community. Figure 3 shows the consumer load profile.
+
+FIGURE 5. 18-bus radial distribution test system [21].
+
+TABLE 1. 18-bus branch data.
+
+FIGURE 3. Consumer load profile.
+
+All the participants in the trading were assumed to follow
+the household load consumption pattern which generated by
+using the working day(Monday-Friday) data of 2018 Korea
+Electric Power Research Institute’s analysis of power con-
+sumption behavior [20], and the prosumers participating in
+P2P trading assumed that they could control the DERs owned
+by the ESS together with the small-scale PV devices. It is
+assumed that the prosumers own solar generators of dif-
+ferent rated capacities, i.e., 3 [kW], 6 [kW], and 9 [kW].
+They also have an installed battery of capacity 15 kWh. The
+charging and discharging efficiencies are considered as 90%.
+Moreover, the charging and discharging power are assumed TABLE 2. Case classification.
+to be 5 [kW].
+
+is an example in which the prosumers do not participate in
+P2P trading. In this case, the prosumer’s surplus power is
+sold to the main grid, and the selling price is assumed to
+be the system marginal price(SMP). Case B is an example
+in which the prosumers who actively control their demand
+participate in P2P trading. Case C is an example of prosumers
+
+FIGURE 4. Prosumer net demand. participating in P2P trading by adjusting their demands and
+owning an ESS and actively adjusting their surplus power
+
+The test system for analyzing the impact of P2P trading is generation.
+assumed to be an 18-bus radial distribution system, and the
+system configuration is shown in Figure 5. In addition, the A. SIMULATION RESULTS
+system parameters applied to the test system are shown in Case A is a scenario in which P2P trading is not undertaken,
+Table 1. In the test system, it was assumed that the prosumers and the prosumers sell their surplus power to the main grid.
+exist on buses 11, 13, and 18. Therefore, a prosumer’s profit by selling surplus power to the
+
+In this study, we compare and analyze the prosumer’s main grid is calculated as Equation (33).
+revenue and power flowwhen conducting P2P trading in three
+cases. Table 2 shows the case study configurations. Case A Pexcj,t × λlow,t (33)
+
+VOLUME 8, 2020 137725
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+FIGURE 6. Total power imported from the grid [Case A]. FIGURE 9. Bus voltage [Case A].
+
+Figure 6 shows the quantity of power purchased by the
+prosumers from the main grid in Case A. The prosumers
+satisfy their load consumption by purchasing power from
+the main grid during times when no power is generated
+(01:00–07:00; 20:00–24:00). Figure 7 shows the quantity of
+power sold by the prosumers via the main grid in Case A.
+
+FIGURE 10. P2P trading price [Case B].
+
+coincides with the system purchase price in the absence of
+power generation. At other times, as the prosumers’ surplus
+power increases, they increase their P2P trading quantity by
+
+FIGURE 7. Total power exported to the grid [Case A]. lowering their trading price from the system purchase price.
+Therefore, the trading price of Prosumer 3, who generated the
+
+It can be observed that the greater the surplus power highest surplus power, is the lowest.
+generated by the prosumers, the more power they sell via
+the main grid. When the power is solely traded with the
+system as in Case A, the possibility of reverse flow during
+power generation increases asmore renewable energy sources
+are connected to the low-voltage distribution system, which
+causes an overvoltage in each part of the low-voltage distri-
+bution line.
+
+FIGURE 11. Total power imported from the grid [Case B].
+
+Figure 11 shows the quantity of power purchased by the
+prosumers from the main grid to satisfy their load usage
+and the buyers’ P2P trading demand. Figure 12 shows that
+the prosumer sells the surplus power, after satisfying both
+
+FIGURE 8. PCC power flow [Case A]. load consumption and P2P trading demand, to the main grid.
+Prosumer 3 generated the highest surplus power, and hence,
+
+In Case B, the prosumers participate in P2P trading through also sold the highest quantity of power to the main grid.
+load adjustment. In this case, the prosumer adjusts his/her However, compared with Case A in which all the surplus
+trading quantity by increasing or decreasing his/her load power was sold to the main grid, the quantity of power sold
+consumption according to the utility of the load usage. P2P to the main grid has been significantly reduced in case B.
+trading was assumed to occur at the time of surplus power Thus, from the prosumer’s point of view, surplus power was
+generation. Figure 10 shows the P2P trading price offered by sold at a higher price through P2P trading than through the
+the prosumers. It can be confirmed that the P2P trading price grid (λlow,t ).
+
+137726 VOLUME 8, 2020
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+FIGURE 12. Total power exported to the grid [Case B].
+
+In Case C, the prosumers participate in P2P trading through FIGURE 15. Bus voltage [Case B].
+
+ESS operation and load adjustment. Unlike in the other cases,
+the prosumer owns the ESS, and hence, P2P trading is pos-
+sible even when no power is generated. The price for P2P
+trading proposed by the prosumer in Case C is shown in
+Figure 16.
+
+FIGURE 16. P2P trading price [Case C].
+
+and it is possible to trade power through discharge even when
+no power is generated. Therefore, the sales price is higher
+than in Case B, where it is advantageous to sell as much as
+
+FIGURE 13. P2P trading power [Case B]. possible when power is generated.
+
+FIGURE 17. Total power imported from the grid [Case C].
+FIGURE 14. PCC power flow [Case B].
+
+Figure 17 shows the quantity of power purchased by the
+When no power is generated, the demand is greater than the prosumers from the main grid to satisfy their load usage and
+
+supply; hence, the trading price is almost equal to the price of the demand for P2P trading. It is mainly purchased at times
+the purchase from the main grid (λup,t ). when no power is generated, and the lowest purchase price
+
+However, as the surplus generated by the prosumers from the main grid is observed at 5:00 A.M.
+increases, their strategy is to increase the sales volume by Figure 18 shows the power sales of the prosumers via the
+lowering the price from 8 A.M. to 7 P.M. compared with the main grid. This refers to the quantity of power remaining,
+price of the purchase from themain grid. Therefore, Prosumer upon excluding the demand for P2P trading and the real-time
+3, who generates the highest surplus power, offers the lowest load usage of the prosumers from the surplus power gener-
+trading price compared with the other prosumers. In addition, ated. Prosumers 1 and 2 have no surplus power after P2P
+surplus power is charged through ESS scheduling in Case C, trading; hence, no power remains to be sold to the main
+
+VOLUME 8, 2020 137727
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+flow when there was surplus power was reduced. This is
+because the demand generated in the distribution system was
+satisfied through P2P power trading.
+
+FIGURE 18. Total power exported to the grid [Case C].
+
+grid, whereas Prosumer 3 sells power to the system at 3 P.M.
+However, compared with the previous cases, the quantity of
+power sold to the main grid has been significantly reduced.
+This indicates that the surplus power of the prosumers was FIGURE 21. Bus voltage [Case C].
+used mostly for P2P trading.
+
+Figure 21 shows the bus voltage over time for Case C.
+In Case A, the upper limit of the maintenance reference
+voltage exceeded 1.05 [p.u.] in bus 18, to which Pro-
+sumer 3 belongs; however, in Case C, the voltage at all times
+for all the buses was maintained in the range of 0.95 [p.u.] to
+1.05 [p.u.] through ESS operation with load adjustment for
+P2P trading.
+
+B. DISTRIBUTION SYSTEM USAGE CHARGE
+The comprehensive results obtained via system analysis con-
+firmed that the quantity of power received from the main
+
+FIGURE 19. P2P trading power [Case C]. grid decreased through the prosumer’s P2P trading, and the
+Figure 19 shows the P2P trading volume of the prosumers. reverse power flow disappeared, which could have a positive
+
+In Case C, the quantity of P2P trading increased compared effect on the power system.
+with that in Case B because the prosumers participated in the This is because the P2P trading price suggested by the
+trading through ESS operation and load adjustment. In addi- prosumer was lower than λup,t ; consequently, the consumers
+tion, the sales volume exists even when there is no surplus prioritized P2P trading, and the prosumer could also sell at
+power generation through ESS operation. Similar to Case B, a price higher than λlow,t . However, as P2P trading was acti-
+the quantity of power traded by the prosumers is determined vated, the revenue of the utility company decreased. In addi-
+through game theory in this case as well; therefore, it can be tion, the P2P trading did not use a dedicated line, but used the
+confirmed that Prosumer 3, who had the lowest trading price, existing distribution system; hence, it is necessary to consider
+possessed the highest trading participation rate, and thus, the the DSUC in P2P trading.
+highest trading volume.
+
+FIGURE 22. Distribution system usage charge.
+
+FIGURE 20. PCC power flow [Case C].
+Figure 22 shows the DSUC charged to the prosumers
+
+Figure 20 shows the power flow of the PCC of the distri- when the DSUCs are calculated according to the difference
+bution system to which the prosumer belongs in Case C. obtained from the reference voltage, as shown in Equa-
+
+In contrast with Case A, the reverse flow from PCC disap- tion (32). The base charge(ϕBase) was calculated as 20% of
+peared in this case, and in contrast with Case B, the power the P2P trading revenue. This allowed the prosumers with
+
+137728 VOLUME 8, 2020
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+high trading revenues to pay more. In addition, the charge case, it was confirmed that ϕcharge crosses at 1,500 KRW, and
+for voltage fluctuation (ϕcharge) was increased by 500 KRW approximately 15% of the P2P trading revenue is paid as the
+from 500 KRW to 5,000 KRW, and it is calculated as the DSUC.
+point at which the increase and decrease rates of the DSO
+
+IV. CONCLUSION
+and the prosumer, respectively, cross. As shown in Figure 22,
+
+In this paper, we proposed a P2P trading algorithm for trading
+the DSUC that must be paid by the prosumer decreases as
+
+between prosumers and consumers based on the Stackelberg
+ϕcharge increases, because the voltage has stabilized after P2P game theory. The proposed algorithm includes the seller’s
+trading compared with that before P2P trading. Therefore,
+
+strategy algorithm and the buyer’s strategy algorithm. Here,
+as ϕcharge increases, the DSUC of the prosumer decreases
+
+the seller’s strategy is the sales price and quantity, and the
+linearly. Furthermore, when ϕcharge becomes greater than
+
+buyer’s strategy is to update the participation ratio. Three
+5,500 KRW, the DSUC of Prosumer 3 has a negative value.
+
+case studies were conducted to verify the performance of the
+The reason is that, Prosumer 3, who is the farthest from the
+
+proposed algorithm. In each case, the amount of P2P trading
+system, contributed the most to reducing the corresponding
+
+was changed according to the trading strategy suggested by
+bus’s voltage fluctuation through P2P trading.
+
+the participants, and a power flow analysis was performed in
+each case. Based on the power flow analysis, we proposed a
+method to charge DSUC to prosumers to alleviate the burden
+on the utility company caused by P2P power trading. The
+DSUC was calculated based on the additionally analyzed
+voltage for each bus, and the profit guarantee of the utility
+company was also considered. Consequently, by comparing
+the voltage fluctuations before and after P2P trading and
+charging a charge, a method was proposed to reduce the
+charge for the prosumers who positively influenced the sys-
+tem operation through P2P trading. The appropriate DSUC
+
+FIGURE 23. Profit analysis of prosumer. is expected to act as an inducement for utility companies
+to allow P2P trading in countries like Korea, which have a
+
+Figure 23 shows the profits that can be gained from trad-
+monopolistic structure.
+
+ing when the DSUC is included. As explained earlier, as
+the voltage stability has improved due to P2P trading by
+
+REFERENCES
+the prosumers, the DSUC that must be paid by the pro-
+
+[1] F. J. Rodriguez, S. Fernandez, I. Sanz, M. Moranchel, and E. J. Bueno,
+sumers decreases as ϕcharge increases. Therefore, the larger ‘‘Distributed approach for smartgrids reconfiguration based on the OSPF
+the ϕcharge, the higher is the profit of the prosumers. Proper routing protocol,’’ IEEE Trans. Ind. Informat., vol. 12, no. 2, pp. 864–871,
+DSUC calculation is important to consider the economic Apr. 2016, doi: 10.1109/TII.2015.2496202.
+
+[2] P. Malysz, S. Sirouspour, and A. Emadi, ‘‘An optimal energy storage
+operation of the utility company along with prosumer profits. control strategy for grid-connected microgrids,’’ IEEE Trans. Smart Grid,
+
+In this study, we derived the price at which the prosumer’s vol. 5, no. 4, pp. 1785–1796, Jul. 2014, doi: 10.1109/TSG.2014.2302396.
+net profit growth rate and the decrease rate ofDSUC intersect [3] L. Che, M. Shahidehpour, A. Alabdulwahab, and Y. Al-Turki, ‘‘Hierar-
+
+chical coordination of a community microgrid with AC and DC micro-
+with the increase in ϕcharge as an appropriate ϕcharge value. grids,’’ IEEE Trans. Smart Grid, vol. 6, no. 6, pp. 3042–3051, Nov. 2015,
+
+doi: 10.1109/TSG.2015.2398853.
+[4] C. Stevanoni, Z. De Greve, F. Vallee, and O. Deblecker, ‘‘Long-
+
+term planning of connected industrial microgrids: A game theoretical
+approach including daily peer-to-microgrid exchanges,’’ IEEE Trans.
+Smart Grid, vol. 10, no. 2, pp. 2245–2256, Mar. 2019, doi: 10.1109/
+TSG.2018.2793311.
+
+[5] E. Harmon, U. Ozgur, M. H. Cintuglu, R. de Azevedo, K. Akkaya, and
+O. A. Mohammed, ‘‘The Internet of microgrids: A cloud-based framework
+for wide area networked microgrids,’’ IEEE Trans. Ind. Informat., vol. 14,
+no. 3, pp. 1262–1274, Mar. 2018, doi: 10.1109/TII.2017.2785317.
+
+[6] B. Fan, S. Guo, J. Peng, Q. Yang, W. Liu, and L. Liu, ‘‘A consensus-based
+algorithm for power sharing and voltage regulation in DC microgrids,’’
+IEEE Trans. Ind. Informat., vol. 16, no. 6, pp. 3987–3996, Jun. 2020,
+doi: 10.1109/TII.2019.2941268.
+
+FIGURE 24. Revenue growth rate according to DSUC. [7] D. Papadaskalopoulos, D. Pudjianto, and G. Strbac, ‘‘Decentralized
+coordination of microgrids with flexible demand and energy storage,’’
+
+Figure 24 shows the change in the prosumer revenue IEEE Trans. Sustain. Energy, vol. 5, no. 4, pp. 1406–1414, Oct. 2014,
+growth rate and the decrease rate of DSUC with a change in doi: 10.1109/TSTE.2014.2311499.
+
+[8] T. Wang, D. O’Neill, and H. Kamath, ‘‘Dynamic control and optimization
+ϕcharge. If the decrease rate ofDSUC is high, a smaller ϕcharge of distributed energy resources in a microgrid,’’ IEEE Trans. Smart Grid,
+is selected; thus, theDSUCwill increase. In the opposite case, vol. 6, no. 6, pp. 2884–2894, Nov. 2015, doi: 10.1109/TSG.2015.2430286.
+assuming that the prosumer revenue growth rate is substan- [9] A. Safdarian, M. Fotuhi-Firuzabad, M. Lehtonen, and F. Aminifar, ‘‘Opti-
+
+mal electricity procurement in smart grids with autonomous distributed
+tially modest, ϕcharge will cross at a higher point, increasing energy resources,’’ IEEE Trans. Smart Grid, vol. 6, no. 6, pp. 2975–2984,
+the DSUC that must be paid by the prosumer. In the present Nov. 2015, doi: 10.1109/TSG.2015.2413901.
+
+VOLUME 8, 2020 137729
+
+
+
+Y. Jin et al.: Pricing and Operation Strategy for P2P Energy Trading Using Distribution System Usage Charge
+
+[10] A. B. Eltantawy and M. M. A. Salama, ‘‘Management scheme for increas- YUNSUN JIN (Member, IEEE) was born in
+ing the connectivity of small-scale renewable DG,’’ IEEE Trans. Sus- Changwon, South Korea, in 1994. She received the
+tain. Energy, vol. 5, no. 4, pp. 1108–1115, Oct. 2014, doi: 10.1109/ B.S. degree in electrical engineering from Chang-
+TSTE.2014.2329647. won National University, in 2018, and the M.S.
+
+[11] J. von Appen and M. Braun, ‘‘Sizing and improved grid integration of degree in electrical engineering from Inha Uni-
+residential PV systems with heat pumps and battery storage systems,’’ versity, in 2020. She is currently with the Korea
+IEEE Trans. Energy Convers., vol. 34, no. 1, pp. 562–571, Mar. 2019, Electrotechnology Research Institute, Changwon.
+doi: 10.1109/TEC.2019.2892396. Her research interests include microgrids, energy
+
+[12] M. J. E. Alam, K. M. Muttaqi, and D. Sutanto, ‘‘Mitigation of rooftop
+solar PV impacts and evening peak support bymanaging available capacity storage systems, and peer-to-peer trading.
+of distributed energy storage systems,’’ IEEE Trans. Power Syst., vol. 28,
+no. 4, pp. 3874–3884, Nov. 2013, doi: 10.1109/TPWRS.2013.2259269.
+
+[13] S. Pukhrem, M. Basu, M. F. Conlon, and K. Sunderland, ‘‘Enhanced
+network voltage management techniques under the proliferation of rooftop
+solar PV installation in low-voltage distribution network,’’ IEEE J. Emerg.
+Sel. Topics Power Electron., vol. 5, no. 2, pp. 681–694, Jun. 2017,
+doi: 10.1109/JESTPE.2016.2614986. JEONGHOON CHOI was born in Incheon, South
+
+[14] A. Paudel, K. Chaudhari, C. Long, and H. B. Gooi, ‘‘Peer-to-peer energy Korea, in 1994. He received the B.S. degree
+trading in a prosumer-based community microgrid: A game-theoretic in electrical engineering from Inha University,
+model,’’ IEEE Trans. Ind. Electron., vol. 66, no. 8, pp. 6087–6097, Incheon, in 2019, where he is currently pursu-
+Aug. 2019. ing the M.S. degree in electrical engineering. His
+
+[15] S. Cui, Y.-W. Wang, and N. Liu, ‘‘Distributed game-based pricing strategy research interests include microgrids, energy stor-
+for energy sharing in microgrid with PV prosumers,’’ IET Renew. Power age systems, and peer-to-peer trading.
+Gener., vol. 12, no. 3, pp. 380–388, Feb. 2018.
+
+[16] G. El Rahi, S. R. Etesami, W. Saad, N. B. Mandayam, and H. V. Poor,
+‘‘Managing price uncertainty in prosumer-centric energy trading:
+A prospect-theoretic Stackelberg game approach,’’ IEEE Trans. Smart
+Grid, vol. 10, no. 1, pp. 702–713, Jan. 2019.
+
+[17] Z. Liang and W. Su, ‘‘Game theory based bidding strategy for prosumers
+in a distribution system with a retail electricity market,’’ IET Smart Grid,
+vol. 1, no. 3, pp. 104–111, Oct. 2018. DONGJUN WON (Member, IEEE) received the
+
+[18] N. Liu, X. Yu, C. Wang, and J. Wang, ‘‘Energy sharing management for B.S., M.S., and Ph.D. degrees in electrical engi-
+microgrids with PV prosumers: A Stackelberg game approach,’’ IEEE neering from Seoul National University, Seoul,
+Trans. Ind. Informat., vol. 13, no. 3, pp. 1088–1098, Jun. 2017. South Korea, in 1998, 2000, and 2004, respec-
+
+[19] J. Li, C. Zhang, Z. Xu, J. Wang, J. Zhao, and Y.-J.-A. Zhang, ‘‘Distributed tively. He was a Postdoctoral Fellow with the
+transactive energy trading framework in distribution networks,’’ IEEE
+Trans. Power Syst., vol. 33, no. 6, pp. 7215–7227, Nov. 2018. APT Center, University of Washington, Seattle.
+
+[20] KEPCO Management Research Institute 2018 Analysis of Power He is currently a Professor with the Department
+Consumption Behavior. Accessed: Mar. 20, 2020. [Online]. Available: of Electrical Engineering, Inha University,
+http://kosis.kr/common/meta_onedepth.jsp?vwcd=MT_OTITLE@listid= Incheon, South Korea. His research interests
+337_33702&conn_path=H2 include microgrid, renewable energy, electric
+
+[21] MATPOWER. Accessed: Nov. 1, 2019. [Online]. Available: https:// vehicle, and energy storage systems.
+matpower.org
+
+137730 VOLUME 8, 2020

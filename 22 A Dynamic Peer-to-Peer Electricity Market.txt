@@ -1,0 +1,1401 @@
+﻿3976 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+A Dynamic Peer-to-Peer Electricity Market
+Model for a Community Microgrid With
+
+Price-Based Demand Response
+Fayiz Alfaverh , Mouloud Denai , and Yichuang Sun , Senior Member, IEEE
+
+Abstract—Peer-to-Peer (P2P) energy sharing enables pro- purchase electricity from the grid and sell their energy surplus
+sumers within a community microgrid to directly trade their local back to the grid. However, sell back rates or feed-in-tariffs
+energy resources such as solar photovoltaic (PV) panels, small- (FiT) remunerations that prosumers receive when selling elec-
+scale wind turbines, electric vehicle battery storage among each
+other based on an agreed cost-sharing mechanism. This paper tricity to the utility are generally much lower than consumer
+addresses the energy cost minimization problem associated with tariffs for the purchase of electricity from the utility [2].
+P2P energy sharing among smart homes which are connected Peer-to-Peer (P2P) energy sharing, where prosumers directly
+in a residential community. The contribution of this paper is trade their local energy resources with each other without
+threefold. First, an effective Home Energy Management System going through an intermediate retailer, has recently emerged
+(HEMS) is proposed for the smart homes equipped with local
+generation such as rooftop solar panels, storage and appliances to as a flexible and cost-effective energy management mechanism
+achieve the demand response (DR) objective. Second, this paper which is about to transform the traditional centralized energy
+proposes a P2P pricing mechanism based on the dynamic supply- market. The P2P electricity model allows prosumers and con-
+demand ratio and export-import retail prices ratio. This P2P sumers to initially trade with one another in a local market at
+model motivates individual customers to participate in energy a domestic price and then trade with a retailer. The domes-
+trading and ensures that not a single household would be worse
+off. Finally, the performance of the proposed pricing mecha- tic price is generally bounded between the retail price and
+nism, is compared with three popular P2P sharing models in the the export price. As a result, peers can generate revenue from
+literature namely the Supply and Demand Ratio (SDR), Mid- P2P energy exchange regardless of whether they are sellers or
+Market Rate (MMR) and bill sharing (BS) considering different buyers of electricity.
+types of peers equipped with solar panels, electric vehicle, and The main advantage of the P2P energy exchange is that
+domestic energy storage system. The proposed P2P framework
+has been applied to a community consisting of 100 households the locally generated electricity from renewable sources will
+and the simulation results demonstrate fairness and substantial not to be transported which will ultimately reduce trans-
+energy cost saving/revenue among peers. The P2P model has also mission losses and the overall operation costs of the power
+been assessed under the physical constrains of the distribution system. Besides the monetary benefits it offers to consumers
+network. and prosumers, P2P electricity trading contributes substantially
+
+Index Terms—P2P energy sharing, energy management, to increasing the deployment of renewable energy sources.
+vehicle-to-grid, pricing mechanism, demand response. Moreover, the adoption of P2P makes the community more
+
+resilient to power outages and improves electricity access to
+members of the community.
+
+I. INTRODUCTION Creating a localized P2P energy market may also be benefi-
+cial to the power grid. P2P trading platforms enable an optimal
+
+ELECTRICITY grids across the globe are undergoing a
+management of decentralized generations through balancing
+
+profound transformation from a rigid, fossil-fuel based
+local electricity demand and supply. Furthermore, an effective
+
+generation and distribution to a new decentralized low-carbon
+P2P energy trading scheme incentivizes end-users to consume
+
+infrastructure. In this gradual shift towards the adoption of
+electricity from the grid at appropriate times of the day which
+
+alternative, cleaner and renewable energy sources and smart
+contributes to peak-load reduction.
+
+technology, small-scale consumers have now the control over
+A number of P2P energy sharing pilot projects have been
+
+their energy consumption and are becoming what is known as
+developed around the world mainly in Europe such as Piclo in
+
+prosumers (i.e., producers and consumers) [1]. Prosumers can
+the U.K., Vandebron in The Netherlands, Sonnen Community
+
+Manuscript received 10 August 2021; revised 9 January 2022 and in Germany and Yeloha and Mosaic in the U.S. Some of
+16 September 2022; accepted 14 January 2023. Date of publication these projects, such as Peer Energy Cloud and Smart Watts
+17 February 2023; date of current version 23 August 2023. Paper no. in Germany, worked on the information and communication
+TSG-01228-2021. (Corresponding author: Mouloud Denai.)
+
+The authors are with the School of Physics, Engineering and Computer technologies (ICT) to support the energy sharing. Some other
+Science, University of Hertfordshire, AL10 9AB Hatfield, U.K. (e-mail: projects, such as TransActive Grid in the U.S., have developed
+fa17abh@herts.ac.uk; m.denai@herts.ac.uk; y.sun@herts.ac.uk). a P2P platform based on blockchain technology that enables
+
+Color versions of one or more figures in this article are available at
+https://doi.org/10.1109/TSG.2023.3246083. members to trade energy secularly and automatically between
+
+Digital Object Identifier 10.1109/TSG.2023.3246083 each other [1].
+1949-3053 ©c 2023 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+
+See https://www.ieee.org/publications/rights/index.html for more information.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3977
+
+Several studies focused on pricing mechanisms for P2P Despite the large body of literature on P2P sharing, a lim-
+energy sharing. They can be classified in two categories: ited number of studies have focused on the participation of
+double auction model [3], [4], [5], [6], [7] and analytical electric vehicles (EVs) [17]. Indeed, EVs could serve as a tem-
+model [8], [9], [10], [11]. Using double auction model (DA), porary energy storage and supply power to home appliances
+the peers (sellers and buyers) can interact between each other via Vehicle-to-home (V2H) technology, and/or feed power to
+to trade their energy in a step-by-step fashion as follows [12]; the utility grid using Vehicle-to-Grid (V2G) technology when
+buyer/seller peers submit their bids/offers to an auctioneer, needed. Therefore, P2P energy market may not only depend
+these bids/offers are then arranged in a decreasing/increasing on the excess of power from PV generation, but also involves
+order. Once bids and offers are ordered, the aggregated supply EVs in energy trading during their charging and discharg-
+and demand curves are generated and intersected at an auc- ing operations. To enable the participation of EVs in P2P
+tion price. Therefore, the only peers who can engage in the energy markets, an efficient pricing strategy must be adopted
+trading process are buyers/sellers with bids greater than/offers to balance the interests of all the players [18].
+lower than the auction price. While consumers with bids lower This paper focuses on energy sharing problem inside a res-
+than the auction price cannot buy from prosumers with offers idential community. A P2P pricing mechanism is proposed
+higher than the auction price, this means that the total surplus for a community consisting of 100 households to incen-
+of PV generation after self-consumption will not be com- tivise individual customers to participate in energy trading
+pletely traded within the community microgrid as discussed and to ensure that not a single household would be worse off
+in [3], [4], [5]. To address this issue, continuous double auc- with considering the physical network constrains. This will
+tions (CDAs) which consists of repeating the DA for a certain simultaneously generate revenue for the energy sharing coor-
+number of rounds or within a specified time are proposed dinator (ESC) to cover the maintenance and service operations
+in [6], [7]. Although CDA has a great scalability and high effi- costs.
+ciency for distributed energy transactions, the pricing rule and The major contributions of this study are summarised as
+trading strategies of the CDA have some limitations. Due to follows:
+different trading prices for a series of P2P trading contracts, the • The proposed P2P energy trading market model considers
+CDA does not ensure fairness among peers, in the sense that uncertainties in household demands, PV generation and
+buyers/sellers may pay more than/earn less than other peers EVs flexibility using Monte-Carlo simulation (MCS).
+when buying/selling the same amount of energy [13]. In addi- • A HEMS has been developed to allow households par-
+tion, trading prices decided by the auctioneer exhibit higher ticipate in demand response programs and minimise
+variation. Therefore, the CDA model cannot offer a fairer trad- their energy cost, maximise revenue and increase the
+ing price that will stimulate the participation of prosumers in self-consumption ratio.
+the P2P energy trading, which is the main goal of an ideal • The proposed P2P energy market does not only consider
+trading mechanism [14]. trading the excess of PV generation, but also involves
+
+An analytical model refers to pricing the energy generated trading the energy stored in EVs batteries during their
+from Distributed Energy Resources (DERs) in a local market charging and discharging operations.
+based on certain rules, calculation methods or game theoretic • A dynamic P2P energy pricing mechanism is designed
+approaches. For example, in [8], [9], a supply demand ratio based on demand-supply ratio and Real-Time Price (RTP)
+(SDR) is proposed as the ratio of the total renewable energy and Feed-in Tariff (FiT) ratio to ensure fairness between
+supply to the total net energy demand in a microgrid, where the P2P participants considering of the physical network
+P2P energy prices are a function of SDR. In [10], the mid- constraints.
+market rate (MMR) mechanism provides the trading price The remaining of the paper is organised as follows:
+among prosumers at the average of the selling and buying Section II presents the model of the residential microgrid com-
+prices set by the retailer, with some adjustment based on the ponents which includes various types of households with their
+difference between the total energy generation and consump- HEMS and the network model in a low-voltage area consider-
+tion within the community. The bill sharing (BS) mechanism ing of the physical network constraints. The proposed P2P
+distributes the total energy costs and income among prosumers pricing mechanism is described in Section III. Section IV
+within a community based on the amount of each prosumer’s presents the results and discussion. Finally, the conclusions
+energy production and consumption. However, these pricing of the paper are summarised in Section V.
+mechanisms (SDR, MMR and BS) cannot guarantee that every
+participant in the P2P energy sharing market will generate
+
+II. MODELLING OF RESIDENTIAL MICROGRID
+economic benefits [15]. In addition, none of these pricing
+
+COMPONENTS
+mechanisms has considered the impact of dynamic retail elec-
+tricity prices on the P2P market as more retailers may adopt A. Household Categories
+dynamic prices or implement demand response programs [16]. In this study, a residential network consisting of different
+Therefore, pricing mechanisms must be designed with consid- types of dwellings equipped with solar photovoltaics (PV) pan-
+ering dynamic retailer prices, so that prosumers can participate els, battery energy storage system (BES) and electric vehicle
+in demand response programs by scheduling and controlling (EV) is considered.
+their household appliances and energy storage via a Home As shown in Fig. 1, electricity flow refers to the flow
+Energy Management System (HEMS). of electric power between buyers and sellers and cash flow
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3978 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+2) Modelling of BES: BES enables the excess of power
+generated from PV to be stored and used later in the day
+when the solar PV is no longer available. The energy stored
+in the BES is described by following equation:
+
+⎡
+Ei
+
+BES(t) = Hi
+j(BES)⎣ )
+
+Ei ( i
+BES(t − 1) 1 − δi i
+
+SD,BES + UBESP i
+BES )
+
+,ch(t μBES,ch
+
+( ) ⎤
+− 1 − Ui i
+
+BES PBES,dis(t)⎦
+μi (4)
+
+BES,dis
+
+Ei
+BES(t) and Ei
+
+BES(t − 1) represent the stored energy at time
+slot t and (t − 1) respectively, δi
+
+SD is the self-discharging rate,
+Pi
+
+BES,ch(t) and Pi
+BES,dis(t) denote the battery charging and dis-
+
+charging rates at a given time slot t, respectively, μi
+BES,ch
+
+and μi
+BES,dis are the charging and discharging efficiencies
+
+respectively. Hi
+j(BES) indicates whether a BES is available at
+
+Fig. 1. Different types of households participating in P2P energy sharing. household i as shown in equation (1) and returns 1 if the house-
+hold is equipped with BES and 0 otherwise. Ui
+
+BES is 1 when
+the battery is charging and 0 when the battery is discharging.
+
+refers to the cost involved, and income generated during the The State o⎧f Charge (SoC) of the battery is defined as:
+electricity trade. ⎨
+
+The type of household i in the residential microgrid is SoCi Ei
+BES(t)
+
+BES = × 0
+Ei 1 0%
+
+⎩ BES,cap (5)
+categorized as Hi
+
+j, j ∈ {1, 2, 3, 4, 5, 6}: i
+
+⎡ ⎤ SoCi i
+BES,min < SoC < SoC
+
+BES BES,max
+
+1 1 1
+⎢ where Ei
+
+⎢1 1 0⎥ BES,cap is the maximum battery capacity, SoCi
+BES,min
+
+and SoCi
+BES,max are the minimum and maximum SoC of the
+
+Hi
+j = ⎢ ⎥
+
+⎢1 0 1⎥
+⎢ ⎥[ ]
+
+battery and are set to 20% and 80% respectively to avoid
+⎢1 0 0⎥ PV BES EV (1)
+⎣ ⎥
+
+0 0 1⎦ overcharging and deep discharging of the battery.
+3) Electric Vehicle Modelling: The EV acts as a domestic
+
+0 0 0 battery storage and provides back-up power to supply the home
+where, matrix entry 1 means household i is equipped with appliances during short-term outages or during peak demand
+the corresponding device and 0 means the household is not when electricity prices are higher. EV owners can participate
+equipped with the corresponding device. Note that households in the P2P market by selling energy to other customers. With
+Hi
+
+1, Hi
+2, Hi
+
+3, Hi
+4 and Hi
+
+5 could be prosumer (seller or buyer) in Vehicle-to-Home (V2H) technology, the EV becomes part of
+the residential microgrid whereas household Hi
+
+6 is considered the smart home, and its charging-discharging operations are
+as a consumer (buyer only) all the time. supervised by the HEMS. The energy stored in the EV battery
+
+during the availability time of the EV at home is given by:
+[
+
+B. Modelling of Household Components
+Ei
+
+1) Modelling of the Load and Photovoltaic Systems: The EV (t) = Hi Ei ( )
+j(EV) EV (t − 1) 1 − δi i i
+
+SD,EV + UEV PEV,ch(t)μ
+i
+EV,ch
+
+energy consumption of household i at every time slot over the ( ) ]
+i
+
+operation time is defined as: − 1 − U i
+EV PEV,dis(t)
+μi (6)
+
+EV,dis
+
+Ei [ ]
+L(t)  Ei
+
+L(1), Ei
+L(2), . . . , Ei
+
+L(T) , i ∈ {1, 2, . . . , N} (2) Pi i
+EV,ch(t) = EEV,chfPV (t) + Ei
+
+EV,bfG(t) + Ei
+EV,bfP2P(t), ∀t ∈ [Ta, Td] (7)
+
+where {1, 2, . . . , T} is the set of all time slots which are Pi
+EV,dis(t) = Ei
+
+EV,tH(t) + Ei
+EV,stG(t) + Ei
+
+EV,stP2P(t), ∀t ∈ [Ta, Td] (8)
+assumed to have equal interval t = 5 min, T denotes Hi
+
+j(EV) returns 1 if the household is equipped with EV and
+the number of time slots over the operation period, and N 0 otherwise. To avoid charging and discharging to occur at
+represents the number of households in the microgrid. the same time, the availability of the EV for charging and
+
+The local PV energy generation of each household during discharging, denoted Ui
+EV , is introduced and takes the value
+
+the time interval [Ts, Te] is defined as: 1 when the EV is charging and 0 when it is discharging.
+
+Ei Equation (7) represents the charging power of the EV battery
+PV(t)  Hi [ ]
+
+j(PV). Ei
+PV(Ts + 1), Ei
+
+PV(Ts + 2), . . . , Ei
+PV(Te) which can come from the PV (Ei
+
+EV,chfPV(t)), from the grid
+, 0 < Ts < Td < T (3)
+
+(Ei
+EV,bfG(t)) or purchased from the P2P market (Ei
+
+EV,bfP2P(t)).
+Ei Equation (8) represents the discharging power of the battery
+
+PV(t) represents the PV generation of household i at each
+time step. Hi
+
+j(PV) indicates whether household i is equipped to supply the home appliances (Ei
+EV,tH(t)), to be exported
+
+with PV or not as shown in equation (1) and returns 1 if the to the grid (Ei
+EV,stG(t)) or to be exported to the P2P mar-
+
+household is equipped with PV and 0 otherwise. ket (Ei
+EV,stP2P(t)). The availability time of the EV is limited
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3979
+
+Fig. 2. Flowchart of the proposed HEMS.
+
+between the EV’s arrival time (Ta) to the house and the depar- If Ei
+net(t) > 0, the deficiency power the customer needs to
+
+ture time (Td). The SoC of the EV battery, with its charging buy is:
+and discharging limits is given by: ∣
+
+⎧ Ei ∣
+deficiency(t) = ∣∣Ei
+
+net(t) ,∀t ∈ [0, T] (15)
+⎨ SoCi
+
+EV = Ei
+EV (t) × 0
+
+Ei 1 0%
+⎩ EV,cap (9)
+
+i
+SoCi
+
+EV,min < SoC < SoCi C. Home Energy Management System
+EV EV,max
+
+With HEMS, the user can monitor, control, and optimize the
+The energy consumed during each trip is calculated as: amount of energy generated and consumed in real time, based
+
+on the customer’s preferences via a dedicated user interface.
+Ei
+
+EV,trip = Dtrip × Ei
+D EV,cap (10) This enables users to actively participate in the P2P market.
+
+max
+Thus, the HEMS should be designed to accommodate differ-
+
+where Dtrip and Dmax represent the trip distance and the max- ent types of household resources such as local generation from
+imum distance the EV can travel when the battery is fully renewable energy sources (RES), BES and EV. The flowchart
+charged, respectively, Ei
+
+EV,cap denotes the maximum energy of Fig. 2 describes the proposed HEMS. Generally, PV gen-
+capacity of the EV battery. eration, when available, is first used to supply the household
+
+4) Modelling of the Net Energy: Solar PV generation can be appliances. When the PV generation is higher than the house-
+used to power the household appliances, charge the home BES hold demand, the surplus of energy will be first stored in the
+and the EV battery. The extra power, if any, can be either sold batteries (BES or EV batteries), and the remaining will be sold
+to the P2P market and/or the main grid. Note that the home to other peers in the microgrid. If the PV generation is lower
+BES can only supply the household load and charge only from than the household demand, the difference will be purchased
+the PV when possible. The EV battery, on the other hand, can from the P2P market if the energy price is low or provided
+be charged from the PV, from the P2P market or the main grid from the batteries otherwise. However, when there is no PV
+and it can supply the household appliances and sell energy to generation, the required power for the household will be pur-
+the P2P market or the main grid. The net energy of household chased from the P2P market if the price is low or taken from
+i is the difference between the energy supply and demand at the batteries if the price in the P2P market is higher.
+each time slot.
+
+Ei
+net(t) = Ei
+
+demand(t) − i
+Esupply(t), ∀t ∈ [0, T] (11) D. Consideration of Physical Network Constrains
+
+i
+Ei
+
+demand(t) = Ei
+L(t) + Ui i
+
+BESPBES,ch(t) + Ui
+
+) EV PEV,ch(t), ∀t ∈ [0, T] (12) Although the P2P energy sharing benefits both peers and the
+Ei main grid, technical challenges such as voltage stability and
+
+supply(t) = Ei
+PV (t) + (
+
+1 − Ui i (
+BES P i )
+
+BES ) − P
+,dis(t + 1 U i
+
+EV EV,dis(t), ∀t[0, T]
+overflow in the physical layer arise with the implementation
+
+(13)
+of a P2P market with the absent of control and management
+
+If Ei process in the P2P trading. Therefore, the physical network
+net(t) < 0, the surplus power the customer can sell is:
+
+constrains must be considered to avoid the violation of voltage
+Ei
+
+surplus(t) = −∣∣ ∣
+Ei
+
+net(t)∣,∀t ∈ [0, T] (14) and capacity issues. In this paper, the proposed P2P trading
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3980 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+mechanism is also proposed with taking in the account of the
+physical network constrains.
+
+Consider a radial distribution network that consists of a set
+N of buses and a set E of distribution lines connecting these
+buses. We index the buses in N by i = 0, 1, 2, . . . , n, and
+denote a line in E by the pair (i,j) of buses it connects and
+the index i denotes the bus that is closer to the feeder. Bus 0
+denotes the feeder, which has fixed voltage but flexible power
+injection to balance the loads. For each link (i,j) ∈ E, let
+zij = rij+ ixij be the impedance on line (i,j), and Si,j =
+Pi,j + iQi,j and Ii,j the complex power and current flowing
+from bus i to bus j. At each bus i ∈ N, let si = pi + iqi be
+the complex load and Vi the complex voltage. As customary,
+we assume that the complex voltage V0 on the feeder is given
+and fixed. The branch flow model, proposed in [19], models
+power flows in a steady state in a radial distribution network:
+for each (i,j) ∈ E,
+
+P2
+i,j + Q2
+
+i,j = li,j (16)
+vi ∑
+
+Pi,j = ri,jli,j + pj + Pj,k (17) Fig. 3. P2P energy sharing structure.
+
+h(j∑,k)∈E one another through the bidirectional energy and information
+Qi,j = xi,jli,j + qj + Qj,k (18) flows, and the whole community is linked to the utility grid
+
+h(j,k)∈E via a network connection point. Based on this structure, the
+
+v peers can trade their excess energy among themselves, instead
+i − vj = ( ) ( )
+
+2 ri,jPi,j + x 2 2
+i,jQi,j − ri,j + xi,j li,j (19)
+
+of directly trading with the utility grid. As shown in Fig. 3,
+Subject to: the P2P sharing system is assumed to have two layers: a phys-
+
+ical layer and a virtual layer. The physical layer is responsible
+vmin
+i ≤ vi ≤ vmax
+
+i , i = 1, . . . , n (20) for the physical connection and transfer of energy between
+pmin
+i ≤ pi ≤ pmax
+
+i , i = 1, . . . , n (21) prosumers within the community through a local distribution
+qmin network. In addition, it is assumed that all houses are equipped
+i ≤ qi ≤ qmax
+
+i , i = 1, . . . , n (22)
+with smart meters to collect data such as PV generation, energy
+
+where li,j = |Ii,j|2, vi = |Vi|2. It is worth noting that the net consumption, state-of-charge (SOC) of the ESS and EV, and
+reactive power for each bus must thus be calculated for each energy transactions with P2P market or with the utility grid.
+time step t. For simplicity, it was decided to find an average Moreover, the communication network is used to enable the
+power factor for each of the buses and keep it constant for smart meter to exchange the data.
+all time steps. From the given network data, it was obtained The virtual layer provides a secure network environment for
+that all buses maintained a constant power factor of 0.98. The all the peers to have equal access to the P2P market. In the vir-
+reactive power for each house i for each time step t was thus tual layer, it is assumed that each participant is equipped with
+calculated with√: √ an Energy management System (EMS), which is responsible
+
+p2 2 for managing the energy flow within the household and energy
+qi = i − p2 = pi p ,∀ ∈ import/export on behalf of the consumer/prosumer. As shown
+
+cosθ2 i − 2 i E
+0.982 i (23)
+
+in Fig. 3, both the trading process and the communication of
+To ensure that the P2P mechanism does not violate the phys- information are done in a centralized fashion via an ESC who
+
+ical constrains (equations (20)–(22)), every time the Energy can communicate with each peer within the community. The
+sharing Coordinator (ECS) receives the selling/buying request ESC manages energy transactions, price mechanism, purchase,
+from prosumers/consumers, voltage variation and line conges- and sale expenses settlement, and interacts with the utility grid
+tion are evaluated. And then all participants receive a signal considering the physical network constrains to avoid the vio-
+which informs them if they can still participate in the market lation of voltage and capacity issues. Peers, on the other hand,
+without causing problems in the network. For example, one will pay/gain their energy cost/revenue based on the amount of
+prosumer could reduce the injected power into the grid at a energy imported/exported using the predefined pricing mech-
+certain time due to the high risk of causing voltage problems anism. It is worth noting that this paper focuses only on the
+in the network. application of energy trading in the virtual layer of the P2P
+
+energy sharing model.
+III. P2P ENERGY SHARING MODEL
+
+A. P2P Energy Sharing Structure B. P2P Energy Sharing Mechanism
+For the P2P energy trading structure of the community The P2P energy trading mechanism is designed to motivate
+
+microgrid, it is assumed that all participants are connected to residents to participate in the energy market. The basic
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3981
+
+Fig. 4. Different values of alpha α and among different values of surplus
+power ES(t) and deficiency power ED(t).
+
+Fig. 5. P2P market prices under the proposed price mechanism with different
+principle of economics states that the goods price increases values of α and β.
+when the demand increases and the production decreases, and
+vice versa. In this paper, a new P2P pricing mechanism is The energy price of the main grid fluctuates during the day;
+proposed to ensure all customers in a community make eco- it is higher during peak demand periods and lower during off-
+nomic benefits, in other words they will be better off compared peak periods which affects the internal P2P prices.
+to the traditional utility grid market. The proposed pricing Therefore, the relationship between the import and FiT
+mechanism can be applied to any P2P energy sharing model. prices can be expressed as:
+The proposed mechanism does not consider only the relation-
+ship of the surplus and deficiency of power, but also considers β = rex
+
+, rex < rg (27)
+rex + rg
+
+the RTP of the power grid and FiT which reflect the demand of
+the power system, where the price is high during peak demand where rg is the RTP of the main grid and rex is the FiT.
+and lower during off-demand. Then demand response (DR) Therefore, the P2P market price is calculated based on
+program is implemented to encourage consumers to manage (α) and (β) parameters as:
+their energy consumption, to reduce the stress on the power ⎧
+grid and ensure that energy exchange among the peers does not ⎪(⎪⎨ rg− )
+
+rex (2−β)e2α+βe−2α
+
+( 2 ) + r
+e2α+e−2α ex, α ≥ 0
+
+violate network constraints. The proposed P2P model assumes rb =
+that (i) the internal selling and buying prices are bounded ⎪ rg−rex (1+β)e2α+(1−β)e−2α
+
+⎪ + r , α < 0 (28)
+⎩ 2 e2α+e−2α ex
+
+between the FiT and RTP prices and (ii) the buying price is ⎧ g, ) ES(t) = 0
+
+higher than selling price except in the case where the energy ⎪(
+r
+
+⎪⎨ rg−rex (1+β)e2α+(1−β)e−2α
+
+deficiency equals the energy surplus, in which case the buying ( 2 ) r
+e2α+e−2α + ex, α ≥ 0
+
+rs =
+and selling prices are equal. ⎪ rg−rex (2−β)e2α+βe−2α (29)
+
+⎪⎩ 2 e2α+e−2α + rex, α < 0
+
+For each time slot, the total energy surplus exported to the rex, ED(t) = 0
+P2P market by n prosumers is defined as: Fig. 5 shows the P2P market prices under the proposed
+
+∑n price mechanism with three different values of RTP as FiT
+ES(t) = Ei
+
+surplus(t),∀t ∈ [0, T] (24) is constant throughout the day.
+i=1 The main features of this price mechanism are: (i) The P2P
+
+market prices are bounded between the RTP and FiT. (ii) When
+The total energy deficiency purchased by m consumers is E
+
+defined as: D(t) = ES(t), the P2P prices are set to the Mid-Rate Ratio
+(MMR), which refers to the mean value of the RTP and FiT
+
+∑m prices. (iii) P2P buying price is always higher than P2P sell-
+ED(t) = Ei
+
+deficiency(t),∀t ∈ [0, T] (25) ing price. (iv) P2P market prices are higher than MMR when
+i=1 ED(t) > ES(t), α > 0. (v) P2P market prices are lower than
+
+Since the P2P prices depend on the relationship between the MMR when ED(t) < ES(t), α < 0. (vi) With increasing RTP,
+energy deficiency and energy surplus that need to be traded the P2P market prices increase based on β value, and vice
+at the P2P market, this measure is defined by the α-ratio versa.
+given by:
+
+C. Cost Function
+ES
+
+α = ED −
+, α ∈ [−1, 1] (26) The role of the ESC is to supervise the transactions in the
+
+ED + ES P2P market. His main responsibilities are to set the trading
+When α = 0, the surplus equals the deficiency (ES(t) = rules and manage the trading activities, as well as supervise the
+
+ED(t)) as shown in Fig. 4, when α ≈ −1, there is no deficiency metering, billing, and information sharing. After receiving a
+(ED(t) = 0) or the surplus is much larger than the deficiency bid from a prosumer, the ESC runs the pricing model to obtain
+(ES(t)  ED(t)) and when α ≈ 1, there is no surplus exported P2P prices based on the deficiency-surplus ratio, and RTP-FiT
+or the surplus is much smaller than the deficiency (ES(t)  prices. At each time slot, the individual energy cost for each
+ED(t)). participant is calculated using Algorithm 1 given in Table I.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3982 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+TABLE I TABLE II
+PROPOSED COST FUNCTION TYPES OF HOUSEHOLDS
+
+Firstly, the amount of energy purchased from the grid
+is defined using line (13). Consequently, calculating the
+individual energy cost depends on whether the partic-
+ipant is buying or selling energy. Lines (16) and (17)
+calculate respectively the cost of the energy purchased
+from P2P market and main grid, and then the total indi-
+vidual cost is determined using line (18). For users who
+are selling energy, the profit is calculated using line (20).
+
+4. ES(t) > ED(t), ED(t) 
+= 0: In this case, the total energy
+surplus is greater than the total deficiency. Therefore, the
+extra energy will be sold to the main grid. The individual
+energy cost is calculated with lines (22-31).
+
+5. Firstly, the amount of energy sold to the main grid is
+determined using line (23), then the energy cost is cal-
+culated using line (28) which is the sum of the cost from
+selling energy to consumers (line 26) and the main grid
+(line 27). The individual energy cost for users who are
+buying energy from the P2P market is calculated with
+line (30).
+
+6. ES(t) = ED(t): When the total surplus meets the defi-
+ciency, the P2P selling and buying prices are equal. The
+energy cost for prosumers and consumers are calculated
+using lines (35) and (37) respectively.
+
+IV. SIMULATION RESULTS AND DISCUSSION
+
+A. Simulation Setup
+In this paper, the uncertainties in the load demand of the
+
+houses, the PV generation, and the flexibility of EVs are
+simulated using the MCS which produces 1000 scenarios of
+
+During the operation, the following possible cases could occur possible probabilities. A suitable distribution function has been
+at each time step: assigned to each parameter of the load demand, PV generation
+
+1. ED(t) > 0 and ES(t) = 0: When the ESC receives only and EVs. Then the input data for the MCS is extracted from
+the energy deficiency requests from consumers, he will the Probability Density Function (PDF) generated by these
+buy energy from the main grid to meet the demand and distribution functions.
+the individual energy cost for each consumer i is defined 1) Household Demands: To address the uncertainty of the
+as in line (8) of Algorithm 1. household demand, the residential area with 100 households is
+
+2. ES(t) > 0 and ED(t) = 0: In this case, there is no energy firstly classified into six types [H1, H2, H3, H4, H5, H6] based
+deficiency request from consumers, thus the amount of on the type of household they own. The number of each
+energy surplus will be exported to the main grid under type of these houses is extracted from the weighted uniform
+FiT price and the individual cost is calculated using line distribution as shown in Table II.
+(11) of Algorithm 1. The daily household load depends on the house’s size and
+
+3. ED(t) > ES(t), ES(t) 
+= 0: When the amount of defi- profile class as presented in Ofgem (U.K.’s energy regulator)
+ciency is higher than the surplus, then the ESC needs report [20]. According to this report, a typical household loads
+to buy energy from the main grid to meet the energy divided into two profiles. Profile 1 is domestic unrestricted,
+deficiency. In this case, lines (12-21) are implemented. which most homes fall under (60%). While Profile 2 (40%)
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3983
+
+Fig. 6. Distribution of household size by number of bedrooms. Fig. 7. Distribution of EVs categories.
+
+TABLE III
+TYPICAL HOUSEHOLD’S ENERGY USAGE IN U.K.
+
+Fig. 8. Probability density of departure and arrival times.
+covers Domestic Economy 7, where users have a lower off-
+peak rate at night, when they pay less for their electricity
+as shown in Table III. The probability density of the house-
+hold size is based on the real data extracted from [21] which
+presents the number of household size by number of bedrooms
+in England/London, 2011. Fig. 6 shows the weights of the uni-
+form distribution function of each household size based on the
+number of bedrooms.
+
+Generally, peak electricity consumption occurs during
+morning hours [7:00 am-12:00 pm] when the household occu-
+pants wake up and during the evening [16:00 pm -21:00 pm]
+when the occupants start cooking, watching TV and doing
+other activities. Off-peak hours usually correspond to the
+period from mid-night till the morning.
+
+2) Probability Distribution for Stochastic Parameters of
+EVs: The availability of EVs depends on several factors, such Fig. 9. Probability of battery capacity of EVs’ categories.
+as the EV owners’ travelling patterns and usage, EVs’ type,
+the capacities of their batteries, and the arrival and departure
+times. Therefore, it is essential to develop a comprehensive weighted uniform distribution function. Fig. 7 shows the PDF
+model to determine the availability of EVs. In this paper, the used to determine the category of each EV.
+distribution functions are used to create the PDF of all the b) Departure and arrival times: It is assumed that the
+parameters and variables for each EV to be used as an input peak-hour of departure time of EVs is 8:00 am as people start
+to the MCS to produce different scenarios. leaving their premises, while the peak-hour of arrival time is
+
+a) EVs classification: In the U.K., individual EVs based 18:00 pm as users return home. To address the uncertainties,
+on their size and use are classified into the following four basic Departure and arrival times are assumed to have a Weilbull dis-
+categories [22]: tribution with scale and shape parameters as shown Fig. 8 (a)
+
+• L7e: Quadricycle-four wheels, with a maximum unladen and Fig. 8 (b), respectively.
+mass of 400 kg or 550 kg for goods carrying vehicles. c) Battery characteristics and daily travelling distance:
+
+• M1: Passenger vehicle, four wheels up to 8 seats in The random values for the rated battery capacity for each
+addition to the driver’s seat. type of EV are generated based on the Gamma and Normal
+
+• N1: Goods-carrying vehicle, four wheels, with a maxi- distributions to create the most suitable probability density
+mum laden mass of 3500 kg. functions [22]. Fig. 9 shows the PDFs of the battery capacities
+
+• N2: Goods-carrying vehicle, four wheels, with a maxi- for each EV’s category. For example, the Gamma distribution
+mum laden mass between 3500 kg and 12,000 kg. with shape set to 10.8 and scale set to 0.8 is used for L7e
+
+The real data presented in [22] regarding the number of the category and the battery capacity is bounded between 5 and
+above four types of EVs in the U.K. in 2020 is used to create a 15 kWh.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3984 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+Fig. 10. Probability of EV travelling distance.
+
+Fig. 12. Stochastic PV generation.
+
+3) Probability Distribution for Stochastic Parameters of PV:
+As the PV power generation is highly uncertain due to vari-
+ations in the solar irradiance level throughout different hours
+of the day. Hence, the modelling of PV uncertainty can be
+
+Fig. 11. Probability of energy consumption of each EV category. addressed either directly as a PDF of the PV power yield
+or indirectly as a PDF related to the solar irradiance which
+
+TABLE IV is subsequently fed into a PV system model. In this paper,
+DETAILS OF THE SIX TEST HOUSES A stochastic model of PV production is built based on the
+
+adopted historical solar irradiance data extracted from [24]
+with zero mean and standard deviation of 15%. Fig. 12 shows
+one of the random scenarios of power generation of the PV.
+
+B. Evaluation of the Proposed HEMS
+1) Impact HEMS on Individual Household Demand: In
+
+this study, it is assumed that all participants in the P2P
+energy sharing are equipped with a HEMS in their house-
+holds. The key function of the HEMS is to provide energy
+management services to minimise the power consumption in
+the smart home. This functionality includes monitoring, con-
+trol and management of renewable energy generation, energy
+storage, and energy consumption. HEMS also receives price
+
+According to the statistical data set published by the signals from the utility grid and the P2P market and performs
+Department of Transport in England 2020 [23], the distribu- demand response analysis. To investigate the performance of
+tion of daily distance is fitted as a normal distribution with the the proposed HEMS to satisfy the household demand, one
+average value set to 39.9 km and the deviation set to 10 km to scenario that has the highest probabilities of MCS is selected
+create the PDF of EV travelling distance as shown in Fig. 10. to illustrate the power profiles of the six households’ types.
+
+To specify the initial amount of EV’s SoC, it is essential to In Table IV, the details for this scenario are listed of each
+determine the energy consumption per kilometer. To this end, household.
+the distributions of EV energy consumption per kilometer for By using the proposed HEMS algorithm of Fig. 2, the
+all types of EVs are shown in Fig. 11 [22]. energy consumption profiles of the selected six households
+
+d) Initial SoC and target SoC of EVs: To satisfy the throughout the day are shown in Fig. 13. Household Type 1
+
+charging demand for each EV, the target SoC of each EV is (H1) is equipped with PV, BES and EV as shown in Table IV.
+
+selected randomly using the uniform distribution [65%, 80%]. It can be noted that, during the time interval [12:00 am –
+
+Based on the target SoC, the travelling distance and energy 6:00 am], the HEMS sends a request of energy deficiency to
+
+consumption per kilometer values, the initial SoC for each the ESC as there is no PV generation, the energy demand
+
+EV can then be calculated as: and the electricity price are lower as shown in Fig. 13(a). At
+
+( ) 6:00 am, the price is high, then the BES starts discharging
+i to supply the household demand, until there is no deficiency
+kWh/km × Di
+
+trip
+SoCi
+
+initial = ϕi. SoCi
+target − C
+
+(30) energy. During [7:00 am – 9:00 am], the solar PV starts gen-
+Ei
+
+EV,cap erating. Therefore, the household load is supplied from the
+PV and the surplus is used to charge the BES. Once the BES
+
+Ci
+kWh/km is the energy consumption per kilometer. ϕi is an reaches the maximum SoC, the remaining power is exported
+
+energy efficiency coefficient which is used to consider the to the P2P market. This occurs during the time [9:00 am-
+energy loss brought by the speed change process, and it varies 13:00 pm]. Once the EV returns home, and there is still PV
+uniformly in the range of [0.9,1.0]. generation, the surplus of power is used to charge the EV
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3985
+
+Fig. 13. Random scenario of the power profiles for the six household types throughout the day under the proposed HEMS.
+
+battery till the SoC reaches 80%. Then the surplus of power is are lower. While the surplus of energy is exported to the P2P
+fed back to the P2P market again. During the time [16:00 pm- market during [16:30 pm-18:00 pm] by discharging the EV
+18:00 pm], the household load reaches the peak value, thus the battery. The evening peak demand is covered with the energy
+BES is used to supply the household appliances. The EV bat- stored in the EV battery due to the higher electricity price.
+tery is discharging to sell energy to the P2P market during Household Type 6 (H6) is considered as consumer all the
+[17:00 pm- 18:00 pm], as the SoC of the EV is at its full time; hence his load is supplied by purchasing the required
+capacity, and the electricity price is also high. From 18:00 pm power from the P2P market as shown in Fig. 13(f).
+to 22:00 pm, the EV is selling energy to the P2P market and To evaluate the overall performance of the proposed HEMS
+supplying energy to the household load. within the community, the average amount of deficit/surplus
+
+Household Type 2 (H2) sends energy deficiency request to for each group of households that belongs to same type has
+the P2P market during [12:00 am- 6:00 am] and [22:00 pm – been calculated over 1000 scenarios of MCS with and with-
+12:00 am] and exports the surplus energy during [10:00 am – out implementing HEMS and presented in Fig. 14. Clearly,
+16:00 pm] as shown in Fig. 13(b). Since this household type is the proposed HEMS can effectively manage the energy flow
+equipped with PV and BES, the BES charges from the surplus within each type of household and simultaneously enable the
+of PV and then is used later to supply the household load EVs to participate in P2P market. For example, for house-
+during the evening peak demand. holds of Type 1, the average energy deficit has decreased
+
+For household Type 3 (H3), the energy deficiency request is using HEMS from 4.6 kWh to 3.2 kWh, while the surplus
+sent to the P2P market during early morning time [12:00 am- energy exported to the P2P market has increased using HEMS
+6:00 am] to supply the household appliances as there is no from 10.9 kWh to 12.1 kWh as shown in Fig. 14 (a) and
+PV generation and the electricity price is lower. At 6:00 am, Fig. 14 (b), respectively.
+the electricity price becomes higher, hence it is better to use 2) Impacts HEMS on Microgrid: In microgrids, self-
+the EV battery to supply the household appliances. Since consumption of energy from renewable sources, such as
+this household is not equipped with BES, the surplus energy photovoltaic panels, results in immediate positive impacts such
+request is sent to the P2P market during the PV generation as reduction in energy losses and mitigation of congestion
+[7:00 am-13:00 pm]. Once the EV returns home at 13:00 pm, problems in the distribution network. The self-consumption
+the surplus power is used to charge EV battery. During rate (SCR) (the amount of energy locally generated and con-
+[16:00 pm-22:00 am], the household load is powered by dis- sumed with respect to the total local generation) is considered
+charging the EV battery. From 16:30 pm to 19:30 pm, the EV as a performance measure to assess a microgrid’s ability
+is utilized to sell energy to P2P market as there is enough SoC to consume its own locally generated energy. Consequently,
+and the electricity price is high shown in Fig. 13(c). maximizing the self-consumption rate is an implicit goal in
+
+The load curve of household Type 4 (H4) is presented in most microgrid settings. To this end, the self-consumption of
+Fig. 13(d), This household is equipped with solar PV only. each type of households is evaluated to validate the proposed
+Therefore, the surplus of energy can be sold only to the P2P HEMS.
+market. When there is no PV generation, the user buys the As the battery energy storage plays a key role in increas-
+required energy from the P2P market. ing the self-consumption rate by storing the excess of energy
+
+As Household Type 5 (H5) owns only an EV, the household generated by PVs to be used later when needed. For this rea-
+load is supplied by importing energy from the P2P market son, the impact of different SoCs and capacities of BES and/or
+most of the time as shown in Fig. 13(e). The EV battery is EVs on the SCR is analysed for the households of Types 1,
+charged only during off-peak periods because energy prices Type 2 and Type 3, which have BES and/or EV as shown in
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3986 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+Fig. 15. Average values of 1000 scenarios of (a) EVs’ capacities and SoCs,
+(b) BESs’ capacities and SoCs, (c) household demand, (d) SCR of Type 1,
+(e) SCR of Type 2, and (f) SCR of Type 3.
+
+Fig. 16. Surplus and deficiency power throughout a day.
+
+Fig. 14. Average amount of deficit/surplus for each group of households
+under 1000 scenarios of MCS.
+
+Fig. 15. Fig. 15 (a) and Fig. 15 (b) show the average initial Fig. 17. Real time price (RTP) and feed-in tariff (FiT).
+SoCs and capacities of the EVs’ and BESs’ batteries respec-
+tively throughout the 1000 scenarios of the MCS. Fig. 15 (c)
+shows the average daily load demand of the households in C. Evaluation of the Proposed P2P Price Mechanism
+the community (8.01 kWh). As the households that belong to One scenario with the highest possibilities is selected to
+Type 1 have both EV and BES, these households have the evaluate dynamic performance of the proposed P2P price
+highest SCR (52.5%) as shown in Fig. 15(d). It is noted that mechanism. To decide on the P2P market prices for each
+how the lower battery capacity of the EVs influenced the SCR time slot, the ESC receives the total deficiency and surplus of
+in the first 200 iterations. Fig. 15 (e) shows the SCR of the energy in real-time from the 100 users as shown in Fig. 16, and
+households belong to Type 2, as this type of households has the dynamic electricity prices from the main power grid (RTP
+only BESs with the small average battery capacity (4.2 kWh), and FiT) as shown in Fig. 17. Based on the total surplus and
+the SCR is 15.9%, while the households Type 3 has 47.3% deficiency power, and the power grid prices, Equations (26)
+of SCR as shown in Fig. 15 (f), since these households have and (27) are used to determine the values of a and β. Fig. 18
+only EVs. Therefore, the SCR depends mainly on the capacity shows the variation of these parameters over one day period.
+of EV and BES batteries and their SoCs. The batteries with Consequently, using equations (28) and (29), the P2P market
+higher capacity and lower SoCs consume more energy when buying and selling prices are decided as shown in Fig. 19.
+they are charged. Therefore, the higher capacity of batteries, It is obvious that when α = 1 (means there is no surplus of
+the lower are the SoCs, and the higher self-consumption rate is. energy exported to the P2P market), the ESC purchases energy
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3987
+
+Fig. 18. Alpha (α) and Beta (β) values.
+
+Fig. 19. Internal P2P prices (buying and selling prices) under the proposed
+mechanism.
+
+from the main power grid under the RTP. During [6:00 am-
+8:00 am], the energy deficiency is higher than the surplus
+of energy, hence the P2P trading prices are higher than the
+Mid-Market Rate (MMR) price. However, when the surplus
+of energy is higher than energy deficiency during [8:00 am-
+16:00 pm], the P2P buying and selling prices are less than the
+MMR price. Fig. 20. Evaluation results of three existing P2P energy sharing models
+
+1) Comparison With Other P2P Models: The performance (SDR, MMR and BS) under 1000 scenarios of MCS.
+
+of the proposed pricing mechanism has been compared with
+three existing P2P energy sharing mechanisms, namely, the This conflicts with the basic principle of economics states that
+Bill Sharing (BS), Mid-Market Rate and Supply-Demand the goods price decreases when the production increases and
+Ratio (SDR). A detailed description and definition of these the demand decreases, and vice versa. That is why the cost-
+three mechanisms is provided in Appendix B. The three pric- saving rate for Type 5 and Type 6 (consumers) is lower under
+ing mechanisms were simulated and evaluated under 1000 sce- the MMR method compared to both proposed mechanism and
+narios, and results of the MCS are presented in Fig. 20 that SDR as shown in Fig. 20 (e) and Fig. 20 (f), respectively. As
+contains the profits/cost of the six types of households within these households (Type 5 and Type 6) bought a large amount
+the community. of energy with higher price compared to the buying price of the
+
+From Fig. 20, it can be observed that the proposed pric- proposed mechanism during [8:00 am- 16:00 pm]. However,
+ing mechanism can fairly guarantee the highest profit/cost for the overall performance of MMR mechanism is 29.6%.
+all prosumers/consumers within the community compared to For the BS mechanism, although its overall performance
+other mechanisms as shown in Fig. 15 (a)-(f). In terms of the was more than the conventional paradigm (trading with main
+overall performance, the proposed mechanism preformed the grid) with an overall performance of 21.7% for all participants,
+best with 42.1% of improvement in the economy index of all some of the participants under the BS mechanism received
+participants in the community. lower income than that under the trading with the grid. The
+
+Although the SDR mechanism has a better overall reason was that in the BS mechanism, the cost of electricity
+performance (with 37.3% of the overall performance) for all for a community is shared among the customers based on
+participants than both the BS and MMR mechanisms, it does individual customer’s total energy consumption and export,
+not address the unfairness issue among participants. The rea- so that the ones with larger contribution (with high surplus
+son behind this is that, using SDR mechanism as discussed in energy) were not remunerated fairly because their energy was
+Appendix B-3, the P2P selling and buying prices are set to the sold to the P2P market at a price lower than FiT.
+FiT price when the total amount of energy surplus exported to 2) Impacts P2P Market on Microgrid: To investigate how
+the P2P market is higher than the total amount of energy defi- the proposed HEMS and P2P market can smooth the electricity
+ciency (SDR>1). This confirms why the energy profits rate for demand of the community, the same scenario (with higher
+Type 1 and Type 3 households (prosumers) is lower compared probabilities) as that selected in Sections IV-B and IV-C is
+to MMR mechanism. used.
+
+As for the MMR mechanism, the P2P prices are set to the In this scenario, the amounts of power that need to be
+average value of RTP and FiT without considering the amount purchased by the residential area from the main grid under
+of energy exported or imported by the participants as dis- different cases are shown in Fig. 21, where CS0 refers to the
+cussed in Appendix B-2. When the energy surplus exported to base case of the total demand of all households within the
+the P2P market is higher than the energy deficiency, the P2P community, CS1 refers to the total households’ demand after
+prices under the MMR method are higher than the P2P buying implementing HEMS and CS2 refers to the total demand of
+and selling prices under the proposed mechanism and SDR. all households’ demand when participating in P2P market.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3988 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+Fig. 21. Community demand that needs to be purchased from the main grid
+under different scenarios. Fig. 25. Prosumers’ energy surplus throughout a day.
+
+Fig. 26. Bus voltages with and without considering network constraints.
+Fig. 22. Energy exported to the main grid under different scenarios.
+
+On the other hand, the amount of energy surplus exported
+to the main grid by all households is decreased by 31% as a
+result of using the proposed HEMS (CS1) in every household
+as shown in Fig. 22. The P2P trading (CS2) can contribute
+to a further reduction of the exported energy (up to 43%) by
+sharing energy within the community.
+
+Overall, P2P trading enable better energy management by
+matching local demand and supply. Along with the higher local
+consumption of renewable energy, P2P electricity trading can
+help reduce investments related to the generation capacity and
+transmission infrastructure needed to meet peak demand.
+
+Fig. 23. 11-bus distribution system diagram.
+3) Evaluation of P2P Mechanism With Considering
+
+Physical Network Constrains: For the simulation, the 11-bus
+network that proposed in [25] has been analysed and modi-
+fied. The network consists of the six types of households with
+the same probabilities as discussed in Section II-A. The dis-
+tribution of the households within the network is shown in a
+Fig. 23. It is assumed that the bus 1 is the slack bus where the
+ESC is located, who is responsible for preventing any network
+constraint violation. Therefore, the bus voltages do not violate
+
+Fig. 24. Consumers’ energy deficiency throughout a day. the standard, which is ±5% of 1 per unit (p.u) and the maxi-
+mum and minimum line power flows are 10 kW and −10 kW,
+
+According to Fig. 21, the whole amount of deficit that needs respectively. The imported power profiles of the consumers
+to be purchased from the main grid under the three cases are are shown in Fig. 24, while the exported power profiles of the
+the same during the time period [12:00 am-6:30 am]. That is prosumers are shown in Fig. 25 after implementing HEMS.
+because there is no surplus power traded in the P2P market. It is noted from Fig. 26 that the voltage in the buses 2, 4, 5
+During the period [6:30 am – 7:30 am], the deficit of energy and 10 violate the maximum voltage limit of 1.05 p.u. while
+that was purchased from the grid under CS1 and CS2 are the network constraints were not considered. According to
+the same. However, this amount of power is lower than that the network constrains in equations 38-40 that applied on the
+under CS0. This is because the households that own batteries network, the voltages stay inside the limits of 0.95 p.u. to 1.05
+started to use them to supply their appliances due to higher p.u. by decreasing the amount of power injection energy by
+electricity prices. Around 7:30 am under CS2, the households associated prosumers in different buses as shown in Fig. 26. It
+that have PVs started to export their surplus of energy to the is observed from Fig. 27 that the line power flow constraints
+P2P market. It is noted that the whole community can satisfy are also satisfied in the proposed P2P energy trading approach,
+its energy demand and there is no need to purchase energy which may protect the power line from being over-congested
+from the main grid during [7:30 am-15:30 pm] as the P2P in a given system. It should be noted that the violation of
+market covers the whole community demand. In addition, by these constraints may adversely affect the reliability and sta-
+motivating EV owners to participate in the P2P market during bility of a distribution system. In that context, the proposed
+evening peak demand [16:00 pm-22:00 pm], they sell energy trading approach will enhance the power system performance
+by discharging their EVs batteries and generate more revenue. in P2P energy sharing.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3989
+
+⎧⎨β tanh (2α)
+rs = f (α, β) = ⎩ (1 − β) tanh (2α), α < 0 (32)
+
+rex, ED = 0
+
+Substituting tanh (x) = ex−e−x
+
+ex+e−x , in (31) and (32):
+⎧⎪⎨ α−e−2α
+
+(1 − β) e2
+
+Fig. 27. Power flow in different lines with and without considering network
+constraints. = e2α+ 2α , α ≥ 0
+
+e−
+rb = f (α, β) ⎪⎩β e2α−e−2α
+
+, α < 0 (33)
+e2α+e−2α
+
+V. CONCLUSION ⎧ rg, ES = 0
+⎪
+
+This paper proposed a P2P energy sharing model for res- ⎨ 2α e−2α
+β e −
+
+e2α+ −2α , α ≥ 0
+r
+
+idential microgrids with stochastic models of different types s = f (α, β) = e
+
+⎪⎩ (1 − β) e2α−e−2α
+, α < 0 (34)
+
+e2α+e−2α
+
+of households equipped with PV distributed generation, EVs, rex, ED = 0
+and BESs to address the uncertainties using 1000 scenarios of where α is in the range [−1, 1] as shown in Equation (26), and
+the Monte-Carlo simulation. The P2P energy sharing mecha- to convert this range to [0,1], the formula (X old−min
+
+new = X
+nism is designed based on the relationships between energy max−min )
+
+is used:
+demand and supply, and Feed-in Tariff (FiT) and Real-Time ⎧
+Price (RTP). Furthermore, HEMS is also designed to manage ⎪⎪⎨ (2−β)e2α+βe−2α
+
+2(e2α+e−2α , α ≥ 0
+)
+
+the energy produced and consumed within a household. The rb = f (α, β) =
+proposed model is simulated and evaluated on a local com- ⎪ βe2α+(1−β)e−2α
+
+⎪ , α < 0 (35)
+⎩ 2(e2α+e−2α)
+
+munity of 100 households subject to constraints associated ⎧ rg, ES = 0
+with household load profile, PV, EVs, BESs and market sig- ⎪⎪
+nals including FiT and retail prices. The simulation results ⎨ (2−β)e2α+βe−2α
+
+2(e2α+e−2α , α ≥ 0
+)
+
+show that the proposed HEMS can effectively manage the rs = f (α, β) = ⎪ βe2α+(1−β)e−2α (36)
+⎪
+
+energy flow within each type of household and simultaneously ⎩ 2(e2α+ α < 0
+e−2α ,
+
+)
+rex, ED = 0
+
+enable EVs to participate in P2P market. The proposed HEMS
+can also increase the self-consumption rate within the com- Finally, to map the P2P prices into [rex, rg], the formula
+munity which depends mainly on the batteries capacity and (X × (max − min) + min) is used. The function of P2P prices
+their SoCs. The results show that the effective performance can be for⎧mu(lated a)s:
+of the proposed P2P pricing mechanism in achieving cost ⎪⎪ 2α
+
+saving/income for consumers/prosumers with considering that ⎨ rg−rex (2−β)e +βe−2α
+
+( 2 ) + r
+e2α+e−2α ex, α ≥ 0
+
+r
+not a single household would be worse off. This leads to b = ⎪ rg−rex (1+β)e2α+(1−β)e−2α
+
+⎪ α < 0
+motivates peers to participate in P2P energy trading. To vali- ⎩ 2 e2α+e−2α + rex,
+
+date the performance of the proposed pricing mechanism, it is ⎧(rg, ) ES = 0
+⎪
+
+evaluated by comparing to three popular P2P sharing mecha- ⎪⎨ rg−rex (1+β)e2α+(1−β)e−2α
+
+( 2 ) e2α+ r
+e−2α + ex, α ≥ 0
+
+nisms; the supply and demand ratio (SDR), mid-market rate rs = ⎪ rg−rex (2−β)e2α+βe−2α
+
+(MMR) and bill sharing (BS). The simulation results verify the ⎪⎩ 2 e2α+e−2α + rex, α < 0
+rex, ED = 0
+
+effectiveness the proposed mechanism in terms the economic
+revenue and ensure the fairness among all peers considering APPENDIX B
+the physical network constrains.
+
+1) Bill Sharing Mechanism (BS): In this method, the cost
+of electricity for a community is shared among customers
+
+APPENDIX A based on individual customer’s total energy consumption and
+According to the basic principle of economics, prices export. The buy and sell prices for the P2P mechanism
+
+decrease with higher supply/lower demand and increase with as determined by this method are given by equations (37)
+the higher demand/ lower supply. In the P2P energy market, and (38) respectively.
+when there is no energy surplus exported from a prosumer ( )
+(ES(t) = 0) to the P2P market, the P2P buying price is set EBFG
+
+r D
+to the grid price (RTP). In contrast, when there is no energy b = rg (37)
+
+deficiency requests (E ( ED )
+D(t) = 0) from the P2P market, the
+
+P2P selling price is set to FiT. When the ESC receives both ESTG
+r S
+
+s = rex (38)
+energy surplus and deficiency requests (−1 < α < 1), the ES
+
+P2P prices trend tends to follow the function tanh (2α). Thus,
+tanh (2α) can be used to model the relationship between P2P EBFG TG
+
+D and ES
+S are respectively the total energy import
+
+prices and α/β: and export of the community from/to the grid after P2P trad-
+⎧ ing. Therefore, the electricity bill of individual households is
+⎨ (1 − β) tanh(2α), α ≥ 0 calculated
+
+rb = f (α, β) = ⎩β tanh (2α), α < 0 (31) (as follows: ) ( )
+r Ci = EBFG TG
+
+g, ES = 0 D .r .r P2P
+i g − ES
+
+Si ex + ED .r − EP2P
+i b S .r
+
+i s (39)
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+3990 IEEE TRANSACTIONS ON SMART GRID, VOL. 14, NO. 5, SEPTEMBER 2023
+
+[4] S. Thakur, B. P. Hayes, and J. G. Breslin, “Distributed double auc-
+tion for peer to peer energy trade using blockchains,” in Proc. 5th
+Int. Symp. Environ. Friendly Energies Appl. (EFEA), Sep. 2018,
+pp. 1–8.
+
+[5] C. Zhang, T. Yang, and Y. Wang, “Peer-to-Peer energy trading in a
+microgrid based on iterative double auction and blockchain,” Sustain.
+Energy Grids Netw., vol. 27, Sep. 2021, Art. no. 100524.
+
+[6] K. Chen, J. Lin, and Y. Song, “Trading strategy optimization for a
+prosumer in continuous double auction-based peer-to-peer market: A
+prediction-integration model,” Appl. Energy, vol. 242, pp. 1121–1133,
+May 2019.
+
+Fig. B.1. Relationship between the P2P prices and SDR. [7] P. Angaphiwatchawal, P. Phisuthsaingam, and S. Chaitusaney, “A k-
+factor continuous double auction-based pricing mechanism for the P2P
+energy trading in a LV distribution system,” in Proc. 17th Int. Conf.
+Elect. Eng./Electron. Comput. Telecommun. Inf. Technol. (ECTI-CON),
+
+EBFG P2P
+D and ED denote the energy purchased from the main Jun. 2020, pp. 37–40.
+
+i i
+grid and P2P market by individual users respectively. ESTG [8] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, and J. Lei, “Energy-sharing
+
+Si model with price-based demand response for microgrids of peer-to-peer
+and EP2P
+
+S are the energy sold to the main grid and P2P market prosumers,” IEEE Trans. Power Syst., vol. 32, no. 5, pp. 3569–3583,
+i
+
+respectively. Sep. 2017.
+[9] C. Long, J. Wu, Y. Zhou, and N. Jenkins, “Peer-to-peer energy shar-
+
+2) Mid-Market Rate Mechanism (MMR): In this pricing ing through a two-stage aggregated battery control in a community
+mechanism, the P2P prices are bounded between the RTP and microgrid,” Appl. Energy, vol. 226, pp. 261–276, Sep. 2018.
+FiT. Therefore, the MMR method assumes that the P2P prices [10] C. Long, J. Wu, C. Zhang, L. Thomas, M. Cheng, and N. Jenkins, “Peer-
+
+to-peer energy trading in a community microgrid,” in Proc. IEEE Power
+are set to the average value of RTP and FiT when the total Energy Soc. General Meeting, Jul. 2017, pp. 1–5.
+energy surplus equals the energy deficiency, thus: [11] W. Tushar, C. Yuen, D. B. Smith, and H. V. Poor, “Price dis-
+
+crimination for energy trading in smart grid: A game theoretic
+rg + rex
+
+r approach,” IEEE Trans. Smart Grid, vol. 8, no. 4, pp. 1790–1801,
+b, rs = (40)
+
+2 Jul. 2017.
+[12] W. Tushar, T. K. Saha, C. Yuen, D. Smith, and H. V. Poor, “Peer-to-
+
+However, the peers will buy/sell their energy under RTP/FiT peer trading in electricity networks: An overview,” IEEE Trans. Smart
+in case the total energy surplus does not meet the energy Grid, vol. 11, no. 4, pp. 3185–3200, Jul. 2020.
+
+[13] K. Kotani, K. Tanaka, and S. Managi, “Which performs better
+deficiency in the P2P market. under trader settings, double auction or uniform price auction?” Exp.
+
+3) Supply-Demand Ratio (SDR): In this mechanism, P2P Econ., vol. 22, no. 1, pp. 247–267, 2019.
+prices can be adjusted with the change of Supply-Demand [14] S. Xu, Y. Zhao, Y. Li, and Y. Zhou, “An iterative uniform-price auction
+
+mechanism for peer-to-peer energy trading in a community microgrid,”
+Ratio (SDR) based on the basic principle of economics, as the Appl. Energy, vol. 298, Sep. 2021, Art. no. 117088.
+relation between price and SDR is inverse-proportional. The [15] Y. Zhou, J. Wu, and C. Long, “Evaluation of peer-to-peer energy shar-
+relationship of supply and demand in the energy sharing zone ing mechanisms based on a multiagent simulation framework,” Appl.
+
+Energy, vol. 222, pp. 993–1022, Jul. 2018.
+can be represented by: [16] B. Zhang, Y. Du, E. G. Lim, L. Jiang, and K. Yan, “Design and
+
+E simulation of Peer-to-Peer energy trading framework with dynamic elec-
+S
+
+SDR = (41) tricity price,” in Proc. 29th Aust. Univ. Power Eng. Conf. (AUPEC),
+ED Nov. 2019, pp. 1–6.
+
+[17] S. Aznavi, P. Fajri, M. B. Shadmand, and A. Khoshkbar-Sadigh, “Peer-
+The P2P buying and selling prices are identified by equa- to-peer operation strategy of PV equipped office buildings and charging
+
+tions (42) and (43) according to SDR values: stations considering electric vehicle energy pricing,” IEEE Trans. Ind.
+{ Appl., vol. 56, no. 5, pp. 5848–5857, Sep./Oct. 2020.
+
+rg.rex SDR ≤ 1 [18] F. Alfaverh, M. Denai, and Y. Sun, “Electrical vehicle grid integra-
+r − , 0 ≤
+
+r tion for demand response in distribution networks using reinforcement
+s = (rg rex).SDR+ ex (42)
+
+learning,” IET Elect. Syst. Transp., vol. 11, no. 4, pp. 348–361,
+{ rex, SDR > 1
+
+2021.
+r [19] N. Li, “A market mechanism for electric distribution networks,” in Proc.
+
+r g(1 − SDR), 0 ≤ SDR ≤ 0
+b = rs.SDR +
+
+(43)
+rex SDR > 1 54th IEEE Conf. Decis. Control (CDC), Dec. 2015, pp. 2276–2282.
+
+[20] “Ovoenergy.” 2021. Accessed: Dec. 2, 2021. [Online]. Available:
+The relationship between the internal price and SDR is https://www.ovoenergy.com/guides/energy-guides/how-much-electrici
+
+ty-does-a-home-use
+shown in Fig. B.1 which shows that rs and rb decline with [21] “Tenure by household size by number of bedrooms.” 2011. [Online].
+the increase of SDR in the interval [0, 1], and they are set to Available: https://www.nomisweb.co.uk/census/2011/DC4405EW/view/
+r 2013265927?rows=c_sizhuk11&cols=c_bedrooms
+
+ex when SDR is greater than 1.
+[22] J. Meng, Y. Mu, H. Jia, J. Wu, X. Yu, and B. Qu, “Dynamic frequency
+
+response from electric vehicles considering travelling behavior in the
+REFERENCES great britain power system,” Appl. Energy, vol. 162, pp. 966–979,
+
+Jan. 2016.
+[1] C. Zhang, J. Wu, C. Long, and M. Cheng, “Review of existing [23] “GOV.UK,” Dept. Transp., London, U.K., Jul. 30, 2013. Accessed:
+
+peer-to-peer energy trading projects,” Energy Procedia, vol. 105, Aug. 16, 2022. [Online]. Available: https://www.gov.uk/government/
+pp. 2563–2568, May 2017. statistical-data-sets/nts01-average-number-of-trips-made-and-distance-tr
+
+[2] E. McKenna, J. Pless, and S. J. Darby, “Solar photovoltaic self- avelled
+consumption in the UK residential sector: New estimates from a smart [24] “Power data access viewer.” Accessed: Aug. 19, 2022. [Online].
+grid demonstration project,” Energy Policy, vol. 118, pp. 482–491, Available: https://power.larc.nasa.gov/data-access-viewer/
+Jul. 2018. [25] W. Zhou, Y. Wang, F. Peng, Y. Liu, H. Sun, and Y. Cong, “Distribution
+
+[3] H. T. Doan, J. Cho, and D. Kim, “Peer-to-peer energy trading in network congestion management considering time sequence of peer-
+smart grid through blockchain: A double auction-based game theoretic to-peer energy trading,” Int. J. Elect. Power Energy Syst., vol. 136,
+approach,” IEEE Access, vol. 9, pp. 49206–49218, 2021. Mar. 2022, Art. no. 107646.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+
+
+ALFAVERH et al.: DYNAMIC P2P ELECTRICITY MARKET MODEL FOR A COMMUNITY MICROGRID 3991
+
+Fayiz Alfaverh received the B.Sc. degree in elec- Yichuang Sun (Senior Member, IEEE) received
+trical power engineering from Yarmouk University, the B.Sc. and M.Sc. degrees in communications
+Irbid, Jordan, the M.Sc. degree in power electron- and electronics engineering from Dalian Maritime
+ics and control engineering from the University University, Dalian, China, in 1982 and 1985, respec-
+of Hertfordshire, Hatfield, U.K, where he is cur- tively, and the Ph.D. degree in communications and
+rently pursuing the Ph.D. degree. His interests are in electronics engineering from the University of York,
+demand response management and control strategies York, U.K., in 1996. He is currently a Professor
+for integrated smart electricity networks, and man- of Communications and Electronics, the Head of
+agement of smart homes and dynamic scheduling, Communications and Intelligent Systems Research
+optimisation, and control of future smart grids. Group, and the Head of Electronic, Communication
+
+and Electrical Engineering Division with the School
+of Engineering and Computer Science, University of Hertfordshire, U.K. He
+has published over 330 papers and contributed ten chapters in edited books.
+He has also published four text and research books: Continuous-Time Active
+Filter Design (CRC Press, USA, 1999), Design of High Frequency Integrated
+
+Mouloud Denai graduated in electrical engineering Analogue Filters (IEE Press, U.K., 2002), Wireless Communication Circuits
+from the University of Science and Technology of and Systems (IET Press, 2004), and Test and Diagnosis of Analogue, Mixed-
+Algiers and the Ecole Nationale Polythechnique of signal and RF Integrated Circuits—the Systems on Chip Approach (IET Press,
+Algiers, Algeria. He received the Ph.D. degree in 2008). His research interests are in the areas of wireless and mobile commu-
+control engineering from the University of Sheffield, nications, RF and analogue circuits, microelectronic devices and systems, and
+U.K. He worked with the University of Science machine learning and deep learning.
+and Technology of Oran, Algeria, in 2004, and the
+University of Sheffield from 2004 to 2010. From
+2010 to 2014, he worked for the University of
+Teesside, U.K. He has been with the University
+of Hertfordshire, U.K., since 2014. His research
+
+interests in energy include intelligent control design and computational intelli-
+gence applications to efficiency optimization in renewable energy systems with
+particular focus in the management of smart homes and dynamic scheduling,
+optimization and control of future smart grids, condition monitoring, and asset
+management in electric power networks; Energy storage systems integration
+into the grid; Smart meter data analytics using machine learning techniques for
+efficient energy management; electric vehicles integration into the distribution
+grid, and V2G/G2V management.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 30,2026 at 02:57:53 UTC from IEEE Xplore.  Restrictions apply.

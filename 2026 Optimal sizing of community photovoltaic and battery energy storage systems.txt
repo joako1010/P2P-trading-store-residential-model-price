@@ -1,0 +1,2192 @@
+﻿Journal of Energy Storage 148 (2026) 120031 
+
+A
+2
+
+Contents lists available at ScienceDirect
+
+Journal of Energy Storage
+
+ journal homepage: www.elsevier.com/locate/est  
+
+Research papers
+
+Optimal sizing of community photovoltaic and battery energy storage 
+systems with second-life batteries in peer-to-peer energy communities
+Júlia Monar Pigem a,c, Fernando García-Muñoz a,b ,∗, Natalia Jorquera Bravo a,b ,
+Ricardo Aránguiz a, Vicente Castro Burgos d
+a University of Santiago of Chile (USACH), Faculty of Engineering, Industrial Engineering Department, Chile
+b University of Santiago of Chile (USACH), Faculty of Engineering, Program for the Development of Sustainable Production Systems (PDSPS), Chile
+c Universitat Politècnica de Catalunya (UPC), Escola Tècnica Superior d’Engyinyeria Industrial de Barcelona, Spain
+d University of Santiago of Chile (USACH), Faculty of Engineering, Electrical Engineering Department, Chile
+
+A R T I C L E  I N F O  A B S T R A C T
+Keywords: Shared photovoltaic and battery energy storage systems (PV-BESS) offer a promising pathway for energy 
+Energy communities communities to enhance local resilience. However, assessing their feasibility requires accounting for factors 
+Distributed energy resources such as peer-to-peer (P2P) energy exchanges, distribution-network constraints, and battery degradation, 
+Peer-to-peer energy trading particularly when exploring second-life (SL) batteries as a cost-effective alternative. This article presents a 
+Battery energy storage systems
+Second-life batteries mixed-integer second-order cone programming model to determine the optimal sizing of a community-shared 
+
+PV-BESS within a P2P energy trading framework. The model accounts for heterogeneous users who may 
+already own individual PV or PV-BESS systems, aiming to enhance the overall energy autonomy of the energy 
+community. A key feature of the model is the explicit comparison between first-life (FL) and SL battery 
+technologies, incorporating their respective degradation dynamics into investment and operational decisions, 
+and the technical feasibility by considering constraints of a low-voltage distribution network. The proposed 
+formulation is tested on the reduced equivalent of the IEEE European low-voltage network. Results indicate 
+that the most influential factors for adopting a shared BESS are the cost of battery technologies, electricity 
+purchase prices, and degradation characteristics, while DER penetration and community peak demand play a 
+secondary role. Thus, under current electricity prices (100-200 e/MWh) and commercial SL battery costs (190 
+e/kWh), community-scale storage remains economically unfeasible. However, competitiveness could emerge 
+if SL battery prices approach 60 e/kWh or if their initial State of Health (SoH) improves to around 75%, 
+enabling cost-effective shared storage solutions within energy communities.
+1. Introduction generation peaks often misalign with demand [5]. In this context, BESS 
+becomes critical in storing surplus PV energy for later use, enabling 
+
+The increasing competitiveness of distributed energy resources the full potential of P2P exchanges [6]. Thus, BESS plays a key role 
+(DERs), such as photovoltaic (PV) systems and battery energy storage in reducing grid dependency and enabling responsive energy manage-
+systems (BESS), has accelerated their adoption among residential users, ment [7]. Their ability to shift energy usage across time enhances 
+prompting the electrical system to adapt accordingly [1]. As more 
+households integrate these technologies, energy communities have self-consumption and facilitates adaptation to time-varying generation 
+emerged as a promising framework to enhance local energy autonomy, and price signals [8] as demonstrated in recent works where BESS 
+improve system resilience, and reduce reliance on the traditional power are employed for peak shaving and demand response applications in 
+grid [2]. In this regard, peer-to-peer (P2P) energy trading has gained both commercial and residential contexts [9,10]. This makes them 
+attention as an effective mechanism for local energy exchange and essential components for modern distributed power systems based on 
+better utilization [3]. P2P markets allow prosumers to directly sell DER coordination and market-based energy exchanges.
+or share their excess generation with neighboring users, promoting In addition to user-owned DERs, some energy communities (ECs) 
+efficient utilization of renewable resources [4]. However, this new 
+operational paradigm modifies traditional consumption patterns, as aim to invest in shared assets such as community-scale PV systems 
+
+∗ Corresponding author.
+E-mail addresses: fernando.garciam@usach.cl (F. García-Muñoz), ricardo.aranguiz@usach.cl (R. Aránguiz).
+https://doi.org/10.1016/j.est.2025.120031
+Received 31 August 2025; Received in revised form 17 November 2025; Accepted 
+vailable online 6 January 2026 
+352-152X/© 2025 Elsevier Ltd. All rights are reserved, including those for text and
+19 December 2025
+ data mining, AI training, and similar technologies. 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+and communal BESS [11]. These installations provide collective ben-
+efits through economies of scale and broaden access to renewable 
+generation and storage capacity [12]. Their planning and operation, 
+however, must account for the particularities of community dynamics 
+and new trading mechanisms like P2P. In particular, communal BESS 
+can enhance the community’s ability to balance generation and demand 
+across users, thereby facilitating more efficient and equitable energy 
+exchanges. Nevertheless, this added flexibility comes at a cost; BESS 
+still represents a significant capital investment, especially at the com-
+munity scale [13]. In this context, repurposed batteries from electric 
+vehicles (EV), known as second-life (SL) batteries for stationary ap-
+plications, have emerged as a cost-effective alternative [14]. Although 
+more affordable, they suffer from reduced performance and accelerated 
+degradation [15]. This trade-off between investment cost and long-term 
+usability raises key questions about their suitability for community ap-
+plications, and highlights the need for planning tools that can evaluate 
+their contribution to autonomy and cost-efficiency [16].
+
+In this context, evaluating the feasibility and performance of
+community-scale PV-BESS systems becomes essential, particularly in 
+configurations where users already own individual assets and par-
+ticipate in local energy exchanges. Given the economic challenges 
+BESS investments pose, especially under dynamic electricity market 
+conditions, exploring alternative technologies that can reduce upfront 
+costs while maintaining acceptable performance is crucial. SL batteries 
+offer a promising yet uncertain option due to their lower cost but 
+potentially limited lifespan. Accordingly, optimization-based planning 
+tools that assess the optimal sizing of shared PV and BESS systems, 
+accounting for different battery chemistries, degradation patterns, and 
+usage contexts, are particularly relevant. Such approaches enable a 
+systematic evaluation of the trade-offs between investment cost and 
+long-term performance, especially when comparing first-life (FL) and 
+SL technologies for collective use in ECs. In this work, such a model is 
+developed to quantify these trade-offs between both technologies when 
+deployed in a collective setting, providing insights into the conditions 
+under which SL solutions may become viable for community applica-
+tions. Unlike previous studies, it explicitly addresses the integration 
+of P2P energy trading, realistic battery degradation dynamics, and 
+network constraints, thereby filling a critical gap in the planning of 
+community-scale PV-BESS systems.
+
+The remainder of the paper is organized as follows. Section 2 
+reviews the relevant literature related to shared PV-BESS sizing models 
+considering P2P trading and BESS degradation. Section 3 describes the 
+methodology used to construct the demand, generation, and degrada-
+tion scenarios. Section 4 introduces the proposed optimization model. 
+Section 5 presents the case study and discusses the computational 
+results. Finally, Section 6 summarizes the main findings and outlines 
+directions for future research.
+
+2. Literature review
+
+Several studies have explored the optimal sizing of PV-BESS sys-
+tems in grid-connected contexts, focusing on economic feasibility, self-
+consumption enhancement, and operational efficiency, where BESS 
+play a key role in enhancing system flexibility and resilience [17]. 
+For instance, the study in [18] proposes a mixed-integer linear pro-
+gramming (MILP) model to optimize PV and BESS configurations in a 
+university campus, demonstrating their potential to increase electricity 
+autonomy. Similarly, the works in [19,20] address PV-BESS design 
+for residential systems that include EVs, employing Particle Swarm 
+Optimization and Grey Wolf Optimizer algorithms to solve the problem 
+across multiple urban contexts. These studies arrive at comparable 
+conclusions, reinforcing the potential of PV-BESS systems to improve 
+local energy resilience and reduce grid dependency. This is further 
+supported by [21,22], who show that PV-BESS integration enhances 
+self-consumption and financial performance. Additionally, the work 
+2 
+in [23] uses HOMER software to identify cost-optimal microgrid config-
+urations in a Bangladeshi community, while [24] develops a framework 
+for capacity expansion in active microgrids. Demand-side flexibility 
+has also been incorporated in [25] to maximize renewable energy 
+utilization, while [8] analyzes the economic viability of BESS under dif-
+ferent sizing and discharge profiles, highlighting the impact of battery 
+capacity on cost-effectiveness. Although these contributions demon-
+strate that PV-BESS systems can enhance self-sufficiency and resilience 
+across different settings, several key aspects remain unaddressed in 
+previous works. In particular: (i) the potential role of emerging local 
+electricity markets, such as P2P trading schemes, which rely heavily 
+on storage for their operation; (ii) the long-term impact of battery 
+degradation; and (iii) the diversity of available battery technologies, 
+including comparisons between FL and SL batteries, are all could be 
+critical for reliable and cost-effective system planning.
+
+In the above context, some researchers have begun exploring the 
+role of emerging local electricity markets as a fundamental element 
+in designing and operating a shared PV-BESS system. For instance, 
+[26] compares blockchain-based P2P energy trading with traditional 
+incentive mechanisms such as Net Energy Metering and Feed-in Tariffs 
+in rural microgrids, showing that P2P schemes enable more flexible and 
+economically attractive real-time energy exchanges. Similarly, the au-
+thors in [27] develop a model for a grid-connected EV charging station 
+microgrid that integrates renewable energy, battery storage, and P2P 
+energy sharing, demonstrating that dynamic pricing mechanisms can 
+effectively facilitate prosumer participation while reducing operational 
+costs, a result also validated in [28], which analyzes real-time pricing 
+strategies for EV integration. Building on this, [29] proposes a techno-
+economic framework for the design of renewable ECs, emphasizing 
+the role of technical facilitators and component sizing in enhancing 
+financial outcomes through P2P trading. The study in [30] presents 
+an optimization model for BESS sizing under different electricity mar-
+ket designs, including P2P and energy storage sharing, and evaluates 
+alternative ownership and utilization strategies. Similarly, [31] ex-
+plores a residential microgrid where prosumer selection is optimized 
+via a genetic algorithm, finding that a balanced composition of con-
+sumers and prosumers improves the overall economic performance of 
+the system. In parallel, recent works have extended P2P formulations 
+to capture user interactions and adaptive responses under dynamic 
+price signals [32], or to explore cooperative [33] and multi-energy 
+coupling frameworks where storage operation indirectly reflects user-
+driven coordination [34]. However, while these studies incorporate 
+market-related mechanisms and highlight the value of local energy 
+trading, they still overlook critical aspects such as battery degradation 
+and the diversity of available BESS technologies.
+
+As a result of the above gap, the research community has begun 
+to evaluate different battery technologies and the effects of degra-
+dation in the context of shared PV-BESS systems. For instance, [35] 
+analyzes the life cycle costs of lithium-ion and lead–acid batteries for 
+islanded microgrids, modeling degradation by considering the impact 
+of charge–discharge cycles and operational stress on capacity over 
+time. Similarly, [36] compares lithium-ion, lead–acid, sodium-sulfur, 
+and vanadium redox flow batteries for PV systems aimed at enhanc-
+ing resilience to grid outages, evaluating them based on efficiency, 
+cost, depth of discharge, and lifetime. In [37], degradation is incor-
+porated as capacity loss over time when optimizing system sizing. 
+The authors [38] explore P2P coordination frameworks that integrate 
+dynamic electricity pricing with degradation-aware battery operation, 
+highlighting how trading incentives and degradation costs jointly influ-
+ence storage utilization and prosumer interactions. Similarly, the study 
+in [39] applies depth-of-discharge modeling to extend battery lifetime 
+and reduce costs in a wind-BESS microgrid. Lastly, [40] develops a tool 
+for techno-economic analysis of small-scale PV-BESS systems that in-
+cludes battery degradation, concluding that accounting for degradation 
+renders such systems economically unviable under current commer-
+cial prices, while highlighting the critical role of degradation in the 
+decision-making process.
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+This conclusion is further supported by several studies that have 
+highlighted the technical and economic limitations of FL batteries 
+in stationary applications, often emphasizing the presence of signif-
+icant cost-related barriers. For instance, [5] finds that standalone 
+community-scale BESS are not yet economically viable at current 
+technology and price levels unless complemented by additional revenue 
+streams. Similarly, [11] models the optimal sizing and operation of 
+BESS while quantifying potential revenues from ancillary services such 
+as frequency regulation, voltage support, energy time-shifting, and 
+backup power, showing that economic feasibility strongly depends on 
+future declines in battery prices. In [13], a hybrid renewable power 
+plant is evaluated, concluding that profitability requires a 60%–90% 
+reduction in storage costs. Along the same lines, [41] analyzes cen-
+tralized grid-scale BESS supporting distribution networks (DNs) with 
+high PV penetration and finds that current market conditions remain 
+insufficient to justify investment under existing regulatory and pricing 
+frameworks.
+
+In light of these economic limitations, SL batteries, repurposed from 
+EVs for stationary applications, have emerged as a potential alterna-
+tive to reduce investment costs and improve the economic viability 
+of BESS-based systems. In this regard, [14] optimizes the sizing and 
+techno-economic performance of 100% renewable energy systems using 
+SL batteries, explicitly modeling degradation through capacity fade 
+and cycle life. The study evaluates lifecycle costs and shows that SL 
+batteries can reduce expenses sustainably while maintaining reliable 
+storage performance. Similarly, [42] demonstrates the technical feasi-
+bility and economic benefits of implementing an SL BESS in a ceramic 
+manufacturing plant, enabling peak shaving, lowering electricity de-
+mand charges, and increasing solar self-consumption. The comparison 
+between FL and SL EV batteries is further explored in [43], which 
+presents a techno-economic assessment of isolated microgrids using a 
+reliability-oriented iterative design framework. The model includes a 
+semi-empirical battery degradation representation to ensure demand 
+satisfaction and realistic lifetime estimates. Along the same lines, [44] 
+evaluates a hybrid system for home EV charging based on solar PV 
+and both FL and SL batteries, using a detailed degradation model 
+accounting for cycle count, depth of discharge, temperature, and state 
+of charge. The results show strong economic returns over a 10-year 
+horizon, positioning SL batteries as a cost-effective and sustainable al-
+ternative. In [45], hybrid power systems combining FL and SL batteries 
+are analyzed, indicating that while SL batteries offer significant cost 
+and environmental benefits, larger storage capacities may be required 
+to match the performance of new units. Additional evidence of the 
+benefits of SL batteries in community-scale applications is presented 
+by [46], who report that repurposed LiFePO4 batteries can reduce 
+capital costs by up to 94% compared to FL lithium-ion units, while 
+still providing effective peak shaving and grid support in residential 
+microgrids. These findings highlight the potential of SL batteries to 
+enhance the viability of energy projects, particularly in low-income or 
+cooperative-based community energy systems.
+
+2.1. Research gap and contributions
+
+The previous literature reveals a growing interest in optimization-
+based studies that compare FL and SL batteries across various sta-
+tionary applications, including residential [44], industrial [42], and 
+community-scale systems [46]. This is explained mainly because FL 
+batteries, despite having decreased pricing over the last years, still 
+have a remaining gap in competition against electricity market prices; 
+hence, they have promoted the SL battery studies. Likewise, these 
+studies increasingly acknowledge the importance of explicitly modeling 
+battery degradation, particularly relevant in the case of SL batteries, 
+which, although more affordable in terms of investment cost, exhibit 
+accelerated degradation. However, despite these advances, there is still 
+a lack of optimization models specifically designed for community-
+based energy systems that integrate emerging market structures such 
+3 
+as P2P trading, while simultaneously comparing FL and SL battery 
+technologies under realistic degradation assumptions. Moreover, ensur-
+ing the technical feasibility of such systems requires the inclusion of 
+network constraints, which are often neglected in prior works, even 
+when dimensioning shared community assets. In addition, existing 
+studies that evaluate battery degradation typically rely on predefined 
+or average usage patterns, rather than on degradation profiles derived 
+from optimized consumption schedules. Accordingly, this article aims 
+to address these gaps by proposing the following contributions:
+
+• A mixed-integer second-order cone programming (MISOCP)
+model to determine the optimal sizing of a community-scale PV-
+BESS system considering different BESS technologies and their 
+degradation, within a P2P energy trading framework. The formu-
+lation accounts for users owning individual DERs, incorporates 
+low-voltage DN constraints, and explicitly evaluates FL and SL 
+battery technologies.
+
+• A mixed-integer linear self-consumption model is combined with 
+the MATLAB-based BLAST-Lite simulator to estimate degradation 
+parameters that quantify annual capacity loss for different battery 
+chemistries under both cycling and calendar conditions from 
+optimized state-of-charge (SoC) profiles.
+
+• A sensitivity analysis was conducted to explore the economic 
+competitiveness of FL and SL batteries across varying market 
+contexts. By adjusting electricity prices and technology costs, the 
+analysis identifies the conditions under which each battery type 
+becomes economically viable and evaluates when degradation 
+effects outweigh capital cost advantages.
+
+3. Methodology
+
+This section introduces the methodological framework developed to 
+support the optimal sizing of community-scale PV-BESS systems under 
+detailed technical and economic considerations. The overall process 
+is summarized in Fig. 1, which illustrates how different modeling 
+layers are integrated to generate the necessary input data for the final 
+MISOCP-based sizing model presented in Section 4.
+
+The process begins with the preparation of residential electricity 
+demand and solar irradiance profiles, which are cleaned, segmented, 
+and projected for the 2025–2035 horizon. These profiles are then used 
+as input for a user-level self-consumption model that optimizes PV and 
+BESS operation for a single user by minimizing net electricity costs. 
+The output of this model, specifically the battery’s hourly SoC profile, 
+is used to estimate degradation through the BLAST-Lite simulator [47], 
+a MATLAB-based tool that evaluates the degradation of the different 
+BESS technologies considered in this study. Finally, the resulting degra-
+dation indicators, together with the projected demand and generation 
+profiles, are integrated into a community-level MISOCP model.
+
+3.1. Data processing
+
+The dataset used in this study [48] contains hourly electricity 
+consumption profiles from both residential and commercial users in a 
+rural Spanish DN. Subsequently, only those residential profiles with an 
+average annual consumption above a defined threshold were retained, 
+following the criteria proposed in [49]. Given the presence of missing 
+data, common in real-world metering systems, gaps were imputed 
+using the k-nearest neighbors method [50], and redundant entries were 
+removed. The remaining profiles were then classified into constant 
+and variable consumption types. For the latter, long-term demand was 
+projected over a 10-year horizon using a seasonal cyclic approach [51]. 
+This process resulted in 13 representative residential profiles, each 
+consisting of 8760 hourly values, from which a subset aligned with a 
+predefined reference profile was selected for the optimization model. 
+To extend the analysis to a long-term planning horizon, demand pro-
+jections over the next 10 years were incorporated using the results 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 1. Methodology map.
+reported in [52]. This reference presents load-growth trajectories for 
+a rural Spanish community archetype that aligns with the profiles in 
+our dataset and explicitly captures the expected increase in electricity 
+consumption associated with the rising penetration of electric vehicles 
+and heat pumps.
+
+Based on these projections and the optimization model developed 
+in this work, annual estimates of electricity demand were established 
+for the years 2025, 2030, and 2040. To quantify the expected rate 
+of growth between these periods, the Compound Annual Growth Rate 
+(CAGR) was calculated. This approach is widely recognized for its abil-
+ity to consistently characterize long-term growth patterns over defined 
+time intervals, as highlighted in [53]. The CAGR was determined for 
+each interval using its standard mathematical formulation. To enhance 
+the robustness of the analysis, given the 10-year temporal framework 
+adopted in this study, a constant annual growth rate was assumed. This 
+rate corresponds to the arithmetic mean of the CAGR values calculated 
+for each time interval and it provides the most coherent and stable 
+representation of the projected demand evolution. This allows the 
+projection of energy consumption over the next 10 years. In addition, 
+normalized consumption profiles are calculated to compare the relative 
+consumption of each household [54], and a visualization is generated 
+with the results of the total demand projections.
+
+To model and project solar generation, the AutoRegressive Moving 
+Average (ARMA) method is employed. This statistical technique is well-
+suited for time series forecasting, particularly when the data exhibits 
+temporal autocorrelation [55]. The ARMA model combines two com-
+ponents: the autoregressive (AR) part, which captures the influence of 
+past values, and the moving average (MA) part, which accounts for 
+past forecast errors. Historical hourly solar generation data is used 
+to fit the ARMA parameters, ensuring the model captures both the 
+seasonal patterns and random fluctuations present in the data [56]. 
+Once trained, the ARMA model generates synthetic time series that 
+preserve the statistical properties of the original dataset, providing a 
+realistic basis for scenario analysis and simulation within the broader 
+energy system modeling framework. For 10 year projections, the first 
+year of historical data is used as the input to the ARMA model, which 
+is then iteratively simulated 10 times to generate the time series.
+
+3.2. Self consumption model
+
+The estimation of long-term degradation for different BESS tech-
+nologies begins with a simplified optimization model that simulates the 
+energy management of a single user equipped with PV generation and a 
+BESS. The model aims to determine the optimal operation profile (SoC) 
+of the BESS over a one-year horizon at hourly resolution (i.e., 8760 
+time steps), assuming perfect foresight of demand and generation. This 
+operation profile is subsequently used as input to a degradation analysis 
+with the BLAST-Lite model to compute the degradation factor 𝐷𝐵𝑇
+associated with each battery technology, which is then incorporated 
+into the Community PV-BESS Sizing Model. Thus, in this first stage, 
+4 
+the objective function in (1) minimizes the user’s net electricity cost 
+over the horizon, computed as the total cost of energy purchased from 
+the grid 𝑝𝑏𝑔𝑡  at price 𝜆𝑏𝑔𝑡 , minus the revenue from selling surplus energy 
+𝑝𝑠𝑔𝑡  at price 𝜆𝑠𝑔𝑡 . 
+
+( )
+∑
+
+min 𝑧 = 𝜆𝑏𝑔 𝑏
+𝑡 𝑝 𝑔
+
+𝑡 − 𝜆𝑠𝑔 𝑝𝑠𝑔𝑡 𝑡 (1)
+𝑡∈
+
+𝑝𝑣𝑡 − 𝑃𝐿𝑡 + 𝑑𝑠𝑡 − 𝑐ℎ𝑡 + 𝑝𝑏𝑔𝑡 − 𝑝𝑠𝑔𝑡 = 0 ∀𝑡 ∈  (2a)
+𝑝𝑣𝑡 = 𝛤 𝑝𝑣 ⋅ 𝑃𝐺𝑚𝑎𝑥
+
+𝑡 ∀𝑡 ∈  (2b)
+( )
+
+𝑠𝑜𝑐𝑡 = 𝑠𝑜𝑐𝑡−1 + 𝜑𝑐ℎ 𝑐ℎ𝑡 −
+1
+
+𝜑𝑑𝑠 𝑑𝑠𝑡 𝛥𝑡 ∀𝑡 ∈  (2c)
+
+𝑆𝑂𝐶𝑚𝑖𝑛 ⋅ 𝛤 𝑏𝑡 ≤ 𝑠𝑜𝑐𝑡 ≤ 𝑆𝑂𝐶𝑚𝑎𝑥 ⋅ 𝛤 𝑏𝑡 ∀𝑡 ∈  (2d)
+𝑐ℎ𝑡 ≤
+
+1 𝑃𝐵 ⋅𝑤
+𝑆 𝑡 ∀𝑡 ∈  (2e)
+𝐵
+
+𝑑𝑠𝑡 ≤
+1 𝑃𝐵 ⋅ (1 −𝑤
+𝑆 𝑡) ∀𝑡 ∈  (2f)
+𝐵
+
+The power balance constraint (2a) ensures that, at each time step 
+𝑡 ∈  , the user’s electricity demand 𝑃𝐿𝑡 is met by PV generation 𝑝𝑣𝑡, 
+battery discharging 𝑑𝑠𝑡, and grid imports 𝑝𝑏𝑔𝑡 , and is offset by battery 
+charging 𝑐ℎ𝑡 and grid exports 𝑝𝑠𝑔𝑡 . PV generation is modeled in (2b) 
+as a known installed capacity 𝛤 𝑝𝑣 scaled by a normalized irradiance 
+profile 𝑃𝐺𝑚𝑎𝑥
+
+𝑡 . The battery’s SoC dynamics are captured by (2c), which 
+accounts for charging and discharging efficiencies 𝜑𝑐ℎ and 𝜑𝑑𝑠. The 
+SoC is bounded within minimum and maximum thresholds, scaled by 
+the installed battery capacity 𝛤 𝑏𝑡, as specified in (2d). The operational 
+window is restricted to 10%–90% in order to avoid the excessive 
+degradation observed at very low and very high SoC levels [57]. 
+Constraints (2e) and (2f) use the binary variable 𝑤𝑡 to enforce mutually 
+exclusive charging and discharging modes, each limited by the rated 
+battery power 𝑃𝐵.
+
+3.3. MATLAB BLAST-Lite model
+
+Battery degradation is estimated using BLAST-Lite, a simulation 
+tool to evaluate the lifetime performance of lithium-ion batteries in 
+both stationary and mobile applications [47]. The model takes as input 
+the SoC profiles generated by the self-consumption model, along with 
+the corresponding time and temperature data. It incorporates four 
+predefined battery types, which are summarized in Table 1, each with 
+specific chemistry and design characteristics. The cathode materials 
+include lithium iron phosphate (LFP), lithium manganese oxide (LMO), 
+nickel cobalt aluminum oxide (NCA), and nickel manganese cobalt 
+oxide (NMC), while the anode materials are graphite (Gr), graphite 
+with silicon additive (GrSi), and lithium titanate (LTO). An LMO-based 
+SL battery was selected for the degradation study, both because this 
+chemistry is commonly used in SL applications [58] and due to the 
+availability of resources.
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Table 1
+Battery types included in BLAST LITE MATLAB Model. LFP: lithium iron phosphate; LMO: lithium 
+manganese oxide; NMC: nickel manganese cobalt oxide; Gr: graphite; LTO: lithium titanate.
+ Type Cathode Anode Battery life stage Capacity [Ah] Reference 
+ LFP/Gr LFP Graphite First-life 250 [59]  
+ LMO/Gr LMO Graphite Second-life 66 [60]  
+ NMC/Gr NMC Graphite First-life 75 [59]  
+ NMC/LTO NMC LTO First-life 10 [61]  
+The calculation of battery degradation varies slightly between cell 
+types due to differences in chemistry, design, and operational sensi-
+tivity [59]. As a result, models must be specifically tailored to each 
+battery. However, all models rely on a common set of stressors to quan-
+tify degradation, including time, cycling activity, depth of discharge 
+(DOD), charge/discharge rate (C-rate), temperature, SoC, and anode 
+potential. In cases involving dynamic cycling, the Rainflow counting 
+algorithm is applied to distinguish between full and partial cycles and 
+to quantify fatigue-related damage.
+
+Most battery types in BLAST-Lite, such as LFP/Gr or LMO/Gr, 
+follow a semi-empirical degradation model that separates capacity loss 
+into calendar and cycling components. Calendar ageing is modeled 
+using a power-law function of time, with degradation rates defined 
+through simplified Arrhenius and Tafel relationships. These expressions 
+capture the effects of temperature and anode potential (𝑈𝑎). Cycling 
+degradation is modeled as a power-law function of Full Equivalent 
+Cycles (FEC), with rates accelerating under high or low temperatures, 
+increased DOD, and higher C-rates. The equations are presented in 
+the appendix, and all model parameters are obtained by fitting them 
+to experimental datasets specific to each battery type. In the case of 
+SL batteries, LMO/Gr, an additional equation is incorporated into the 
+degradation model to constrain the remaining capacity, accounting for 
+its lower initial SoH.
+
+The model for NMC/Gr follows a similar structure, incorporating 
+exponential dependencies on temperature and 𝑈𝑎 for calendar ageing, 
+as well as non-linear dependencies on DOD, temperature, and C-rate for 
+cycling degradation. Similarly, the degradation model for NMC/GrSi 
+accounts for capacity fade driven by both calendar and cycling mecha-
+nisms. Calendar ageing is described by a combination of exponential 
+and polynomial dependencies on normalized temperature, 𝑈𝑎, and 
+SOC, while cycle ageing is modeled using exponential terms related 
+to discharge C-rate and temperature. In both models, the degradation 
+contributions are aggregated using power-law functions of time and 
+equivalent EFCs. All relevant parameters and detailed equations are 
+provided in the appendix.
+
+In contrast, the NMC/LTO model introduces both irreversible capac-
+ity loss and reversible capacity gain during calendar ageing. These two 
+components are modeled separately as functions of temperature and 
+SoC using exponential terms. Cycling degradation is treated indepen-
+dently, depending on DOD, C-rate, and temperature. All three contri-
+butions, calendar loss, calendar gain, and cycling loss, are accumulated 
+over time or EFCs using power-law relationships. The corresponding 
+equations are listed in the appendix.
+
+4. Community PV-BESS sizing model
+
+This section presents the MISOCP model, where the main notation 
+used in this paper is summarized in Table 2 for quick reference, while 
+other symbols are defined as needed throughout the text.
+
+The proposed optimization model considers a low-voltage radial DN 
+representing an EC, which is modeled as a directed graph  = (,), 
+where  denotes the set of buses and  the set of distribution lines. A 
+subset of buses  ⊆  corresponds to active community members, some 
+of whom are currently equipped with individual PV systems and/or 
+BESS. These users already engage in P2P energy trading, aiming to 
+increase local energy autonomy and reduce reliance on the upstream 
+grid. To further support daily operations and enhance the community’s 
+5 
+resilience, the EC seeks to invest in a shared PV-BESS system to be 
+installed at the point of common coupling 𝑆 ∈ , which connects 
+the community to the upstream DN. The objective of the model is to 
+determine the optimal capacity of the community PV-BESS system to be 
+deployed, such that it supports the operation of the EC over a 10-year 
+planning horizon  , considering hourly resolution 𝑡 ∈   for each day of 
+the year. The optimization model is structured as an MISOCP formula-
+tion that integrates discrete investment and operational variables with 
+convex conic constraints derived from the second-order relaxation of 
+AC power flow equations. The objective function minimizes the total 
+system cost, decomposed into investment and operational terms, as 
+follows: 
+
+∑ ∑ ∑ ∑ ∑ ∑
+
+min 𝑧 = 𝐼𝑝𝑣𝛾𝑝𝑣 𝑡 𝑡 𝑔
+𝑖 + 𝐼𝑏𝑓 𝛾𝑏𝑖,𝑓 + (𝜆𝑏𝑔 𝑔 𝑠𝑔
+
+𝑡,𝑟𝑝𝜅
+𝑏
+𝑖,𝑡,𝑟 − 𝜆𝑡,𝑟𝑝𝜅
+
+𝑠
+𝑖,𝑡,𝑟)
+
+𝑖∈𝛺𝑆 𝑖∈𝛺𝑆 𝑓∈ 𝑖∈𝛺𝑆 𝑡∈ 𝑟∈
+
+(3)
+The objective function in (3) is structured into two main compo-
+
+nents: investment-related terms on the left-hand side and operational 
+terms on the right-hand side. The first component aggregates the in-
+vestment cost associated with the installation of PV and BESS systems. 
+The parameter 𝐼𝑝𝑣 denotes the marginal investment cost per unit of 
+PV capacity (e/kW), while the decision variable 𝛾𝑝𝑣𝑖  represents the 
+installed PV capacity at node 𝑖. Similarly, for each BESS technology 
+𝑓 ∈  , the parameter 𝐼𝑏𝑡𝑓  represents the technology-dependent marginal 
+cost (e/kWh), and the decision variable 𝛾𝑏𝑡𝑖,𝑓  corresponds to the installed 
+BESS capacity. The summation over 𝑖 ∈ 𝛺𝑆 reflects the assumption that 
+the shared PV-BESS system is installed at the substation node connect-
+ing the EC to the upstream DN. The second component represents the 
+operational cost associated with hourly energy exchanges between the 
+community and the main grid. At each time step 𝑡 ∈   and year 𝑟 ∈  , 
+electricity can be purchased from the grid at price parameter 𝜆𝑏𝑔𝑡,𝑟 or sold 
+at price parameter 𝜆𝑠𝑔𝑡,𝑟. The corresponding decision variables 𝑝𝜅𝑏𝑔
+
+𝑖,𝑡,𝑟 and 
+𝑝𝜅𝑠𝑔
+
+𝑖,𝑡,𝑟 represent, respectively, the power imported from and exported to 
+the grid.
+
+4.1. Network constraints
+
+The operation of the EC must comply with the physical constraints 
+of the DN, including nodal power balance, voltage levels, and thermal 
+limits on distribution lines. To preserve tractability in the optimization 
+model, the network is represented using a second-order cone relaxation 
+of the branch flow equations. The resulting constraints are detailed 
+below. 
+
+𝛥𝑝
+⎧ 𝑖,𝑡,𝑟 if 𝑖 ∈ 𝛺𝐴
+
+∑ ∑
+
+𝑝𝑖,𝑗 𝑗,𝑖 ⎪
+
+𝑡,𝑟 − (𝑝𝑗,𝑖𝑡,𝑟 − 𝑅𝑗,𝑖𝓁𝑡,𝑟 ) = 𝛥𝜅𝑝
+⎨ 𝑖,𝑡,𝑟 if 𝑖 ∈ 𝛺𝑆 ∀𝑖 ∈ 𝛺,∀𝑡 ∈  ,∀𝑟 ∈ 
+
+(𝑖,𝑗)∈ (𝑗,𝑖)∈ ⎪
+
+⎩0 𝑂𝑡ℎ𝑒𝑟𝑤𝑖𝑠𝑒
+
+(4a)
+
+∑ ∑
+
+𝑞𝑖,𝑗𝑡,𝑟 − (𝑞𝑗,𝑖 𝑖 1
+𝑡,𝑟 −𝑋 𝑗,
+
+𝑗,𝑖𝓁𝑡,𝑟 ) = 𝑞𝑔𝑖,𝑡,𝑟 − 𝑄𝐿 ∀𝑖 ∈ 𝛺,∀𝑡 ∈  ,∀𝑟 ∈ 
+(𝑖,𝑗)∈ (𝑗,𝑖)∈ 𝑆𝐵 𝑖,𝑡,𝑟
+
+(4b)
+𝑣𝑗,𝑡,𝑟 = 𝑣 ,𝑗 ,𝑗
+
+𝑖,𝑡,𝑟 − 2(𝑅𝑖,𝑗𝑝
+𝑖
+𝑡,𝑟 +𝑋𝑖,𝑗𝑞
+
+𝑖
+𝑡,𝑟 ) + (𝑅2
+
+𝑖,𝑗 +𝑋2
+𝑖,𝑗 )𝓁
+
+𝑖,𝑗
+𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈ ,∀(𝑖, 𝑗) ∈ 
+(4c)
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Table 2
+Nomenclature.
+ Nomenclature
+ Sets 𝛾𝑝𝑣𝑖 Installed PV capacity at node 𝑖 [kW].  
+ 𝑖 ∈ Ω Index of buses. 𝛾𝑏𝑡𝑖,𝑓 Installed BESS capacity of type 𝑓 at user 𝑖  
+
+[kWh].
+ (𝑖, 𝑗) ∈  Set of distribution lines. 𝑝𝑣𝑖,𝑡,𝑟 PV generation at node 𝑖, time 𝑡, year 𝑟 [kW].  
+ 𝑖 ∈ Ω𝐴 Subset of buses with active users, such that 𝑝𝑏𝑔𝑖,𝑡,𝑟 Power bought from grid [kW].  
+
+Ω𝐴 ⊆ Ω
+ 𝑖 ∈ Ω𝑆 Subset of buses with substation connection, 𝑝𝑏𝑚𝑖,𝑡,𝑟 Power bought from the local market [kW].  
+
+such that Ω𝑆 ⊆ Ω
+ 𝑡 ∈  Set of time steps (e.g., hours). 𝑝𝑠𝑔𝑖,𝑡,𝑟 Power sold to grid [kW].  
+ 𝑟 ∈  Set of years in the planning horizon. 𝑝𝑠𝑚𝑖,𝑡,𝑟 Power sold to the local market [kW].  
+ 𝑓 ∈  Set of battery technologies. 𝑐ℎ𝑖,𝑡,𝑟 Charging power [kW].  
+ Parameters 𝑑𝑠𝑖,𝑡,𝑟 Discharging power [kW].  
+ 𝑅𝑖,𝑗 Resistance of line (𝑖, 𝑗) [Ω]. 𝑠𝑜𝑐𝑖,𝑡,𝑟 State of charge of BESS at node 𝑖 [].  
+ 𝑋𝑖,𝑗 Reactance of line (𝑖, 𝑗) [Ω]. 𝑤𝑖,𝑡,𝑟 Binary variable: 1 if charging at 𝑖 at 𝑡, 𝑟; 0  
+
+otherwise.
+ 𝑃𝐵 Maximum power (kW) of user BESS. 𝑝𝑣𝑐𝑚𝑖,𝑡,𝑟 Shared PV power used at 𝑖 [kW].  
+ 𝑃𝐵𝑐𝑚 Maximum power (kW) of community BESS. 𝑐ℎ𝑐𝑚
+
+𝑖,𝑡,𝑟,𝑓 Charging of community BESS.  
+ 𝑃𝑆𝐺max
+
+𝑖 Max active power sold to the grid. 𝑑𝑠𝑐𝑚𝑖,𝑡,𝑟,𝑓 Discharging of community BESS.  
+ 𝑃𝐵𝐺max
+
+𝑖 Max active power bought from the grid. 𝑠𝑜𝑐𝑐𝑚𝑖,𝑡,𝑟,𝑓 SoC of community BESS tech 𝑓 at 𝑖 at 𝑡, 𝑟.  
+ 𝑃𝐿𝑖,𝑡,𝑟 Active power Load of user 𝑖 at time 𝑡, year 𝑟 𝑦𝑖,𝑡,𝑟 Binary: 1 if selling at time 𝑡, 𝑟, 0 otherwise.  
+
+[kW].
+ 𝑄𝐿𝑖,𝑡,𝑟 Reactive power Load of user 𝑖 at time 𝑡, year 𝑟 Δ𝑝𝑖,𝑡,𝑟 Net power injection at 𝑖 and 𝑡, 𝑟 [kW].  
+
+[kvar].
+ 𝐼𝑝𝑣 Marginal cost of PV-shared system [e/kW]. Δ𝑝+𝑖,𝑡,𝑟 Surplus components of net injection.  
+ 𝐼𝑏
+
+𝑓 Marginal cost of BESS-shared technology 𝑓 Δ𝑝−𝑖,𝑡,𝑟 Deficit components of net injection.  
+[e/kWh].
+
+ 𝑆𝑂𝐶min Min and max SoC bounds [%]. 𝑝𝜅𝑠𝑔
+𝑖,𝑡,𝑟 Energy exported to neighbor 𝑗.  
+
+ 𝑆𝑂𝐶max Max and max SoC bounds [%]. 𝑝𝜅𝑏𝑔
+𝑖,𝑡,𝑟 Energy imported from neighbor 𝑗.  
+
+ 𝐷𝐵𝑇𝑟,𝑓 Degradation factor for BESS tech 𝑓 in year 𝑟. 𝑣𝑖,𝑡,𝑟 Squared voltage magnitude at node 𝑖 at 𝑡, 𝑟  
+[p.u.2].
+
+ 𝜂 Charge/discharge efficiencies. 𝓁𝑖,𝑗
+𝑡,𝑟 Squared current magnitude on line (𝑖, 𝑗) at 𝑡, 𝑟.  
+
+ 𝐵𝑇𝑖 Binary, 1 if user 𝑖 has BESS. 𝑝𝑖,𝑗𝑡,𝑟 Active power flow on line (𝑖, 𝑗).  
+ SB Base power used for per-unit normalization. 𝑞𝑖,𝑗𝑡,𝑟 Reactive power flow on line (𝑖, 𝑗).  
+ Variables 𝑞𝑔𝑖,𝑡,𝑟 Reactive power injection at node 𝑖.  
+(𝑝𝑖,𝑗𝑡,𝑟 )
+2 + (𝑞𝑖,𝑗𝑡,𝑟 )
+
+2 ≤ 𝓁𝑖,𝑗
+𝑡,𝑟𝑣𝑖,𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈ ,∀(𝑖, 𝑗) ∈ 
+
+(4d)
+(𝑉 𝑚𝑖𝑛
+
+𝑖 )2 ≤ 𝑣𝑖,𝑡,𝑟 ≤ (𝑉 𝑚𝑎𝑥
+𝑖 )2 ∀𝑖 ∈ 𝛺,∀𝑡 ∈  ,∀𝑟 ∈ 
+
+(4e)
+𝑝𝜅𝑏𝑔
+
+𝑖,𝑡,𝑟 ≤
+1 𝑃𝐵𝐺𝑚𝑎𝑥
+𝑆 𝑖 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ 
+𝐵
+
+(4f)
+𝑝𝜅𝑠𝑔
+
+𝑖,𝑡,𝑟 ≤
+1 𝑃𝑆𝐺𝑚𝑎𝑥
+𝑆 𝑖 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ 
+𝐵
+
+(4g)
+− 1 𝑃𝑆𝐺𝑚𝑎𝑥
+
+𝑆 𝑖 ≤ 𝑞𝑔𝑖,𝑡,𝑟 ≤
+1 𝑃𝑆𝐺𝑚𝑎𝑥
+
+𝐵 𝑆 𝑖 ∀𝑖 ∈ 𝛺,∀𝑡 ∈  ,∀𝑟 ∈ 
+𝐵
+
+(4h)
+𝛥𝑝𝑖,𝑡,𝑟 = 𝑝𝑣𝑖,𝑡,𝑟 −
+
+1 𝑃𝐿
+𝑆 𝑖,𝑡,𝑟 + 𝑑𝑠𝑖,𝑡,𝑟 − 𝑐ℎ𝑖,𝑡,𝑟 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈ 
+𝐵
+
+(4i)
+( )
+
+∑
+
+𝛥𝜅𝑝𝑖,𝑡,𝑟 = 𝑝𝜅𝑏𝑔
+𝑖,𝑡,𝑟 − 𝑝𝜅𝑠𝑔
+
+𝑖,𝑡,𝑟 + 𝑝𝑣𝑐𝑚𝑖,𝑡,𝑟 + 𝑑𝑠𝑐𝑚 𝑐𝑚
+𝑖,𝑡,𝑟,𝑓 − 𝑐ℎ𝑖,𝑡,𝑟,𝑓 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ 
+
+𝑓∈
+
+(4j)
+Eqs. (4a) and (4b) enforce the active and reactive power balance at 
+
+each node 𝑖 ∈ 𝛺 for every time step 𝑡 ∈   and year 𝑟 ∈  . The left-hand 
+side represents the net incoming active or reactive power, including 
+losses through the terms 𝑅𝑗,𝑖𝓁
+
+𝑗,𝑖
+𝑡,𝑟  and 𝑋𝑗,𝑖𝓁
+
+𝑗,𝑖
+𝑡,𝑟 , respectively, while 𝓁𝑖,𝑗
+
+𝑡,𝑟
+represents the squared magnitude of the current flowing through line 
+(𝑖, 𝑗). The right-hand side captures the net injection or withdrawal at 
+each node. Thus, if the node belongs to an active user (𝑖 ∈ 𝛺𝐴), it 
+corresponds to the local net injection 𝛥𝑝𝑖,𝑡,𝑟; if the node is the point of 
+common coupling with the upstream grid (𝑖 ∈ 𝛺𝑆 ), it corresponds to 
+𝛥𝜅𝑝𝑖,𝑡,𝑟; and otherwise, the net injection is zero. For reactive power, it 
+is assumed that each node may inject or absorb an amount 𝑞𝑔𝑖,𝑡,𝑟 in 
+response to the reactive power requirement 𝑄𝐿𝑖,𝑡,𝑟. Eq. (4c) models the 
+voltage drop along each distribution line (𝑖, 𝑗) ∈ , accounting for the 
+active and reactive power flows 𝑝𝑖,𝑗 and 𝑞𝑖,𝑗 , the line resistance 𝑅 , and 
+𝑡,𝑟 𝑡,𝑟 𝑖,𝑗
+
+6 
+reactance 𝑋𝑖,𝑗 . The voltage variable 𝑣𝑖,𝑡,𝑟 denotes the squared voltage 
+magnitude at the sending bus 𝑖, and the expression reflects the impact 
+of power flows and current-induced losses on the receiving-end voltage 
+𝑣𝑗,𝑡,𝑟.
+
+The second-order cone constraint (4d) ensures that the apparent 
+power flowing through each line remains within the thermal limit, by 
+enforcing that the squared magnitude of power flow does not exceed 
+the product of current magnitude and sending-end voltage, where 
+voltage magnitudes are bounded in Eq. (4e). The maximum amount 
+of active power that can be exchanged with the grid is limited by the 
+rated capacity of the connection point in  (4f)–(4g), while  (4h) bounds 
+the reactive power. Eq. (4i) defines the net power injection 𝛥𝑝𝑖,𝑡,𝑟 for 
+each active user node 𝑖 ∈ 𝛺𝐴 as the difference between PV generation 
+𝑝𝑣𝑖,𝑡,𝑟, scaled load 𝑃𝐿𝑖,𝑡,𝑟, and the charge/discharge operations of local 
+storage systems. Specifically, 𝑑𝑠𝑖,𝑡,𝑟 and 𝑐ℎ𝑖,𝑡,𝑟 represent the discharging 
+and charging power at node 𝑖, respectively, during time 𝑡 and year 𝑟. 
+Eq. (4j) characterizes the net injection at the point of common coupling 
+with the grid. This term 𝛥𝜅𝑝𝑖,𝑡,𝑟 includes the balance between power 
+purchased and sold to the grid (𝑝𝜅𝑏𝑔
+
+𝑖,𝑡,𝑟, 𝑝𝜅
+𝑠𝑔
+𝑖,𝑡,𝑟), the generation of the 
+
+shared PV system 𝑝𝑣𝑐𝑚𝑖,𝑡,𝑟, and the aggregated charging/discharging oper-
+ations of the community BESS. The latter is captured by the difference 
+between 𝑑𝑠𝑐𝑚𝑖,𝑡,𝑟,𝑓  and 𝑐ℎ𝑐𝑚𝑖,𝑡,𝑟,𝑓  for each technology 𝑓 ∈  .
+
+4.2. Energy trading constraints
+
+This set of constraints defines the internal market structure of the 
+EC and governs the logic of P2P energy exchanges, interactions with 
+the external grid, and the utilization of community assets. 
+𝛥𝑝𝑖,𝑡,𝑟 = 𝛥𝑝+𝑖,𝑡,𝑟 − 𝛥𝑝−𝑖,𝑡,𝑟 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈  (5a)
+𝛥𝑝+𝑖,𝑡,𝑟 = 𝑝𝑠𝑚𝑖,𝑡,𝑟 + 𝑝𝑠𝑔𝑖,𝑡,𝑟 + 𝑐ℎ𝑐𝑚′
+
+𝑖,𝑡,𝑟 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈  (5b)
+𝛥𝑝− = 𝑝𝑏𝑚 + 𝑝𝑏𝑔 + 𝑑𝑠𝑐𝑚′ + 𝑝𝑣𝑐𝑚′ ∀𝑖 ∈ 𝛺 ,∀𝑡 ∈  ,∀𝑟 ∈  (5c)
+𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 𝐴
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+𝛥𝑝+𝑖,𝑡,𝑟 ≤ 𝑀(𝑦𝑖,𝑡,𝑟) ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈  (5d)
+𝛥𝑝−𝑖,𝑡,𝑟 ≤ 𝑀(1 − 𝑦𝑖,𝑡,𝑟) ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈  (5e)
+∑ ∑
+
+𝑝𝑠𝑚 = 𝑝𝑏𝑚𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈  (5f)
+𝑖∈𝛺𝐴 𝑖∈𝛺𝐴
+∑ 𝑠𝑔 ∑ ∑ ∑
+
+𝑝𝑖,𝑡,𝑟 + 𝑑𝑠𝑐𝑚′
+
+𝑖,𝑡,𝑟 + 𝑝𝑣𝑐𝑚′ ≥ 𝑝𝜅𝑠𝑔
+𝑖,𝑡,𝑟 𝑖,𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈  (5g)
+
+𝑖∈𝛺𝐴 𝑖∈𝛺𝑆 𝑖∈𝛺𝑆 𝑖∈𝛺𝑆
+∑
+
+𝑝𝑏𝑔
+∑ ∑
+
+𝑖,𝑡,𝑟 + 𝑐ℎ𝑐𝑚′
+
+𝑖,𝑡,𝑟 ≤ 𝑝𝜅𝑏𝑔
+𝑖,𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈  (5h)
+
+𝑖∈𝛺𝐴 𝑖∈𝛺𝑆 𝑖∈𝛺𝑆
+
+Eq. (5a) decomposes the net injection 𝛥𝑝𝑖,𝑡,𝑟 of each user 𝑖 ∈ 𝛺𝐴 into 
+a positive component 𝛥𝑝+𝑖,𝑡,𝑟 (energy surplus) and a negative compo-
+nent 𝛥𝑝−𝑖,𝑡,𝑟 (energy deficit). These components are further detailed in 
+Eqs. (5b)–(5c), where surplus may be it can be sold to a neighbor via 
+the internal market (𝑝𝑠𝑚𝑖,𝑡,𝑟), exported to the grid (𝑝
+
+𝑠𝑔
+𝑖,𝑡,𝑟), or allocated to 
+
+the community BESS (𝑐ℎ𝑐𝑚′
+𝑖,𝑡,𝑟). Conversely, a deficit can be met by buying 
+
+from a neighbor (𝑝𝑏𝑚𝑖,𝑡,𝑟), purchasing from the grid (𝑝𝑏𝑔𝑖,𝑡,𝑟), discharging 
+energy from the community BESS (𝑑𝑠𝑐𝑚′
+
+𝑖,𝑡,𝑟), or using part of the shared PV 
+generation (𝑝𝑣𝑐𝑚′
+
+𝑖,𝑡,𝑟). To prevent simultaneous buying and selling by the 
+same user, a binary variable 𝑦𝑖,𝑡,𝑟 is introduced. Eqs. (5d)–(5e) enforce 
+mutual exclusivity by activating only one side of the transaction per 
+time step, where 𝑀 is a sufficiently large number.
+
+The internal market is cleared locally at each time 𝑡 and year 𝑟
+by Eq. (5f), which guarantees that the total amount of energy sold 
+among peers (𝑝𝑠𝑚𝑖,𝑡,𝑟) matches the total amount purchased (𝑝𝑏𝑚𝑖,𝑡,𝑟). External 
+grid interactions are bounded by Eqs. (5g)–(5h). The total amount of 
+energy sold to the grid must not exceed the aggregated surplus available 
+at the interconnection point, including contributions from individual 
+sales, community battery discharges, and shared PV generation. Sim-
+ilarly, the energy purchased from the grid must at least cover the 
+aggregate demand that cannot be satisfied internally or via the commu-
+nity battery. These constraints are expressed as inequalities to account 
+for minor losses in the distribution lines, which prevent a perfect 
+balance between imported/exported energy and internal transactions.
+4.3. User assets
+
+This set of constraints models the operation of individually owned 
+assets, including BESS and PV systems. 
+𝑠𝑜𝑐𝑖,𝑡,𝑟 = 𝑠𝑜𝑐𝑖,𝑡−1,𝑟 + 𝜑𝑐ℎ𝑐ℎ 1
+
+𝑖,𝑡,𝑟 − 𝑑𝑠  ,∀𝑟 ∈ 
+𝜑𝑑𝑠 𝑖,𝑡,𝑟 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈
+
+(6a)
+𝑆𝑂𝐶𝑚𝑖𝑛 1 𝛤 𝑏𝑡 𝑠𝑜𝑐 ≤ 𝑆𝑂𝐶𝑚𝑎𝑥 1 𝛤 𝑏𝑡
+
+𝑆𝐵 𝑖 ≤ 𝑖,𝑡,𝑟 𝑖 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈ 
+𝑆𝐵
+
+(6b)
+𝑐ℎ𝑖,𝑡,𝑟 ≤
+
+1 𝑃𝐵(𝑤 ,∀𝑟 ∈ 
+𝑆𝐵 𝑖,𝑡,𝑟) ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈ 
+
+(6c)
+𝑑𝑠𝑖,𝑡,𝑟 ≤
+
+1 𝑃𝐵(1 −𝑤 − 1 𝑃𝐵(1 − 𝐵𝑇 𝛺
+𝑆𝐵 𝑖,𝑡,𝑟) 𝑆𝐵 𝑖) ∀𝑖 ∈ 𝐴,∀𝑡 ∈  ,∀𝑟 ∈ 
+
+(6d)
+𝑤𝑖,𝑡,𝑟 ≤ 𝐵𝑇𝑖 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀𝑟 ∈ 
+
+(6e)
+𝑝𝑣 𝑎𝑥 1
+
+𝑖,𝑡,𝑟 ≤ 𝑃𝐺𝑚
+𝑡,𝑟 𝛤 𝑝𝑣 𝑟 ∈ 
+
+𝑆𝐵 𝑖 ∀𝑖 ∈ 𝛺𝐴,∀𝑡 ∈  ,∀
+(6f)
+
+Eq. (6a) defines the SoC dynamics of the user’s battery, considering 
+charging 𝑐ℎ𝑖,𝑡,𝑟 and discharging 𝑑𝑠𝑖,𝑡,𝑟 operations, scaled by their respec-
+tive efficiencies 𝜑𝑐ℎ and 𝜑𝑑𝑠. The stored energy is bounded by Eq. (6b), 
+according to the installed capacity 𝛤 𝑏𝑡
+
+𝑖  and the state-of-charge limits 
+𝑆𝑂𝐶𝑚𝑖𝑛 and 𝑆𝑂𝐶𝑚𝑎𝑥. Charging and discharging power are limited by 
+𝑃𝐵, the battery’s maximum rate, and controlled via the binary variable 
+𝑤𝑖,𝑡,𝑟, which prevents simultaneous actions, as implemented in Eqs. (6c) 
+and (6d). Eq. (6e) deactivates the battery if it is not installed (𝐵𝑇𝑖 =
+0). Finally, Eq. (6f) bounds PV generation based on the normalized 
+availability profile 𝑃𝐺𝑚𝑎𝑥, scaled by the installed capacity 𝛤 𝑝𝑣.
+𝑡,𝑟 𝑖
+
+7 
+4.4. Community assets
+The operation of community PV and BESS assets follows the same 
+
+logic as for individual devices: 
+𝑠𝑜𝑐𝑐𝑚 1
+
+𝑖,𝑡,𝑟,𝑓 = 𝑠𝑜𝑐𝑐𝑚𝑖,𝑡−1,𝑟,𝑓 + 𝜑𝑐ℎ𝑐ℎ𝑐𝑚
+𝑖,𝑡,𝑟,𝑓 − 𝑑𝑠𝑐𝑚 𝑖 ∈ 𝛺 𝑓 ∈ 
+
+𝜑𝑑𝑠 𝑖,𝑡,𝑟,𝑓 ∀ 𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ ,∀
+
+(7a)
+𝑆𝑂𝐶𝑚𝑖𝑛𝛾𝑏𝑡𝑖,𝑓𝐷𝐵𝑇𝑟,𝑓 ≤ 𝑠𝑜𝑐𝑐𝑚𝑖,𝑡,𝑟,𝑓 ≤ 𝑆𝑂𝐶𝑚𝑎𝑥𝛾𝑏𝑡𝑖,𝑓𝐷𝐵𝑇𝑟,𝑓 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ ,∀𝑓 ∈ 
+
+(7b)
+𝑐ℎ𝑐𝑚
+
+𝑖,𝑡,𝑟,𝑓 ≤ 1 𝑃𝐵𝑐𝑚(𝑤𝑐𝑚 ∀𝑓 ∈ 
+𝑆𝐵 𝑖,𝑡,𝑟,𝑓 ) ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈ ,
+
+(7c)
+𝑑𝑠𝑐𝑚 1 𝑚
+
+𝑖,𝑡,𝑟,𝑓 ≤ 𝑃𝐵𝑐 (1 −𝑤𝑐𝑚 ,∀𝑟 ∈ ,∀𝑓 ∈ 
+𝑆𝐵 𝑖,𝑡,𝑟,𝑓 ) −
+
+1 𝑃𝐵𝑐𝑚(1 − 𝜈𝑐𝑚
+𝑆𝐵 𝑓 ) ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈ 
+
+(7d)
+𝑤𝑐𝑚
+
+𝑖,𝑡,𝑟,𝑓 ≤ 𝜈𝑐𝑚𝑓 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑟 ∈ ,∀𝑓 ∈  (7e)
+𝛾𝑏𝑡 𝑚 1
+𝑖,𝑓 ≤ 𝜈𝑐𝑓 𝛤𝑚𝑎𝑥 ∀𝑖 ∈ 𝛺 ∀𝑓 ∈  (7f)
+
+𝑆𝐵 𝑆 ,∀𝑟 ∈ ,
+∑
+
+𝜈𝑐𝑚𝑓 ≤ 1 (7g)
+𝑓∈
+
+𝑝𝑣𝑐𝑚𝑖,𝑡,𝑟 ≤ 𝑃𝐺𝑚𝑎𝑥
+𝑡,𝑟 𝛾𝑝𝑣𝑖 ∀𝑖 ∈ 𝛺𝑆 ,∀𝑡 ∈  ,∀𝑟 ∈  (7h)
+
+𝛾𝑝𝑣 1 𝑚𝑎𝑥
+𝑖 ≤ 𝛤 ∀𝑖 ∈ 𝛺 (7i)
+
+𝑆𝐵 𝑆
+∑ ∑ ∑
+
+𝑑𝑠𝑐𝑚′ 𝑚
+𝑖,𝑡,𝑟 = 𝑑𝑠𝑐𝑖,𝑡,𝑟,𝑓 ∀𝑡 ∈  ,∀𝑟 ∈  (7j)
+
+𝑖∈𝛺𝐵 𝑖∈𝛺𝑆 𝑓∈
+∑ ∑ ∑
+
+𝑐ℎ𝑐𝑚′ 𝑐𝑚
+𝑖,𝑡,𝑟 = 𝑐ℎ𝑖,𝑡,𝑟,𝑓 ∀𝑡 ∈  ,∀𝑟 ∈  (7k)
+
+𝑖∈𝛺𝐵 𝑖∈𝛺𝑆 𝑓∈
+∑ ∑
+
+𝑝𝑣𝑐𝑚′
+
+𝑖,𝑡,𝑟 = 𝑝𝑣𝑐𝑚𝑖,𝑡,𝑟 ∀𝑡 ∈  ,∀𝑟 ∈  (7l)
+𝑖∈𝛺𝐵 𝑖∈𝛺𝑆
+
+The subscript ‘‘cm’’ denotes variables associated with community-level 
+assets, and the main differences lie in the modeling of degradation 
+and technology selection. In particular, the SoC bounds in Eq. (7b) 
+incorporate a degradation factor 𝐷𝐵𝑇𝑟,𝑓 , which reduces the usable 
+capacity 𝛾𝑏𝑡𝑖,𝑓  over time. The community can install at most one type 
+of BESS technology, enforced by the binary variable 𝜈𝑐𝑚𝑓  in Eq. (7g). 
+Eq. (7f) further bounds the installed capacity per user and technology, 
+while Equation (7e) restricts operation to selected technologies only. 
+Similar capacity limits apply to PV systems, as defined in Eqs. (7h) and 
+(7i). Finally, Eqs. (7j)–(7l) ensure consistency between the total energy 
+exchanged with the community devices and the sum of individual 
+contributions from users, linking centralized operation with user-level 
+accounting.
+
+It should be noted that the proposed optimization model is designed 
+to identify the optimal shared PV-BESS capacity and the most suitable 
+BESS technology under given operational and market conditions. The 
+resulting investment decisions rely on techno-economic criteria consid-
+ering capital and operational costs, rather than on a comprehensive 
+financial analysis. A thorough economic evaluation, encompassing a 
+cash flow assessment, asset depreciation, financing structure, income 
+and savings estimation, and tax considerations, lies beyond the scope 
+of this work and may be addressed in future research. Thus, the optimal 
+capacity and technology determined by the optimization model would 
+serve as inputs for such an economic evaluation, representing the 
+investment required at year zero.
+5. Case study and computational results
+
+This section presents a comprehensive sensitivity analysis aimed at 
+systematically evaluating the impact of variations in key parameters 
+on system performance and battery installation decisions. The analysis 
+begins with a description of the case study, followed by a detailed ex-
+amination of the different scenarios considered. Likewise, the proposed 
+optimization framework tested in this section was coded in Python 
+within the Pyomo environment and executed using the Gurobi 12.0 
+solver. All simulations were performed on a workstation powered by 
+an Intel Core i9-14900HX processor (2.20 GHz) and 64 GB of RAM.
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 2. Simplified 206-node low-voltage test feeder [63].
+5.1. Case study
+
+The parameters used in this case study are based on the reduced 
+model of the IEEE European Low Voltage Test Feeder proposed in [62], 
+which achieves identical results with up to 80% less computation time 
+by simplifying the original network. Building on this approach, the 
+present study adopts a further simplification strategy similar to that 
+in [63], where additional non-essential junction nodes are removed. As 
+a result, the DN is reduced from 906 to 206 nodes as shown in Fig. 2, 
+further improving computational efficiency.
+
+Table 3 summarizes the key parameters of the case study. The 
+network comprises 56 buses and 205 branches, serving 54 consumption 
+points. Among these, 31 are prosumers equipped with PV systems, and 
+16 of them also have BESS installed, while the remaining 23 correspond 
+to traditional consumers without any generation or storage assets. The 
+EC exhibits a total peak active demand of 0.374 MW and a peak 
+PV generation of 0.195 MW, resulting in a PV penetration level of 
+approximately 52%. The total installed BESS capacity is 0.088 MWh, 
+which corresponds to roughly 15% of the community’s peak hourly 
+demand.
+
+This study considers representative rural households located in 
+Spain. Figs. 3 and 4 present the daily electricity demand and PV 
+generation profiles used in the analysis, based on typical values for 
+this region and household type. Specifically, Fig. 3 shows the daily 
+electricity demand profiles. The model assumes an expected demand 
+profile for each year (red line), which is computed as the average of 365 
+individual daily profiles generated for that year. These annual profiles 
+are projected based on the historical data and methodology described 
+in Section 3, and then replicated to obtain expected demand profiles 
+for the remaining nine years in the planning horizon. The shaded 
+region represents the variability across days, while the blue and green 
+dashed lines correspond to the 10th and 90th percentiles, respectively. 
+Similarly, Fig. 4 presents the expected PV generation profiles for each 
+8 
+Table 3
+Key parameters of the case study.
+ Parameter Value Unit  
+ Energy Community (EC)
+ Peak active power load (EC) 0.374 MW  
+ Peak reactive power load (EC) 0.0748 MVar 
+ Peak PV generation (EC) 0.195 MW  
+ Total installed BESS capacity (EC) 0.088 MWh 
+ Network Topology
+ Number of branches 205 –  
+ Number of buses 56 –  
+ Number of consumption points 54 –  
+ Per-User Values
+ Peak active power load 0.0068 MW  
+ Peak reactive power load 0.00136 MVar 
+ Peak PV generation 0.008 MW  
+ Peak BESS capacity 0.0055 MWh 
+
+year (colored lines), together with boxplots that capture the hourly 
+variability across a 10-year horizon. Each boxplot aggregates 3650 
+values per hour (365 days × 10 years), showing the distribution of PV 
+generation over time. This representation captures both the temporal 
+and inter-annual variability of solar production. The colored curves 
+reflect the expected generation profile for each year, which is used as 
+the deterministic input for the optimization model.
+
+Regarding the profile for electricity grid prices, the electricity mar-
+ket is characterized by significant fluctuations, and this is consistent 
+with the findings of [64], which also highlight an anticipated upward 
+trend in electricity prices. However, the data shown in Figs. 5 and 6 
+reveal a decreasing trend in hourly market prices over the last three 
+years (2022–2024). In particular, the average buying price dropped 
+from e287.3/MWh in 2022 to e127.8/MWh in 2024, while the selling 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 3. Daily demand profiles.
+Fig. 4. Daily generation profile.
+price fell from e167.0/MWh to e61.8/MWh over the same period. 
+This reduction also led to a gap margin between buying and selling 
+prices, thereby decreasing the potential arbitrage opportunities in the 
+energy market. These average values are explicitly indicated in the 
+legends of each curve, providing an overview of the annual variations. 
+Given lower electricity prices, especially buying prices, the base case 
+price scenario for this study adopts a more favorable economic context. 
+Specifically, it assumes a buying price profile closer to the 2022 and 
+adjusted with a 2% annual increase to reflect projected trends. For the 
+selling price, the 2024 profile is retained as a conservative estimate. 
+This approach is justified by the need to maintain a sufficient spread be-
+tween purchase and sale prices to incentivize the deployment of BESS, 
+which, while increasingly competitive, are still sensitive to the price 
+signals of the electricity market. A more detailed economic analysis of 
+this impact is presented in a later section.
+
+Following the methodology described in Section 3, the first step 
+to estimate the depreciation of different BESS technologies consists of 
+obtaining the SoC profile of a typical user. This profile is derived from 
+the user’s deterministic optimization model and is shown in Fig. 7.
+
+As seen in Fig. 7, the red line represents the average hourly SoC 
+over 365 days, while the orange line shows the median value, and the 
+boxplots depict the variability due to seasonal demand and generation 
+patterns. A clear daily cycle emerges: the battery charges during day-
+light hours, corresponding to PV generation, and discharges during the 
+evening when electricity prices are highest. Additionally, the battery 
+also tends to charge slightly during the early morning hours when 
+9 
+electricity prices are typically low. The average SoC remains higher 
+than the median during the night and morning hours, indicating that 
+on many days the battery is only partially charged, while on fewer 
+days it reaches higher SoC levels, hence the skew. Despite the observed 
+variability, the operational pattern is consistent. Two distinct behaviors 
+stand out: (i) the battery tends to be fully discharged around 8–10 h, 
+and (ii) it reaches nearly full capacity around 17–18 h. It is important 
+to note that, since the optimization model does not enforce a fixed 
+terminal SoC at the end of each 24-hour period, the profile naturally 
+evolves from day to day. However, across the simulation horizon of 
+one year (8760 h), the battery tends to stabilize within a 20%–30% 
+SoC range at the end of each day.
+
+Using this SoC profile as input, a degradation simulation was per-
+formed in MATLAB for different BESS technologies, and the resulting 
+evolution of the SoH over a 10-year horizon is shown in Fig. 8. 
+The results are consistent with expectations: the SL battery (LFP/Gr) 
+exhibits the fastest degradation, with its SoH dropping significantly 
+over the 10 years. Once the battery reaches a SoH of 40%, it is 
+regarded as depleted and consequently unsuitable for further use [65]. 
+The LMO/Gr and NMC/Gr technologies display similar degradation 
+rates, remaining above 80% SoH. In contrast, the NMC/LTO battery 
+demonstrates minimal degradation, maintaining a nearly constant SoH 
+close to 100%, highlighting its superior cycling stability.
+
+Regarding BESS price assumptions, the values adopted in this study 
+are based on prevailing commercial prices from current market sources. 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 5. Hourly average buying prices for the last three years.
+Fig. 6. Hourly average selling prices for the last three years.
+Fig. 7. SOC of the battery.
+These correspond to Case C1 in Table 4, and represent the initial bench-
+mark for all comparisons. In addition, three alternative price scenarios 
+(C2 to C4) are introduced to reflect expected cost reductions in the 
+coming years, in line with projections reported in [66] for the year 
+2030. Specifically, C2 considers a moderate reduction of approximately 
+30% from current prices. C3 assumes a 40% reduction, representing a 
+more optimistic scenario, and C4 corresponds directly to the projected 
+2030 values cited in [66]. For consistency, all reductions are applied 
+proportionally to each battery chemistry. The base chemistry selected 
+10 
+for these projections is LFP/Gr, which is the most widely used in prac-
+tice. Note that the LMO/Gr battery represents an SL battery technology, 
+and its pricing reflects its lower cost and remaining capacity. In our 
+analysis, SL batteries are assumed to begin operational at 70% SoH, a 
+value commonly cited as the minimum for their reuse [67]. All first-life 
+batteries (LFP/Gr, NMC/Gr, NMC/LTO) start at 100% SoH.
+
+Further details on nodal PV and BESS penetration levels, individual 
+demand and generation profiles, and degradation parameters are avail-
+able in the public dataset associated with this work [68]. The dataset 
+provides complete input data for reproducing the simulations, including 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 8. Degradation profiles.
+Table 4
+BESS price scenarios (e/kWh) used for the sensitivity analysis. LFP: lithium iron phosphate; LMO: lithium 
+manganese oxide; NMC: nickel manganese cobalt oxide; Gr: graphite; LTO: lithium titanate; FL: first-life; SL: 
+second-life.
+ Case LFP/Gr (FL) LMO/Gr (SL) NMC/Gr (FL) NMC/LTO (FL) 
+ C1: Current commercial prices 685 277 987 3736  
+ C2: Projected –30% 480 190 690 2610  
+ C3: Projected –40% 410 160 590 2240  
+ C4: Projected 2030 [66] 150 60 215 810  
+bus-level characteristics, line parameters, and temporal profiles used in 
+the optimization model.
+
+5.2. Global results
+
+Considering the structure of the studied EC, where P2P energy 
+trading is already in place and the penetration of PV systems and BESS 
+reaches 52% and 15% of the community’s peak electricity demand, 
+respectively. The goal of the optimization model is to assess whether 
+it is economically viable to complement these existing individual as-
+sets with a shared, community-scale PV-BESS installation that further 
+enhances collective autonomy and operational flexibility. The first rele-
+vant insight from the base case analysis is that, under current or recent 
+electricity market conditions (i.e., years 2023 and 2024), and assuming 
+commercial BESS prices (scenario C1) for both FL and SL technologies, 
+the installation of community PV systems is consistently justified. In 
+contrast, the deployment of community BESS remains economically 
+infeasible. This outcome is primarily due to the high capital cost of 
+storage, which still represents a significant barrier, especially under 
+moderate or declining electricity price levels. Notably, even SL batter-
+ies, despite their reduced investment cost, are not economically viable 
+under current conditions. Consequently, BESS installation only becomes 
+viable when either BESS prices are sufficiently low or electricity price 
+spreads are high enough to enable profitable arbitrage. It is important 
+to note that, in this study, the number of prosumers, the demand 
+profile, and the network restrictions were assumed to remain constant.
+
+To better understand the conditions under which BESS investment 
+becomes feasible, a sensitivity analysis was conducted focusing on 
+the interaction between electricity market prices and SL battery costs. 
+Fig. 9 and Fig. 10 present boxplots of hourly electricity purchase and 
+selling prices in Spain for the years 2022–2024. These plots capture 
+the temporal variability of electricity prices, while the green triangle 
+in each box denotes the corresponding average value. In addition to 
+the historical data, a fourth boxplot, labeled ’Threshold’, is included. 
+This boxplot represents the electricity price levels, both for purchase 
+and selling, at which the optimization model starts installing shared SL 
+BESS in the community. Notably, this threshold is consistent with the 
+11 
+C4 cost scenario, corresponding to an SL BESS price of approximately 
+60 e/kWh. To facilitate interpretation, a second vertical axis is added 
+showing the SL BESS cost under scenarios C2 and C4. The dashed 
+lines on the electricity-price axis indicate the corresponding threshold 
+electricity prices implied by each battery cost. This visual alignment 
+enables the direct identification of electricity price conditions necessary 
+for investment viability at different SL BESS cost levels. For purchase 
+prices, Fig. 9 shows that when SL BESS costs remain close to 190 
+e/kWh (scenario C2), none of the historical electricity price distribu-
+tions are high enough to trigger installation. However, as battery costs 
+decrease, the required purchase price threshold also decreases, making 
+installation feasible under the lower price conditions observed in 2024.
+
+A similar pattern emerges for selling prices, although the under-
+lying mechanism is slightly different from the purchase-price case. 
+Selling prices provide an additional source of revenue by allowing the 
+community to inject surplus energy into the grid, which can partially 
+offset the investment cost of the battery. However, when SL BESS costs 
+remain close to 190 e/kWh (scenario C2), the selling-price threshold 
+required for the model to begin installing storage is relatively high. 
+As shown in Fig. 10, only the upper range of the historical selling-
+price distributions observed in 2022 and 2023 reaches that threshold. 
+In other words, under high battery-cost conditions, BESS investment 
+becomes viable only in years with unusually favorable remuneration for 
+surplus injections. In contrast, when SL BESS costs decrease, the selling-
+price threshold drops significantly. This means that even moderate 
+selling prices – such as those observed in 2024 – become sufficient to 
+justify installation.
+
+5.3. Investment sensitivity to SL BESS cost and degradation
+
+While the global results highlighted electricity prices and battery 
+investment costs as the main drivers of BESS deployment, degradation 
+also plays a critical role in the installation decision. To isolate its 
+effect, a detailed analysis was conducted focusing on a representative 
+scenario using SL BESS at a cost of e190/kWh (scenario C2), under 
+the base-case (BC) electricity price profile. In this configuration, when 
+degradation is not considered, the model consistently selects to install 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 9. Electricity purchase price (2022–2024).
+Fig. 10. Electricity selling price (2022–2024).
+the battery. However, once degradation is explicitly included using 
+the current degradation profile of SL technologies, the installation 
+becomes economically unviable, despite maintaining the same cost and 
+market conditions. This contrast reveals that degradation alone can 
+revert the investment decision. To explore whether improvements in SL 
+battery performance could reverse this outcome, a series of simulations 
+were performed by gradually enhancing the degradation profile, which 
+represents how the battery capacity declines over time, effectively 
+modeling higher SoH levels. The results, shown in Fig. 11, indicate 
+that if the initial SoH of the SL BESS exceeds approximately 0.78, 
+and the degradation profile is improved by 20% compared to the one 
+reported in Fig. 8, the model begins to favor battery installation. In-
+stalled capacity increases sharply as SoH improves, eventually reaching 
+0.8 MWh. Therefore, while cost remains the dominant factor, degrada-
+tion performance is a decisive constraint that can balance feasibility 
+and infeasibility.
+
+Following this, a complementary sensitivity analysis was carried out 
+to examine the impact of SL BESS cost on the installation decision. In 
+this case, battery prices were systematically varied while keeping the 
+electricity price profile and the degradation behavior fixed, assuming 
+a 20% improvement over current SL BESS performance, which corre-
+sponds to an initial SoH close to 78%. The results, shown in Fig. 12, 
+show a sharp response of the model to price variations. For SL BESS 
+prices below approximately 158 e/kWh, the system always installs the 
+maximum storage capacity. As the price increases beyond that point, 
+the installed capacity begins to decline progressively, reaching zero 
+when the cost exceeds 170 e/kWh. The dashed vertical lines in the 
+figure correspond to the SL BESS prices defined in scenarios C3 (green) 
+and C2 (red), as reported in Table 4. These findings suggest that, even 
+under improved degradation conditions, cost remains a critical factor 
+in determining the feasibility of battery deployment.
+12 
+5.4. Electricity market prices fluctuations
+Fig. 13 illustrates the threshold electricity prices required for the 
+
+installation of an SL BESS to become economically viable, based on 
+hourly average prices. The upper row corresponds to an SL BESS 
+cost of 190 e/kWh (scenario C2), whereas the lower row reflects a 
+substantially reduced cost of 60 e/kWh (scenario C4). The left column 
+presents the buy-price thresholds, while the right column displays 
+the corresponding sell-price thresholds. In each subplot, the dashed 
+curves represent the minimum (for buying) or maximum (for selling) 
+electricity prices required for the SL BESS investment to be profitable. 
+The solid lines indicate the reference price trajectories: the base-case 
+buy price (blue), the base-case sell price (yellow), and, only in the buy-
+price panels, the 2024 buy price (green), included to highlight the gap 
+between the base-case assumptions and current market conditions.
+
+As observed in the top row (C2), electricity prices would need 
+to exceed those of the 2022 base-case, already considered high, to 
+make the SL BESS investment profitable. This indicates that, at current 
+commercial prices, and under assumptions regarding initial SoH 70% 
+and degradation behavior, SL batteries remain economically unviable. 
+In contrast, when SL BESS prices are reduced to 60 e/kWh (bottom 
+row), the viability region expands considerably. Even under relatively 
+low electricity market prices (e.g., similar to or below those of 2024), 
+community-scale battery investments become attractive. This analysis 
+reinforces that cost reductions in SL battery technologies are essen-
+tial to unlocking their widespread deployment in community energy 
+systems.
+
+5.5. Penetration of DER and demand
+This section investigates how the level of DER penetration and the 
+
+total community demand influence the sizing of a shared SL BESS. Bat-
+tery investment costs correspond to C3, which assumes a commercial 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+
+Fig. 11. Installed SL BESS capacity as a function of State of Health (SoH).
+
+Fig. 12. Installed SL BESS capacity as a function of SL BESS price.
+
+Fig. 13. Comparison of buy and sell threshold electricity prices for C2 (top row) and C4 (bottom row).
+
+13 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 14. Installed BESS Capacity vs DER penetration.
+Fig. 15. Installed BESS Capacity vs Community demand.
+price of 190 e/kWh for SL technologies. To analyze DER penetration, 
+a continuous scaling factor is applied to adjust the installed capacity 
+of user-owned PV and BESS. As shown in Fig. 14, DER penetration is 
+defined as the ratio between the installed capacity of individual DERs 
+(PV and BESS) and the peak electricity demand of the community. A 
+value of 0 indicates no user owns DERs, while 0.5 corresponds to the 
+maximum penetration level considered in this study. The results show 
+a clear trend: as DER penetration increases, the installed capacity of 
+the shared community BESS also increases. Notably, the installation 
+becomes economically viable even at moderate DER penetration levels 
+of BESS. This suggests that the progressive deployment of distributed 
+resources, both PV and BESS, could create operational conditions that 
+enhance the value of a centralized, shared battery system.
+
+Regarding demand, Fig. 15 illustrates the sensitivity of installed 
+BESS capacity to changes in total community demand. The analysis 
+shows that as demand increases, the incentive to install a community-
+scale battery also grows. The relationship is steeper at lower demand 
+levels, indicating that initial increases in demand have a significant 
+impact on battery sizing. However, this effect gradually plateaus, in-
+dicating that once demand surpasses a certain threshold, additional 
+increments have a diminishing impact on the optimal battery capacity. 
+This behavior suggests that community-scale storage becomes progres-
+sively more justifiable as demand scales up, but eventually stabilizes 
+once basic flexibility and arbitrage needs are met.
+
+5.6. Market price fluctuations peak/off-peak hours
+
+This section analyzes how the installed capacity and selected tech-
+nology of the community battery change as the electricity price profile 
+becomes more pronounced, i.e., as peak prices rise and off-peak prices 
+fall. To capture the effect on P2P trading, we also compute the Energy 
+14 
+Traded-to-Demand Ratio (ETR), which is defined as the share of elec-
+tricity exchanged among users relative to the total community demand. 
+Across all cases, this ratio remains relatively low, averaging around 
+3.5%, indicating that only a small portion of the total consumption is 
+met through local energy exchanges. Thus, as the price profile becomes 
+more accentuated, particularly beyond an increment/decrement factor 
+of 0.3, the model shifts from selecting SL BESS to FL BESS technologies, 
+as shown in Fig. 16. This transition suggests that under steeper price 
+differentials, battery degradation becomes more influential than invest-
+ment cost in the decision-making process. Consequently, the ETR drops 
+from 3.5% to 2.5%, reflecting a reduced reliance on P2P trading due 
+to the model’s preference for more efficient but costlier storage tech-
+nologies. While this may appear counterintuitive, it reflects a shift in 
+operational strategy rather than a reduction in system performance. In 
+essence, the battery is used more selectively, prioritizing higher-value 
+exchanges.
+
+As previously explained, SL BESS prices from C3 in Table 4 led 
+to the installation of the full storage capacity. For this reason, the 
+prices from C2 are used in another analysis to capture the sensitivity 
+of investment decisions, which are represented in Fig. 17. The results 
+indicate that investing in battery storage becomes progressively more 
+attractive as the spread between peak and off-peak electricity prices 
+increases. Additionally, the system allocates capacity to storage once 
+the price differential exceeds a certain threshold. This behavior aligns 
+with economic logic, as larger spreads offer more profitable opportuni-
+ties for charge and discharge cycles. However, despite the increase in 
+installed capacity, the ETR remained relatively stable across scenarios. 
+Therefore, while higher price volatility encourages battery investment, 
+it does not necessarily lead to significantly greater energy trading.
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Fig. 16. Installed BESS capacity and technology with modifications in peak/off-peak prices. ETR: Energy Traded-to-Demand Ratio.
+Fig. 17. Installed BESS capacity with modifications in peak/off-peak prices.
+5.7. Energy trading and user BESS technology
+
+To assess how the characteristics of user-owned batteries influence 
+the deployment of a community BESS and the extent of P2P energy 
+exchanges, several representative scenarios were simulated. In each 
+case, the ETR was computed as a proxy for the intensity of local energy 
+trading. The results are summarized in Table 5. A key insight is that 
+the type and quality of the user-owned BESS significantly affect the 
+trading dynamics. In Scenario 1, where users have FL batteries and 
+the community installs an SL BESS, the ETR reaches 3.08%, indicating 
+a moderate level of exchange. However, in Scenario 2, where users 
+rely on SL batteries with higher degradation, the ETR drops sharply to 
+0.52%, even though a community BESS is still installed. This suggests 
+that the degradation and reduced performance of individual batteries 
+limit their contribution to local trading, thus reducing the availability 
+of flexible resources. In contrast, Scenario 3 shows that when battery 
+prices are significantly reduced (C4), the FL technologies become more 
+competitive for community uses than the SL batteries. This scenario 
+achieves a higher ETR of 3.57%, emphasizing that improved efficiency 
+and longevity of FL batteries enhance the potential for energy sharing. 
+Furthermore, when the degradation profile of the SL BESS is artifi-
+cially improved (Scenario 4), the ETR increases to 3.79%, reinforcing 
+that battery health and lifespan are central to sustaining local energy 
+transactions.
+
+Additionally, and based on the results presented in Table 5, the 
+main conclusion is that SL batteries currently offer a competitive al-
+ternative to FL batteries, primarily due to their economic advantage, 
+even assuming a 40% price reduction. However, there are important 
+limitations. In Scenario 3, where battery prices decrease significantly, 
+investment cost is no longer a major constraint, and other factors such 
+as efficiency become more decisive. In these cases, FL batteries are 
+15 
+preferred. Moreover, in Fig. 16, where the gap between peak and off-
+peak prices widened, battery degradation becomes more critical. Under 
+such conditions, the model tends to favor FL batteries due to their 
+superior performance and longer lifespan.
+
+5.8. Computational performance analysis
+
+This subsection analyzes the computational effort required to solve 
+the optimization problem under different configurations. Table 6 sum-
+marizes the number of constraints, variables, and the average computa-
+tion time as the number of battery technologies available for selection 
+increases (from one to four). Each row corresponds to a scenario in 
+which the model must choose among 1, 2, 3, or 4 battery technologies, 
+respectively. The total number of variables and constraints exceeds 
+500,000 in all cases, showing the complexity of the problem, particu-
+larly due to its hourly resolution, nonlinear degradation modeling, and 
+the inclusion of investment and operational decisions.
+
+Interestingly, the increase in the number of available batteries does 
+not lead to a proportional rise in the number of constraints or variables. 
+The increments are relatively marginal, indicating that the problem’s 
+structure remains relatively stable despite the added decision layers. 
+In terms of computational time, the results show no clear monotonic 
+trend. For instance, when the model considers up to three battery 
+options, the average solution time peaks at 94.64 s, suggesting that 
+the solver faces greater difficulty identifying the optimal trade-off 
+among these three configurations. However, when a fourth battery is 
+introduced, the computation time decreases to 69.43 s. This nonlin-
+earity suggests that solution time is influenced more by the problem 
+landscape and the feasibility of configurations than by problem size 
+alone. Some options may be quickly discarded due to high infeasibility, 
+while others require deeper exploration. Thus, performance is shaped 
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+Table 5
+Summary of configurations and resulting ETR in different scenarios. ETR: energy trading ratio; LFP: lithium iron phosphate; Gr: 
+graphite; LTO: lithium titanate; FL: first-life; SL: second-life; Sc.: scenario.
+ Sc. BESS price Grid energy price Community BESS User BESS BESS Tech. ETR (%) 
+ 1 C3 Base case Estimated degradation FL SL 3.08  
+ 2 C3 Base case Estimated degradation SL SL 0.52  
+ 3 C4 Base case Estimated degradation FL FL (LFP/Gr) 3.57  
+ 4 C3 Base case Improved degradation FL SL 3.79  
+Table 6
+Average computation time as the number of batteries increases.
+ N◦ BESS Constraints Variables Average time (s) 
+ 1 508,563 528,723 57.69  
+ 2 510,004 529,685 72.27  
+ 3 511,445 530,647 94.64  
+ 4 512,886 531,609 69.43  
+
+less by the number of decision variables and more by the complexity 
+and distinguishability of the feasible solutions.
+
+6. Conclusions
+
+This study proposed a MINLP model to determine the optimal sizing 
+of shared PV and BESS installations in an EC where users already own 
+individual PV and/or BESS systems and engage in P2P energy trading. 
+The model accounts for multiple battery technologies, including FL 
+and SL options, explicitly modeling degradation effects over time. The 
+model was tested on a low-voltage DN with 206 buses.
+
+The results show that, under current conditions, namely 2023–2024 
+electricity prices (100-200 e/MWh) and commercial SL BESS costs 
+(approximately 190 e/kWh), the installation of community PV systems 
+is economically viable, whereas community-scale BESS deployment 
+remains unprofitable, even for SL batteries, due to elevated capital 
+costs and degradation effects. Specifically, SL batteries become eco-
+nomically viable only when the initial SoH exceeds approximately 
+78% and their price drops below 160 e/kWh. Under such conditions, 
+the model installs the full capacity, whereas higher costs or lower 
+SoH levels result in zero investment. Sensitivity analyses reveal that 
+the most influential factors on investment decisions are: (1) battery 
+technology cost, with a 15%–20% reduction shifting SL BESS from 
+non-viable to viable; (2) electricity purchase prices, where increases 
+above 250 e/MWh enhance BESS profitability; and (3) the degradation 
+profile, where a 20% improvement in performance significantly extends 
+battery lifespan and economic attractiveness. Secondary parameters, 
+such as DER penetration and community peak demand, alter outcomes 
+by less than 5% relative to baseline scenarios.
+
+The analysis further highlights that SL batteries may become a 
+competitive alternative to FL technologies if their degradation perfor-
+mance improves and/or their investment cost decreases substantially. 
+Moreover, scenarios with high electricity price volatility, characterized 
+by wider peak/off-peak gaps, favor the adoption of FL batteries, as 
+degradation becomes more detrimental to profitability than capital 
+expenditure. Although the present model operates under deterministic 
+assumptions, several parameters were varied through sensitivity analy-
+ses to assess their influence on investment outcomes. Building on this, 
+the formulation can be extended to explicitly incorporate uncertainty 
+in demand, PV generation, and electricity prices. This can be achieved 
+through stochastic or robust optimization approaches, enabling the 
+evaluation of worst-case scenarios and improving the model’s capability 
+to support investment planning under conditions of greater uncertainty 
+and variability.
+16 
+CRediT authorship contribution statement
+
+Júlia Monar Pigem: Writing – review & editing, Writing – origi-
+nal draft, Visualization, Software, Methodology, Investigation, Formal 
+analysis, Data curation. Fernando García-Muñoz: Writing – review & 
+editing, Visualization, Validation, Supervision, Project administration, 
+Methodology, Formal analysis, Conceptualization. Natalia Jorquera 
+Bravo: Writing – review & editing, Validation, Supervision, Method-
+ology, Formal analysis, Conceptualization. Ricardo Aránguiz: Visual-
+ization, Software, Data curation. Vicente Castro Burgos: Validation, 
+Supervision, Software, Resources, Data curation.
+Declaration of competing interest
+
+The authors declare that they have no known competing finan-
+cial interests or personal relationships that could have appeared to 
+influence the work reported in this paper.
+Acknowledgment
+
+This work has been supported by ANID FONDECYT Iniciación 
+11240745 and Fondequip Mediano EQM200234.
+Appendix 7
+
+Degradation model for LFP/Gr and LMO/Gr
+
+( ) ( )
+
+𝑝2 𝑝 ⋅ 𝑈
+𝑘cal = |𝑝1| ⋅ exp ⋅ exp 3 𝑎 (8)
+
+𝑇degK 𝑇degK
+[ ( ) ( )]
+
+𝑝
+𝑝 7 −𝑝
+
+𝑘cyc = (𝑝4 + 𝑝5 ⋅ DOD + 6 ⋅ 𝐶rate) ⋅ exp + exp 8 (9)
+𝑇degK 𝑇degK
+
+(
+
+𝛥𝑞t = scale ⋅ 𝑞t,prev + 𝑘cal ⋅ (𝛥𝑡)𝑝
+)
+
+cal (10)
+( )
+
+𝛥𝑞EFC = scale ⋅ 𝑞EFC,prev + 𝑘cyc ⋅ (𝛥EFC)𝑝cyc (11)
+
+𝑞 = 1 − 𝑞t − 𝑞EFC (12)
+
+Degradation model for NMC/Gr
+
+( ( ))
+
+𝑘cal = 𝑝1 ⋅ exp 𝑝2 ⋅ 𝑇
+3 1
+degK ⋅ (13)
+
+𝑈1∕3
+𝑎
+
+( )
+
+|
+
+√
+
+| 𝐶2 |
+
+( )
+√
+
+𝑘 |
+
+cyc = 𝑝 + 𝑝 3
+| 3 4 ⋅ 𝑇degK ⋅ DOD + 𝑝5 ⋅ exp
+
+rate √
+
++ 𝑝
+√
+
+𝑇 6 ⋅ exp DOD ⋅ 𝑇 2 |
+
+|
+
+degK ⋅ 𝐶rate |
+
+| degK |
+
+| |
+
+(14)
+
+(
+
+(𝛥𝑡 )𝑝 )
+
+𝛥𝑞𝑡 = scale ⋅ 𝑞Loss𝑡,prev +
+da s cal
+
+𝑘cal y
+⋅ (15)
+1000
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+( ( ) )
+
+v + 𝑘cyc 𝛥EFC 𝑝cyc
+𝛥𝑞EFC = scale ⋅ 𝑞LossEFC,pre ⋅ (16)
+
+104
+
+𝑞 = 1 − 𝑞Loss𝑡 − 𝑞LossEFC (17)
+
+Degradation model for NMC/LTO
+
+( ) ( )
+
+𝛼
+𝛼 = 𝛼 1 𝛼 ⋅ SOC
+
+0 ⋅ exp ⋅ exp 2 (18)
+𝑇degK 𝑇degK
+
+( ) ( )
+
+𝛽
+𝛽 = 𝛽0 ⋅ exp
+
+1 𝛽 ⋅ O
+p 2 S C
+
+⋅ ex (19)
+𝑇degK 𝑇degK
+
+( )
+
+( ) 𝛾
+𝛾 = 𝛾0 + 𝛾1 ⋅ 𝐶rate + 𝛾2 ⋅ DOD3 ⋅ exp 3 (20)
+
+𝑇degK
+
+( )
+
+𝛥𝑞gain,𝑡 = scale ⋅ 𝑞Gain𝑡 ,prev + 𝛼 ⋅ 𝛥𝑡𝛼𝑝 (21)
+( )
+
+𝛥𝑞loss,𝑡 = scale ⋅ 𝑞Loss +
+𝑡 ,prev 𝛽 ⋅ 𝛥𝑡𝛽𝑝 (22)
+
+( )
+
+𝛥𝑞EFC = scale ⋅ 𝑞LossEFC ,prev + 𝛾 ⋅ 𝛥EFC𝛾𝑝 (23)
+
+𝑞 = 1 − 𝑞Loss𝑡 + 𝑞Gain𝑡 − 𝑞LossEFC (24)
+Table 7
+Model parameters and stressors used in degradation calculation.
+ Symbol Description  
+ 𝑇degK Absolute temperature in Kelvin  
+ 𝑈𝑎 Anode potential versus lithium  
+ DOD Depth-of-discharge  
+ 𝐶rate Average C-rate (charge/discharge current normalized by capacity) 
+ 𝑝1 to 𝑝3 Empirical coefficients for calendar ageing  
+ 𝑝4 to 𝑝8 Empirical coefficients for cycle ageing  
+ 𝑝cal Power-law exponent for calendar degradation accumulation  
+ 𝑝cyc Power-law exponent for cycle degradation accumulation  
+ Δ𝑡 Elapsed time in days  
+ ΔEFC Elapsed equivalent full cycles  
+ scale Degradation scaling factor  
+Table 8
+Parameter definitions for the NMC/Gr degradation model [59].
+ Parameter Description  
+ 𝑇degK Temperature in Kelvin  
+ 𝑈𝑎 Anode potential vs. Li/Li+  
+ DOD Depth of discharge  
+ 𝐶rate Average C-rate of  
+
+charge/discharge
+ 𝑝1 Pre-exponential factor for  
+
+calendar ageing
+ 𝑝2 Temperature and anode potential  
+
+dependency for calendar ageing
+ 𝑝cal Power-law exponent for calendar  
+
+ageing time dependence
+ 𝑝3 Constant term in cycle ageing  
+
+degradation rate
+ 𝑝4 Temperature and DOD coupling  
+
+term
+ 𝑝5 Exponential dependence on C-rate 
+
+and inverse square root of 
+temperature
+
+ 𝑝6 Exponential term coupling DOD,  
+temperature, and C-rate
+
+ 𝑝cyc Power-law exponent for cycle  
+ageing
+17 
+Table 9
+Parameter definitions for the NMC-LTO 10Ah degradation model.
+ Parameter Description  
+ 𝑇degK Temperature in Kelvin  
+ SOC Average state of charge  
+ DOD Depth of discharge  
+ 𝐶rate C-rate during cycling  
+ 𝛼0, 𝛼1, 𝛼2 Coefficients for calendar ageing gain  
+ 𝛼𝑝 Power-law exponent for calendar ageing gain  
+ 𝛽0, 𝛽1, 𝛽2 Coefficients for calendar ageing loss  
+ 𝛽𝑝 Power-law exponent for calendar ageing loss  
+ 𝛾0, 𝛾1, 𝛾2, 𝛾3 Coefficients for cycle ageing degradation  
+ 𝛾𝑝 Power-law exponent for cycle ageing degradation 
+
+Data availability
+
+Data will be made available on request.
+
+References
+
+[1] A. Martínez, P. Arévalo, Distributed peer-to-peer optimization based on robust 
+reinforcement learning with demand response: A review, Computers 14 (2) 
+(2025) 65, http://dx.doi.org/10.3390/computers14020065.
+
+[2] M.H.J. Bollen, F. Hassan, Integration of distributed generation in the power 
+system, in: IEEE Press Series on Power and Energy Systems, John Wiley & 
+Sons / IEEE Press, Hoboken, NJ, 2011, p. 528, Chapters 1–13, URL https:
+//ieeexplore.ieee.org/servlet/opac?bknumber=6047601.
+
+[3] L.A. Soriano, M. Avila, P. Ponce, J.d. Rubio, A. Molina, Peer-to-peer energy 
+trades based on multi-objective optimization, Int. J. Electr. Power Energy Syst. 
+131 (2021) 107017, http://dx.doi.org/10.1016/j.ijepes.2021.107017, URL https:
+//www.sciencedirect.com/science/article/pii/S014206152100257X.
+
+[4] N. Wang, W. Xu, Xu, Peer-to-peer energy trading among microgrids with 
+multidimensional willingness, Energies 11 (12) (2018) 3312, http://dx.doi.org/
+10.3390/en11123312.
+
+[5] F. Barata, J. Sousa, C. Viveiros, S. Perinhas, Techno-economic assessment of 
+battery energy storage systems in renewable energy communities, Int. J. Sustain. 
+Energy Plan. Manag. 44 (2025) 59–72, http://dx.doi.org/10.54337/ijsepm.9290, 
+URL https://journals.aau.dk/index.php/sepm/article/view/9290.
+
+[6] J.A. Tejero-Gómez, A.A. Bayod-Rujula, Sizing of battery energy storage systems 
+for firming PV power including aging analysis, Energies 17 (6) (2024) 1485, 
+http://dx.doi.org/10.3390/en17061485.
+
+[7] F. Feijoo, A. Kundu, F. Flores, Y. Matamala, Photovoltaic sizing assessment 
+for microgrid communities under load shifting constraints and endogenous 
+electricity prices: A stackelberg approach, Energy 307 (2024) 132758, http://
+dx.doi.org/10.1016/j.energy.2024.132758, URL https://www.sciencedirect.com/
+science/article/pii/S0360544224025325.
+
+[8] W.S.W. Abdullah, M. Osman, M.Z.A.A. Kadir, R. Verayiah, N.F.A. Aziz, M.A. 
+Rasheed, Techno-economics analysis of battery energy storage system (BESS) 
+design for virtual power plant (VPP)–A case study in Malaysia, J. Energy 
+Storage 38 (2021) 102568, http://dx.doi.org/10.1016/j.est.2021.102568, URL 
+https://www.sciencedirect.com/science/article/pii/S2352152X21003133.
+
+[9] J. Hossain, N. Saeed, R. Manojkumar, M. Marzband, K. Sedraoui, Y. Al-
+Turki, Optimal peak-shaving for dynamic demand response in smart Malaysian 
+commercial buildings utilizing an efficient PV-BES system, Sustain. Cities Soc. 
+101 (2024) 105107, http://dx.doi.org/10.1016/j.scs.2023.105107, URL https:
+//www.sciencedirect.com/science/article/pii/S2210670723007163.
+
+[10] R. Manojkumar, C. Kumar, S. Ganguly, Optimal demand response in a residential 
+PV storage system using energy pricing limits, IEEE Trans. Ind. Informatics 18 
+(4) (2022) 2497–2507, http://dx.doi.org/10.1109/TII.2021.3103014.
+
+[11] V.V. Goulart, J.A.R. Neto, R. Rüther, Method of techno-economic analysis of 
+battery energy storage system (BESS) function-stacking for medium voltage 
+connected consumers, J. Energy Storage 83 (2024) 110754, http://dx.doi.org/
+10.1016/j.est.2024.110754, URL https://www.sciencedirect.com/science/article/
+pii/S2352152X24003384.
+
+[12] Z. Csereklyei, S. Dwyer, A. Kallies, D. Economou, The role of community-
+scale batteries in the energy transition: Case studies from Australia’s national 
+electricity market, J. Energy Storage 93 (2024) 112277, http://dx.doi.org/
+10.1016/j.est.2024.112277, URL https://www.sciencedirect.com/science/article/
+pii/S2352152X24018632.
+
+[13] A. Zurita, C. Mata-Torres, C. Valenzuela, C. Felbol, J.M. Cardemil, A.M. Guzmán, 
+R.A. Escobar, Techno-economic evaluation of a hybrid CSP + PV plant integrated 
+with thermal energy storage and a large-scale battery energy storage system for 
+base generation, Sol. Energy 173 (2018) 1262–1277, http://dx.doi.org/10.1016/
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+j.solener.2018.08.061, URL https://www.sciencedirect.com/science/article/abs/
+pii/S0038092X18308314?via%3Dihub.
+
+[14] A. Demirci, Optimal sizing and techno-economic evaluation of microgrids based 
+on 100% renewable energy powered by second-life battery, IEEE Access 11 
+(2023) 122358–122377, http://dx.doi.org/10.1109/ACCESS.2023.3320430, URL 
+https://ieeexplore.ieee.org/document/10285096.
+
+[15] W. Gao, Z. Cao, N.V. Kurdkandi, Y. Fu, C. Mi, Evaluation of the second-
+life potential of the first-generation Nissan Leaf battery packs in energy 
+storage systems, ETransportation 20 (2024) 100313, http://dx.doi.org/10.
+1016/j.etran.2024.100313, URL https://www.sciencedirect.com/science/article/
+pii/S2590116824000031.
+
+[16] H. Iqbal, S. Sarwar, D. Kirli, J.K.H. Shek, A.E. Kiprakis, A survey of second-life 
+batteries based on techno-economic perspective and applications-based analysis, 
+Carbon Neutrality 2 (8) (2023) http://dx.doi.org/10.1007/s43979-023-00049-5, 
+URL https://link.springer.com/article/10.1007/s43979-023-00049-5.
+
+[17] S.A. Mansouri, A. Ahmarinejad, M.S. Javadi, A.E. Nezhad, M. Shafie-Khah, J.P. 
+Catalão, Chapter 9 - demand response role for enhancing the flexibility of local 
+energy systems, in: G. Graditi, M. Di Somma (Eds.), Distributed Energy Resources 
+in Local Integrated Energy Systems, Elsevier, 2021, pp. 279–313, http://dx.
+doi.org/10.1016/B978-0-12-823899-8.00011-X, URL https://www.sciencedirect.
+com/science/article/pii/B978012823899800011X.
+
+[18] H. Zhou, J. Bi, Y. Lv, W. Zhao, H. Zhang, T. Du, Techno-economic analy-
+sis of solar photovoltaic systems integrated with battery energy storage for 
+university campuses, J. Energy Storage 129 (2025) 117360, http://dx.doi.org/
+10.1016/j.est.2025.117360, URL https://www.sciencedirect.com/science/article/
+pii/S2352152X25020730.
+
+[19] O. Alıç, A holistic techno-economic feasibility analysis of residential renew-
+able energy systems: An insight into turkish case, J. Energy Storage 94 
+(2024) 112433, http://dx.doi.org/10.1016/j.est.2024.112433, URL https://www.
+sciencedirect.com/science/article/pii/S2352152X2402019X.
+
+[20] Aripriharta, S. Adiguna, A.N. Afandi, M.C. Bagaskoro, Techno-economic modeling 
+and analysis of a PV EV charged with battery energy storage system (BESS) 
+on kalimantan island, Glob. Energy Interconnect. 8 (2) (2025) 225–239, http:
+//dx.doi.org/10.1016/j.gloei.2025.01.003, URL https://www.sciencedirect.com/
+science/article/pii/S2096511725000258.
+
+[21] J. Linssen, P. Stenzel, J. Fleer, Techno-economic analysis of photovoltaic battery 
+systems and the influence of different consumer load profiles, Appl. Energy 185 
+(Part 2) (2017) 2019–2025, http://dx.doi.org/10.1016/j.apenergy.2015.11.088, 
+URL https://www.sciencedirect.com/science/article/pii/S030626191501538X.
+
+[22] C.-T. Tsai, E.M. Ocampo, T.M. Beza, C.-C. Kuo, Techno-economic and sizing 
+analysis of battery energy storage system for behind-the-meter application, 
+IEEE Access 8 (2020) 203734–203746, http://dx.doi.org/10.1109/ACCESS.2020.
+3036660.
+
+[23] D.M. Mahmud, S.M.M. Ahmed, S. Hasan, M. Zeyad, Grid-connected microgrid: 
+design and feasibility analysis for a local community in Bangladesh, Clean 
+Energy 6 (3) (2022) 447–459, http://dx.doi.org/10.1093/ce/zkac022, URL https:
+//academic.oup.com/ce/article/6/3/447/6606004.
+
+[24] B.V. Venkatasubramanian, V. Jately, B. Azzopardi, Techno-economic framework 
+for optimal capacity expansion of active microgrid in the mediterranean: A case 
+study of MCAST, IEEE Access 9 (2021) 120451–120463, http://dx.doi.org/10.
+1109/ACCESS.2021.3108959.
+
+[25] L. Bin, M. Shahzad, H. Javed, H.A. Muqeet, M.N. Akhter, R. Liaqat, M.M. Hus-
+sain, Scheduling and sizing of campus microgrid considering demand response 
+and economic analysis, Sensors 22 (16) (2022) 6150, http://dx.doi.org/10.3390/
+s22166150.
+
+[26] A. Aoun, M. Adda, A. Ilinca, M. Ghandour, H. Ibrahim, Comparison between 
+blockchain P2P energy trading and conventional incentive mechanisms for 
+distributed energy resources—A rural microgrid use case study, Appl. Sci. 14 
+(17) (2024) 7618, http://dx.doi.org/10.3390/app14177618.
+
+[27] L. Bokopane, K. Kusakana, H. Vermaak, A. Hohne, Optimal power dispatching 
+for a grid-connected electric vehicle charging station microgrid with renewable 
+energy, battery storage and peer-to-peer energy sharing, J. Energy Storage 96 
+(2024) 112435, http://dx.doi.org/10.1016/j.est.2024.112435, URL https://www.
+sciencedirect.com/science/article/pii/S2352152X24020218.
+
+[28] M. Tostado-Véliz, H.M. Hasanien, R.A. Turky, A. Rezaee Jordehi, S.A. Mansouri, 
+F. Jurado, A fully robust home energy management model considering real time 
+price and on-board vehicle batteries, J. Energy Storage 72 (2023) 108531, http:
+//dx.doi.org/10.1016/j.est.2023.108531, URL https://www.sciencedirect.com/
+science/article/pii/S2352152X2301928X.
+
+[29] V. Kachhad, A. Joshi, V. Mariani, V. Raffa, L. Glielmo, A techno-economic 
+modelling and component sizing in renewable energy communities: The per-
+spective of technical facilitators, in: 2024 IEEE 20th International Conference on 
+Automation Science and Engineering, CASE, 2024, pp. 329–334, http://dx.doi.
+org/10.1109/CASE59546.2024.10711652.
+
+[30] R. Zhang, M. Lee, L. Huang, M. Ni, Optimization of battery energy storage 
+system (BESS) sizing in different electricity market types considering BESS uti-
+lization mechanisms and ownerships, J. Clean. Prod. 470 (2024) 143317, http://
+dx.doi.org/10.1016/j.jclepro.2024.143317, URL https://www.sciencedirect.com/
+science/article/pii/S0959652624027665.
+18 
+[31] J.K. Jose, M.R. Sindhu, V. Mohan, V. Thomas, Techno-economic analysis of 
+decentralized residential microgrid with optimal prosumer selection, IEEE Access 
+12 (2024) 65403–65417, http://dx.doi.org/10.1109/ACCESS.2024.3395920.
+
+[32] N.R. Naraindath, R.M. Naidoo, R.C. Bansal, Adaptive optimization and dy-
+namic pricing in decentralized energy markets using blockchain technology and 
+consensus-based verification, Sustain. Energy, Grids Networks 42 (2025) 101630, 
+http://dx.doi.org/10.1016/j.segan.2025.101630, URL https://www.sciencedirect.
+com/science/article/pii/S2352467725000128.
+
+[33] Z. Tanis, A. Durusu, Cooperative behaviors and multienergy coupling through 
+distributed energy storage in the peer-to-peer market mechanism, IEEE Access 
+13 (2025) 12081–12102, http://dx.doi.org/10.1109/ACCESS.2025.3529205.
+
+[34] Y. Zahraoui, B. Han, T.E. Khalil Zidane, P. Elia Campana, S. Mekhilef, A robust 
+centralized peer-to-peer energy trading in the energy community, in: 2024 
+International Conference on Smart Systems and Technologies, SST, 2024, pp. 
+185–190, http://dx.doi.org/10.1109/SST61991.2024.10755191.
+
+[35] M. Torkashvand, A. Khodadadi, M.B. Sanjareh, M.H. Nazary, A life cycle-
+cost analysis of li-ion and lead-acid BESSs and their actively hybridized ESSs 
+with supercapacitors for islanded microgrid applications, IEEE Access 8 (2020) 
+153215–153225, http://dx.doi.org/10.1109/ACCESS.2020.3017458.
+
+[36] S. Tsianikas, J. Zhou, N. Yousefi, D.W. Coit, Battery selection for optimal grid-
+outage resilient photovoltaic and battery systems, 2019, arXiv:1901.11389, URL 
+https://arxiv.org/abs/1901.11389.
+
+[37] S. Bandyopadhyay, G.R.C. Mouli, Z. Qin, L.R. Elizondo, P. Bauer, Techno-
+economical model based optimal sizing of PV-battery systems for microgrids, 
+IEEE Trans. Sustain. Energy 11 (3) (2020) 1657–1668, http://dx.doi.org/10.
+1109/TSTE.2019.2936129.
+
+[38] B. Han, Y. Zahraoui, M. Mubin, S. Mekhilef, T. Korõtko, O. Alshammari, 
+Distributed optimal storage strategy in the ADMM-based peer-to-peer energy 
+trading considering degradation cost, J. Energy Storage 96 (2024) 112651, http:
+//dx.doi.org/10.1016/j.est.2024.112651, URL https://www.sciencedirect.com/
+science/article/pii/S2352152X24022370.
+
+[39] U. Salman, K. Khan, F. Alismail, M. Khalid, Techno-economic assessment and 
+operational planning of wind-battery distributed renewable generation system, 
+Sustainability 13 (12) (2021) 6776, http://dx.doi.org/10.3390/su13126776.
+
+[40] A.A.R. Mohamed, R.J. Best, X. Liu, D.J. Morrow, A comprehensive robust techno-
+economic analysis and sizing tool for the small-scale PV and BESS, IEEE Trans. 
+Energy Convers. 37 (1) (2022) 123–134, http://dx.doi.org/10.1109/TEC.2021.
+3134567, URL https://ieeexplore.ieee.org/document/9521731.
+
+[41] J. Lopez-Lorente, X.A. Liu, R.J. Best, G. Makrides, D.J. Morrow, Techno-
+economic assessment of grid-level battery energy storage supporting distributed 
+photovoltaic power, IEEE Access 9 (2021) 146256–146280, http://dx.doi.org/
+10.1109/ACCESS.2021.3119436.
+
+[42] L. Silvestri, M. De Santis, G. Bella, Techno-economic evaluation of a second-life 
+battery energy storage system enabling peak shaving and PV integration in a 
+ceramic manufacturing plant, in: 2021 IEEE International Conference on Indus-
+trial Engineering and Engineering Management, IEEM, 2021, pp. 1566–1570, 
+http://dx.doi.org/10.1109/IEEM50564.2021.9672803.
+
+[43] H. Bai, S. Lei, S. Geng, X. Hu, Z. Li, Z. Song, Techno-economic assessment of 
+isolated micro-grids with second-life batteries: A reliability-oriented iterative de-
+sign framework, Appl. Energy 364 (2024) 123068, http://dx.doi.org/10.1016/j.
+apenergy.2024.123068, URL https://www.sciencedirect.com/science/article/pii/
+S0306261924004513.
+
+[44] A. Wangsupphaphol, S. Chaitusaney, M. Salem, A techno-economic assessment 
+of a second-life battery and photovoltaics hybrid power source for sustainable 
+electric vehicle home charging, Sustainability 15 (7) (2023) 5866, http://dx.doi.
+org/10.3390/su15075866.
+
+[45] M. Terkes, A. Demirci, E. Gokalp, An evaluation of optimal sized second-life elec-
+tric vehicle batteries improving technical, economic, and environmental effects 
+of hybrid power systems, Energy Convers. Manage. 291 (2023) 117272, http:
+//dx.doi.org/10.1016/j.enconman.2023.117272, URL https://www.sciencedirect.
+com/science/article/pii/S0196890423006180.
+
+[46] Y. Deng, Y. Wang, L. Zhang, X. Liu, A hierarchical energy management strategy 
+for community microgrids with second-life batteries from electric vehicles, 
+IET Energy Syst. Integr. 4 (3) (2022) 289–299, http://dx.doi.org/10.1049/esi2.
+12060.
+
+[47] NREL, BLAST-lite: Battery lifetime analysis and simulation toolsuite, 2023, 
+GitHub Repository, https://github.com/NREL/BLAST-Lite.
+
+[48] F. García-Muñoz, M. Jiménez-Martínez, J. Eichman, C. Corchero, G. Benveniste, 
+Exploring the viability of local electricity markets for managing congestion in 
+Spanish distribution networks, Energies 17 (3) (2024) 659.
+
+[49] J. VanderPlas, Python Data Science Handbook: Essential Tools for 
+Working with Data, O’Reilly Media, 2016, URL https://jakevdp.github.io/
+PythonDataScienceHandbook/.
+
+[50] A. Fadlil, Herman, D. Praseptian M, K nearest neighbor imputation performance 
+on missing value data graduate user satisfaction, J. RESTI (Rekayasa Sist. Dan 
+Teknol. Informasi) 6 (4) (2022) 570–576, http://dx.doi.org/10.29207/resti.v6i4.
+4173.
+
+
+
+J.M. Pigem et al. Journal of Energy Storage 148 (2026) 120031 
+[51] J.W. Taylor, Triple seasonal methods for short-term load forecasting, 
+European J. Oper. Res. 204 (1) (2010) 139–152, http://dx.doi.org/10.
+1016/j.ejor.2009.10.003, URL https://www.sciencedirect.com/science/article/
+pii/S037722170900705X.
+
+[52] M. Jiménez Martínez, L. Igualada, R. Valdés Martín, A. Farriol Salas, P. Heredia 
+Julbe, F. Noris, F. García Muñoz, C. Corchero, MODECO – Modelling Study 
+on the Role of Energy Communities in the Energy Transition, JRC Technical 
+Report JRC132896, Publications Office of the European Union, 2023, http:
+//dx.doi.org/10.2760/118421.
+
+[53] R. Chen, C. Jing, F. Yingjie, W. Ziji, Comprehensive analysis and forecast of 
+Chinese NEV industry development from 2012 to 2025, in: Proceedings of 
+the Budapest Business School Conference, 2023, http://dx.doi.org/10.29180/
+9786156342560_6.
+
+[54] G.P. Zhang, Time series forecasting using a hybrid ARIMA and neural network 
+model, Neurocomputing 50 (2003) 159–175, http://dx.doi.org/10.1016/S0925-
+2312(01)00702-0, URL https://www.sciencedirect.com/science/article/abs/pii/
+S0925231201007020?via%3Dihub.
+
+[55] G.E.P. Box, G.M. Jenkins, G.C. Reinsel, G.M. Ljung, Time Series Analysis: 
+Forecasting and Control, fifth ed., Wiley, Hoboken, NJ, 2015, p. 720, URL 
+https://www.wiley.com/en-us/Time+Series+Analysis%3A+Forecasting+and+
+Control%2C+5th+Edition-p-9781118675021.
+
+[56] B. Singh, D. Pozo, A guide to solar power forecasting using ARMA models, in: 
+2019 IEEE PES Innovative Smart Grid Technologies Europe (ISGT-Europe), 2019, 
+pp. 1–4, http://dx.doi.org/10.1109/ISGTEurope.2019.8905430.
+
+[57] W. Vermeer, G.R. Chandra Mouli, P. Bauer, A comprehensive review on the 
+characteristics and modeling of lithium-ion battery aging, IEEE Trans. Transp. 
+Electrification 8 (2) (2022) 2205–2232, http://dx.doi.org/10.1109/TTE.2021.
+3138357.
+
+[58] M.T. Sarker, M.A. Qwaid, G. Ramasamy, M.H.S.M. Haram, Performance evalu-
+ation of second-life EV batteries for off-grid solar energy storage system, IEEE 
+Access (2025) http://dx.doi.org/10.1109/ACCESS.2025.3596991, 1–1.
+
+[59] P. Gasper, A. Saxon, Y. Shi, E. Endler, K. Smith, F.M. Thakkar, Degradation and 
+modeling of large-format commercial lithium-ion cells as a function of chemistry, 
+design, and aging conditions, J. Energy Storage 73 (2023) 109042, http:
+//dx.doi.org/10.1016/j.est.2023.109042, URL https://www.sciencedirect.com/
+science/article/pii/S2352152X23024404.
+19 
+[60] E. Braco, I.S. Martín, A. Berrueta, P. Sanchis, A. Ursúa, Experimental assessment 
+of cycling ageing of lithium-ion second-life batteries from electric vehicles, J. 
+Energy Storage 32 (2020) 101695, http://dx.doi.org/10.1016/j.est.2020.101695, 
+URL https://www.sciencedirect.com/science/article/pii/S2352152X20315322.
+
+[61] T. Bank, J. Feldmann, S. Klamor, S. Bihn, D.U. Sauer, Extensive aging analysis 
+of high-power lithium titanate oxide batteries: Impact of the passive elec-
+trode effect, J. Power Sources 473 (2020) 228566, http://dx.doi.org/10.1016/j.
+jpowsour.2020.228566, URL https://www.sciencedirect.com/science/article/pii/
+S0378775320308703.
+
+[62] M.A. Khan, B.P. Hayes, A reduced electrically-equivalent model of the IEEE 
+European low voltage test feeder, in: 2022 IEEE Power & Energy Society General 
+Meeting, PESGM, 2022, pp. 1–5, http://dx.doi.org/10.1109/PESGM48719.2022.
+9916806.
+
+[63] F. García-Muñoz, A.F. Cortés-Borray, Optimal operation of multi-energy carriers 
+considering energy hubs in unbalanced distribution networks under uncer-
+tainty, Sustain. Energy, Grids Networks 40 (2024) 101538, http://dx.doi.org/10.
+1016/j.segan.2024.101538, URL https://www.sciencedirect.com/science/article/
+abs/pii/S2352467724002674.
+
+[64] L. Wan, J. Yang, Y. Yang, T. Li, H. Liu, F. Wen, Optimal sizing and op-
+eration of community hybrid energy storage systems, J. Energy Storage 119 
+(2025) 116209, http://dx.doi.org/10.1016/j.est.2025.116209, URL https://www.
+sciencedirect.com/science/article/pii/S2352152X25009223?via%3Dihub.
+
+[65] S. Montoya-Bedoya, L.A. Sabogal-Moncada, E. Garcia-Tamayo, H.V. Martínez-
+Tejada, A circular economy of electrochemical energy storage systems: Critical 
+review of SOH/RUL estimation methods for second-life batteries, in: IntechOpen, 
+2020, http://dx.doi.org/10.5772/intechopen.91257.
+
+[66] M. Cheng, A. Ran, X. Zheng, X. Zhang, G. Wei, G. Zhou, H. Sun, Sustainabil-
+ity evaluation of second-life battery applications in grid-connected PV-battery 
+systems, J. Power Sources 550 (2022) 232132, http://dx.doi.org/10.1016/j.
+jpowsour.2022.232132, URL https://www.sciencedirect.com/science/article/abs/
+pii/S0378775322011090.
+
+[67] R. Ma, S. Tao, X. Sun, et al., Pathway decisions for reuse and recycling of retired 
+lithium-ion batteries considering economic and environmental functions, Nat. 
+Commun. 15 (2024) 7641, http://dx.doi.org/10.1038/s41467-024-52030-0.
+
+[68] F. García-Muñoz, Input data for the community PV-BESS sizing optimization 
+model, 2025.

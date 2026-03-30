@@ -1,0 +1,1332 @@
+﻿Applied Energy 308 (2022) 118400
+
+Contents lists available at ScienceDirect 
+
+Applied Energy 
+journal homepage: www.elsevier.com/locate/apenergy 
+
+A peer-to-peer energy trading market embedded with residential shared 
+energy storage units 
+Boshen Zheng a, Wei Wei a,*, Yue Chen b, Qiuwei Wu c, Shengwei Mei a 
+
+a State Key Laboratory of Power System and Generation Equipment, Department of Electrical Engineering, Tsinghua University, Beijing 100084, China 
+b Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong, China 
+c Center for Electric Power and Energy, Technical University of Denmark, Kgs. Lyngby, Denmark   
+
+H I G H L I G H T S  
+
+• A peer-to-peer energy trading market mechanism with shared energy storage units is proposed. 
+• A non-cooperative game among peer-to-peer market participants is presented. 
+• The generalized Nash equilibrium problem among shared energy storage users is depicted. 
+• A game equilibrium solution based on KKT condition is proposed. 
+• Proposed mechanism improves the efficiency and ensures fairness.  
+
+A R T I C L E  I N F O   A B S T R A C T   
+
+Keywords: The high penetration of distributed energy resources with local renewable energy consumption facilitates the 
+Peer-to-peer energy trading emergence of peer-to-peer (P2P) energy trading, where a peer can share excessive energy with local peers. P2P 
+Shared energy storage energy trading is expected to be a promising business model in the future transactive energy market. Influenced 
+Market mechanism by the sharing economy principle, shared energy storage(SES) is investigated to reduce the costly initial in
+Equilibrium problem 
+Game theory vestment and improve the utilization rate of storage devices. Given the context, this paper proposes an equi
+Transactive energy librium model of a P2P energy trading market, considering the deployment of shared energy storage in the 
+
+residential consumer-side. The market equilibrium problem consists of two interwoven games. Considering the 
+benefit conflicts between energy sellers and buyers in P2P energy trading, the P2P transaction between peers can 
+be described as a non-cooperative game. Considering the limited SES capacity resources, the competition among 
+SES users can be viewed as a generalized Nash equilibrium problem. These two games in the P2P market interact 
+with each other and can be summarized as a holistic equilibrium problem, in which the P2P transaction price is 
+endogenously determined and storage capacity is allocated. The market equilibrium problem can be solved based 
+on Karush-Kuhn-Tucker (KKT) optimality conditions and linearization techniques, finally cast as a mixed-integer 
+linear program. Numerical simulation demonstrates that P2P energy trading benefits all participants and the 
+introduction of shared energy storage can further reduce energy costs.   
+
+issues, energy cost, and sustainable energy consumption, etc [2]. 
+Renewable energy generation and consumption are essential drivers to 
+
+1. Introduction enhance energy security [3]. The modern power system is undergoing an 
+unprecedented transformation towards renewable energy, with the 
+
+1.1. Background ambition of reducing greenhouse gas emissions and improving energy 
+security and sustainability. Distributed energy resources (DERs), such as 
+
+Energy is the foundation of human society and should be secured for solar photovoltaics, wind turbine, and energy storage devices, have been 
+sustainable and reliable development. Energy security is defined as the widely invested in distribution networks [4,5]. 
+uninterrupted availability of energy sources at an affordable price [1], The massive installation of DERs in deregulated gird can provide 
+which has various dimensions, e.g., sources diversity, environmental 
+
+* Corresponding author. 
+E-mail address: wei-wei04@mails.tsinghua.edu.cn (W. Wei).  
+
+https://doi.org/10.1016/j.apenergy.2021.118400 
+Received 14 September 2021; Received in revised form 10 December 2021; Accepted 14 December 2021   
+Available online 28 December 2021
+0306-2619/© 2021 Published by Elsevier Ltd.
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Nomenclature λbt
+buy The TLOU price of energy buyer b in periodt 
+
+λt
+buy0 Initial electricity price in TLOU in periodt 
+
+Abbreviations kt Constant coefficient in TLOU 
+DERs Distributed energy resources Pt
+
+s The energy supply of seller s in periodt 
+FiT Feed-in Tariff 
+
+Dt
+GNEP Generalized Nash equilibrium problem b The energy demand of buyer b in periodt 
+KKT Karush-Kuhn-Tucker optimality conditions Î⋅c Charging efficiency 
+MILP Mixed-integer linear program Î⋅d Discharging efficiency 
+P2P Peer-to-peer pu Maximal charging/ discharging power 
+SES Shared energy storage Q0
+
+b Initial energy storage level of buyerb 
+TLOU Time-and-level-of-use Qm Capacity of the shared energy storage units 
+
+Indices and sets Variables 
+B Set of energy buyers pt
+
+sb P2P transaction amount between seller s and buyer b in 
+S Set of energy sellers periodt 
+b The index of energy buyers ρt
+
+sb P2P transaction price between seller s and buyer b in 
+s The index of energy sellers periodt 
+T Set of time periods pt
+
+bg Energy from the grid of buyer b in periodt 
+t Index of time periods pt
+
+bc Charging power of buyer b in periodt 
+Parameters pt
+
+bd Discharging power of buyer b in periodt 
+Δt Duration of period Qb Capacity allocation of buyerb 
+λt
+
+sell Feed-in Tariff in periodt Qt
+b Energy storage level of buyer b in periodt  
+
+λt
+cost P2P transaction cost in periodt 
+
+benefits for both owners and the grid. On the one hand, the DERs owners for a single household or residential community. Affected by the sharing 
+can manage their energy consumption more effectively and receive economy principle, shared energy storage (SES) is an alternative way to 
+revenue by selling excessive energy [6]. On the other hand, because of reduce initial investment costs and improve utilization rate [20]. In the 
+the massive scale of DERs, the distribution network can receive more SES scheme, multiple energy consumers have access to use a shared 
+flexibility by utilizing localized renewable energy generation [7]. Given energy storage device. From the perspective of investment, through the 
+the context, renewable energy consumption is an imperative task in the economy of scale and cost sharing, the installation cost is reduced 
+transactive energy market. A tariff-based scheme has been implemented compared with individual storage. From the perspective of operation, 
+to encourage DERs investment and improve energy consumption [8]. considering the temporal complementarity and various demand patterns 
+However, it has been criticized for lacking competition [9] and offering among different users, SES can provide a larger capacity for users and 
+participants limited benefits [10]. The advancement in Information and increase utilization rate consequently. Considering a residential peer-to- 
+Communication Technology and deregulations in distribution systems peer energy trading market, where peers are embedded with shared 
+enable peer-to-peer (P2P) energy trading among local energy consumers energy storage, rather than individual energy storage, is an interesting 
+and energy generators, which is expected to be a promising business and worthwhile topic. 
+model in the energy sharing market. 
+
+A peer-to-peer energy trading market consists of local energy buyers, 
+sellers, and P2P service provider. A peer in the P2P market can directly 1.2. Literature review 
+buy/sell energy from/to other peers based on personal energy situation 
+and energy price, without the intermediation by utility companies. All 1.2.1. Peer-to-peer energy trading 
+peers can participate in energy trading to gain financial benefit, thus P2P energy trading involves financial trading activities, which re
+creating a competitive energy trading market. From a peer’s perspective, quires a proper business model design to stimulate peer’s participation 
+both energy buyers and sellers can achieve more flexible energy man willingness and ensure the security of the system. Stakeholders’ struc
+agement, obtain financial benefits, and utilize excessive renewable en tures and energy pricing mechanism are two concerns when designing a 
+ergy. From the power system’s perspective, local P2P energy trading can business model. 
+balance local energy supply and demand and reduce energy trans The stakeholder’s structure can describe the transaction relation
+mission losses, followed by improving power system reliability and ships among participants and the division of transaction activities in a 
+postponing infrastructure investment [11]. P2P energy trading has P2P market. In summary, the structure of stakeholders in the P2P market 
+attracted great attention in academia and industry. Many countries have can be roughly classified into two types: decentralized market without 
+conducted plenty of pilot projects to demonstrate the effectiveness of an aggregator and centralized market with an aggregator.  
+P2P energy trading in the transactive market [12], such as Piclo in the 
+UK [13], Brooklyn Microgrid project in the USA [14], and Peer Energy 1) Decentralized market without an aggregator: In a decentralized 
+Cloud in Germany [15]. P2P market, peers can take full control of their trading strategies to 
+
+Energy storage device, especially battery energy storage, is an maximize their interests or satisfy personal preferences [21], 
+essential component in the residential peer-to-peer energy trading including transaction amount and price. Participants can negotiate 
+market, enabling peers to schedule consumption profiles more flexibly, or trade with each other directly without an aggregator. A bilateral 
+achieve peak-valley arbitrage and store excessive renewable energy contract of the transaction information between energy seller and 
+[16,17]. Despite the economic and environmental benefits and declining buyer facilitates the P2P energy trading market, which is a simple 
+installation cost [18], purchasing energy storage devices still requires type of over-the-counter (OTC) market in energy trading. In [22], a 
+costly investment and might encounter underutilization problems [19] P2P market is proposed for real-time and forward bilateral contracts 
+
+between energy suppliers and consumers. Participants have utility- 
+
+2
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+maximizing preferences with full substitutability, which ensures a 2) Game theory: Game theory is used in a competitive situation, where 
+stable result in the bilateral contracts network. In [23], the contin the result of one participant is associated with other participants’ 
+uous double auction (CDA) method is used to match the transaction actions. The competitive characteristic requires participants should 
+between energy sellers and buyers in a decentralized P2P market. consider other participants’ actions before taking their action. The 
+Self-interested peers decide on their offers and bids based on specific P2P market is a competitive market, with energy sellers aiming to 
+strategies. In [24], a localized P2P energy trading market is imple maximize energy revenues and energy buyers aiming to minimize 
+mented among plug-in hybrid electric vehicles (PHEVs). PHEVs energy costs. The game-theoretic method used in the P2P pricing 
+determine their charging/discharging plan according to their driving mechanism can be divided into two parts: noncooperative game and 
+plan, energy price, and current energy state, and then send energy cooperative game. For the noncooperative game, Nash equilibrium 
+trading requests to the nearest aggregator. Local aggregator acts as [37], generalized Nash equilibrium [38], and Stackelberg game [39] 
+auctioneer and matches transactions between buyers and sellers.  are widely applied in modeling P2P market. In [40], a P2P energy 
+
+2) Centralized market with an aggregator: In a centralized market, trading platform “Elecbay” is designed to facilitate P2P transactions 
+an aggregator can manage the energy consumption/supply of peers among prosumers. A noncooperative game is used to model the 
+[16] or provide price signals for peers [6]. The P2P transactions are bidding process of prosumers and a Nash equilibrium is obtained, in 
+cleared through the aggregator and all energy tradings are under the which no participant will change its strategy unilaterally. The bid
+supervision of the aggregator. In [25], a P2P energy trading model ding process converges to a generalized Nash equilibrium when 
+among households is proposed, where the total cost of all peers is prosumers consider their strategy’s impact on energy trading prices 
+minimized. A centralized aggregator collects the information from [38]. In [41], a P2P energy sharing model considering the social 
+households and solves a multi-objective optimization problem to attributes of prosumers is proposed based on the stochastic Stackel
+make sure all participants can benefit from the P2P trading, which berg game. The leader is energy sharing provider with dynamic 
+addresses the unfair cost distribution problem. In [26], a centralized prices and the prosumers serve as followers, who adjust their energy 
+P2P trading environment is created for four types of households, consumption according to the price from the leader. An algorithm 
+based on whether they have rooftop PV and battery or not. The integrating interpolation and curve fitting, Markov decision process, 
+aggregator aims to minimize the total net energy cost of households and differential evolution algorithm is proposed to receive a Stack
+and the optimization model is formulated as mixed-integer linear elberg equilibrium. For the cooperative game, in [42], the coalition 
+programming. In [27], a P2P energy trading platform is proposed for graph game is used in P2P energy trading mechanism design to help 
+multiclass energy management and trading coordination between prosumers form a coalition and choose the transaction quantity and 
+prosumers and the wholesale market. Energy is a heterogenous price. The total payoff of the proposed P2P scheme is allocated 
+product beyond financial characteristics and can be traded based on among participants fairly under the Myerson value rule. A numerical 
+prosumers’ personal preferences. A distributed price-directed opti study demonstrates that the P2P scheme can improve the financial 
+mization mechanism is developed to solve multiclass energy benefits of prosumers while maintaining the constraint of the local 
+management. voltage domain. In [43], a coalition formation game-based P2P en
+
+ergy trading scheme is developed to obtain a prosumer-centric so
+The pricing mechanism is of great significance in P2P business model lution. With the proposed algorithm, a prosumer can decide whether 
+
+design [28]. Energy sellers are expected to receive a higher price in the or not to put its battery into the P2P market and form a coalition. 
+P2P market than in the traditional power grid. Similarly, energy buyers 
+are expected to purchase energy at a lower price from the P2P market However, there are still some research gaps in the existing peer-to- 
+than from the power grid. Such a pricing mechanism can provide peer energy trading research works. In a centralized market with an 
+financial incentives for local energy sellers and buyers. Otherwise, they aggregator, some researches consider P2P energy trading from a system 
+don’t have the incentive to participate in P2P energy trading. The perspective and ignore individual interest, which might violate personal 
+existing pricing mechanisms include analytical methods [29,30], interests [44]. Many existing pricing mechanisms in P2P energy trading 
+auction-based methods [23], game-theoretic methods [31], and can not reflect the true value of transactive energy under different 
+blockchain-based methods [32]. We focus on the introduction of the supply-demand relationships [30]. Actually, a proper peer-to-peer en
+auction-based method and game-theoretic method. ergy trading business model should respect personal interests and ensure 
+
+financial benefits, thus encouraging people to join the energy sharing 
+1) Auction theory: The auction theory is widely used in P2P trans market. Besides, the energy transaction price should reflect the scarcity 
+
+active energy markets [33]. In [34], a multi-round double auction is of energy resources, e.g., a lower energy supply associated with a higher 
+established to complete the auction process. Peers participate in the energy price and vice versa. 
+hierarchical auction, including nodal, zonal, and distribution The successful implementation of the peer-to-peer energy trading 
+network levels to balance total local energy supply and demand. The mechanism still meets many risks and challenges. Peer-to-peer energy 
+clearing price is the average of offering price, which integrates with trading consists of both financial and physical activities. Financial ac
+distributional locational marginal price, considering the power loss tivities should properly coordinate the conflicting interests of various 
+and voltage regulation. In [35], an iterative uniform-price auction participants while providing secure and reliable transaction informa
+mechanism is proposed to facilitate P2P energy trading in a com tion. The energy traded in financial activities should be transmitted via 
+munity microgrid. Participants iteratively adjust their bids according the physical network. As a consequence, the physical factors including 
+to their personal demand/supply information and issued market in the distribution network constraints, power transmission loss, un
+formation, aiming to maximize personal economic benefit. Such checked power injection, etc., should be taken into consideration. Last 
+bidding strategy is different from the continuous double auction and but not least, the regulatory change is the premise of establishing a P2P 
+leads to a Nash equilibrium among participants, which helps to find a energy trading market [45]. 
+fairer trading price. In [36], the Vickrey Clarke Groves Auction is 
+used to motivate participants to bid at a rational price. The deploy 1.2.2. Shared energy storage 
+ment of Bayesian Game Theory in bidding strategy stipulates effi Shared energy storage has attracted more and more attention in the 
+cient and cost-effective bidding for every energy buyer. Although the last decade [46]. The essence of shared energy storage is the separation 
+P2P transaction prices are derived from the auction process, their of ownership and use rights of energy storage devices. At present, the 
+bidding strategies still involve game theory [35,36].  mainstream structures of shared energy storage can be divided into two 
+
+categories: 1) users own individual energy storage devices and share 
+
+3
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+their capacity use right or stored energy; 2) users connected to a central 2) A solution method based on Karush-Kuhn-Tucker (KKT) optimality 
+energy storage device and share the capacity or stored energy. condition is applied to solve the market equilibrium problem. The 
+
+For the first category, the SES has been invested and installed by an market equilibrium is acquired based on the KKT conditions of all 
+individual user, who requires an incentive to share individual storage participants’ optimal problems. After concatenating all KKT condi
+capacity or stored energy. In [47], individual storage device owners tions together, the market equilibrium is cast as a mixed-integer 
+decide to share part of their capacity with shared facility controllers in linear program (MILP) with the complementarity conditions linear
+response to the market price of capacity use right. The market price is ized through the Big-M method. The P2P transaction price and the 
+determined by the auction process and encompasses incentive compat amount and the SES capacity allocation are obtained from the market 
+ibility and individual rationality, which is testified to be an effective equilibrium. The P2P transaction price is determined by the supply 
+market mechanism. For the second category, the SES can be invested by and demand relationship and reflects the value of energy resources. 
+independent investors or users and shared by multiple users. In [48], a Capacity allocation among users can ensure fairness in our 
+cloud energy storage (CES) concept is proposed to utilize centralized definition. 
+energy storage devices and provide energy storage services for distrib
+uted users. Residential energy consumers or commercial users can rent The remainder of the paper is organized as follows. Section 2 in
+the power and capacity of the CES to reduce personal energy costs. troduces a representative system configuration of a P2P energy trading 
+
+For the successful implementation of shared energy storage, an marker embedded with residential shared energy storage. The mathe
+economical and fair operation policy is needed to coordinate the matical model of the P2P market participants and the market equilib
+complicated interactions of SES owners, users, and other stakeholders. rium problem are presented in Section 3. Section 4 summarizes the 
+Economical operation in this context means that shared energy storage solution technique of the equilibrium problem. Case studies are per
+should bring more financial benefits compared with individual storage. formed in Section 5. Finally, Section 6 concludes the paper. 
+Fair operation refers to the fair distribution of financial benefits or 
+storage capacity among SES users/owners. In [49], the impacts of in 2. System configuration 
+dividual and shared energy storage in the residential community are 
+thoroughly compared and discussed, where shared energy storage The most representative structure of the peer-to-peer energy trading 
+brings more cost saving and higher utilization. In [50], the potential of market with shared energy storage units is shown in Fig. 1. In such a P2P 
+deploying community storage is simulated based on the actual resi market, a participant who has excessive energy and sells energy to other 
+dential data. The results illustrate that the community energy storage participants or the power grid is defined as a typical energy seller, e.g., a 
+decreases the needed storage amount, promotes renewable local con rooftop PV plant. A participant who consumes energy and buys energy 
+sumption, and increases the Internal Rate of Return. However [49,50], from energy sellers or power grid is identified as a typical energy buyer, 
+mainly focus on evaluating the economic benefits of shared energy e.g., a community. Energy sellers and buyers in the P2P market can trade 
+storage from a holistic perspective, without considering the fairness with each other freely and reach a bilaterally satisfactory transaction 
+among SES users/owners. A shared energy storage service pricing result. The solid arrows present the P2P transaction between typical 
+scheme is proposed in [20], which ensures the service price of SES is fair energy sellers and energy buyers. All participants are connected with the 
+among SES users. The proportional method [51], Shapley value method local distribution network and the energy trading can be finished 
+[52], nucleolus method based on coalitional game theory [53,54] are through physical power transmission lines. 
+widely used to solve the fair benefit/cost allocation issue. A trading al The shared energy storage is implemented in our proposed P2P en
+gorithm is proposed to ensure fairness in a generalized Nash game type ergy trading market, which is large-capacity energy storage and shared 
+capacity allocation problem among SES users [55]. by multiple energy buyers. We assume the storage device has been 
+
+Although many researches have investigated the deployment of invested and installed on the community side. In this paper, we just 
+shared energy storage, few studies consider the significance of shared focus on the operational problem of shared energy storage. In our 
+energy storage in the P2P energy trading market, which requires more business model, the energy buyers can use the capacity of SES instead of 
+innovative researches in this field. equipping individual energy storage, which can save storage investment 
+
+costs for energy buyers. After the capacity allocation, users can purchase 
+more energy and charge SES when the electricity price is low and 
+
+1.3. Contributions discharge SES when the price is high, thus reducing their energy costs. 
+The P2P market has an aggregator, who takes the responsibility of 
+
+To fill the aforementioned research gaps in peer-to-peer energy matching the P2P energy transaction and operating the SES. 
+trading and shared energy storage, in this paper, we propose a novel P2P 
+energy trading market and implement shared energy storage in the 
+market. The main contributions of our work are twofold:  
+
+1) A novel peer-to-peer energy trading business model with shared 
+energy storage installed in the energy consumer-side is proposed. In 
+the P2P market, every participant is rational and self-interested, with 
+the options of selling/buying energy to/from any other peers in the 
+market and using SES units, which forms a competitive market and 
+leads to a market equilibrium problem. Considering the bargain 
+between energy sellers and buyers in the P2P market, the transaction 
+between peers can be described as a non-cooperative game. 
+Considering the limited shared energy storage resources of SES units, 
+the competition between SES users is a generalized Nash equilibrium 
+problem. These two games in the P2P market can be summarized as 
+an equilibrium problem, in which the P2P transaction price is 
+endogenously determined and SES capacity is allocated. However, 
+the above two games are interwoven and the equilibrium problem is Fig. 1. P2P energy trading market with shared energy storage equipped in the 
+difficult to solve.  community side. 
+
+4
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+In summary, the whole P2P market is composed of three types of energy sellers, energy buyers, and market equilibrium are presented in 
+stakeholders: energy sellers, energy buyers, and an aggregator. The the following subsection. 
+detailed introduction of each stakeholder is presented as follows: 
+
+3.1. Seller’s problem 
+2.1. Energy sellers 
+
+In our model, the P2P market consists of energy buyers and sellers. 
+Energy sellers consist of participants with renewable power gener Let S denote the set of energy sellers, with the typical energy seller s ∈ S. 
+
+ation, e.g., solar photovoltaics, wind turbine. These participants have Let B denote the set of energy buyers, with the typical energy seller 
+surplus renewable energy and would like to share energy with other b ∈ B. The operational problem is solved during multi-periods and T is 
+people in the P2P market to get a financial payoff. They can also choose the set of all periods. t ∈ T is a typical single period with an equal 
+to sell energy to the power grid in a traditional FiT scheme. Each energy duration of Δt. 
+seller, whose goal is to maximize personal profit, decides to participate For each rational energy seller s ∈ S, it maximizes its profit and the 
+in the P2P transaction market or trade with power utility according to decision-making problem can be cast as 
+the price signal. ∑∑ ∑ ∑
+
+Energy sellers’ renewable energy supply is intermittent and volatile. max : ( ρt
+sbp
+
+t λt t
+sb + sell(P
+
+t − p t
+s sb) − λcost pt
+
+sb)Δt (1)  
+However, to facilitate our P2P transaction, we assume each energy seller t∈T b∈B b∈B b∈B
+
+has been equipped with a storage device or other power electronic de ∑
+vice to stabilize their energy supply in a certain time slot. s.t. pt t t
+
+sb⩽Ps : υs,∀t ∈ T (2)  
+b∈B
+
+2.2. Energy buyers pt t
+sb⩾0 : ωsb, ∀b ∈ B, ∀t ∈ T (3) 
+
+Energy buyers consist of participants who consume energy, e.g., where pt
+sb and ρt
+
+sb are decision variables. pt
+sb is the transaction amount 
+
+residential community, business building, shopping mall. We consider between seller s and buyer b in period t. ρt
+sb is transaction price associ
+
+the residential community in this paper. Modeling the behavior of res ated with pt
+sb. However, the market-clearing price ρt
+
+sb is out of control of 
+idential energy consumers requires both financial and emotional factors, seller s and buyer b but is determined by the market equilibrium problem 
+integrating the economic and motivational psychology[56]. Besides, the of the game. Parameter Pt
+
+s is the renewable energy for sale of seller s in 
+ideal model is not always consistent with the real-world situation. So we period t. Parameter λt
+
+sell is FiT when a seller sells its energy to the power 
+choose the energy cost, which is a conspicuous and acceptable criterion grid. Parameter λt
+
+cost is the P2P transaction cost, including network tariff 
+to model consumer behavior. Each energy buyer, whose goal is to for using the physical grid facilities and aggregator service fee. 
+minimize the expenditure on energy purchase, can buy energy from the The objective of each energy seller is to maximize its profit. In the 
+P2P market or power grid depending on the price signal. Besides, mul objective function (1), the first term is the revenue of trading with en
+tiple buyers share the capacity use right of the SES, which provides the ergy buyers in the P2P market. The second term is the revenue of selling 
+buyers with more flexible energy consumption management. They can energy to the power grid in the FiT scheme. After participating in the 
+use SES and adjust their charging/discharging strategy according to the P2P transaction, energy seller can still sell their surplus to the power grid 
+electricity price on the premise of meeting the current energy deficit. To to get more income. The third term is the transaction cost for P2P 
+simplify the problem and show the operation of our P2P market, the transactions. Constraint (2) stipulates that total P2P transaction 
+initial energy demand of each energy buyer is fixed. amounts in period t should not exceed the seller’s initial excessive en
+
+ergy. Constraint (3) is for the non-negativity condition for the decision 
+2.3. Aggregator variable pt
+
+sb. υt
+s and ωt
+
+sb after the colon are dual variables of the 
+constraints. 
+
+The aggregator is a third-party agency, who controls the operation of 
+the P2P market. In the P2P market, energy sellers/buyers are rational 
+and pursue to maximize personal interest. In each P2P transaction, a 3.2. Buyer’s problem 
+rational seller chooses to improve the transaction price to get more 
+revenue; in contrast, a rational buyer chooses to lower the transaction For each rational energy buyer b ∈ B, it minimizes energy cost and 
+price to pay less cost. Such a game induces a market equilibrium, where the decision-making problem can be cast as 
+a mutually satisfactory price is obtained and no one will change his ∑∑
+
+min : ( ρt t t
+sbpsb + λb
+
+buyp
+t
+bg)Δt (4)  
+
+strategy unilaterally. P2P transaction price should be no less than FiT t∈T s∈S
+
+and no higher than TLOU, otherwise, energy sellers/buyers will quit the ∑
+P2P market. s.t. pt t t
+
+sb + pt
+bg + pt
+
+bd = Db + pbc : γtb, ∀t ∈ T (5)  
+Since the energy buyers use the SES, the allocation of SES use right is s∈S
+
+also a game. In practice, the capacity resource of SES is limited. The 
+capacity constraint is a global constraint shared by all SES users and pt
+
+bg⩾0 : ωt
+bg, ∀t ∈ T (6)  
+
+competition exists when buyers’ total capacity demand exceeds the SES 
+capacity and. Such competition brings a new game, which will induce a λbt
+
+buy = λt
+buy0 + ktpt
+
+bg, ∀t ∈ T (7)  
+capacity allocation equilibrium considering the fairness problem. 
+
+The aggregator collects all participants’ supply and demand infor pt
+bc⩽pu, pt
+
+bd⩽pu, ∀t ∈ T (8)  
+mation and clears the P2P market. By solving the market equilibrium 
+problem, it can provide P2P transaction price and amount between 0⩽pt
+
+bc⊥pt
+bd⩾0, ∀t ∈ T (9)  
+
+energy seller and buyer and capacity allocation among energy buyers. 
+The aggregator can facilitate the P2P market and make sure participants Qt
+
+b = Qt− 1 t
+b +(pbcηc − pt
+
+bd/ηd)Δt, ∀t ∈ T (10)  
+benefit from the market. 0⩽ Qt
+
+b⩽Qb, ∀t ∈ T (11)  
+3. Mathematic formulation ∑
+
+Qb⩽Qm : τb, ∀t ∈ T (12) 
+b∈B
+
+Mathematic formulations of the proposed P2P market involving 
+
+5
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+where pt
+sb, ρt
+
+sb, pt
+bg, pt
+
+bc, pt
+bd and Qb are decision variables. pt
+
+sb and ρt
+sb ∑t
+
+Q0 (
+pt′ / )
+
+have been introduced in the seller’s decision-making problem. pt
+bg is the b + bcηc − pt′
+
+bd ηd Δt ⩽Q t
+b : θb1, ∀t ∈ T (24)  
+
+t′energy from the power grid in period t. pt
+bc and pt
+
+bd are buyer’s charging/ =1
+
+discharging strategy in period t. Variable Qb is the capacity allocated to ∑
+Qb⩽Qm : τb, ∀t ∈ T (25) 
+
+energy buyer b. Parameter λbt
+buy is the time-and-level-of-use price for b∈B
+
+buyer b purchase electricity from the power grid in period t, which is 
+The objective function (15) is the cost minimization problem of en
+
+composed of an initial price part λt
+buy0 and a level-wise part ktpt
+
+bg, as ergy buyer b. Constraint (16) is the energy balance equation. Constraint 
+shown in constraint (7). kt is a constant in period t. ηc/ηd are charging/ (17) is for the non-negativity condition for pt
+
+bg. Constraint (18) is the 
+discharging efficiency of energy storage device. Qt
+
+b is the storage level of time-and-level-of-use price for buying electricity from the power grid. 
+buyer b in period t. Qm is the total capacity of SES. Constraint (19)-(22) are the feasible ranges of charging and discharging 
+
+The objective of each energy buyer is to minimize its energy cost. In rate. Constraint (23) and (24) are the transformation of constraints (11), 
+the objective function (4), the first term is the total cost of trading with considering the dynamic constraint (14). Constraint (25) is still the 
+energy sellers in the P2P market. The second term is the cost of pur commonly shared capacity constraint. γt
+
+b, ωt
+bg, δ
+
+t
+bc0, δt
+
+bc1, δt
+chasing energy from the power grid. Constraint (5) ensures the power bd0, δt
+
+bd1, θt
+b0, θt
+
+b1 
+
+balance in period t, where the total energy demand including fixed de and τb after the colon are dual variables of the constraints. 
+mand Dt
+
+b and charging demand pt
+bc should be met by the energy from the 
+
+P2P market, power grid, and discharging SES. Constraint (6) imposes a 3.3. Peer-to-peer market equilibrium problem 
+non-negativity condition on the decision variable pt
+
+bg. Constraint (8) and 
+(9) provide an upper bound and lower bound for the charging and dis In the P2P market, all participants want to maximize their interests. 
+charging power. And constraint (9) indicates SES users should not However, there might be interests conflicts among the participants. The 
+charge and discharge at the same time because of the energy loss during P2P market game model can be cast as an equilibrium model: 
+the charging and discharging process. Constraint (10) updates the SES {
+
+Seller’s Problem (1) - (3), s ∈ S
+energy storage level, which is a multi-period dynamic constraint. The Buyer’s Problem (15)-(25), b ∈ B (26) 
+storage level Qt
+
+b is consistent with the energy amount that buyer b stores 
+in SES. Constraint (11) is the feasible range of the variable Qt
+
+b. Constraint Equilibrium problem (26) entails solving all participants’ problems 
+(12) is a commonly shared constraint, which means the total capacity at the same time. The problem is solved by the P2P market aggregator, 
+used by energy buyers should not exceed the maximum available ca and the solution method is proposed in the next section to solve the P2P 
+pacity of SES. market equilibrium problem. There are two games in the equilibrium 
+
+To facilitate the problem description and solution, we make some model, a non-cooperative game and a generalized Nash equilibrium 
+reformulations. A rational SES user will not choose to charge and problem (GNEP), which are depicted in Fig. 2. 
+discharge simultaneously and thus the complementary slackness For the first game, energy sellers want to maximize energy revenues 
+constraint (9) binds. The constraint (8) and (9) can be transformed as: and will increase the P2P transaction price ρt
+
+sb. In contrast, energy 
+buyers aim to minimize energy costs and will lower the P2P transaction 
+
+0⩽ pt
+bc ⩽pu price ρt
+
+sb. Considering the bargain between energy sellers and buyers in 
+0⩽ pt
+
+bd⩽pu (13) 
+the P2P market, the transaction between peers can be described as a 
+
+The dynamic characteristic of energy storage level Qt
+b can be refor non-cooperative game. The first game equilibrium exists when consid
+
+mulated as: ering energy sellers and buyers’ optimal problems simultaneously. The 
+P2P transaction price ρt
+
+sb is an endogenous variable, which is not 
+∑t determined by a single participant unilaterally, but obtained from the 
+
+Qt
+b = Q0 (pt′ ′
+
+b + bcηc − pt
+bd/ηd)Δt (14) market equilibria according to the supply and demand relationship. So 
+
+t′ =1 the P2P transaction price can reflect the value of energy resources. 
+where Q0
+
+b is the initial energy storage level. For the second game, the SES capacity is a global shared but limited 
+In summary, energy buyer’s objective problem (4)-(12) can be resource. Competition arises when the capacity demand exceeds the 
+
+transformed as follows: available capacity of SES, which forms a generalized Nash equilibrium 
+problem. The second game equilibrium exists when considering the 
+
+∑T ∑
+min : ( ρt t b capacity allocation among energy buyers. Constraint (25) imposes 
+
+sbpsb + λ t t
+buypbg)Δt (15)  
+
+t=1 s∈S global storage capacity constraint for SES users, followed by a Lagrange 
+∑ dual multiplier τb. The dual variable has a clear economic interpretation: 
+
+s.t. pt t
+sb + p g + pt
+
+bd = dt
+b + pt
+
+bc : γtb b, ∀t ∈ T (16)  since limited storage capacity is a scarce resource, τb can be viewed as 
+s∈S the shadow prices paid by buyers for using SES capacity. Actually, when 
+
+capacity is adequate, the inequality constraint is not binding and the 
+pt
+bg⩾0 : ωt
+
+bg, ∀t ∈ T (17)  dual variable is zero; the dual variable is positive only if capacity de
+mand exceeds the available capacity of SES, indicated by a binding 
+
+λbt
+buy = λt
+
+buy0 + ktpt
+bg, ∀t ∈ T (18)  inequality constraint [57]. 
+
+The GENP is cast as a normalized Nash equilibrium [58] when the 
+pt
+bc⩾0 : δt
+
+bc0 , ∀t ∈ T (19)  Lagrange dual multiplier τb incorporates the following cone constraint: 
+
+pt
+bc⩽pu : δt
+
+bc1 , ∀t ∈ T (20)  τb = βb τ0, βb > 0, b ∈ B (27) 
+
+pt where βb is assumed to be directly proportional to the average daily 
+bd⩾0 : δt
+
+bd0 , ∀t ∈ T (21)  
+energy demand of buyer b. The assumption is reasonable because con
+
+pt sumers with more energy demand usually would like to install a larger 
+bd⩽pu : δt
+
+bd1 , ∀t ∈ T (22)  
+energy storage device, reflecting energy storage values are different 
+
+∑t among various consumers. In our paper, we refer to fairness as the fair 
+Q0 (
+
+pt′ ′ / )
+b + bcηc − pt
+
+bd ηd Δt⩾0 : θt
+b0, ∀t ∈ T (23)  capacity allocation based on the storage value of SES for users, which is 
+
+t′ =1 indicated by the proportional Lagrange dual multiplier associated with 
+
+6
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Fig. 2. Market equilibrium consists of two games: a non-cooperative game and a generalized Nash equilibrium problem.  
+
+global storage capacity constraint. The different Lagrange dual multi ∑
+pliers are implemented in the following solution method to conduct pt t
+
+sb + pbg + pt
+bd = Dt
+
+b + pt
+bc, ∀t ∈ T (31)  
+
+capacity allocation. s∈S
+
+ρt
+sbΔt+ γtb = 0, ∀s ∈ S, ∀t ∈ T (32)  
+
+4. Solution method 
+(λt
+
+buy0 + 2ktpt
+bg)Δt+ γt
+
+b − ωt
+bg = 0, ∀t ∈ T (33)  
+
+In equilibrium problem (26), energy seller s and buyer b have 
+consistent decision variables pt
+
+sb and ρt
+sb because of the P2P transaction. 0⩽pt
+
+bg⊥ωt
+bg⩾0, ∀t ∈ T (34)  
+
+However, the product term ρt
+sbp
+
+t
+sb in decision-making problem (1) and ( )
+
+(15) makes the problem nonconvex. Besides, the transaction price ρt ∑T ′ ∑T ′
+sb is − γt
+
+an endogenous variable beyond the control of single energy seller s or b − δt
+bc0 + δt
+
+bc1 + − θt
+b0 + θt
+
+b1 ηcΔt = 0, ∀t ∈ T (35)  
+t′ =t t′ =t
+
+buyer b, which is determined from the market equilibrium condition. So 
+the equilibrium problem (26) is not a Nash-type game. To explain how 0⩽pt
+
+bc⊥δt
+bc0⩾0, ∀t ∈ T (36)  
+
+the market equilibrium arises and how the P2P transaction price is ob
+tained, we formulate the KKT conditions of the equilibrium problem 0⩽(pu − pt
+
+bc)⊥δt
+bc1⩾0, ∀t ∈ T (37)  
+
+(26) in this section. 
+( ) /
+
+The detailed formulations are as follows: ∑T ∑T
+γt
+b − δt
+
+bd0 + δt
+bd1 + θt′
+
+b0 − θt′
+b1 Δt ηd = 0, ∀t ∈ T (38)  
+
+t′ =t t′ =t
+
+4.1. KKT conditions of the market equilibrium problem 0⩽pt
+bd⊥δt
+
+bd0⩾0, ∀t ∈ T (39)  
+
+Since transaction price ρt
+sb is an endogenous variable and derived 0⩽(pu − pt
+
+from market equilibrium, we regard it as a parameter while obtaining bd)⊥δt
+bd1⩾0, ∀t ∈ T (40)  
+
+the KKT conditions of energy sellers and buyers. If we consider the [ ]
+∑t
+
+optimization problem (1) and (15) from this perspective, the initial 0⩽ Q0 ( ′ ′ / ) t
+b + pt
+
+bcηc − pt
+bd ηd Δt ⊥θb0⩾0, ∀t ∈ T (41)  
+
+objective function is a linear program and the KKT condition of the t′ =1
+
+linear program is necessary and sufficient. After getting the KKT con
+ditions of all participants, we concatenate all KKT conditions and get an ∑t
+
+0 ⩽Qb − (Q0
+equilibrium problem of KKT conditions. b + (pt′
+
+bcηc − pt′
+bd/ηd)Δt)⊥θt
+
+b1⩾0, ∀t ∈ T (42)  
+t′ =1
+
+The KKT condition of energy seller s obtained from seller’s problem 
+(1)-(3) is as follows: ∑T ′
+
+( − θt
+b1+ τb = 0, ∀b ∈ B (43)  
+
+− ρt t )
+sb + λsell + λt
+
+cost Δt + υt
+s − ωt
+
+sb = 0, ∀b ∈ B,∀t ∈ T (28)  t′ =1
+
+∑ ∑
+0⩽(Pt t
+
+s − psb)⊥ υt
+s⩾0, ∀t ∈ T (29)  0 ⩽Qm − Qb ⊥ τb⩾0, ∀b ∈ B (44) 
+
+b∈B b∈B
+
+0⩽pt t Finally, the KKT condition of equilibrium problem (26) can be 
+sb⊥ ωsb⩾0, ∀b ∈ B, ∀t ∈ T (30) 
+
+summarized as: 
+The expression 0 ≤ a⊥b ≥ 0 is a complementary slackness {
+
+constraint, which means both a and b are non-negative and at least one Seller’s KKT Condition (28) - (30), s ∈ S
+Buyer’s KKT Condition (31 (45) 
+
+) - (44), b ∈ B
+of them is 0. In vector notation, a⊥b means aTb = 0. 
+
+The KKT condition of energy buyer b obtained from buyer’s problem KKT system (45) is composed of equations and inequality 
+(15)-(25) is as follows: 
+
+7
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+constraints. The P2P transaction price variable ρt
+sb is endogenously 
+
+determined and the SES capacity is allocated by solving equilibrium where Γ represents equality constraints in (45). 
+(45). From the energy sellers’ side, according to equation (28), ρt
+
+sb can be 
+calculated as follows: 5. Case study 
+ρt
+sb = λt
+
+sell + λt
+cost + (υt
+
+s − ωt
+sb)/Δt (46) 5.1. Test system configuration 
+
+From the energy buyers’ side, according to equation (32), ρt
+sbcan be 
+
+calculated as follows: To numerically testify the performance of the proposed P2P model, 
+we collect actual load data from the Irish residential community during 
+
+ρt
+sb = − γtb/Δt (47) the year 2009. Four energy buyers’ load profiles in a single day are 
+
+The price in (46) and (47) are the same in the equilibrium problem shown in Fig. 3a, with a time granularity of 1 h. Two energy sellers’ PV 
+(45), and thus the transaction price ρt
+
+sb mainly depends on the parame generation data curve in a single day is shown in Fig. 3b, with the 
+ters and some dual variables. This P2P pricing mechanism is beyond the assumption that the supply is stable in 1 h. Fig. 3c is the total energy 
+control of a single participant, and truly reflects the demand and supply supply and demand. In the time-and-level-of-use pricing scheme, the 
+relationship and the true value of energy, which is also fair to both sides. initial price signal TLOU0 and energy buyers’ electricity prices without 
+In addition, in our model, ρt
+
+sb must be no less than the λt
+sell + λt P2P energy trading are shown in Fig. 4. All data sets have been processed 
+
+cost, 
+otherwise, sellers will quit the P2P market. Similarly, ρt and scaled to validate our results. In practice, the load profiles, renew
+
+sb must be no 
+more than TLOU, otherwise, buyers will quit the P2P market. able energy generation, and electricity price can be obtained from the 
+
+historical data combined with big data techniques. 
+For the time-and-level-of-use electricity price, the constant coeffi
+
+4.2. Big-M method cient kt = 0.001. The feed-in tariff is proportionate to the initial price 
+signal, e.g., 0.7. Transaction cost λcost = 0.005. In price setting, the 
+
+The equilibrium problem (45) is a nonlinear problem and intrinsi sellers are forbidden to buy from the grid and sell to the P2P market 
+cally hard due to the introduction of complementary slackness con simultaneously and the time-and-level-of-use price is higher than the 
+straints. To cope with the complementary slackness constraints and feed-in tariff, otherwise, an arbitrage opportunity arises. As for the 
+retrieve the market equilibria, this section introduces a big-M method shared energy storage, the capacity of the shared energy storage unit is 
+proposed in [59]. Qm = 100kWh, with charging/discharging efficiency ηc = ηd = 0.95. 
+
+The big-M method is used for linearization. The standard compact All experiments are carried out on a 64-bit laptop with Intel Core i7- 
+linear complementary slackness constraints can be written as follows: 7500U CPU with 2.7 GHz and 8 GB RAM. The equilibrium problem is 
+0⩽Px+ q⊥y⩾0 (48) coded in MATLAB with the YALMIP interface. Commercial solver 
+
+MOSEK 9.1 is used to solve the MILP. 
+where x and y are primal and dual variables, respectively; P is a To demonstrate the advantage of the proposed P2P model embedded 
+
+constant square matrix, b is a constant vector. If the primal constraint is with residential shared energy storage, five case study scenarios are 
+not binding, its dual variable is zero; similarly, if the dual variable is defined. Case 1 is the benchmark without any P2P energy trading and 
+positive, the primal constraint is binding. Introducing an auxiliary bi energy storage. In case 2, only P2P energy trading is taken into account. 
+nary vector z, (48) can be reformulated as follows: Case 3 is the model proposed in this paper, both P2P energy trading and 
+0⩽Px+ q⩽M(1 − z) shared energy storage are introduced. To compare the advantage of SES 
+
+0⩽y⩽Mz (49) with individual energy storage, case 4 considers the individual storage 
+installed by each buyer. Case 5 is an additional case study, using the 
+
+where M is a large enough constant. On the one hand, it should be method proposed in [49] to show the potential of shared energy storage 
+large to cover the maximum points; on the other hand, a smaller value based on our parameter setting. Case details are listed in Table 1. 
+contributes to the convergence and computation process. However, 
+constraint (49) lacks an optimization problem. A mixed-integer linear 
+program subject to (49) is proposed as follows: 5.2. Results and discussion 
+
+min : z(Px+ q)+ (1 − z)y (50) 5.2.1. Benefit of P2P market embedded with SES 
+If the problem is feasible, the optimal value of (50) must be 0; Based on Case 1 and Case 3, we illustrate the benefits of our proposed 
+
+otherwise, the optimal value is strictly positive. The product term ziP
+P2P market embedded with residential SES. The computation time for 
+
+ijxj 
+is composed of a binary variable and primal variable, which can be solving the MILP (53) is less than 10 s and the optimality gap is less than 
+
+ε = 10− 6
+linearized as a linear term Pijz1
+
+ij by an additional variable z1 . 
+ij, subject to: 
+
+Table 2 summarizes the total cost of buyers during one day. Without 
+0⩽z1 the P2P market, buyers can only purchase electricity from the grid at 
+
+ij⩽M zi, 0⩽xj − z1
+ij⩽M(1 − zi), ∀i, j (51) 
+
+TLOU price. With the P2P market, besides the grid, buyers can also 
+Constraint (51) is denoted by Cons − Lin(x; z). Similarly, the product purchase electricity from the P2P market at a relatively lower P2P price. 
+
+term ziyi can be reformulated by a scalar variable z2
+i , subject to: The implementation of shared energy storage provides more flexible 
+
+0⩽z2 energy management by charging/discharging. The simulation results 
+i ⩽Mzi, 0⩽yi − z2
+
+i ⩽M(1 − zi), ∀i (52) 
+show that all energy buyers obtain cost savings, and the total cost 
+
+Constraint (52) is denoted by Cons − Lin(y; z). reduction is up to 18.27%. Notably, buyer 4 enjoys the biggest cost 
+The final MILP model can be written as follows:   decline among the buyers, which will be discussed in the next 
+
+subsection. 
+
+∑ ∑
+min zTq+ y+ P 1 2
+
+ijhij − hi s.t.(49), (x, y) ∈ Γ, z is binaryCons-Lin(x, z),Cons-Lin(y, z)
+x,y,z.z1 ,z2 (53)   
+
+i,j i
+
+8
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Fig. 3. Supply and demand information.  
+
+Table 1 
+Summary of 5 study case scenarios.  
+
+Scenario p2p SES individual 
+
+case 1 
+case 2 ✓ 
+case 3 ✓ ✓ 
+case 4 ✓ ✓ 
+case 5 ✓ 
+
+Table 2 
+Summary of the cost of buyers without and with P2P market  
+
+buyer case 1 case 3 benefit percentage of benefit 
+
+B1  67.65  59.25  8.40  12.41% 
+B2  55.03  46.01  9.02  16.40% 
+B3  97.84  84.41  13.42  13.72% 
+B4  85.67  60.57  25.10  29.30% 
+total  306.19  250.25  55.95  18.27%  
+
+Fig. 4. Real-time electricity price in 24 h.  
+Table 3 summarizes the total revenue of energy sellers during one 
+
+day. Without the P2P market, they can only feed their surplus energy 
+back to the grid. With the P2P market, they can both feed into the grid 
+and share with other P2P market participants. It can be seen that the 
+
+9
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Table 3 price in exchange for competitiveness in P2P transactions. A conspicu
+Summary of the revenue of sellers without and with P2P market  ous feature is that each buyer purchases energy from different sellers 
+
+SELLER case 1 case 3 benefit percentage of benefit with the same price 0.1350. The reason is that if a seller improves the 
+P2P transaction price, buyers will not buy energy from him and turn to 
+
+S1  65.47  67.01  1.54  2.35% 
+S2  49.90  51.84  1.94  3.88% other sellers with lower prices, causing a revenue drop to the afore
+TOTAL  115.38  118.85  3.47  3.01%  mentioned seller. Besides, the same price is the FiT plus the transaction 
+
+cost λcost . FiT can be seen as the marginal revenue of selling energy to the 
+grid, which is identical to all sellers. The same parameter setting for all 
+
+revenues of energy sellers are improved. The total revenue has been sellers accounts for the same P2P transaction price. 
+increased by 3.01%. There are differences between the cost of buyers Consider the final scenario t = 13, when total demand is equal to 
+and the revenue of sellers, which can be explained as follows. The PV total supply. Actually, the scenario is the same as previously mentioned 
+generations of energy sellers are concentrated between 10 a.m. and 4p. t = 15 scenario. Besides taking up the most P2P transaction amount, B4 
+m. as shown in Fig. 3c. However, during the generation peak time, total also discharges 12.82 kWh from shared energy storage to satisfy the 
+supply exceeds total demand at most time periods, except 1 p.m. sharply increasing demand. The discharging behavior means the buyers 
+Considering the supply–demand ratio, sellers will receive a lower P2P can use their stored energy in SES according to personal willingness. In 
+transaction price and limited benefit. Conversely, buyers will enjoy a other words, when buyers discharge more energy from SES, the total 
+higher price reduction compared with buying electricity from the grid at demand is less than the total supply, reduced to scenario t = 15. B4 can 
+TLOU price. So the benefits of energy buyers and sellers are different. meet most energy demand from the P2P market at a relatively lower 
+
+In conclusion, according to Tables 2 and 3, all participants can price, explaining why B4 enjoys the biggest cost decline. 
+benefit from the P2P market embedded with SES in our model. 
+
+5.2.3. Operation of shared energy storage 
+5.2.2. Peer-to-peer market equilibrium The simulation results of Case 2 and Case 3 are summarized in 
+
+To further show the results of P2P transactions, we pick up 4 typical Table 5. It can be seen that, compared with Case 2 without energy 
+periods to analyze the P2P market equilibrium in Case 3, as shown in storage, the total cost saving for entire buyers embedded with shared 
+Table 4. The transaction pair is (ρt
+
+sb,p
+t
+st), indicating the P2P transaction energy storage is 5.46%. The cost saving is an expected result because 
+
+price and amount between seller s and buyer b during period t. The shared energy storage enables users to manage their energy consump
+supply is the PV generation, while the demand is the initial fixed de tion more flexibly and achieve peak-valley arbitrage. Total P2P amount 
+mand plus/minus charging/discharging power of shared energy storage. refers to the summation of P2P transactions during 24 h. From the 
+TLOU0 is the base price faced by buyers when purchasing electricity comparison of the results, the deployment of shared energy storage 
+from the grid. FiT is the Feed-in Tariff offered by the grid. In our model, devices improves the total P2P transaction amount, indicating SES can 
+the P2P transaction price and amount are obtained from solving the further promote local renewable consumption and energy trading 
+market equilibrium problem. Table 4 provides a direct insight into how activities. 
+market equilibrium arises. The capacity allocation among buyers is (39.04,22.22,0,38.74)kWh, 
+
+When t = 8, the PV generation is small, so the total energy demand 
+among energy buyers exceeds the total energy supply. In such a 
+circumstance, all buyers will compete for the limited energy resource. Table 5 
+Buyers offering higher transaction prices will acquire the limited energy, Summary of the simulation results for P2P model without SES and with SES  
+e.g., B3 with the highest price 0.1814. Actually, the price 0.1814 is also 
+the marginal cost when B3 buys electricity from the grid to satisfy the buyer Case 2 Case 3 
+
+unmet needs after the P2P transaction. The same analysis works at t = Cost Total P2P Capacity Cost Cost Total P2P 
+18 time period. amount allocation savings amount 
+
+When t = 15, the total PV generations exceed the total energy de B1 62.98 84.73 39.04 59.25 5.92% 98.74 
+mand of buyers, which means the renewable energy generations can not B2 48.22 120.29 22.22 46.01 4.58% 134.37 
+
+only satisfy all P2P transaction demand but also have to sell excess en B3 85.57 207.13 0 84.41 1.35% 211.77 
+B4 67.94 232.80 38.74 60.57 10.85% 263.58 
+
+ergy to gird. Given the context, buyers will trade with sellers who total 264.71 644.96 100.00 250.25 5.46% 708.46  
+require a lower price. And sellers have the motivation to decrease their 
+
+Table 4 
+P2P transaction information in 4 typical time periods.  
+
+t = 8 TLOU0 = 0.1538, FiT = 0.1076, Demand > Supply t = 13 TLOU = 0.1857, FiT = 0.1300, Demand = Supply   
+
+S1 S2 Total   S1 S2 Total  
+Supply/ 2.59 6.10 8.69  Supply/ 70.00 50.00 120.00 
+Demand Demand 
+
+B1 0 (0.1538, 0.00) (0.1538, 0,00) 0 B1 8.37 (0.1350, 8.37) (0.1350, 0.00) 8.37 
+B2 0 (0.1496, 0.00) (0.1496, 0.00) 0 B2 10.52 (0.1350, 0.00) (0.1350, 10.52) 10.52 
+B3 22.50 (0.1814, 2.59) (0.1814, 6.10) 8.69 B3 22.50 (0.1350, 22.50) (0.1350, 0.00) 22.50 
+B4 0 (0.1361, 0.00) (0.1361, 0,00) 0 B4 78.61 (0.1350, 39.13) (0.1350, 39.48) 78.61 
+Total 22.50 2.59 6.10  Total 120.00 70.00 50.00   
+
+t = 15 TLOU = 0.1857, FiT = 0.1300, Demand < Supply t = 18 TLOU = 0.1857, FiT = 0.1300, Demand > Supply   
+S1 S2 Total   S1 S2 Total  
+
+Supply/ 65.17 47.00 112.1700  Supply/ 1.61 0.95 2.56 
+Demand Demand 
+
+B1 14.48 (0.1350, 0.00) (0.1350, 14.48) 14.48 B1 7.36 (0.2005, 0.00) (0.2005, 0.00) 0 
+B2 10.02 (0.1350, 0.00) (0.1350, 10.02) 10.02 B2 5.77 (0.1973, 0.00) (0.1973, 0.00) 0 
+B3 22.50 (0.1350, 0.00) (0.1350, 22.50) 22.50 B3 21.90 (0.2244, 1.61) (0.2244, 0.95) 2.56 
+B4 19.34 (0.1350, 19.34) (0.1350, 0.00) 19.34 B4 7.18 (0.2001, 0.00) (0.2001, 0.00) 0 
+Total 66.34 19.34 47.00  Total 42.21 1.61 0.95   
+
+10
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Fig. 5. One day operation of shared energy storage.  
+
+Table 6 
+Summary of the simulation results for shared and individual energy storage.  
+
+buyer CASE 2 CASE 3 CASE 4 
+
+Cost Capacity Cost Cost savings Capacity Cost Cost savings 
+
+B1 62.98 39.04 59.25 5.92% 22.25 60.77 3.51% 
+B2 48.22 22.22 46.01 4.58% 18.70 46.51 3.53% 
+B3 85.57 0 84.41 1.35% 33.42 82.94 3.07% 
+B4 67.94 38.74 60.57 10.85% 25.63 62.83 7.52% 
+total 264.71 100.00 250.25 5.46% 100.00 253.05 4.40%  
+
+which is a generalized Nash equilibrium corresponding to our proposed assume the capacity is installed proportional to the daily energy demand 
+model. Since our model has two interwoven games, it is difficult to level, which means more energy demand accompanied by larger ca
+analyze the capacity allocation. We conduct Case 5 by adopting the SES pacity[49]. The solution method is the same but much easier than the 
+model proposed in [49] to validate the allocation result. It is worth SES scenario because of the lack of shared constraint (25) in the indi
+mentioning that Case 5 does not have P2P energy trading and the vidual scenario model. 
+optimized objective function is minimizing all users’ energy costs from a The operational cost comparison is summarized in Table 6, which 
+holistic perspective. Despite the above differences, Case 5 can still pro comprises personal energy cost, personal capacity allocation, and the 
+vide a referable result. The capacity allocation in Case 5 is (26.63,0.29,0, total cost of all buyers. Compared with no energy storage device, buyers 
+73.09)kWh, where B3 has no capacity, B1 and B4 take up most of the installing individual energy storage can receive a lower energy cost. The 
+capacity. The result of Case 5 can validate the allocation result in Case 3 total cost savings is 4.40%. The result is satisfactory and reasonable 
+to some extent. because buyers can manage their energy consumption more flexibly and 
+
+Fig. 5a shows the one-day energy storage level for each buyer. Fig. 5b achieve peak-valley arbitrage by utilizing individual storage devices. 
+is a double vertical axis graph and shows the operation of shared energy Besides, it can be seen that, compared with individual storage, shared 
+storage devices from a holistic perspective. The left coordinate axis energy storage can gain more energy cost saving, up to 5.46%. The 
+corresponds to the average energy price for 4 buyers, integrating TLOU comparison indicates that shared energy storage has larger economic 
+price and P2P transaction price, which can provide an intuitive potential than individual storage. This is because, in our model, the SES 
+impression on the price signal, despite not being that accurate. The right capacity is allocated to those who really need energy storage and can 
+coordinate axis corresponds to the total energy storage level of the receive a larger cost reduction by using the same storage capacity. 
+shared energy storage system. During 1 a.m. and 7 a.m., the electricity Fig. 6a shows the one-day individual energy storage level for each 
+price is relatively low and users start to charge. During 8 a.m. and 4p.m., buyer. Fig. 6b shows the operation of individual energy storage devices 
+the price and storage level are fluctuating and the storage level reaches a from a holistic perspective. The left coordinate axis corresponds to the 
+peak at 4p.m. During 5p.m. and 10p.m., the electricity price is relatively average energy price for 4 buyers, with the same meaning in Fig. 5b. The 
+high and users start to discharge. At the end of this day, the SES storage right coordinate axis corresponds to the summation of individual energy 
+level returns to the initial state, completing a daily cycle. storage levels. During 1 a.m. and 7 a.m., the electricity price is relatively 
+
+low and users start to charge. During 8 a.m. and 4p.m., the price and 
+5.2.4. Shared energy storage versus individual energy storage storage level are fluctuating and the storage level reaches a peak at 4p. 
+
+To validate the potential for sharing the energy storage, the opera m. During 5p.m. and 12p.m., the electricity price is relatively high and 
+tional costs of individual and shared energy storage are compared, users start to discharge individual storage. At the end of this day, the 
+which are the results of Case 3 and Case 4, respectively. To ensure a fair individual storage level returns to the initial state, completing a daily 
+comparison, the default parameter settings in the individual scenario are cycle. 
+consistent with the SES scenario. As for the capacity allocation, we 
+
+11
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A  p  p  l i e d   E  n  e r g  y 308 (2022) 118400
+
+Fig. 6. One day operation of individual energy storage.  
+
+6. Conclusion Acknowledgements 
+
+Peer-to-peer energy trading is believed to be a promising business This work was supported in part by the National Natural Science 
+model in the future transactive energy market, which enables DERs Foundation of China (51807101, U1766203) and in part by CUHK 
+owners to share excessive energy with local peers. P2P energy trading Research Startup Fund. 
+can bring financial benefits, balance local energy supply and demand, 
+and improve energy security. The stakeholder’s structure and energy References 
+pricing mechanism are two points of concern that should be taken into 
+account when designing a P2P energy trading mechanism. In this paper, [1] IEA (International Energy Agency); n.d. Available from: https://www.iea.org/ 
+
+we have designed a P2P energy trading mechanism for local DERs areas-of-work/energy-security (accessed October 28, 2021). 
+[2] Azzuni A, Breyer C. Definitions and dimensions of energy security: a literature 
+
+owners and residential consumers embedded with residential shared review. Wiley Interdiscip Rev Energy Environ 2018;7(1):e268. https://doi.org/ 
+energy storage, in which each peer aims to maximize personal interest. 10.1002/wene.268. 
+The implementation of shared energy storage can provide energy buyers [3] Gökgöz F, Güvercin MT. Energy security and renewable energy efficiency in EU. 
+
+Renew Sustain Energy Rev 2018;96:226–39. https://doi.org/10.1016/j. 
+more flexible energy consumption strategy. The first game between rser.2018.07.046. 
+energy sellers and buyers and the second game among energy buyers [4] Rissman J, Bataille C, Masanet E, Aden N, Morrow WR, Zhou N, et al. Technologies 
+make the problem an equilibrium model. An aggregator is assigned to and policies to decarbonize global industry: review and assessment of mitigation 
+
+drivers through 2070. Appl Energy 2020;266:114848. https://doi.org/10.1016/j. 
+operate the equilibrium model. Based on the Karush-Kuhn-Tucker apenergy.2020.114848. 
+optimality conditions of all participants’ optimization problems and [5] Tsao Y-C, Vu T-L, Lu J-C. Pricing, capacity and financing policies for investment of 
+linearization techniques, the equilibrium condition can be cast as a renewable energy generations. Appl Energy 2021;303:117664. https://doi.org/ 
+
+10.1016/j.apenergy.2021.117664. 
+MILP, in which the P2P transaction price and capacity allocation are [6] Chen Y, Wei W, Wang H, Zhou Q, Catalao JPS. An energy sharing mechanism 
+endogenously determined. Numerical results demonstrate the effec achieving the same flexibility as centralized dispatch. IEEE Trans Smart Grid 2021; 
+tiveness of the proposed P2P market, both energy sellers and buyers 12(4):3379–89. https://doi.org/10.1109/TSG.2021.3060380. 
+
+[7] Scott P, Gordon D, Franklin E, Jones L, Thiebaux S. Network-aware coordination of 
+benefiting from P2P energy trading. Besides, P2P energy trading facili residential distributed energy resources. IEEE Trans Smart Grid 2019;10(6): 
+tates the consumption of local renewable energy. The implementation of 6528–37. https://doi.org/10.1109/TSG.2019.2907128. 
+shared energy storage can further reduce energy costs and improve local [8] Pyrgou A, Kylili A, Fokaides PA. The future of the Feed-in Tariff (FiT) scheme in 
+
+renewable consumption. Europe: the case of photovoltaics. Energy Policy 2016;95:94–102. https://doi.org/ 
+10.1016/j.enpol.2016.04.048. 
+
+In future work, the uncertainty of renewable energy generation and [9] Butler L, Neuhoff K. Comparison of feed-in tariff, quota and auction mechanisms to 
+load profile has to be considered. Besides, the sellers should also utilize support wind power development. Renew Energy 2008;33(8):1854–67. https:// 
+energy storage to flexibly manage their supply plan to earn more profit. doi.org/10.1016/j.renene.2007.10.008. 
+
+[10] Tushar W, Chai Bo, Yuen C, Smith DB, Wood KL, Yang Z, et al. Three-party energy 
+We just focus on the operation of shared energy storage in this paper, the management with distributed energy resources in smart grid. IEEE Trans Ind 
+investment decision, such as capacity sizing, should be evaluated for a Electron 2015;62(4):2487–98. https://doi.org/10.1109/TIE.2014.2341556. 
+long period. [11] Morstyn T, Farrell N, Darby SJ, McCulloch MD. Using peer-to-peer energy-trading 
+
+platforms to incentivize prosumers to form federated power plants. Nat Energy 
+2018;3(2):94–101. https://doi.org/10.1038/s41560-017-0075-y. 
+
+CRediT authorship contribution statement [12] Tushar W, Yuen C, Saha TK, Morstyn T, Chapman AC, Alam MJE, et al. Peer-to- 
+peer energy systems for connected communities: a review of recent advances and 
+emerging challenges. Appl Energy 2021;282:116131. https://doi.org/10.1016/j. 
+
+Boshen Zheng: Conceptualization, Software, Writing – original apenergy.2020.116131. 
+draft. Wei Wei: Methodology, Data curation, Writing – review & edit [13] Piclo. 2021. Available from: https://piclo.energy/ (accessed January 28, 2021). 
+ing. Yue Chen: Visualization, Investigation, Writing – review & editing. [14] Mengelkamp E, Gärttner J, Rock K, Kessler S, Orsini L, Weinhardt C. Designing 
+
+microgrid energy markets A case study: the Brooklyn microgrid. Appl Energy 2018; 
+Qiuwei Wu: Supervision, Validation, Writing – review & editing. 210:870–80. https://doi.org/10.1016/j.apenergy.2017.06.054. 
+Shengwei Mei: Supervision, Funding acquisition. [15] Peer Energy Cloud. 2021. Available from: https://software-cluster.org/projects/ 
+
+peer-energy-cloud/ (accessed January 19, 2021). 
+[16] Long C, Wu J, Zhou Y, Jenkins N. Peer-to-peer energy sharing through a two-stage 
+
+Declaration of Competing Interest aggregated battery control in a community Microgrid. Appl Energy 2018;226: 
+261–76. https://doi.org/10.1016/j.apenergy.2018.05.097. 
+
+The authors declare that they have no known competing financial [17] Lüth A, Zepter JM, Crespo del Granado P, Egging R. Local electricity market 
+designs for peer-to-peer trading: the role of battery flexibility. Appl Energy 2018; 
+
+interests or personal relationships that could have appeared to influence 229:1233–43. https://doi.org/10.1016/j.apenergy.2018.08.004. 
+the work reported in this paper. 
+
+12
+
+
+
+B. Zheng et al.                                                                                                                                                                                                              A p p l i e d  E n e r g y 308 (2022) 118400
+
+[18] Kittner N, Lill F, Kammen DM. Energy storage deployment and innovation for the [38] Chen Y, Zhao C, Low SH, Mei S. Approaching prosumer social optimum via energy 
+clean energy transition. Nat Energy 2017;2:1–6. https://doi.org/10.1038/ sharing with proof of convergence. IEEE Trans Smart Grid 2021;12:2484–95. 
+nenergy.2017.125. https://doi.org/10.1109/CISS50987.2021.9400276. 
+
+[19] Lombardi P, Schwabe F. Sharing economy as a new business model for energy [39] Paudel A, Chaudhari K, Long C, Gooi HB. Peer-to-peer energy trading in a 
+storage systems. Appl Energy 2017;188:485–96. https://doi.org/10.1016/j. prosumer-based community microgrid: a game-theoretic model. IEEE Trans Ind 
+apenergy.2016.12.016. Electron 2019;66(8):6087–97. https://doi.org/10.1109/TIE.2018.2874578. 
+
+[20] Zhang W, Wei W, Chen L, Zheng B, Mei S. Service pricing and load dispatch of [40] Zhang C, Wu J, Zhou Y, Cheng M, Long C. Peer-to-Peer energy trading in a 
+residential shared energy storage unit. Energy 2020;202:117543. https://doi.org/ Microgrid. Appl Energy 2018;220:1–12. https://doi.org/10.1016/j. 
+10.1016/j.energy.2020.117543. apenergy.2018.03.010. 
+
+[21] Sorin E, Bobo L, Pinson P. Consensus-based approach to peer-to-peer electricity [41] Chen L, Liu N, Li C, Wang J. Peer-to-peer energy sharing with social attributes: a 
+markets with product differentiation. IEEE Trans Power Syst 2019;34(2): stochastic leader-follower game approach. IEEE Trans Ind Informatics 2021;17(4): 
+994–1004. https://doi.org/10.1109/TPWRS.2018.2872880. 2545–56. https://doi.org/10.1109/TII.2020.2999328. 
+
+[22] Morstyn T, Teytelboym A, Mcculloch MD. Bilateral contract networks for peer-to- [42] Azim MI, Tushar W, Saha TK. Coalition graph game-based P2P energy trading with 
+peer energy trading. IEEE Trans Smart Grid 2019;10(2):2026–35. https://doi.org/ local voltage management. IEEE Trans Smart Grid 2021;12(5):4389–402. https:// 
+10.1109/TSG.2017.2786668. doi.org/10.1109/TSG.2021.3070160. 
+
+[23] Guerrero J, Chapman AC, Verbic G. Decentralized P2P energy trading under [43] Tushar W, Saha TK, Yuen C, Azim MI, Morstyn T, Poor HV, et al. A coalition 
+network constraints in a low-voltage network. IEEE Trans Smart Grid 2019;10(5): formation game framework for peer-to-peer energy trading. Appl Energy 2020;261: 
+5163–73. https://doi.org/10.1109/TSG.2018.2878445. 114436. https://doi.org/10.1016/j.apenergy.2019.114436. 
+
+[24] Kang J, Yu R, Huang X, Maharjan S, Zhang Y, Hossain E. Enabling localized peer- [44] Sousa T, Soares T, Pinson P, Moret F, Baroche T, Sorin E. Peer-to-peer and 
+to-peer electricity trading among plug-in hybrid electric vehicles using consortium community-based markets: a comprehensive review. Renew Sustain Energy Rev 
+blockchains. IEEE Trans Ind Informatics 2017;13(6):3154–64. https://doi.org/ 2019;104:367–78. https://doi.org/10.1016/j.rser.2019.01.036. 
+10.1109/TII.2017.2709784. [45] Soto EA, Bosman LB, Wollega E, Leon-Salas WD. Peer-to-peer energy trading: a 
+
+[25] Alam MR, St-Hilaire M, Kunz T. An optimal P2P energy trading model for smart review of the literature. Appl Energy 2021;283:116268. https://doi.org/10.1016/j. 
+homes in the smart grid. Energy Effic 2017;10(6):1475–93. https://doi.org/ apenergy.2020.116268. 
+10.1007/s12053-017-9532-5. [46] Dai R, Esmaeilbeigi R, Charkhgard H. The utilization of shared energy storage in 
+
+[26] Nguyen S, Peng W, Sokolowski P, Alahakoon D, Yu X. Optimizing rooftop energy systems: a comprehensive review. IEEE Trans Smart Grid 2021;12(4): 
+photovoltaic distributed generation with battery storage for peer-to-peer energy 3163–74. https://doi.org/10.1109/TSG.2021.3061619. 
+trading. Appl Energy 2018;228:2567–80. https://doi.org/10.1016/j. [47] Tushar W, Chai Bo, Yuen C, Huang S, Smith DB, Poor HV, et al. Energy storage 
+apenergy.2018.07.042. sharing in smart grid: a modified auction-based approach. IEEE Trans Smart Grid 
+
+[27] Morstyn T, McCulloch MD. Multiclass energy management for peer-to-peer energy 2016;7(3):1462–75. https://doi.org/10.1109/TSG.2015.2512267. 
+trading driven by prosumer preferences. IEEE Trans Power Syst 2019;34(5): [48] Liu J, Zhang N, Kang C, Kirschen D, Xia Q. Cloud energy storage for residential and 
+4005–14. https://doi.org/10.1109/TPWRS.2018.2834472. small commercial consumers: a business case study. Appl Energy 2017;188: 
+
+[28] Khorasany M, Mishra Y, Ledwich G. Market framework for local energy trading: a 226–36. https://doi.org/10.1016/j.apenergy.2016.11.120. 
+review of potential designs and market clearing approaches. IET Gener Transm [49] Walker A, Kwon S. Analysis on impact of shared energy storage in residential 
+Distrib 2018;12(22):5899–908. https://doi.org/10.1049/iet-gtd.2018.5309. community: individual versus shared energy storage. Appl Energy 2021;282: 
+
+[29] Zhou Y, Wu J, Long C. Evaluation of peer-to-peer energy sharing mechanisms 116172. https://doi.org/10.1016/j.apenergy.2020.116172. 
+based on a multiagent simulation framework. Appl Energy 2018;222:993–1022. [50] Barbour E, Parra D, Awwad Z, González MC. Community energy storage: a smart 
+https://doi.org/10.1016/j.apenergy.2018.02.089. choice for the smart grid? Appl Energy 2018;212:489–97. https://doi.org/ 
+
+[30] Qi M, Yang H, Wang D, Luo Y, Zhang S, Liao S. Prosumers peer-to-peer transaction 10.1016/j.apenergy.2017.12.056. 
+decision considering network constraints. In: 2019 3rd IEEE Conf Energy Internet [51] Liu J, Chen X, Xiang Y, Huo Da, Liu J. Optimal planning and investment benefit 
+Energy Syst Integr Ubiquitous Energy Netw Connect Everything, EI2 2019; 2019: analysis of shared energy storage for electricity retailers. Int J Electr Power Energy 
+643–7. doi: 10.1109/EI247390.2019.9061909. Syst 2021;126:106561. https://doi.org/10.1016/j.ijepes.2020.106561. 
+
+[31] Tushar W, Yuen C, Mohsenian-Rad H, Saha T, Poor HV, Wood KL. Transforming [52] Rajasekharan J, Koivunen V. Cooperative game-theoretic approach to load 
+energy networks via peer-to-peer energy trading: the potential of game-theoretic balancing in smart grids with community energy storage. In: 2015 23rd Eur. Signal 
+approaches. IEEE Signal Process Mag 2018;35(4):90–111. https://doi.org/ Process. Conf. EUSIPCO 2015; 2015. p. 1955–9. doi: 10.1109/ 
+10.1109/MSP.2018.2818327. EUSIPCO.2015.7362725. 
+
+[32] Tsao Y-C, Thanh V-V. Toward sustainable microgrids with blockchain technology- [53] Chakraborty P, Baeyens E, Poolla K, Khargonekar PP, Varaiya P. Sharing storage in 
+based peer-to-peer energy trading mechanism: a fuzzy meta-heuristic approach. a smart grid: a coalitional game approach. IEEE Trans Smart Grid 2019;10(4): 
+Renew Sustain Energy Rev 2021;136:110452. https://doi.org/10.1016/j. 4379–90. https://doi.org/10.1109/TSG.2018.2858206. 
+rser.2020.110452. [54] Yang Y, Hu G, Spanos CJ. Optimal sharing and fair cost allocation of community 
+
+[33] Lin J, Pipattanasomporn M, Rahman S. Comparative analysis of auction energy storage. IEEE Trans Smart Grid 2021;12(5):4185–94. https://doi.org/ 
+mechanisms and bidding strategies for P2P solar transactive energy markets. Appl 10.1109/TSG.2021.3083882. 
+Energy 2019;255:113687. https://doi.org/10.1016/j.apenergy.2019.113687. [55] Jo J, Park J. Demand-side management with shared energy storage system in smart 
+
+[34] Haggi H, Member S, Sun W. Multi-round double auction-enabled peer-to-peer grid. IEEE Trans Smart Grid 2020;11(5):4466–76. https://doi.org/10.1109/ 
+energy exchange in active distribution networks. IEEE Trans Smart Grid 2021; TSG.2020.2980318. 
+3053:1–12. https://doi.org/10.1109/TSG.2021.3088309. [56] Tushar W, Saha TK, Yuen C, Morstyn T, McCulloch MD, Poor HV, et al. 
+
+[35] Xu S, Zhao Y, Li Y, Zhou Y. An iterative uniform-price auction mechanism for peer- A motivational game-theoretic approach for peer-to-peer energy trading in the 
+to-peer energy trading in a community microgrid. Appl Energy 2021;298:117088. smart grid. Appl Energy 2019;243:10–20. https://doi.org/10.1016/j. 
+https://doi.org/10.1016/j.apenergy.2021.117088. apenergy.2019.03.111. 
+
+[36] Leong CH, Gu C, Li F. Auction mechanism for P2P local energy trading considering [57] Wei W, Wang J, editors. Modeling and Optimization of Interdependent Energy 
+physical constraints. Energy Procedia 2019;158:6613–8. https://doi.org/10.1016/ Infrastructures. Cham: Springer International Publishing; 2020. 
+j.egypro.2019.01.045. [58] Rosen JB. Existence and uniqueness of equilibrium points for concave N-person 
+
+[37] Zhang C, Wu J, Cheng M, Zhou Y, Long C. A bidding system for peer-to-peer energy games. Econometrica 1965;33(3):520. https://doi.org/10.2307/1911749. 
+trading in a grid-connected microgrid. Energy Procedia 2016;103:147–52. https:// [59] Fortuny-Amat JMB. A representation and economic interpr of a two-level 
+doi.org/10.1016/j.egypro.2016.11.264. programming problem. J Oper Res Soc 1981;32:783–92. 
+
+13

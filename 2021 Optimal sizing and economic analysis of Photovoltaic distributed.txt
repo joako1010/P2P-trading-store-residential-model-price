@@ -1,0 +1,1346 @@
+﻿Sustainable Energy, Grids and Networks 28 (2021) 100540
+
+a
+b
+c
+
+i
+a
+e
+c
+D
+c
+E
+g
+A
+o
+t
+
+h
+2
+
+Contents lists available at ScienceDirect
+
+Sustainable Energy, Grids and Networks
+journal homepage: www.elsevier.com/locate/segan
+
+Optimal sizing and economic analysis of Photovoltaic distributed
+generationwith Battery Energy Storage System considering
+peer-to-peer energy trading
+Abdurahman Yaldız a, Tayfur Gökçek a,∗, İbrahim Şengör b,c, Ozan Erdinç a
+
+Department of Electrical Engineering, Yildiz Technical University, Istanbul, Turkey
+Environmental Research Institute, MaREI, University College Cork, Cork, Ireland
+Department of Electrical and Electronics Engineering, Izmir Katip Celebi University, Izmir, Turkey
+
+a r t i c l e i n f o a b s t r a c t
+
+Article history: Demand for distributed generation (DG) systems has increased in recent years as costs have decreased,
+Received 15 July 2021 policies pursuing zero carbon emission objectives have been implemented, and energy demand has
+Received in revised form 25 August 2021 increased, in addition to technological advancements in renewable energy systems. With this increase
+Accepted 15 September 2021 in the number of DGs, a concept known as Peer-to-Peer (P2P) energy trading has been emerging,
+Available online 24 September 2021 which offers innovative solutions in which new generation users take an active role in the market.
+Keywords: This concept enables further efficient and optimal resource utilization by providing buying and selling
+Optimal sizing via the P2P market together with the grid. With optimal resource sizing in the proposed structure,
+Peer-to-peer energy trading maximum self-sufficiency, shorter payback periods, and economical use of energy resources are
+Mixed-integer linear programming supplied. This study maximizes the net profit by deducting the gain to customers from the use of
+Battery energy storage system Photovoltaic (PV) and Battery Energy Storage Systems (BESS) from their costs. Moreover, an optimal
+Optimization PV/BESS sizing for prosumers is attained through the use of a mixed-integer linear programming (MILP)
+
+based algorithm structure. Consumers offer energy with the most economical price in this proposed
+system through the P2P energy market. On the other hand, capital, replacement, and maintenance costs
+are all taken into account for a further realistic approach. The case studies of prosumers and consumers
+trading energy in Peer-to-Grid (P2G) and P2P are contrasted, as is the return on investment and the
+economic benefit of PV/BESS sizing during the operational time.
+
+© 2021 Elsevier Ltd. All rights reserved.
+1. Introduction
+
+1.1. Motivation and background
+
+Demand for distributed generation (DG) systems is increas-
+ng due to the advancements in power electronics, information
+nd communication technologies, cost reductions in renewable
+nergy systems (RESs) and energy storage systems, and poli-
+ies regarding sustainability and environmental concerns. The
+G structure is currently expected to increase decentralized and
+ontrollable energy usage [1]. According to the European Union
+nergy Technology Plan, small-scale behind-the-meter electricity
+eneration will be at the heart of the future energy system [2].
+ccording to the International Energy Agency’s report, the cost
+f Photovoltaic (PV) systems has decreased by 80% in the last
+en years. Furthermore, until 2030, an annual growth rate of
+
+∗ Corresponding author.
+E-mail address: gokcek.tayfur@gmail.com (T. Gökçek).
+ttps://doi.org/10.1016/j.segan.2021.100540
+352-4677/© 2021 Elsevier Ltd. All rights reserved.
+around 13% is predicted [1]. Furthermore, the cost of Battery
+Energy Storage Systems (BESS), which is important in terms of
+flexible, reliable, and efficient operation in the power system,
+decreases every year compared to the previous year [3]. However,
+the significance of optimal power grid operation and sizing has
+been growing with the increases in energy demand, the instability
+of RESs production, the rise in the use of electric heaters in
+households, the instantaneous high power demanded by electric
+vehicles for charging and the uncertainty of where it will be
+charged [4]. To attain optimal operation and economic use of the
+power grid, a concept known as Peer-to-Peer (P2P) energy trading
+is emerging, offering innovative solutions in which new genera-
+tion users play an active role in the market. Participants in the P2P
+energy trade establish an energy management network through
+which they can sell excess energy and procure their energy needs
+as well as the energy trading with the grid (Peer-to-Grid, P2G) [5].
+P2P energy trading ensures peak shaving [6], valley filling, re-
+ducing grid losses [7], voltage and frequency control [8], low
+investment and operating cost, minimum reserve requirements,
+
+and energy security in the power system [9]. Hence, it contributes
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+Nomenclature
+
+Abbreviations
+BESS Battery Energy Storage System
+DG Distributed Generation
+DSO Distribution System Operator
+MILP Mixed-integer Linear Programming
+PV Photovoltaic
+P2G Peer-to-Grid
+P2P Peer-to-Peer
+P2PSO Peer-to-Peer System Operator
+SoE State of Energy
+Indices and Sets
+h(H) Index(set) of years
+n(N) Index(set) of households
+t(T ) Index(set) of time periods
+Parameters
+CBESS
+cap Capital cost of BESS unit [$/kWh]
+
+CBESS,main
+n,h Maintenance cost of BESS unit by
+
+household n in the year of h [$/kWh]
+CBESS,rep
+n,h Replacement cost of BESS unit by
+
+household n in the year of h [$/kWh]
+CBESS,rep,ind
+n,h Index of the number of BESS replace-
+
+ments by household n in the year of
+h
+
+CPV
+cap Capital cost of PV unit [$/kW]
+
+CPV ,main
+n,h Maintenance cost of PV unit by house-
+
+hold n in the year of h [$/kW]
+CPV ,rep
+n,h Replacement cost of PV unit by house-
+
+hold n in the year of h [$/kW]
+CPV ,rep,ind
+n,h Index of the number of PV replacements
+
+by household n in the year of h
+dh Annual real value of discount rate over
+
+the project period
+EBESS,ini
+n Initial SOE of the BESS of household n
+
+[kWh]
+EBESS,max
+n Maximum SOE of the BESS of household
+
+n [kWh]
+EBESS,min
+n Minimum SOE of the BESS of household
+
+n [kWh]
+N Sufficiently large positive number
+nBESS,max
+n Maximum number of the BESS
+
+NG
+t Maximum power imported and ex-
+
+ported from the grid
+nPV ,max
+n Maximum number of the PV system
+
+PLoad
+n,t Load demand of household n in period
+
+t [kW]
+PPV ,T
+n,t PV power supplied by household n at
+
+time t [kW]
+
+to the formation of a more economical, predictable [10], trans-
+parent [11,12], efficient and flexible market structure [13,14].
+With optimal sizing of renewable energy resources and energy
+storage systems in the P2P energy market, it provides many
+benefits such as more efficient use of resources, shorter return
+on investment periods, lower electricity bills, increased life of
+electrical equipment, and economical use of energy resources.
+2
+
+RBESS,ch
+n Charging rate of BESS of household n
+
+RBESS,disch
+n Discharging rate of BESS of household n
+
+∆T Time granularity [h]
+buy,G
+
+λt Import price from the utility in period t
+[$/kWh]
+
+sold,G
+λt Export price to the utility in period t
+
+[$/kWh]
+δBESS,chn Charging efficiency of BESS of house-
+
+hold n
+δBESS,dischn Discharging efficiency of BESS of house-
+
+hold n
+Variables
+EBESS
+n,t State of energy of BESS of household n
+
+in period t [kWh]
+nBESS
+n Number of 1 kW BESS
+
+nPV
+n Number of 1 kW PV system
+
+Pbuy,G
+n,t Imported power from the utility by n
+
+household in period t [kW]
+Pbuy,P
+n,t Power drawn from the peer-to-peer en-
+
+ergy market by n households in period
+t [kW]
+
+Pbuy,T
+n,t Total power provided by household n in
+
+period t [kW]
+PBESS,used
+n,t Power used to satisfy household load
+
+from the BESS [kW]
+PPV ,used
+n,t Power used to satisfy household load
+
+from the PV [kW]
+P sold,BESS
+n,t Exported power from BESS of house-
+
+hold n to the utility in period t [kW]
+P sold,G
+n,t Exported power to the utility by n
+
+household in period t [kW]
+P sold,PV
+n,t Exported power from PV of household
+
+n to the utility in period t [kW]
+P sold,P
+n,t Exported power to the peer-to-peer en-
+
+ergy market by n households in period
+t [kW]
+
+P sold,T
+n,t Total power exported to the grid by
+
+household n in period t [kW]
+PBESS,ch
+n,t Charging power of BESS of household n
+
+at time t [kW]
+PBESS,disch
+n,t Discharging power of BESS of house-
+
+hold n at time t [kW]
+Tn Net profit value between incomes and
+
+the expenses [$]
+V cost,red
+n The difference in income value between
+
+when the PV and battery system is con-
+sidered and neglected of household n
+[$]
+
+V income
+n The total value of cash incomes and
+
+outflows during the project lifetime of
+household n [$]
+
+V outflow
+n The total value of cash outflows during
+
+the project lifetime of household n [$]
+
+1.2. Literature overview
+
+There seem to be numerous studies in the literature on con-
+strained optimization-based P2P energy trading that we will
+implement within the scope of this work. In [6], the effect of
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+uG
+n,t Binary variable: 1 if grid is supplying
+
+power during period t , 0 else
+uBESS
+n,t Binary variable: 1 if BESS is charging
+
+during period t , 0 else
+λP2P
+t Peer-to-peer trading price of at time t
+
+[$/kWh]
+γn Cost in the considered of PVs and BESS
+
+of household n [$]
+ζn Cost in the neglected of PVs and BESS of
+
+household n [$]
+
+network tariffs on peak load reduction was investigated using
+a mixed-integer linear programming (MILP) based optimization
+model developed in a neighborhood with 30 different consumers
+with flexible loads. The developed multi-energy management
+system in [15] reduced costs by allowing prosumers to choose
+from a variety of energy sources and storage methods. A P2P trad-
+ing model based on linear programming was created throughout
+the study. In [16], energy management was provided in a smart
+community that includes residential units, main power grid, and
+a shared facility controller. With the aim of maximizing the ben-
+efit, the presented three-party energy model was demonstrated
+by a non-cooperative Stackelberg game. In [17], a MILP-based
+optimization model for the P2P energy market was developed
+using a PV-Battery system. Also the cost was minimized in 500
+real-limited houses with various PV-Battery system scenarios.
+Additionally, optimal sizing in renewable energy and energy
+storage systems in DG systems was studied extensively. The off-
+line linear programming optimization algorithm was used in [18]
+to determine the optimum battery size and function selection.
+The optimum sizing of RESs was achieved using the particle
+swarm optimization technique in [19], taking into account the
+lowest cost and constraints with precise reliability. In [20,21], the
+loss of power supply probability method was used to design an
+optimal hybrid system. The goal of [22] was sizing the optimal
+hybrid system using HOMER software. Moazzami et al. [23] rec-
+ommended an optimal sizing for PV-Wind units and ESS units in
+DC microgrids. Kharrich et al. [24] investigated a hybrid system
+sizing in two non-electrified regions using the multi-objective
+particle swarm optimization method. The hybrid power system
+was optimally designed with an algorithm for optimizing the
+particle swarm in [25]. Salman et al. [26] presented the non-linear
+scheduling method to optimize BESS sizing for a wind-penetrated,
+grid-connected, and standalone microgrid. The optimal number
+of PV panels and batteries were selected in [27] to reduce the
+annual cost of energy consumption. Also, the proposed model
+was employed game theory to conduct a rigorous analysis in
+order to improve performance. In [28], the optimal PV system
+and energy storage system were resized by considering the en-
+vironmental effects in the zero energy building. The economic
+impact of optimal sizing was addressed in the literature through
+examples of optimal size based on MILP in DG systems, in [29]
+off-grid systems, in [30] stochastic scenarios, in [31] considering
+grid outages and DR incentives in the intelligent household, in
+both load and, in [32] considering harmonic analyses in smart
+household systems. However, the existing studies on optimal
+PVs and BESS sizing in the P2P energy market were limited. The
+optimal sizing of RESs in two microgrids and the annual cost were
+maximized in [33] using a game theory approach. In [34], optimal
+battery sizing was determined in various ownership structures in
+the P2P sharing community. The study in [35] depicted storage
+energy sharing model with an auction-based approach between
+
+different residential units and shared facility controllers (SFCs).
+
+3
+
+Although [15] and [17] conduct economic analyses using the
+optimization-based system employed in the P2P context, the
+initial investment cost and optimal PV/BESS sizing were not con-
+sidered. The works [18–28] discussed ideal system sizing using
+various optimization and energy management system algorithms;
+nevertheless, did not address the P2P problem. In [33], optimal
+sizing of the system was made for P2P and P2G situations. How-
+ever, the whole structure inside a shared microgrid was taken
+into account, not individual domestic users’ production. Domestic
+loads were not considered economically. The study [34] examined
+the optimal sizing of BESS for P2P and P2G in a variety of cases;
+nevertheless, the optimal sizing of production facilities was not
+examined.
+
+1.3. Content and contributions
+
+The purpose of this research is to provide the most appropriate
+gain to users by optimizing the sizing of PV and BESS while
+taking into account the cost function of capital, investment, and
+maintenance in a market structure where energy can be sold as
+P2P and P2G. As a result, it provides economic benefits to users
+as well as a reduction in the return on investment period during
+the operating period. The choice of PV/BESS and its economic
+impact are examined between the situation where users trade
+P2P energy and can only sell their energy as P2G. The contribution
+of this study is threefold;
+
+1. Taking capital, investment, and maintenance expenses into
+account, a novel method is designed that enables users to
+obtain the proper investment and make the most efficient
+use of resources by utilizing optimal PV/BESS size in both
+P2P and P2G cases.
+
+2. Increased social welfare, complicated economic analysis in
+a variety of case studies, and return on investment are
+all examined in detail in relation to the proposed energy
+management system software in a structure with domestic
+participants where peer-to-peer energy trading exists.
+
+3. By comparing the P2G and P2P cases, which are factored
+into the initial investment expenses, the economic benefits
+of P2P energy exchange, and the return on investment
+advantage for prosumers and consumers are analyzed in
+depth.
+
+The mathematical model developed in the study is detailed in
+Section 2, and the test case in the proposed methodology and the
+simulation results are provided in Section 3. Section 4 includes
+concluding remarks and future work.
+
+2. System description and methodology
+
+2.1. An overview of the designed structure
+
+The proposed methodology is aimed to provide optimal sizing
+of PVs and BESS in the optimum DG system based on MILP and
+Fig. 1 shows the schematic diagram of the proposed structure.
+Prosumer, consumer, P2P system operator (P2PSO), and Distri-
+bution System Operator (DSO) are the four key components of
+the system. There are communication links and bidirectional
+power flows options available for each user in the model. While
+prosumers can sell their surplus energy in the P2P trade market,
+consumers can buy energy with this market structure. It is worth
+underlining that this allows users to play an active role in the
+market. In cases where the energy exchange unfulfilled, energy
+bought from the grid and sold back to the grid are carried out by
+the DSO. The power system infrastructure is run by DSO and is
+responsible for stable and reliable energy operations.
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+
+2
+
+2
+
+V
+
+V
+
+Fig. 1. The schematic diagram of P2P energy trading in a distribution system.
+.2. Mathematical model of the proposed model
+
+.2.1. Object∑ive function
+
+max (Tn)
+n (1)
+
+where T inc
+n = V ome
+
+n − V outflow
+n , ∀n
+
+The main objective is to maximize social welfare in the building
+where households trade energy both from the grid and through
+P2P energy trading as given in (1). The difference between the
+P2P market and the income and expenses of this system where
+energy is exchanged from the grid is maximized in this equation.
+Here, Tn reflects the total net profit of the proposed structure and
+it is derived by subtracting total expenditures (V outflow
+
+n ) from total
+net income (V income
+
+n ).
+
+2.2.2. Income and outflow exchange constraints
+
+∑
+γn ∑ PLoad buy,G
+
+= n,t .λt , ∀n (2)
+t
+
+buy,G buy,G
+ζn = [(Pn,t .λt .∆T ) + (Pbuy,P2P
+
+n,t .λP2P
+t .∆T )]
+
+t (3)
+− [(P sold,G sold,G
+
+n,t .λt .∆T ) + (P sold,P2P
+n,t .λP2P
+
+t .∆T )], ∀n
+cost,red
+n = γn − ζn, ∀n (4)
+
+∑(
+income V cost )
+
+,red
+n
+
+n = , ∀n (5)
+d
+
+h h
+
+V outflow
+n = CPV
+
+cap.n
+PV
+n + CBESS
+
+∑( cap .nBESS
+n )
+
+(CPV ,rep,ind
+n,h .CPV ,rep
+
+n,h .nPV
+n ) + (CPV ,main
+
+n,h .nPV
+n )
+
+∑(+ d
+h h )
+
+(CBESS,rep,ind
+n,h .CBESS,rep
+
+n,h .nBESS
+n ) + (CBESS,main
+
+n,h .nBESS
+n )
+
++ , ∀n
+d
+
+h h
+
+(6)
+In (2), γn is the cost of the house n in the case of not using the
+PV-BESS system, ζn in (3) is the cost of the household in the case
+where the PV-BESS system is used in the system and the energy
+exchange is met from the grid and the P2P energy trading. Eq. (4)
+4
+
+states the annual profit that is obtained by subtracting the value
+of γn from ζn. The total income of the proposed building during
+the operation period is given in (5), and the total cost in (6).
+
+2.2.3. Power balance
+
+Pbuy,T
+n,t + PPV ,used
+
+n,t + PBESS,used
+n,t = PLoad
+
+n,t + PBESS,ch
+n,t , ∀n, t (7)
+
+The power balance for each household during each period t is
+provided in (7). While the left side of this equation indicates
+the source from which the desirable powers for residential use
+are supplied, it is shown on the right side that the loads that
+consume the residential requested power. Here, the sum of the
+total power purchased (Pbuy,T
+
+n,t ) and the power supplied by the
+PV system (PPV ,used
+
+n,t ) and BESS (PBESS,used
+n,t ) to export power to the
+
+house is equal to the sum of the charging power of the BESS
+(PBESS,ch
+
+n,t ) system and the load demand of the users (PLoad
+n,t ).
+
+2.2.4. Peer-to-peer electricity exchange constraints
+
+Pbuy,T
+n,t = Pbuy,G
+
+n,t + Pbuy,P
+n,t , ∀n, t (8)
+
+P sold,T
+n,t = P sold,G
+
+n,t + P sold,P
+n,t , ∀n, t (9)
+
+∑ ∑
+Pbuy,P sold,P
+n,t = Pn,t , ∀t (10)
+
+n n
+
+If (8) is considered, Pbuy,G
+n,t standing for household n represents
+
+the power drawn from the P2P market, Pbuy,P
+n,t shows the power it
+
+draws from the P2P market. Thus, the total drawn power (Pbuy,T
+n,t )
+
+is provided in the operating of a house. In (9), P sold,G
+n,t reflects the
+
+power sold to the grid and P sold,P
+n,t is for the sold power to P2P
+
+market. Here, the total sold power (P sold,T
+n,t ) is obtained by the sum
+
+of these power components. It should be stated that constraints
+(8) and (9) are valid for each user for every time period. Eq. (10)
+shows that the power transferred to and drawn from the system
+by the domestic users participating in the P2P market in each
+time period should be equal.
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+
+2
+
+P
+
+0
+
+0
+T
+s
+o
+p
+i
+A
+o
+v
+p
+l
+S
+l
+f
+
+2
+
+P
+
+0
+
+0
+
+.2.5. PV system production modeling
+
+sold,PV
+n,t + PPV ,used
+
+n,t = PPV ,T
+n,t .nPV
+
+n , ∀n, t (11)
+
+The expression PPV ,T
+n,t by household n indicates the total power
+
+capacity of the PV system, while this has to be equal to the sum of
+the household’s power used by the PV system for domestic loads
+(PPV ,used
+
+n,t ) and the power sold by the PV system (P sold,PV
+n,t ) as seen
+
+in (11).
+
+2.2.6. PV system and BESS capacity limit constraints
+
+nBESS
+n ≤ nBESS,max
+
+n , ∀n, t (12)
+
+nPV
+n ≤ nPV ,max
+
+n , ∀n, t (13)
+In inequalities (12) and (13), nBESS
+
+n refers to the number of 1 kWh
+BESS and nPV
+
+n is for the number of 1 kW PV system, it is shown
+that these values cannot be selected more than a specific value
+nBESS,max
+n , nPV ,max
+
+n according to the availability of the household
+structures.
+
+2.2.7. BESS modeling
+
+PBESS,used
+n,t + P sold,BESS
+
+n,t = PBESS,disch
+n,t .δBESS,dischn , ∀n, t (14)
+
+0 ≤ PBESS,ch
+n,t ≤ RBESS,ch
+
+n .nBESS
+n , ∀n, t (15)
+
+0 ≤ PBESS,disch
+n,t ≤ RBESS,disch
+
+n .nBESS
+n , ∀n, t (16)
+
+EBESS
+n,t = EBESS
+
+n,t−1 + (PBESS,ch
+n,t .δBESS,chn .∆T ) − (PBESS,disch
+
+n,t .∆T ), ∀n, t > 1
+(17)
+
+EBESS
+n,t = EBESS,ini
+
+n , ∀n, t = 1 (18)
+
+EBESS,min
+n ≤ EBESS
+
+n,t ≤ EBESS,max
+n , ∀n, t (19)
+
+≤ PBESS,ch
+n,t ≤ N.uBESS
+
+n,t , ∀n, t (20)
+
+≤ PBESS,disch
+n,t ≤ N.(1 − uBESS
+
+n,t ), ∀n, t (21)
+he constraints of the BESS are specified in (14)–(21). Eq. (14)
+tates that the power discharged by the BESS is equal to the sum
+f the total power sold from the BESS to the participants and the
+ower used by the users of BESS for household power. Inequal-
+ties (15)–(16) limit the charge–discharge power of the battery.
+lso, the limit values are expanded by multiplying with number
+f BESS units (nBESS
+
+n ) as can be seen. The state of energy (SoE)
+ariation is provided for the BESS in (17) during the operating
+eriod. While (18) specifies the initial SoE of the BESS, the SoE is
+imited with the maximum and minimum value in (19) that the
+oE can take to prevent deep discharges and extend the battery
+ife. In (20) and (21), the binary variable (uBESS
+
+n,t ) deters the BESS
+rom charging and discharging simultaneously.
+
+.2.8. Power decomposition between purchased and sold powers
+
+sold,T
+n,t = P sold,PV
+
+n,t + P sold,BESS
+n,t , ∀n, t (22)
+
+≤ Pbuy,T
+n,t ≤ NG
+
+t .uG
+n,t , ∀n, t (23)
+
+≤ P sold,T
+≤ NG.(1 − uG ), ∀n, t (24)
+n,t t n,t
+
+5
+
+Fig. 2. Prosumer-1 average weekly consumption.
+
+Fig. 3. Prosumer-2 average weekly consumption.
+
+In (22), the total power sold (P sold,T
+n,t ) which consists of selling to
+
+the P2P market and the grid is equal to the sum of the power sold
+from the PV system (P sold,PV
+
+n,t ) and the BESS (P sold,BESS
+n,t ). Eqs. (23)
+
+and (24) show that energy cannot be sold concurrently when
+energy purchased from the grid and from the P2P market. On the
+other hand, NG
+
+t , sufficiently large number, indicates the maximum
+power that can be drawn from the grid.
+
+3. Test and results
+
+3.1. Examining the input data
+
+In this section, the sizing of the PV/BESS system and economic
+gain for the user are examined under different case studies under
+the developed algorithm; furthermore, the simulation results are
+evaluated. The devised MILP-based mathematical model is tested
+via a CPLEX solver in GAMS v.33.2.0 software [36].
+
+Figs. 2–5 depict power consumption profiles of prosumers
+and consumers. Although the simulations are conducted in the
+time granularity as minute, these figures demonstrate year data
+in the weekly, for the sake of clarity. The consumption profiles
+are provided from BCHydro’s HUE dataset, which was donated
+by residential customers [37]. As seen in the graphs, the daily
+change in end-users load profiles in the region varies remarkably.
+For the sake of clarity, it can be stated that the region’s annual
+total peak power consumption is 12.45 kW, with the lowest being
+0.46 kW. The annual power production of a 1 kW PV system
+in the Istanbul region is depicted in Fig. 6. To determine the
+optimal PV size for the end-users, this value is multiplied by uPV
+
+n .
+Fig. 7 presents the dynamic P2P system and grid energy purchase
+prices for any power determined. When the P2P market is not
+actively used, the energy purchase prices by P2PSO and DSO are
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+
+t
+b
+l y
+a w
+t s
+b
+t 3
+w
+c
+c t
+6 t
+l P
+A 3
+
+v
+t
+
+Fig. 4. Consumer-1 average weekly consumption.
+
+Fig. 5. Consumer-2 average weekly consumption.
+
+Fig. 6. Average weekly generation profile of 1 kW PV system.
+
+he same. It is worthy to state that lithium-ion and lead–acid
+atteries are used in PV/BESSs. Although lead–acid batteries are
+ess expensive and have a shorter lifespan, lithium-ion batteries
+re higher efficiency, higher energy density, shorter charging
+ime, and lower maintenance costs [35]. As a result, lithium-ion
+atteries are preferred in BESS. Table 1 includes the costs and the
+echnical specifications for both the PV system and the BESS. It is
+orthy to underline that Capital, replacement, and maintenance
+osts are taken into account for sensitivity sizing. Besides the PV
+apacity value is limited to 4.5 kW and the BESS capacity value to
+kWh. To eliminate issues that affect deep discharge and battery
+
+ife, the minimum battery SOE value is set to 20% of its capacity.
+lso, the BESS’s charging/discharging rate is specified as 0.5.
+While the operating period of the specified PV system is de-
+
+ermined as 20 years, the BESS has an operational life of eight
+ o
+6
+
+Fig. 7. Dynamic pricing for P2PSO and DSO energy purchases on a standard day.
+
+Table 1
+Input parameter values for the PV system and BESS.
+Description Value Units
+Capital cost of PV unit 500 $/kW
+Replacement cost of PV unit 500 $/kW
+Maintenance cost of PV unit 25 $/kW
+Capital cost of BESS unit 90 $/kWh
+Replacement cost of BESS unit 90 $/kWh
+Maintenance cost of BESS unit 3 $/kWh
+Real discount rate 0.05 –
+Project life time 25 –
+Total average energy consumption per hour 3.39 kWh
+Total peak power annual 12.45 kW
+Total minimum power annual 0.46 kW
+Upper limit capacity for the size of PV 4.5 kW
+Upper limit capacity for the size of BESS 6 kWh
+The minimum level of SOE for BESS 0.2 kWh
+Charging/Discharging rate of BESS 0.5 –
+
+Fig. 8. Sizing of PV for P2P/P2G cases.
+
+ears. Due to this fact, it is assumed that the BESS is replaced
+ith a new one twice during the operational life of the proposed
+tructure, after the 8th and 16th years.
+
+.2. Discussion of the simulation results
+
+This section details the results of the PV/BESS size calculation,
+he comparison of economic benefits in various case studies, and
+he determination of the payback period. Fig. 8 shows the decided
+V sizes for P2G and P2P. While the P2G value for Prosumer-1 is
+.138 kW, and the P2P value is 4.490 kW, Prosumer-2 has a P2G
+alue of 2.152 kW and a P2P value of 4.215 kW. Furthermore, the
+ptimal sizing of the BESS for P2G and P2P are shown in Fig. 9.
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+Fig. 9. Sizing of BESS for P2P/P2G cases.
+
+Fig. 10. Daily energy scheduling of prosumer-1 in winter.
+
+Fig. 11. Daily energy scheduling of prosumer-1 in summer.
+
+As clearly seen in the mentioned figure that the P2G value for
+Prosumer-1 is 4.391 kWh, and the P2P value is 4.490 kWh. Yet,
+Prosumer-2 has a P2G value of 3.007 kWh and a P2P value of
+5.998 kWh. In the case of P2P, it seems that the higher capacity
+sizing of PV/BESS compared to P2G, along with lower investment
+return periods, increases the profit. Table 2 presents the energy
+cost values of consumers and prosumers for P2G and P2P. It is
+observed that prosumers in the case of P2G and prosumers and
+consumers in the case of P2P make a profit using a MILP-based
+algorithm. According to P2G, it can be said that P2P can provide
+more economic benefits to the users during the operation.
+
+The overall cost values of consumers for P2G and P2P are
+presented in Table 3. P2G also used the system at the end of the
+operating period of $1179.005 profit, while P2P also observed that
+7
+
+Fig. 12. Daily energy scheduling of consumer-1 in winter.
+
+Fig. 13. Daily energy scheduling of consumer-1 in summer.
+
+Table 2
+Energy cost values of consumers and prosumers in P2P and P2P situations.
+
+Prosumer-1 Prosumer-2 Consumer-1 Consumer-2
+Income $4157.864 $2761.531 – –
+
+P2G Outflow $3405.905 $2334.485 – –
+Net profit $751.959 $427.046 – –
+Income $5577.162 $5130.247 $504.735 $351.026
+
+P2P Outflow $4817.401 $4593.045 – –
+Net profit $759.761 $537.202 $504.735 $351.026
+
+Table 3
+Comparison of net profit in P2G and P2P cases.
+Case Total income Total outflow Total net profit
+P2G $6919.395 $5740.39 $1179.005
+P2P $11563.17 $9410.446 $2152.724
+
+this profit increased by 45% to $2152.724. While prosumers earn
+10% more profits with P2P trading compared to P2G, consumer-1
+earns $504.735 and consumer-2 earns $351.026 in profits via P2P
+energy trading.
+
+In addition to the techno-economic analyses, daily energy
+scheduling of Prosumer-1 for a pattern day in both winter and
+summer cases are shown in Figs. 10 and 11, respectively. The BESS
+of the Prosumer-1 draws more energy from the grid at 4 am and 5
+am that dynamic prices are the lowest in order to feed their own
+load and to sell energy to the P2P market at the noon. In terms of
+the summer case, BESS gains profit by selling the charged power
+to the P2P at 6 am with the aim of storing the excess PV at the
+noon. Also, total power sold to the P2P does not change much
+since the load consumption increases along with the increment
+in PV generation. However, the total power sold of Prosumer-2
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+
+q
+m
+
+2
+P
+a
+a
+s
+4
+t
+i
+o
+t
+p
+s
+f
+h
+P
+p
+D
+w
+r
+w
+
+c
+t
+b
+w
+k
+o
+s
+c
+B
+a
+t
+t
+a
+1
+s
+
+4
+
+w
+u
+f
+a
+w
+n
+w
+s
+p
+p
+P
+P
+i
+u
+c
+f
+
+C
+
+i
+p
+p
+c
+n
+
+uite increases in the summer cases since the PV generation is
+uch more than the load consumption.
+While total selling volumes of Prosumer-1 are 2.48 kWh and
+
+.85 kWh for winter and summer, total selling volumes of
+rosumer-2 are 5.41 kWh and 2.48 kWh and 2.85 kWh for winter
+nd summer, total selling volumes of Prosumer-2 are 5.41 kWh
+nd 20.78 kWh for winter and summer, respectively. In the
+ummer case, the total peak consumption on an hourly basis is
+.06 kWh and 4.28 kWh at 6 pm and 7 pm, respectively, while in
+he winter case it is 6.19 kWh and 6.77 kWh at 5 pm and 6 pm,
+n turn. Fig. 5 shows that the highest grid energy purchase price
+ccurs between 5 and 8 pm. Due to these facts, it is observed
+hat P2P energy sales are high for prosumer-1 at 6 pm and 7
+m in the summer case, and at 5 pm and 6 pm in the winter
+cenario. Examining Consumer-1, it is seen that the energy buying
+rom the P2P market is high during the summer and winter peak
+ours. Last, it can be stated that BESS is used for own loads and
+2P trading at peak time intervals for both cases. Apart from
+rosumers, consumers can also gain profit from the local market.
+aily energy scheduling of Consumer-1 for a pattern day in both
+inter and 260 summer cases are shown in Figs. 12 and 13,
+espectively. It can be seen that P2P trading volume is low in the
+inter case because of the constraint PV generation.
+However, although load consumption rises in the summer
+
+ase, utilization from the P2P energy trading also increases thanks
+o the excess power of Prosumer-2. In this context, while total
+uying volumes of Consumer-1 are 4.04 kWh and 15.74 kWh for
+inter and summer, total buying volumes of Consumer-2 are 3.12
+Wh and 5.74 kWh for winter and summer, respectively. The
+perating time and type of BESS are important factors to con-
+ider when calculating the return on investment. Therefore, the
+apital, maintenance, and replacement costs of a lithium-ion type
+ESS are taken into account. Also, costs are added after the 8th
+nd 16th years when calculating replacement costs. Considering
+he return of PVs and lithium-ion type BESS and the operating
+ime costs, while the payback period in the P2G case study is
+bout 13.5 years for both Prosumer-1 and Prosumer-2; it is about
+2.5 years for both Prosumer-1 and Prosumer-2 in the P2P case
+tudy.
+
+. Conclusions
+
+In this study, the optimal PV/BESS sizing in the P2P trading
+as performed by maximizing the return of PV and BESS to the
+sers and the net profit after deducting their costs. Users benefit
+rom optimal PV and BESS sizing in terms of both social welfare
+nd economic profit. Capital, replacement and maintenance costs
+ere taken into account for precise sizing. Furthermore, the eco-
+omic contribution of P2G and P2P energy exchange situations
+ere examined. The use of P2P energy trading has resulted in
+ubstantial benefits for both prosumers and customers in the
+roposed scheme. In the case of P2P, a profit increase of 2% in
+rosumer 1 and 20% in prosumer 2 were observed compared to
+2G. Considering the total profit, it gained 45% more profit from
+2P compared to P2G. As a future extension of this study or future
+deas for new studies in this field, battery degradation of the BESS,
+ncertainties related to renewable-based generations, and load
+onsumptions together with market prices could be considered
+or optimal sizing investments.
+
+RediT authorship contribution statement
+
+Abdurahman Yaldız: Contributed by realizing the relevant
+mplementations regarding the formulization and wrote the main
+arts of the paper. Tayfur Gökçek: Provided the main idea and
+repared visual presentation. İbrahim Şengör: Contributed to
+ritical review, Commentary and revision. Ozan Erdinç: Coordi-
+ated and managed the overall study.
+8
+
+Declaration of competing interest
+
+The authors declare that they have no known competing finan-
+cial interests or personal relationships that could have appeared
+to influence the work reported in this paper.
+
+References
+
+[1] International energy agency global EV outlook 2020, ‘‘Clean energy
+for all Europeans’’, 2019, https://ec.europa.eu/energy/en/topics/energy-
+strategy-andenergy-union/clean-energy-all-europeans Online; accessed:
+02/01/2019.
+
+[2] International Energy Agency Global EV Outlook 2019.
+[3] S. Rezaee, E. Farjah, B. Khorramdel, Probabilistic analysis of plug-in electric
+
+vehicles impact on electrical grid through homes and parking lots, IEEE
+Trans. Sustain. Energy 4 (4) (2013) 1024–1033, http://dx.doi.org/10.1109/
+TSTE.2013.2264498.
+
+[4] L. Einav, C. Farronato, J. Levin, Peer-to-peer markets, Annu. Rev.
+Econ. 8 (1) (2016) 615–635, http://dx.doi.org/10.1146/annurev-economics-
+080315-015334.
+
+[5] O.M. Almenning, S. Bjarghov, H. Farahmand, Reducing neighborhood peak
+loads with implicit peer-to-peer energy trading under subscribed capacity
+tariffs, in: 2019 International Conference on Smart Energy Systems and
+Technologies (SEST), 2019, pp. 1–6, http://dx.doi.org/10.1109/SEST.2019.
+8849067.
+
+[6] W. Saad, Z. Han, H.V. Poor, Coalitional game theory for cooperative
+micro-grid distribution networks, in: 2011 IEEE International Conference
+on Communications Workshops (ICC), 2011, pp. 1–5, http://dx.doi.org/10.
+1109/iccw.2011.5963577.
+
+[7] J. Wang, H. Zhang, Y. Zhou, Intelligent under frequency and under voltage
+load shedding method based on the active participation of smart appli-
+ances, IEEE Trans. Smart Grid 8 (1) (2017) 353–361, http://dx.doi.org/10.
+1109/TSG.2016.2582902.
+
+[8] Z. Li, J. Kang, R. Yu, D. Ye, Q. Deng, Y. Zhang, Consortium blockchain for
+secure energy trading in industrial internet of things, IEEE Trans. Ind. Inf.
+14 (8) (2018) 3690–3700, http://dx.doi.org/10.1109/TII.2017.2786307.
+
+[9] Z. Zhang, R. Li, F. Li, A novel peer-to-peer local electricity market for joint
+trading of energy and uncertainty, IEEE Trans. Smart Grid 11 (2) (2020)
+1205–1215, http://dx.doi.org/10.1109/TSG.2019.2933574.
+
+[10] W. Tushar, T.K. Saha, C. Yuen, D. Smith, H.V. Poor, Peer-to-peer trading in
+electricity networks: An overview, IEEE Trans. Smart Grid 11 (4) (2020)
+3185–3200, http://dx.doi.org/10.1109/TSG.2020.2969657.
+
+[11] D. Feroldi, D. Zumoffen, Sizing methodology for hybrid systems based on
+multiple renewable power sources integrated to the energy management
+strategy, Int. J. Hydrogen Energy 39 (16) (2014) 8609–8620, http://dx.doi.
+org/10.1016/j.ijhydene.2014.01.003.
+
+[12] L. Herenčić, P. Ilak, I. Rajšl, Z. Zmijarević, M. Cvitanović, M. Delimar, B.
+Pećanac, Overview of the main challenges and threats for implementation
+of the advanced concept for decentralized trading in microgrids, in: IEEE
+EUROCON 2019 -18th International Conference on Smart Technologies,
+2019, pp. 1–6, http://dx.doi.org/10.1109/EUROCON.2019.8861906.
+
+[13] W. Tushar, C. Yuen, T.K. Saha, T. Morstyn, A.C. Chapman, M.J.E. Alam, S.
+Hanif, H.V. Poor, Peer-to-peer energy systems for connected communities:
+A review of recent advances and emerging challenges, Appl. Energy 282
+(2021) 116131, http://dx.doi.org/10.1016/j.apenergy.2020.116131.
+
+[14] F. Si, J. Wang, Y. Han, Q. Zhao, P. Han, Y. Li, Cost-efficient multi-energy
+management with flexible complementarity strategy for energy internet,
+Appl. Energy 231 (2018) 803–815, http://dx.doi.org/10.1016/j.apenergy.
+2018.09.152.
+
+[15] A. Lüth, J.M. Zepter, P. Crespo del Granado, R. Egging, Local electricity
+market designs for peer-to-peer trading: The role of battery flexibility,
+Appl. Energy 229 (2018) 1233–1243, http://dx.doi.org/10.1016/j.apenergy.
+2018.08.004.
+
+[16] W. Tushar, B. Chai, C. Yuen, D.B. Smith, K.L. Wood, Z. Yang, H.V. Poor,
+Three-party energy management with distributed energy resources in
+smart grid, IEEE Trans. Ind. Electron. 62 (4) (2015) 2487–2498, http:
+//dx.doi.org/10.1109/TIE.2014.2341556.
+
+[17] S. Nguyen, W. Peng, P. Sokolowski, D. Alahakoon, X. Yu, Optimizing rooftop
+photovoltaic distributed generation with battery storage for peer-to-peer
+energy trading, Appl. Energy 228 (2018) 2567–2580, http://dx.doi.org/10.
+1016/j.apenergy.2018.07.042.
+
+[18] H. Turker, P. Favre-Perrod, Management, optimal sizing and technical-
+economic analysis of batteries for constant production in photovoltaic
+systems, in: 2016 IEEE International Conference on Renewable Energy
+Research and Applications (ICRERA), 2016, pp. 1055–1061, http://dx.doi.
+org/10.1109/ICRERA.2016.7884495.
+
+[19] M. Bashir, J. Sadeh, Size optimization of new hybrid stand-alone renewable
+energy system considering a reliability index, in: 2012 11th International
+Conference on Environment and Electrical Engineering, 2012, pp. 989–994,
+http://dx.doi.org/10.1109/EEEIC.2012.6221521.
+
+
+
+A. Yaldız, T. Gökçek, İ. Şengör et al. Sustainable Energy, Grids and Networks 28 (2021) 100540
+[20] A. Askarzadeh, Developing a discrete harmony search algorithm for size
+optimization of wind–photovoltaic hybrid energy system, Sol. Energy 98
+(2013) 190–195, http://dx.doi.org/10.1016/j.solener.2013.10.008.
+
+[21] P. Wang, W. Wang, D. Xu, Optimal sizing of distributed generations in
+DC microgrids with comprehensive consideration of system operation
+modes and operation targets, IEEE Access 6 (2018) 31129–31140, http:
+//dx.doi.org/10.1109/ACCESS.2018.2842119.
+
+[22] M. Moazzami, D. Fadaei, H. Shahinzadeh, S.H. Fathi, Optimal sizing and
+technical analysis of rural electrification alternatives in Kerman province,
+in: 2017 Smart Grid Conference (SGC), 2017, pp. 1–8, http://dx.doi.org/10.
+1109/SGC.2017.8308872.
+
+[23] M. Kharrich, Y. Sayouti, M. Akherraz, Microgrid sizing with environmental
+and economic optimization, in: 2018 Renewable Energies, Power Systems
+Green Inclusive Economy (REPS-GIE), 2018, pp. 1–6, http://dx.doi.org/10.
+1109/REPSGIE.2018.8488864.
+
+[24] R. Khezri, A. Mahmoudi, M.H. Haque, Optimal capacity of solar PV and
+battery storage for Australian grid-connected households, IEEE Trans.
+Ind. Appl. 56 (5) (2020) 5319–5329, http://dx.doi.org/10.1109/TIA.2020.
+2998668.
+
+[25] U.T. Salman, F.S. Al-Ismail, M. Khalid, Optimal sizing of battery en-
+ergy storage for grid-connected and isolated wind-penetrated microgrid,
+IEEE Access 8 (2020) 91129–91138, http://dx.doi.org/10.1109/ACCESS.2020.
+2992654.
+
+[26] C. Essayeh, M.R. El-Fenni, H. Dahmouni, Optimal sizing of a PV-ESS
+microgrid system under dynamic pricing of utility energy, in: 2018 19th
+IEEE Mediterranean Electrotechnical Conference (MELECON), 2018, pp.
+86–91, http://dx.doi.org/10.1109/MELCON.2018.8379073.
+
+[27] M. Mehrtash, F. Capitanescu, P.K. Heiselberg, T. Gibon, A. Bertrand, An
+enhanced optimal PV and battery sizing model for zero energy buildings
+considering environmental impacts, IEEE Trans. Ind. Appl. 56 (6) (2020)
+6846–6856, http://dx.doi.org/10.1109/TIA.2020.3022742.
+
+[28] J.C. Alberizzi, M. Rossi, M. Renzi, A MILP algorithm for the optimal sizing
+of an off-grid hybrid renewable energy system in south tyrol, Energy
+Rep. 6 (2020) 21–26, http://dx.doi.org/10.1016/j.egyr.2019.08.012, The 6th
+International Conference on Energy and Environment Research - Energy
+and environment: challenges towards circular economy.
+9
+
+[29] M. Farrokhifar, F.H. Aghdam, A. Alahyari, A. Monavari, A. Safari, Optimal
+energy management and sizing of renewable energy and battery systems
+in residential sectors via a stochastic MILP model, Electr. Power Syst. Res.
+187 (2020) 106483, http://dx.doi.org/10.1016/j.epsr.2020.106483.
+
+[30] M. Tostado-Véliz, D. Icaza-Alvarez, F. Jurado, A novel methodology for
+optimal sizing photovoltaic-battery systems in smart homes considering
+grid outages and demand response, Renew. Energy 170 (2021) 884–896,
+http://dx.doi.org/10.1016/j.renene.2021.02.006.
+
+[31] R. Lamedica, E. Santini, A. Ruvio, L. Palagi, I. Rossetta, A MILP methodology
+to optimize sizing of PV - wind renewable energy systems, Energy 165
+(2018) 385–398, http://dx.doi.org/10.1016/j.energy.2018.09.087.
+
+[32] A.K. Erenoğlu, A. Çiçek, O. Arıkan, O. Erdinç, J.P.S. Catalão, A new approach
+for grid-connected hybrid renewable energy system sizing considering
+harmonic contents of smart home appliances, Appl. Sci. 9 (18) (2019)
+http://dx.doi.org/10.3390/app9183941.
+
+[33] L. Ali, S.M. Muyeen, A. Ghosh, H. Bizhani, Optimal sizing of networked
+microgrid using game theory considering the peer-to-peer energy trading,
+in: 2020 2nd International Conference on Smart Power Internet Energy
+Systems (SPIES), 2020, pp. 322–326, http://dx.doi.org/10.1109/SPIES48661.
+2020.9243067.
+
+[34] D.L. Rodrigues, X. Ye, X. Xia, B. Zhu, Battery energy storage sizing optimi-
+sation for different ownership structures in a peer-to-peer energy sharing
+community, Appl. Energy 262 (2020) 114498, http://dx.doi.org/10.1016/j.
+apenergy.2020.114498.
+
+[35] W. Tushar, B. Chai, C. Yuen, S. Huang, D.B. Smith, H.V. Poor, Z. Yang, Energy
+storage sharing in smart grid: A modified auction-based approach, IEEE
+Trans. Smart Grid 7 (3) (2016) 1462–1475, http://dx.doi.org/10.1109/TSG.
+2015.2512267.
+
+[36] General Algebraic Modeling System (GAMS), GAMS Documentation
+Center, A User’s Guide, GAMS Development Corporation, Washing-
+ton, DC, USA, 2013, https://www.gams.com/latest/docs/index.html Online;
+accessed: April 2021.
+
+[37] S. Makonin, HUE: The hourly usage of energy dataset for buildings in
+British Columbia, 2018, http://dx.doi.org/10.7910/DVN/N3HGRN.

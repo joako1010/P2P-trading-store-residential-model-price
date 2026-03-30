@@ -1,0 +1,2382 @@
+﻿Applied Energy 407 (2026) 127368 
+
+Contents lists available at ScienceDirect
+
+Applied Energy
+
+ journal homepage: www.elsevier.com/locate/apen  
+
+A capacity renting framework for shared energy storage considering 
+peer-to-peer energy trading among prosumers with privacy protection
+
+Yingcong Sun a iD, Laijun Chen a, b,∗ iD, Yue Chen c iD, Mingrui Tang a, Shengwei Mei a, b
+
+a Department of Electrical Engineering, Tsinghua University, Beijing, Beijing 100084, China
+b College of Energy and Electrical Engineering, Qinghai University, Xining, Qinghai 810016, China
+c Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong, China
+
+H I G H L I G H T S
+
+• A capacity renting framework for shared energy storage systems considering peer-to-peer energy trading among prosumers.
+• A model based on a generalized Nash game to describe the relationship among shared ESS and prosumers.
+• The ADMM algorithm with Paillier cryptosystem to solve the variational equilibrium for privacy preservation.
+
+A R T I C L E  I N F O A B S T R A C T
+
+Keywords: Shared energy storage systems (ESS) present a promising solution to the temporal imbalance between energy 
+Shared energy storage systems generation from renewable distributed generators (DGs) and the power demands of prosumers. However, as DG 
+Capacity renting penetration rates rise, spatial energy imbalances become increasingly significant, necessitating the integration of 
+Peer-to-peer energy trading peer-to-peer (P2P) energy trading within the shared ESS framework. Two key challenges emerge in this context: 
+Privacy protection
+
+the absence of effective mechanisms and the greater difficulty for privacy protection due to increased data com­
+Generalized nash game
+
+munication. This research proposes a capacity renting framework for shared ESS considering P2P energy trading 
+of prosumers. In the proposed framework, prosumers can participate in P2P energy trading and rent capacities 
+from shared ESS. A generalized Nash game is formulated to model the trading process and the competitive inter­
+actions among prosumers, and the variational equilibrium of the game is proved to be equivalent to the optimal 
+solution of a quadratic programming problem. To address the privacy protection concern, the problem is solved 
+using the alternating direction method of multipliers (ADMM) with the Paillier cryptosystem. Finally, numeri­
+cal simulations demonstrate the impact of P2P energy trading on the shared ESS framework and validate the 
+effectiveness of the proposed privacy-preserving algorithm.
+
+1 . Introduction of shared ESS, which involves centralized energy storage serving mul­
+tiple prosumers, is receiving attention in numerous countries as it can 
+
+The proliferation of distributed generators (DGs), especially dis­
+effectively tackle these challenges with scale effects [5].
+
+tributed photovoltaics (PVs) and wind turbines (WTs), has changed 
+Currently, energy transaction and capacity allocation are two main 
+
+electricity production and consumption patterns [1]. An increasing 
+ways of energy storage sharing [6]. Energy transaction implies period-
+
+number of consumers have been converted into prosumers with the 
+by-period trading of energy between the shared ESS and users, with 
+
+installation of DGs [2]. Energy storage systems (ESS) are considered 
+billing based on the amount of electricity bought and sold. In [7], the 
+
+promising solution to mitigate the temporal imbalances between the 
+energy transaction framework is employed to enable users to share ESS 
+
+intermittent generation of DGs and the power demand of prosumers, 
+with the VCG mechanism. However, the energy transaction framework 
+
+while also enhancing the economic viability of DGs [3]. However, many 
+cannot directly reflect the prosumers’ demand for ESS. The capacity al­
+
+prosumers face difficulties in shouldering the high costs and space re­
+location method allows consumers to rent part of the shared ESS for a 
+
+quirements associated with individual ESS deployment [4]. The concept 
+designated period [8], with billing based on renting capacity. In [9], a 
+
+∗ Corresponding author at: College of Energy and Electrical Engineering, Qinghai University, Xining, Qinghai 810016, China.
+ Email address: chenlaijun@tsinghua.edu.cn (L. Chen).
+
+https://doi.org/10.1016/j.apenergy.2026.127368
+Received 23 August 2025; Accepted 5 January 2026
+
+Available online 9 January 2026 
+0306-2619/© 2026 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies. 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+cooperative game-based approach is applied to allocate shared battery convergence rate slows due to the introduction of the quadratic proximal 
+and thermal ESS capacities across various integrated energy systems, term. 
+with the Nash bargaining method determining the leasing price for Considering the shortcomings of the existing literature, this research 
+capacity. In [10], an energy capacity trading and operation game is pro­ aims to propose a demand-side market mechanism that integrates P2P 
+posed to allocate the ESS capacity based on the prosumers’ bids. In [6], energy trading into the capacity sharing framework of shared ESS. The 
+prosumers rent storage and power capacities separately, further enhanc­ market structure and rules are outlined, and the market participants 
+ing the flexibility and efficiency of shared energy storage utilization. (prosumers and shared ESS) are modeled. The trading process is for­
+Collectively, these studies demonstrate that shared ESS can reduce the mulated as a generalized Nash game among prosumers, which is then 
+operational costs for both prosumers and society. transformed into a QP problem with conditions to solve the equilibrium. 
+
+Privacy protection is another important concern in the structure To address privacy concerns, a distributed solution algorithm using 
+of shared ESS due to the interaction among different stakeholders. ADMM with the Paillier cryptosystem is applied. Finally, numerical 
+Shared ESS can earn more revenue through price discrimination while simulations demonstrate the effectiveness and validity of the proposed 
+reducing prosumers’ profits if shared ESS can obtain more informa­ mechanism.
+tion from prosumers [11]. In [12], a centralized solution is used to The main contributions of the research can be summarized as follows:
+address capacity allocation for community ESS, which requires users’ 
+private information, raising the risk of privacy disclosure. To mitigate (1) A capacity renting framework of shared ESS considering P2P 
+such risks, many studies have employed distributed algorithms to avoid energy trading of prosumers is proposed. In this framework, pro­
+the transmission of sensitive parameters between agents. In [10], the sumers can rent capacity from shared ESS and trade energy with 
+NI-function type method is applied to find the variational equilibrium other prosumers. A model based on a generalized Nash game is 
+of the proposed game for capacity allocation. In [13], a hybrid dis­ developed to describe the trading process and competition among 
+tributed optimization method based on intelligent heuristic algorithms prosumers. The existence of the variational equilibrium for this 
+and mathematical programming is proposed to solve the problem of game is demonstrated, and the variational equilibrium is proved 
+coordinated dispatching of shared ESS, microgrids, and distributed net­ to be equivalent to the optimal solution of a QP problem. To the 
+works. In [14], the algorithm of the alternative direction multiplier best of our knowledge, such existence and equivalence guaran­
+method (ADMM) is applied for benefit allocation among shared ESS tees have not been provided by the existing literature. By applying 
+and users, where only iterative variable information is exchanged be­ this demand-side mechanism, prosumers’ operational costs are 
+tween agents, reducing the risk of privacy leaks. However, even in such reduced.
+cases, private data can sometimes be inferred from iterative data [15]. (2) The ADMM algorithm with the Paillier cryptosystem is proposed 
+In [16], an example is provided to show how private information is to solve the equilibrium of the generalized Nash game. The game 
+inferred through the iterative data of the dual decomposition based is transformed into a two-block coupled problem, and the ADMM 
+method. algorithm with the Paillier cryptosystem is employed to quickly 
+
+As the penetration of DGs among prosumers increases, spatial en­ reach equilibrium while safeguarding the privacy of each pro­
+ergy imbalances have become a significant challenge. Peer-to-peer (P2P) sumer. The proposed algorithm can be applied on the complex 
+energy trading has emerged as a cost-effective solution to address this trading networks, and has a faster convergence rate. Through 
+issue [17]. In [18], a P2P energy sharing mechanism based on a gen­ homomorphic encryption, private information remains secure, 
+eralized Nash game model is proposed to increase users’ flexibility. preventing agents from inferring any private information from 
+In [19], the prosumers are aggregated into several regions, and P2P communicated information.
+energy transactions are executed among the aggregators. To enhance 
+economic efficiency, it becomes essential to integrate P2P energy trad­ The rest of the paper is organized as follows: Section 2 describes 
+ing into the shared ESS framework, thereby addressing both temporal the system, energy and capacity transactions among prosumers and 
+and spatial imbalances in energy generation and demand. This integra­ shared ESS, and develops a model based on a generalized Nash game. 
+tion leads to more complex interactions. Both energy and capacity are In Section 3, the variational equilibrium is proved to be equivalent to 
+traded, and prosumers are deeply. Conventional distributed algorithms the optimal solution of a QP problem, and the ADMM algorithm with 
+like ADMM are insufficient in this context due to the complex interde­ the Paillier cryptosystem is proposed to solve the problem. Numerical 
+pendencies [20], necessitating a new structure to support and describe studies are carried out in Section 4 and Section 5 concludes the paper.
+these interactions.
+
+In the new structure, more information exchanges raise more con­ 2 . System modeling and problem formulation
+cerns about privacy protection. Distributed optimization alone is no 
+longer sufficient, and further data-protection techniques are required. In this section, we propose the capacity renting framework for shared 
+
+In [21], privacy-preserving problem transformation techniques are pro­ ESS considering P2P energy trading among prosumers, and develop a 
+
+posed to transform the original linear programming problems into deterministic model based on a generalized Nash game to describe the 
+
+randomized problems to protect sensitive input/output information. trading process.
+
+In [22], a similar technique is applied to a large-scale quadratic pro­
+2.1 . System description
+
+gramming (QP) problem. This method imposes stringent structural 
+requirements on the problem, and is not suitable for distributed solu­ We consider a local day-ahead market with 𝑁  prosumers (indexed 
+tions. Techniques such as differential privacy [23] and homomorphic by 𝑖 ∈ S) and a shared ESS operated by independent operators. The 
+encryption [24] are usually employed in distributed solution algorithms. prosumers are equipped with DGs (e.g., PVs and WTs), private ESS and 
+Methods of dual variable perturbation and primal variable perturbation flexible loads. The profiles of energy and capacity transactions are illus­
+are proposed in [25,26] to provide differential privacy. However, the trated in Fig. 1. Prosumers can buy electricity from the utility grid or 
+introduction of artificial noise in differential privacy necessitates a cer­ sell electricity to the utility grid. Prosumers can also conduct P2P en­
+tain sacrifice in convergence [27]. In [28], the aggregation of demand is ergy trading with each other to earn more profits. Shared ESS provides 
+implemented using the ADMM algorithm and homomorphic encryption. capacity rental services to prosumers, who can rent a portion of power 
+However, it is not suitable for complex energy trading networks. In [29], capacity and energy capacity of the shared ESS, and then dispatch it 
+Zhang et al. modify traditional ADMM to incorporate homomorphic en­ to meet their demand. Prosumers are charged based on the amount of 
+cryption for privacy protection. However, this approach is limited in capacity rented from the shared ESS. In this framework, prosumers are 
+applicability when optimization problems include constraints, and the deeply interconnected through P2P energy trading. Dashed lines in Fig. 1 
+
+2 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+Let the cost for shifting loads be 𝐶 𝑖
+sh: 
+
+𝑇
+∑
+
+𝐶 𝑖
+sh = 𝜆𝑖 𝑖
+
+sh(𝑃sh,𝑡)
+2 (4)
+
+𝑡=1
+
+where 𝜆𝑖sh is the price coefficient for shifting loads [34].
+Let 𝑃 𝑖
+
+𝑡  be the net load of prosumer 𝑖: 
+
+𝑃 𝑖
+𝑡 = 𝑃 𝑖
+
+load,𝑡 + 𝑃 𝑖,ES
+ch,𝑡 − 𝑃 𝑖,ES
+
+dis,𝑡 − 𝑃 𝑖
+DG,𝑡 + 𝑃 𝑖
+
+sh,𝑡, ∀𝑡 (5)
+
+where 𝑃 𝑖
+DG,𝑡 is the power generated by the distributed generator of 
+
+prosumer 𝑖.
+
+2.3 . Capacity renting of shared ESS
+
+The shared ESS allocates power capacity 𝑃 𝑖,SES
+max  and storage capacity 
+
+𝑆 𝑖,SES
+max  to prosumers. Each prosumer can independently dispatch this ca­
+
+pacity for their own use. The constraints on the allocated capacity for 
+prosumers are similar to those applied to private ESS and are outlined 
+
+Fig. 1. Profiles of energy and capacity transactions. below. 
+
+𝑆 𝑖,SES
+𝑡 = 𝑆 𝑖,SES
+
+𝑡−1 + (𝜂SES𝑃
+𝑖,SES
+
+show the communication network among all the agents. A non-profit ch,𝑡 − 𝑃 𝑖,SES
+dis,𝑡 ∕𝜂SES)Δ𝑡 (6a)
+
+P2P transaction center manages the transaction process [30]. Acting as 
+0 ≤ 𝑃 𝑖,SES
+
+both an information intermediary and supervisory authority, the center ch,𝑡 ≤ 𝑃 𝑖,SES
+max (6b)
+
+ensures that prosumers do not need to communicate directly with each 0 ≤ 𝑃 𝑖,SES
+dis,𝑡 ≤ 𝑃 𝑖,SES
+
+max (6c)
+other and oversees the fairness of transactions. As the paper’s primary 
+focus is the transaction framework, a deterministic model is adopted, 𝑆𝑜𝐶 𝑖,SES
+
+𝑡 = 𝑆 𝑖,SES
+𝑡 ∕𝑆𝑖,SES
+
+max (6d)
+
+where uncertainties arising from renewable outputs and loads are not 𝑆𝑜𝐶SES
+min ≤ 𝑆𝑜𝐶 𝑖,SES
+
+𝑡 ≤ 𝑆𝑜𝐶SES
+max (6e)
+
+considered. When uncertainty is relevant, the deterministic formulations 
+can be substituted with stochastic models [31], robust models [32], or 𝑆 𝑖,SES
+
+𝑇 ≥ 𝑆 𝑖,SES
+0 (6f)
+
+distributed robust models [33].
+where 𝑃 𝑖,SES
+
+ch,𝑡 , 𝑃 𝑖,SES
+dis,𝑡  are the charging and discharging power of the 
+
+2.2 . Models for prosumers’ equipment shared ESS from prosumer 𝑖, respectively; 𝑆 𝑖,SES
+𝑡 , 𝑆𝑜𝐶 𝑖,SES
+
+𝑡  are the en­
+
+Prosumers are equipped with DGs, private ESS, and flexible loads. ergy belonging to prosumer 𝑖 and the state of charge, respectively. 
+
+Suppose that the electricity produced by DGs and the base loads is pre­ 𝜂SES, 𝑆𝑜𝐶SES
+min , 𝑆𝑜𝐶
+
+SES
+max  are the efficiency, the lower SoC bound and the 
+
+dicted accurately. For private ESS, the following constraints need to be upper SoC bound of the shared ESS, respectively.
+
+satisfied: The costs of renting and using shared ESS for prosumers 𝐶 𝑖
+SES in­
+
+clude three parts: capacity renting costs 𝐶 𝑖
+SES,r for renting the capacity 
+
+𝑆 𝑖,ES
+𝑡 = 𝑆 𝑖,ES
+
+𝑡−1 + (𝜂𝑖,ES𝑃
+𝑖,ES
+ch,𝑡 − 𝑃 𝑖,ES
+
+dis,𝑡 ∕𝜂𝑖,ES)Δ𝑡 (1a) of shared ESS, usage costs 𝐶 𝑖
+SES,u for shared ESS maintenance, and trans­
+
+0 ≤ 𝑃 𝑖,ES mission costs 𝐶 𝑖
+ch,𝑡 ≤ 𝑃 𝑖,ES
+
+max (1b) SES,tr to pay for the distribution grid. The transmission 
+costs are determined by the MW-mile method [35]. Since the prosumers 
+
+0 ≤ 𝑃 𝑖,ES
+dis,𝑡 ≤ 𝑃 𝑖,ES
+
+max (1c) rent energy storage services, the transmission costs incurred by using 
+the shared ESS are borne entirely by the prosumers. 
+
+𝑆𝑜𝐶 𝑖,ES
+𝑡 = 𝑆 𝑖,ES
+
+𝑡 ∕𝑆𝑖,ES
+max (1d)
+
+𝑆𝑜𝐶 𝑖,ES
+min ≤ 𝑆𝑜𝐶 𝑖,ES
+
+𝑡 ≤ 𝑆𝑜𝐶 𝑖,ES 𝐶 𝑖
+max (1e) SES = 𝐶 𝑖
+
+SES,r + 𝐶 𝑖
+SES,u + 𝐶 𝑖
+
+SES,tr (7a)
+
+where 𝑃 𝑖,ES
+ch,𝑡 , 𝑃
+
+𝑖,ES
+dis,𝑡  are the power charged and discharged of the 𝑖th pro­ 𝐶 𝑖
+
+SES,r = 𝜆SES
+s 𝑆 𝑖,SES
+
+max + 𝜆SES
+p 𝑃 𝑖,SES
+
+max (7b)
+
+sumer’s private ESS, respectively; 𝑆 𝑖,ES
+𝑡 , 𝑆𝑜𝐶 𝑖,ES
+
+𝑡  are the energy stored in 𝑇
+∑
+
+and the state of charge of the 𝑖th prosumer’s private ESS at 𝑡, respectively. 𝐶 𝑖
+SES,u = 𝜆SES 𝑖 S S
+
+u (𝑃 , E
+ch,𝑡 + 𝑃 𝑖,SES
+
+dis,𝑡 ) (7c)
+
+𝜂 𝑡=1
+𝑖,ES, 𝑃
+
+𝑖,ES
+max , 𝑆
+
+𝑖,ES
+max , 𝑆𝑜𝐶
+
+𝑖,ES
+min , 𝑆𝑜𝐶
+
+𝑖,ES
+max  are the efficiency, the power capacity, 
+
+the storage capacity, the lower SoC bound and the upper SoC bound of 𝑇
+∑
+
+the 𝑖th prosumer’s private ESS, respectively. 𝐶 𝑖 ES
+SES,tr = 𝜆𝑖,SES ,
+
+tr (𝑃 𝑖 S
+ch,𝑡 + 𝑃 𝑖,SES
+
+dis,𝑡 ) (7d)
+𝑡=1
+
+The usage cost of private ESS is 𝐶 𝑖
+ES: 
+
+𝑇 where 𝜆SES
+s , 𝜆SES
+
+p  are the prices for unit storage capacity and power ca­
+∑
+
+𝐶 𝑖
+ES = 𝜆𝑖,ES , S
+
+𝑢 (𝑃 𝑖 E
+ch,𝑡 + 𝑃 𝑖,ES
+
+dis,𝑡 ) (2) pacity, respectively, and the derivation is formulated by Eq. (8); 𝜆SES
+u  is 
+
+𝑡=1 the unit power usage price of shared ESS; 𝜆𝑖,SES
+tr  is the unit price for power 
+
+where 𝜆𝑖,ES
+𝑢  is the unit power usage price of private ESS. transmission between prosumer 𝑖 and shared ESS, and the derivation is 
+
+Suppose part of the prosumers’ loads can be shifted to another period, formulated by Eq. (9).
+
+and the following constraints need to be satisfied: To reflect the impact of supply and demand on prices, the capacity 
+renting price is determined by the following equations: 
+
+− 𝛼𝑖sh𝑃
+𝑖
+load,𝑡 <= 𝑃 𝑖
+
+sh,𝑡 <= 𝛼𝑖sh𝑃
+𝑖
+load,𝑡, ∀𝑡 (3a)
+
+∑
+
+∑
+
+𝑃 𝑖 𝜆SES
+s = 𝑎s + 𝑏 𝑆 𝑖,SES
+
+s max (8a)
+sh,𝑡 = 0 (3b) 𝑖∈S
+
+𝑡 ∑
+
+𝜆SES ,
+p = 𝑎 𝑖
+
+p + 𝑏p 𝑃 SES
+max (8b)
+
+where 𝑃 𝑖
+load,𝑡, 𝑃
+
+𝑖
+sh,𝑡 are the base load and shifted load of prosumer 𝑖 at 𝑡; 𝑖∈S
+
+𝛼𝑖sh is the ratio of the maximum load that can be shifted.
+
+3 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+where 𝑎s, 𝑏s, 𝑎p, 𝑏p are the price coefficients of shared ESS, which are pre­ game [1,38] can also be adopted here. 
+determined before renting.  Instead of using a fixed pricing mechanism 
+
+𝜆P2P
+𝑡 = (𝜆buy
+
+𝑡 + 𝜆sell
+[6], the capacity renting price is related to the capacity to be rented by 𝑡 )∕2 (15)
+
+the prosumers. When there is a tight supply in capacity of the shared 
+ESS, the price will be higher, and vice versa. The equations also show The prosumer who buys electricity from P2P energy trading should 
+
+pay the transmission fee 𝐶 𝑖
+that other prosumers’ decisions can directly affect the cost of renting tr. 
+
+capacities.
+Let the unit power transmission price between node 𝑖 and 𝑗 be 𝜆𝑖,𝑗
+
+𝑇
+∑∑
+
+tr , 𝐶 𝑖
+tr = 𝜆𝑖,𝑗tr max{0, 𝑃 𝑖,𝑗
+
+𝑡 } (16)
+which is proportional to the electrical distance between nodes follow­ 𝑡=1 𝑗∈S
+ing the MW-mile method (similarly, the unit power transmission price 
+between 𝑖 and the shared ESS is 𝜆𝑖,SES
+
+tr ). Eq. (16) is neither affine nor quadratic, and it can be linearized by 
+introducing auxiliary variables 𝑃 𝑖,𝑗,+
+
+𝑡 . Turn Eq. (16) into: 
+
+𝜆𝑖,𝑗tr = 𝜃1|𝑥
+𝑖,𝑗
+| + 𝜃0 (9) 𝑇
+
+∑∑
+
+𝐶 𝑖
+tr = 𝜆𝑖,𝑗 𝑖,
+
+tr 𝑃
+𝑗,+
+
+𝑡 (17)
+where 𝑥𝑖,𝑗  is the impedance between prosumer 𝑖 and 𝑗. 𝜃1, 𝜃0 are constant 𝑡=1 𝑗∈S
+numbers [36].
+
+The summation of the power capacity and storage capacity allocated where 
+
+to prosumers cannot exceed the maximum capacity of the shared ESS: 
+𝑃 𝑖,𝑗,+
+𝑡 ≥ 𝑃 𝑖,𝑗
+
+𝑡 (18)
+∑
+
+𝑃 𝑖,SES
+max ≤ 𝑃 SES
+
+max (10a)
+𝑃 𝑖,𝑗,+
+
+𝑖∈S 𝑡 ≥ 0 (19)
+∑
+
+𝑆𝑖,SES
+max ≤ 𝑆SES
+
+max (10b) Through buying and selling electricity with the utility grid and other 
+𝑖∈S prosumers, the prosumers should achieve power balance: 
+
+∑
+
+where 𝑃 SES
+max , 𝑆
+
+SES 𝑃 𝑖
+𝑡 = 𝑃 𝑖,𝑗 𝑖
+
+𝑡 + 𝑃buy,𝑡 + 𝑃 𝑖,SES
+dis,𝑡 − 𝑃 𝑖
+
+sell,𝑡 − 𝑃 𝑖,SES
+max  are the power capacity and storage capacity of the ch,𝑡 (20)
+
+shared ESS, respectively. 𝑗∈S
+
+2.4 . Transactions with utility grids and P2P markets 2.5 . Generalized Nash game model
+
+The prosumers can buy electricity from or sell electricity to the utility Let 𝒙𝑖 = [𝒙𝑖0,𝒙
+𝑖
+1] be the decision variables of prosumer 𝑖, and let 
+
+grids, and the following constraints need to be satisfied: 𝒙 = [𝒙1,… ,𝒙𝑛]. Let 𝒙−𝑖 be the decision variables of prosumers except 
+prosumer 𝑖.
+
+𝑃 𝑖
+sell,𝑡 ≥ 0 (11a)
+
+𝒙𝑖
+[ ]
+
+0 = 𝑃 𝑖,ES
+ch,𝑡 , 𝑃
+
+𝑖,ES
+dis,𝑡 , 𝑃
+
+𝑖,SES
+ch,𝑡 , 𝑃 𝑖,SES
+
+dis,𝑡 , 𝑃 𝑖
+buy,𝑡, 𝑃
+
+𝑖
+sell,𝑡, 𝑃
+
+𝑖,𝑗
+𝑡 , 𝑃 𝑖,𝑗,+
+
+𝑡 , 𝑃 𝑖
+𝑃 𝑖 sh,𝑡
+
+buy,𝑡 ≥ 0 (11b)
+𝒙𝑖
+
+[ , E
+1 = 𝑃 𝑖 S S 𝑖
+
+max , 𝑆 ,SES]
+max
+
+where 𝑃 𝑖
+sell,𝑡, 𝑃
+
+𝑖
+buy,𝑡 are the 𝑖th prosumer’s power sold to and bought from 
+
+where 𝒙𝑖0 are the decision variables of prosumer 𝑖 that do not directly 
+the utility grid, respectively.
+
+affect the costs of other prosumers, and 𝒙𝑖
+Let 𝐶 𝑖 1 are the decision variables of 
+
+g be the cost of electricity interaction with the utility grid: 
+prosumer 𝑖 that directly impact the costs of other prosumers. Let 𝐶 𝑖
+
+0(𝒙
+𝑖
+0)
+
+be the cost only determined by the 𝑖th prosumers’ own decisions and 
+𝑇
+∑
+
+𝐶 𝑖
+g = (𝜆buy
+
+𝑡 𝑃 𝑖 𝐶 𝑖
+1(𝒙
+
+𝑖
+1,𝒙
+
+−𝑖
+1 ) be the cost determined by all prosumers’ decisions.
+
+buy,𝑡 − 𝜆sell
+𝑡 𝑃 𝑖
+
+sell,𝑡) (12)
+𝑡=1 𝐶 𝑖
+
+0(𝒙
+𝑖
+0) = 𝐶 𝑖
+
+g + 𝐶 𝑖
+P2P + 𝐶 𝑖
+
+SES,u + 𝐶 𝑖
+SES,tr + 𝐶 𝑖
+
+ES + 𝐶 𝑖
+tr + 𝐶 𝑖
+
+sh
+
+where 𝜆buy
+𝑡 , 𝜆sell
+
+𝑡  are the buying and selling price of electricity, respec­
+( ) ( )
+
+tively. The selling price is usually much lower than the buying price, 
+∑ ∑
+
+𝐶 𝑖
+1(𝒙
+
+𝑖
+1,𝒙
+
+−𝑖
+1 ) = 𝐶 r
+
+SES = 𝑎 , 𝑖, E E
+s + 𝑏 E
+
+s 𝑆𝑗 S S
+max 𝑆 S S
+
+max + 𝑎p + 𝑏 𝑃 𝑗,SES ,
+max 𝑃 𝑖 S S
+
+and therefore the prosumers will not buy and sell electricity at the same p max
+time. 𝑗∈S 𝑗∈S
+
+The prosumers can also trade electricity with other prosumers at a For each prosumer, their objective is to minimize the total cost. Let 
+price between the buying price and the selling price. Let 𝑃 𝑖,𝑗
+
+𝑡  be the 𝐺 = ⟨S,𝑿,𝑪⟩ be the generalized Nash game, where S is the player set, 
+power prosumer 𝑖 bought from prosumer 𝑗. Therefore, the sum of every 𝑿 = {𝑿𝑖, 𝑖 ∈ S} is the strategy set of each prosumer, and 𝑪 = {𝐶 𝑖, 𝑖 ∈ S}
+two prosumers’ electricity transactions is 0: is the utility function of each prosumer. Prosumers need to solve the 
+
+problem (21).
+𝑃 𝑖,𝑗
+𝑡 + 𝑃 𝑗,𝑖
+
+𝑡 = 0 (13)
+min 𝐶 𝑖(𝒙𝑖,𝒙−𝑖) = 𝐶 𝑖
+𝒙𝑖 0(𝒙
+
+𝑖
+0) + 𝐶 𝑖
+
+1(𝒙
+𝑖
+1,𝒙
+
+−𝑖
+1 )
+
+The cost of P2P trading 𝐶 𝑖
+P2P can be calculated as below: 
+
+s.t. 𝒙𝑖 ∈ 𝑿𝑖 = 𝑿𝑖
+0 ∩𝑿𝑖
+
+1(𝒙
+−𝑖) (21)
+
+𝑇
+∑∑
+
+𝐶 𝑖
+P2P = 𝜆P2P 𝑖,
+
+𝑡 𝑃 𝑗 where 𝑿𝑖
+0 represents the decision space of prosumer 𝑖 not coupled with 
+
+𝑡 (14)
+𝑡=1 𝑗∈S other prosumers’, and 𝑿𝑖
+
+1(𝒙
+−𝑖) represents the coupled decision space.
+
+𝑿𝑖
+0 = {𝒙𝑖 ∶ (1), (3), (5), (6), (11), (20)}
+
+where 𝜆P2P
+𝑡  is the P2P trading price. For simplicity, the price is set at 
+
+the average price of buying electricity from and selling electricity to the 
+𝑿𝑖
+
+1(𝒙
+−𝑖) = {𝒙𝑖 ∶ (10), (13)}
+
+utility grid, to ensure that both the buyer and seller can benefit from 
+P2P energy trading. Pricing mechanisms such as supply-demand ratio The generalized Nash game model captures the competition among 
+[37], marginal price [20] and distribution methods based on cooperative prosumers in the P2P market for shared ESS capacity and electricity, as 
+
+4 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+( ) ( )
+
+each prosumer seeks to minimize their individual costs. Prosumers have ∑
+
+full control over their private ESS, the shared ESS they have rented, and + 𝑎p 𝑃 𝑖,SES 1 ∑
+
+max + 𝑏 𝑃 𝑖,SES2
+p
+
+𝑖∈S 2 max
+𝑖∈S
+
+their shiftable loads.
+Notation: Here we assume that there is no congestion in the distribu­ s.t. 𝒙𝑖 ∈ 𝑿𝑖
+
+0 ∀𝑖 ∈ S, (23) − (28) (29)
+
+tion grids, and therefore network operation constraints are not included. 
+In the presence of network congestion, the public constraints should ac­
+count for network operation constraints, which may be represented via 3.2 . Algorithm of ADMM with Paillier cryptosystem
+
+a DC power flow model [39] or a DistFlow formulation to additionally In the process of standard ADMM, although prosumers are not re­
+consider voltage constraints [36]. quired to directly share their private data (e.g., 𝜆𝑖sh) with others, relevant 
+
+information can still be obtained through the regular sequence of in­
+3 . Solution algorithm for generalized Nash equilibrium termediate states data (e.g., 𝑃 𝑖,SES
+
+max (𝑘) transferred to the shared ESS), as 
+
+In this section, we propose a distributed algorithm to solve the demonstrated in Appendix B. Therefore, the intermediate states of each 
+
+variational equilibrium of the game with privacy protection. agent should also be regarded as private and should be protected [29]. 
+The algorithm of ADMM with the Paillier cryptosystem is applied, where 
+
+3.1 . Equivalent transformation to a 2-block QP problem the intermediate states of each agent are transferred in encrypted form 
+to protect privacy. The algorithm is detailed in Algorithm 1. The algo­
+
+Proposition 1. The variational equilibrium of the generalized Nash game rithm is modified based on the standard ADMM, and the derivation is 
+(21) exists if and only if problem (22) has a solution. If the variational provided in Appendix C.
+equilibrium of (21) exists, the variational equilibrium is equivalent to the For each prosumer, they need to update variables 𝒙𝑖 using (30).
+optimal solution of (22).
+
+𝒙𝑖(𝑘 + 1) = arg min 𝐶 𝑖
+( )2 ( ) 𝒙𝑖∈𝑿𝑖 0(𝒙
+
+𝑖)
+∑ ∑
+
+min 𝐶 𝑖
+0(𝒙
+
+𝑖
+0) +
+
+1 ∑
+
+𝑏 𝑆 𝑖,SES
+s max + 𝑎 𝑆𝑖,SES
+
+𝒙
+𝑖∈S 2 s max 𝛽𝑖
+
+𝑖∈S 𝑖∈S + P ∥ 𝑃 𝑖,SES
+2 max − 𝑃 𝑖,SES
+
+max (𝑘) ∥22 +(𝛼
+𝑖
+P(𝑘) − 𝜇𝑖
+
+P(𝑘))𝑃
+𝑖,SES
+max
+
+( ) ( )2
+
++ 1 ∑
+
+𝑏 𝑆 𝑖,SES2 1 ∑
+
+2 s max + 𝑏 𝑃 𝑖,SES 𝛽𝑖
+p + S ∥ 𝑆𝑖,SES 𝑖,SE
+
+2 max − 𝑆 S
+max (𝑘) ∥22 +(𝛼
+
+𝑖
+S(𝑘) − 𝜇𝑖
+
+S(𝑘))𝑆
+𝑖,SES
+max
+
+𝑖∈S 2 max
+𝑖∈S
+
+( )
+
+( ) ( )
+
+∑ 𝛽𝑖
+∑
+
++ 𝑎 + P2P ∥ 𝑃 𝑖,𝑗
+𝑡 − 𝑃 𝑖,𝑗
+
+𝑡 (𝑘) ∥22 +(𝛼
+𝑖,𝑗
+𝑡 (𝑘) − 𝜇𝑖,𝑗
+
+𝑡 (𝑘))𝑃 𝑖,𝑗
+p 𝑃 𝑖,SES 1 ∑
+
+max + 𝑏 𝑃 𝑖,SES2
+p
+
+𝑖∈S 2 max
+𝑖∈S 𝑗∈S,𝑡 2 𝑡 (30)
+
+s.t. 𝒙𝑖 ∈ 𝑿𝑖 ∀𝑖 ∈ S (22) where 𝛽𝑖P, 𝛽
+𝑖
+S, 𝛽
+
+𝑖
+P2P are constant numbers and private for prosumer 𝑖. 𝜇𝑖
+
+P, 𝜇
+𝑖
+S
+
+and 𝜇𝑖,𝑗
+𝑡  are the dual variables of (25), (26), and (23), respectively. 
+
+Proof: see Appendix A. 𝛼𝑖
+Problem (22) provides a centralized way to solve the generalized P, 𝛼
+
+𝑖
+S, 𝛼
+
+𝑖,𝑗
+𝑡  are calculated through (31) in encrypted forms with Paillier 
+
+cryptosystem. The computation process needs to communicate with 
+Nash equilibrium (GNE), which requires collecting each participant’s 
+
+shared ESS and the P2P transaction center and is shown in Algorithm 2. 
+private information. For privacy protection, a decentralized method 
+
+The Paillier cryptosystem [40] is described in Appendix D.
+based on ADMM is proposed. First, the problem (22) must be reformu­
+lated as a 2-block problem, making it suitable for ADMM [20]. 𝛼𝑖P(𝑘) = 𝜏 𝑖P(𝑘)𝜏
+
+𝑖
+P(𝑘)(𝑃
+
+𝑖,SES
+max (𝑘) − 𝑃 𝑖,SES
+
+max (𝑘))
+Introduce assistant variables in the transaction center: 𝑃 𝑖,𝑗
+
+𝑡 . Use the 
+following equations to replace (13): 𝛼𝑖S(𝑘) = 𝜏 𝑖S(𝑘)𝜏
+
+𝑖
+S(𝑘)(𝑆
+
+𝑖,SES
+max (𝑘) − 𝑆̃ 𝑖,SES
+
+max (𝑘))
+
+𝛼𝑖,𝑗𝑡 (𝑘) = 𝜏 𝑖P2P(𝑘)𝜏
+𝑖
+P2P(𝑘)(𝑃
+
+𝑖,𝑗
+𝑡 (𝑘) − 𝑃 𝑖,𝑗
+
+𝑡 (𝑘)) (31)
+𝑃 𝑖,𝑗
+𝑡 = 𝑃 𝑖,𝑗
+
+𝑡 (23)
+
+𝑃 𝑖,𝑗
+𝑡 + 𝑃 𝑗,𝑖
+
+𝑡 = 0 (24)
+
+Algorithm 1: Algorithm of ADMM with Paillier cryptosystem.
+Introduce assistant variables in shared ESS: 𝑃 𝑖,𝑆𝐸𝑆
+
+𝑚𝑎𝑥 , 𝑆̃ 𝑖,𝑆𝐸𝑆
+𝑚𝑎𝑥 , and use 
+
+Initialize: 𝑃 𝑖,SES(1) = 0, 𝑆̃ 𝑖,SES(1) = 0, 𝑷̃ = 𝟎, 𝜇𝑖
+the following equations to replace Eqs. (10a) and (10b). max max P2P P(1) = 0, 
+
+𝜇𝑖
+S(1) = 0, 𝜇𝑖,𝑗
+
+𝑡 (1) = 0, 𝛽 > 0, 𝜖
+𝑃 𝑖,SES for 𝑘 = 1, 2, 3… do
+
+max = 𝑃 𝑖,SES
+max (25)
+
+𝑆̃ 𝑖,SES
+max = 𝑆 𝑖,SES Shared ESS generates random number 𝜏𝑖P(𝑘), 𝜏
+
+𝑖
+S(𝑘)
+
+max (26) P2P transaction center generates random number 𝜏𝑖P2P(𝑘)
+∑
+
+𝑃 𝑖,SES
+max ≤ 𝑃 SES
+
+max (27) for prosumer 𝑖 ∈ S do
+𝑖∈S generate random number 𝜏 𝑖P(𝑘), 𝜏
+
+𝑖
+S(𝑘), 𝜏
+
+𝑖
+P2P(𝑘)
+
+∑ 𝑖,𝑗
+𝑆̃ 𝑖,SES compute 𝛼𝑖P(𝑘), 𝛼
+
+𝑖
+S(𝑘), 𝛼𝑡 (𝑘) by (31) and Algorithm 2.
+
+max ≤ 𝑆SES
+max (28)
+
+𝑖∈S update 𝒙𝑖(𝑘 + 1) by problem (30).
+end 
+
+Rewrite problem (22) as problem (29). In problem (29), only the Shared ESS computes 𝛼̃𝑖P(𝑘), 𝛼̃
+𝑖
+S(𝑘) by (34) and Algorithm 2. 
+
+decision variables of each prosumer and shared ESS, as well as each SES
+Then update 𝑷̃ (𝑘 + 1), 𝑺̃SES(𝑘 + 1) by (32),(33).
+
+prosumer and transaction center are coupled, and the objective has a 2-
+P2P transaction center computes 𝛼̃𝑖,𝑗𝑡 (𝑘) by (36) and 
+
+block structure. Therefore, the algorithm of ADMM can be applied. The 
+Algorithm 2.
+
+standard process of the algorithm of ADMM can be found in Appendix B.    Then update 𝑷̃ P2P(𝑘 + 1) by (35).
+( )2 ( ) Each agent update dual variables by (37) and Algorithm 2.
+
+∑ ∑
+
+min 𝐶 𝑖 Each agent computes the gap: Euclidean distances before 
+0(𝒙
+
+𝑖
+0) +
+
+1 ∑
+
+𝑏 𝑆̃𝑖,SES
+s max + 𝑎 𝑆̃ 𝑖,SES
+
+𝑖∈S 2 s max
+𝑖∈S 𝑖∈S and after the update of the dual variable. If all the gaps are 
+
+( ) ( )2 less than 𝜖, then break.
+
++ 1 ∑
+
+𝑏 𝑆̃𝑖,SES2 1 ∑ end 
+2 s 𝑚𝑎𝑥 + 𝑏 𝑃 𝑖,SES
+
+p
+𝑖∈S 2 max
+
+𝑖∈S
+
+5 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+Algorithm 2: Encrypted calculation process of 𝛼. 𝜇𝑖
+P(𝑘 + 1) = 𝜇𝑖
+
+P(𝑘) + (1 + 𝑒−𝑟𝑘)𝜏𝑖P(𝑘)𝜏
+𝑖
+𝑃 (𝑘)(𝑃
+
+𝑖,SES
+max (𝑘 + 1) − 𝑃 𝑖,SES
+
+max (𝑘 + 1))
+Data: 𝜏1, 𝜃1 private for agent 1, 𝜏2, 𝜃2 private for agent 2
+Result: Agent 1 computes 𝛼1 = 𝜏1𝜏2(𝜃1 − 𝜃2) without knowing 𝜇𝑖
+
+S(𝑘 + 1) = 𝜇𝑖
+S(𝑘) + (1 + 𝑒−𝑟𝑘)𝜏 𝑖S(𝑘)𝜏
+
+𝑖
+S(𝑘)(𝑆̃
+
+𝑖,SES
+max (𝑘 + 1) − 𝑆 𝑖,SES
+
+max (𝑘 + 1))
+the value of 𝜏2, 𝜃 𝜇𝑖,𝑗
+
+𝑡 (𝑘 + 1) = 𝜇𝑖,𝑗
+𝑡 (𝑘) + (1 + 𝑒−𝑟𝑘)𝜏𝑖P2P(𝑘)𝜏
+
+𝑖
+P2P(𝑘)(𝑃
+
+𝑖,𝑗
+𝑡 (𝑘 + 1) − 𝑃 𝑖,𝑗
+
+2 𝑡 (𝑘 + 1))
+Agent 1 generates Paillier key: public key (Γ1,Ω1), private key 
+(𝜁1, 𝜎
+
+(37)
+1)
+
+Agent 1 computes the ciphertext of 𝜃1: 𝐸(𝜃1), and then transfers 
+𝐸(𝜃1),Γ1,Ω
+
+where 𝑟 is a constant number for acceleration. Due to the introduction 
+1 to agent 2.
+
+of a quadratic proximal term, the variables require more iterations to 
+Agent 2 computes the ciphertext of 𝜏2(𝜃1 − 𝜃2): 
+𝐸(𝜏2(𝜃1 − 𝜃2)) = 𝐸(𝜃1)
+
+𝜏2𝐸(−𝜃2)
+𝜏2 𝑚𝑜𝑑 Γ2 approach the convergence point at the outset. This acceleration scheme 
+
+1, and then transfers the 
+enables the variables to approach the convergence point more quickly 
+
+result to agent 1. Only the public key from agent 1 is used.
+and reduces oscillations in subsequent iterations. The convergence is 
+
+Agent 1 computes 𝐸(𝜏1𝜏2(𝜃1 − 𝜃2)), and decrypt with (𝜁1, 𝜎1) to 
+obtain 𝛼 ensured as a quadratic proximal term is introduced in the modified 
+
+1
+algorithm, and the proof can be seen in [41].
+
+The algorithm can achieve privacy protection in two aspects. In 
+
+where 𝜏𝑖P, 𝜏
+𝑖
+S, 𝜏
+
+𝑖
+P2P are random numbers generated by prosumer 𝑖, 𝜏𝑖P, 𝜏
+
+𝑖 Algorithm 2, each agent can only obtain information about the product 
+S of the intermediate variable and a random number from other agents, 
+
+are random numbers generated by the shared ESS, and 𝜏𝑖P2P are random 
+thus protecting the information of the intermediate variable. In the pro­
+
+numbers generated by the P2P transaction center.
+The shared ESS updates the variables 𝑷̃ SES(𝑘 + 1) = {𝑃 𝑖,SES cess of iteration, 𝛽 is private information, which also adds difficulty to 
+
+max ,∀𝑖 ∈
+the inference of the objective function.
+
+S}, 𝑺̃SES(𝑘 + 1) = {𝑆̃𝑖,SES
+max ,∀𝑖 ∈ S} by (32), (33)
+
+4 . Case study
+( )2 ( )
+
+𝑷̃ SES(𝑘 + 1) = arg min 1 ∑ ∑
+
+𝑏 𝑃 𝑖,SES 𝑃 𝑖,
+2 p max + 𝑎 SES
+
+𝑷̃ SES p max 4.1 . Test system configuration
+𝑖∈S 𝑖∈S
+
+( ) The test system is shown in Fig. 1. The participants in the market 
+∑
+
++ 1 𝑏 2 ∑ 𝛽𝑖
++ P ∥ 𝑃 𝑖,SES S S
+
+2 p 𝑃 𝑖,SES
+max max − 𝑃 𝑖, E
+
+max (𝑘) ∥2 include 10 prosumers and a 150 kW/450 kWh shared ESS. Prosumer 1 
+𝑖∈S 𝑖∈S 2 2
+
+is equipped with WTs and the other prosumers are equipped with PVs. 
+
++ (𝛼̃𝑖P(𝑘) + 𝜇𝑖
+P(𝑘))𝑃
+
+𝑖,SES The power generation and load profiles for each prosumer are shown 
+max
+
+in Fig. 2. The price coefficients of shiftable loads 𝜆𝑖𝑠ℎ range from 0.03 to 
+s.t. Eq.(27) (32) 0.05CNY∕kWh2, and the ratio of shiftable loads is set at 10%. Prosumer 2 
+
+( )2 ( )
+
+𝑺̃SES(𝑘 + 1) = arg min 1 ∑ ∑
+
+𝑏 𝑆̃𝑖,SES 𝑆̃𝑖,
+2 s max + 𝑎 SES and prosumer 3 are equipped with 10 kW/20 kWh, and 20 kW/40 kWh 
+
+𝑺̃SES s max private ESS, respectively. The efficiency of private ESS is 95%, and the 
+𝑖∈S 𝑖∈S
+
+( )
+
+∑
+
++ 1 𝑏 2 ∑ 𝛽𝑖
++ S ∥ 𝑆̃ 𝑖,SES S S
+
+2 s 𝑆̃ 𝑖,SES
+max max − 𝑆̃ 𝑖, E
+
+max (𝑘) ∥2
+𝑖∈S 𝑖∈S 2 2
+
++ (𝛼̃𝑖S(𝑘) + 𝜇𝑖
+P(𝑘))𝑆̃
+
+𝑖,SES
+max
+
+s.t. Eq.(28) (33)
+
+where 𝛽𝑖P, 𝛽
+𝑖
+S are constant numbers. 𝛼̃𝑖P, 𝛼̃
+
+𝑖
+S are calculated through Eq. (34) 
+
+and Algorithm 2.
+
+𝛼̃𝑖P(𝑘) = 𝜏𝑖P(𝑘)𝜏
+𝑖
+P(𝑘)(𝑃
+
+𝑖,SES
+max (𝑘) − 𝑃 𝑖,SES
+
+max (𝑘 + 1))
+𝛼̃𝑖S(𝑘) = 𝜏𝑖S(𝑘)𝜏
+
+𝑖
+S(𝑘)(𝑆̃
+
+𝑖,SES
+max (𝑘) − 𝑆𝑖,SES
+
+max (𝑘 + 1)) (34)
+
+P2P transaction center updates the variables 𝑷̃ P2P = {𝑃 𝑖,𝑗
+𝑡 ,∀𝑖, 𝑗 ∈ S, 𝑡}
+
+by (35).
+
+𝑷̃ P2P(𝑘 + 1) = arg min
+𝑷̃ P2P
+
+( )
+
+∑ 𝛽𝑖P2P ∥ 𝑃 𝑖,𝑗 𝑃 𝑖,𝑗 𝑘) ∥ 𝑖,𝑗
+2 𝑡 − 𝑡 ( 2
+
+2 +(𝛼̃𝑡 (𝑘) + 𝜇𝑖,𝑗
+𝑡 (𝑘))𝑃 𝑖,𝑗
+
+𝑡
+𝑖,𝑗∈S
+
+s.t. Eq.(24) (35)
+
+where 𝛽𝑖𝑃 2𝑃  are constant numbers and private for the P2P transaction 
+center. If network operation constraints are considered, the P2P trans­
+action center can be administered by the network operator, who simul­
+taneously deals with network constraints. The associated mathematical 
+transformations are analogous to those described in this paper.
+
+𝛼̃𝑖,𝑗𝑡 (𝑘) = 𝜏𝑖P2P(𝑘)𝜏
+𝑖
+P2P(𝑘)(𝑃
+
+𝑖,𝑗
+𝑡 (𝑘) − 𝑃 𝑖,𝑗
+
+𝑡 (𝑘 + 1)) (36)
+
+Then, the dual variables are updated by Eq. (37) with Algorithm 2. Fig. 2. (a) PV/WT generation of prosumers. Only prosumer 1 is equipped 
+The dual variables are consistent among prosumers, shared ESS, and P2P with WTs, and others are equipped with PVs. (b) Loads of prosumers (c) The 
+
+transaction centers. electricity prices.
+
+6 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+maximum and minimum SoC of private ESS are 10% and 90%, respec­
+tively. The price of private ESS usage is 0.11 CNY/kW⋅h. The efficiency, 
+maximum and minimum SoC for the shared ESS are 95%, 90%, and 10%, 
+respectively. The price for power capacity is fixed at 0.3 CNY/kW⋅day. 
+The price for storage capacity is set at 0.22 CNY/kWh⋅day when there 
+is no demand, and 0.4 CNY/kWh⋅day when the demand exceeds supply. 
+The usage price of shared ESS is 0.08 CNY/kW⋅h. The electricity price is 
+depicted in Fig. 2 [42], and it aligns with regional supply and demand 
+conditions.
+
+The above models and methods are implemented using Matlab 
+R2024b with Gurobi Optimizer version 12.0.0, on a Intel Core i5-14500 
+CPU.
+
+Four cases are carried out in the case study to evaluate the effects of 
+P2P energy trading and shared ESS.
+
+Case 1: P2P energy trading is prohibited, and no shared ESS is avail­
+able. In this case, each prosumer interacts solely with the utility 
+grid.
+
+Case 2: Prosumers are permitted to engage in P2P energy trading, but 
+no shared ESS is available.
+
+Case 3: P2P energy trading is prohibited, but a 150 kW/500 kWh 
+shared ESS is available for rental.
+
+Case 4: Prosumers are permitted to engage in P2P energy trading and 
+rent the 150 kW/500 kWh shared ESS, in accordance with the model 
+proposed in this study. Fig. 3. Energy stored in the shared ESS of each prosumer (a) case 4: with P2P 
+
+(b) case 3: without P2P.
+
+4.2 . Benefits of the mechanism
+ESS, while significantly reducing electricity costs for prosumers, particu­
+
+Table 1 shows the revenue of the shared ESS and the cost of each larly for prosumer 9 in the case study (the reasons will be analyzed later). 
+prosumer in the three cases. From the perspective of total cost in the Therefore, P2P energy trading provides substantial social benefits, albeit 
+market, it can be observed that each participant in the market bene­ with a minor reduction in the revenue of the shared ESS.
+fits from the shared ESS (compare case 1 with case 3, and case 2 with 
+case 4), and each prosumer benefits from P2P energy trading as well 4.3 . Capacity renting of shared ESS in different cases
+(compare case 1 with case 2, and case 3 with case 4). From the com­
+parison of cases 1,3 and 4, the following conclusions can be drawn. The To show the effect of P2P energy trading on capacity leasing and 
+
+shared ESS can reduce the total cost by about 5% (327 CNY/day), and charge-discharge behavior of prosumers, Fig. 3 compares the energy 
+
+the addition of P2P energy trading further lowers the total cost by 173 stored in the shared ESS of each prosumer in case 4 and case 3. 
+
+CNY/day. This indicates that P2P transactions enhance social welfare The maximum energy stored represents the leased storage capacity 
+
+beyond the benefits provided by the shared ESS framework. When P2P of each prosumer (the energy stored between 14:00–17:00 for most 
+
+energy trading is prohibited, the shared ESS can generate up to 245 prosumers). P2P energy trading affects the capacity rented by each pro­
+
+CNY/day, representing 75% of the total social benefits of the shared sumer: Prosumer 1, 2, 8, and 9 rent less shared ESS when P2P trading 
+
+ESS, while the remaining 25% of benefits are concentrated among a few is allowed, whereas other prosumers increase their rental of shared ESS. 
+
+prosumers (e.g., prosumers 1, 2, and 9). This concentration is attributed This observation aligns with the benefits of P2P trading depicted in 
+
+to the monopolistic position of the shared ESS and the generation and Table 1. When P2P energy trading is forbidden, prosumers 1,2,9 rent 
+
+load characteristics of the prosumers. Allowing P2P energy trading re­ more capacities than others as they benefit more from renting shared 
+
+sults in only a slight decrease of 7 CNY/day in the revenue of the shared ESS. If P2P energy trading is allowed, P2P transactions have the poten­
+tial to substitute shared ESS demands. These prosumers can generate 
+earnings from P2P trading and reduce costs by renting fewer shared 
+ESS capacities. For other prosumers, P2P energy trading benefits them 
+
+Table 1 by allowing them to rent more shared ESS in the competition, thereby 
+Cost/revenue of each participant in the market.
+
+resulting in only marginal cost reductions.
+Participants* Case 1 Case 2 Case 3 Case 4 Additionally, P2P energy trading enhances the consistency of charg­
+Prosumer 1 297 243 271 252 ing and discharging behavior. In Fig. 3(b), prosumer 1 discharges 
+Prosumer 2 678 650 662 637 between 6:00 - 10:00 while others charge, which leads to energy. P2P 
+Prosumer 3 870 861 866 857 energy trading enables them to charge and discharge simultaneously, 
+Prosumer 4 824 813 822 810
+
+demonstrating the efficiency improvement of shared ESS. 
+Prosumer 5 778 771 775 764
+Prosumer 6 904 901 901 897
+Prosumer 7 679 673 675 670 4.4 . Operational results of prosumers
+Prosumer 8 677 670 670 662
+Prosumer 9 737 663 722 651 Fig. 4 shows the electricity supply and consumption profiles of pro­
+Prosumer 10 648 632 648 632 sumer 1 and prosumer 9 in case 4. In the figures, positive values 
+SES** – – 245 238 indicate power consumption and negative values indicate power supply. 
+Total 7094 6877 6767 6594 Prosumer 1, who is equipped with WTs, exhibits low net loads between 
+
+*This table shows the cost of prosumers, revenue of 17:00 and 07:00, a period when electricity prices are relatively high. 
+SES, and the total cost of all participants. The unit is This low net load is the primary reason for Prosumer 1’s lowest electric­
+CNY. ** The data shows the revenue of SES. ity cost. Prosumer 1 can sell electricity at night and buy electricity at 
+
+7 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+Fig. 5. (a) The sensitivity of the benefits of shared storage to price (b) comparison 
+of pricing model.
+
+Fig. 4. Profiles of energy supply and consumption of (a) prosumer 1 (with WTs) 
+yuan/kWh⋅day, the revenue is the same because the demand for capac­
+
+(b) prosumer 9 (with PVs).
+ity exceeds the capacity supply. When the price increases, the revenue 
+for the fixed price strategy shows a cliff descent, while the revenue for 
+
+noon through P2P energy trading, as other prosumers with PV need en­ the variable price strategy declines gradually. When the price is set at 
+ergy at night and have excess energy generation at noon. In the shared 0.62 yuan/kWh⋅day, the revenue for the fixed price strategy reduces to 
+ESS competition, Prosumer 1 rents a relatively small capacity because he 0, while the revenue for the variable price strategy is still 120 yuan/day. 
+can address most of the imbalance problems through P2P transactions. This shows that the proposed variable price strategy can mitigate risks 
+Prosumer 1 charges the shared ESS at noon by purchasing electricity at a arising from price setting and other factors such as demand fluctuation.
+lower price through P2P trading, and discharges the ESS between 18:00 To figure out the nature of the price sensitivity, Fig. 5(b) shows 
+and 20:00 to sell electricity and earn profits. This strategy also reduces the marginal profit of renting shared ESS for all prosumers (can be ob­
+the amount of electricity that needs to be purchased at higher prices. tained through solving the value of the dual variable of Eq. (10b)) and 
+
+Prosumer 9, a typical PV-equipped prosumer, experiences high net the pricing strategies. This is similar to the supply and demand curve 
+loads between 17:00 and 07:00, resulting in significant electricity in micro-economics [43]. The marginal profit remains stable between 
+purchase costs. Due to lower P2P transaction costs, Prosumer 9 engages 250–500 kWh. When the fixed price strategy is applied, little fluctua­
+more frequently in P2P energy trading with Prosumer 1, which reduces tion in price can result in a sharp decline in the total capacity renting. 
+their costs by purchasing electricity at night and selling excess electric­ The application of the variable price strategy mitigates the impact of 
+ity at noon. To accommodate excess PV generation at noon, Prosumer price fluctuations, leading to small changes in the final outcomes.
+9 needs to rent a larger capacity of shared ESS, charge the ESS when 
+PV generation exceeds demand, and discharge the ESS when electricity 4.6 . Convergence and privacy protection of the proposed algorithm
+
+purchase prices are high.
+Table 2 compares different solution algorithms for the GNE. The 
+
+This also shows the effect of the proposed mechanism. For prosumers 
+sub-problems for prosumers can be computed in parallel, as can the 
+
+with relatively scarce resources, such as wind power in the case study, 
+sub-problems for the shared ESS and the P2P transaction center. The 
+
+they can engage in the P2P energy trading to earn profits and rent fewer 
+table compares the time required for optimization and encryption un­
+
+shared ESS. For others, more rented shared ESS is needed to adjust the 
+der different algorithms in the parallel-computation setting. From the 
+
+surplus and homogeneous generation.
+table, it can be observed that the algorithm proposed in this paper can 
+protect privacy while converging rapidly. Compared with ADMM with 
+
+4.5 . Analysis of the proposed pricing strategy of shared ESS
+the Paillier cryptosystem proposed in [29], the acceleration technique 
+
+In order to explore the impact of price changes on the revenue of proposed in this paper reduces the algorithm’s convergence time by ap­
+
+shared ESS, different pricing curves are used for numerical research proximately 35%, and the algorithm proposed in this paper converges 
+
+in case 3. In this part, the price for power capacity is fixed at 0.3 
+yuan/kW⋅day, and there are two strategies for storage capacity:
+
+Table 2 
+Comparison of different algorithms (unit: s).
+
+(1) Fixed price: the price is fixed regardless of demand (𝑏𝑠 = 0).
+(2) Variable price: the price is related to the total demand for storage Algorithm Optimization Encryption and Total Privacy 
+
+capacity of prosumers (𝑏𝑠 > 0). The difference between the lowest time decryption time time protection
+
+price and the highest price is 0.2 yuan/kWh⋅day. This paper 28.8 6.8 35.6 ✓
+ADMM + Paillier 44.6 9.9 54.5 ✓
+cryptosystem in [29]
+
+The relationship between revenue and price (for the variable price ADMM + differential 57.5 0 57.5 ✓
+
+strategy, the price means the highest price) under different energy ca­ privacy in [25]
+Traditional ADMM 30.6 0 30.6 ✘
+
+pacity prices is shown in Fig. 5(a). When the price is lower than 0.48 
+
+8 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+Table 3 
+Comparison of computation times with different 
+numbers of prosumers.
+
+Numbers of Numbers of Average per-
+prosumers iterations iteration time (s)
+
+5 69 0.30
+10 62 0.57
+20 66 1.36
+30 65 2.27
+40 71 3.82
+50 64 6.68
+60 68 8.35
+
+Fig. 7. Estimated gradient of Lagrangian function and relative error of inference 
+of 2000 trials. The relative error is the ratio of average error and the absolute 
+value of the difference between the gradient of the Lagrangian function in the 
+iteration and the gradient of the Lagrangian function in the equilibrium state.
+
+average error diminishes progressively. A relative error of a certain level 
+ensures that the second-order information of the Lagrangian function at 
+the convergence point cannot be inferred. The average relative error is 
+about 100%, and in most iterations the relative error is greater than 20%. 
+This means that the shared ESS cannot infer private data of prosumer 2, 
+and highlights the effectiveness of the privacy protection.
+
+5 . Conclusion
+Fig. 6. The value of plaintext and ciphertext in each iteration. The dashed line 
+is the variational equilibrium obtained by centralized solution. The paper proposes a capacity renting framework for shared ESS con­
+
+sidering the interactions of prosumers. In the framework, the prosumers 
+are directly coupled by the energy transactions, but are decoupled in the 
+communication network for better distributed optimization. The gener­
+
+nearly 38% faster than ADMM with differential privacy proposed in 
+alized Nash game based model can effectively describe the competitive 
+
+[26]. The total optimization time of the algorithm in this paper is sim­
+relationship among prosumers. Based on the results obtained, several 
+
+ilar to traditional ADMM, but the time consumed by encryption and 
+conclusions can be drawn:
+
+decryption makes the total convergence time slightly slower than tradi­
+tional ADMM. Table 3 compares the computation time of the algorithm 
+proposed in this paper with different numbers of prosumers (the infor­ (1) Integrating P2P energy trading into the capacity renting frame­
+
+mation of prosumers is generated randomly). The number of prosumers work of shared ESS can further increase social welfare. In the 
+
+has a minor impact on the number of iterations of the algorithm, but the case study, the increase in value due to P2P energy trading is ap­
+
+average per-iteration computing time increases as the number of pro­ proximately 50% of the value provided by the shared ESS alone. 
+
+sumers increases. The main reason is that the number of P2P trading Although P2P energy trading slightly reduces the revenue of the 
+
+variables increases with the increasing number of prosumers, causing shared ESS, it benefits prosumers and improves the consistency 
+
+a larger-scale optimization problem. To mitigate the effect, simplifying of charge-discharge behavior, leading to greater efficiency of the 
+
+the P2P trading network by aggregating and hierarchically organizing shared ESS.
+
+prosumers is a possible approach [44]. (2) The distributed solution algorithm effectively determines the GNE 
+
+Fig. 6 compares the plaintext and the ciphertext of 𝑃 2,𝑆𝐸𝑆 as fast as the traditional ADMM while maintaining participants’ 
+𝑚𝑎𝑥 (𝑘) to show 
+
+the convergence and effectiveness of privacy protection. It shows that privacy. By converting the generalized Nash game into a QP prob­
+
+the variable converges in 62 iterations. Prosumer 2 transmits the data to lem and solving it with the ADMM algorithm integrated with the 
+
+the shared ESS in ciphertext form. Unlike the regular sequence of plain­ Paillier Cryptosystem, the day-ahead problem can be solved in 
+
+text data, the ciphertext appears irregular and does not readily reveal under 2 minutes, ensuring privacy protection. Despite potential 
+
+any information. communication data vulnerabilities, the encrypted data prevents 
+
+Shared ESS can generate estimates of 𝜏 𝑖 the inference of private information.
+P(𝑘), and then obtain a series of 
+
+estimated value of variables (e.g., 𝑃 𝑖,SES
+max (𝑘)) and the value of the gradient 
+
+of the Lagrangian function according to (30) (31) and (37). Fig. 7 shows Future research may further improve the proposed capacity renting 
+
+the shared ESS’s inference of the gradient of the Lagrangian function of mechanism with the following aspects. 1) Pricing strategies of shared 
+
+prosumer 2: ∇ ESS. Shared ESS can set prices to earn more profit by methods such as 
+𝑃 2,SES𝐿2 𝒙2) = ∇ 2 𝒈(𝒙2). The relative 
+
+max 0( 𝑃 2,SES𝐶 (𝒙2)+𝝀2𝑇∇
+max 0 𝑃 2,SES
+
+max Stackelberg game. 2) Consideration of other types of energy storage. 
+error is defined as the ratio of the average error to the absolute value 
+
+In this research, only batteries are considered and shared. The sharing 
+of the difference between the gradient of the Lagrangian function in the 
+
+mechanism applicable on other types of ESS is required.
+iteration and the gradient of the Lagrangian function in the equilibrium 
+state. In the algorithm, only the intermediate variables during the itera­
+
+CRediT authorship contribution statement
+tive convergence process need to be protected. The converged solution 
+corresponds to the final traded quantities, which are public information Yingcong Sun: Writing – original draft, Methodology, 
+by their physical nature. Consequently, as the algorithm converges, the Conceptualization. Laijun Chen: Writing – review & editing, 
+
+9 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+( ) ( )
+
+Supervision, Funding acquisition. Yue Chen: Writing – review & 2
+1 ∑ ∑
+
+editing, Formal analysis. Mingrui Tang: Writing – review & editing, + 𝑏 𝑆𝑖,SES2 1 𝑖, E
+2 s max + 𝑏
+
+2 p 𝑃 S S
+max
+
+Validation. Shengwei Mei: Supervision. 𝑖∈S 𝑖∈S
+( ) ( )
+
+∑ ∑
+
+Declaration of competing interest + 𝑎 𝑃 𝑖,SES
+p + 1 𝑖,SES2
+
+max 𝑏
+2 p 𝑃max
+
+𝑖∈S 𝑖∈S
+The authors declare that they have no known competing financial 𝑃 𝑖,SES
+
+⎡
+[ ] max ⎤
+
+interests or personal relationships that could have appeared to influence s.t. 𝑨𝑖 𝑖 + 𝑨𝑖 𝑖
+⎢ ⎥
+
+0𝒙0 p 𝑨s ≤ 𝒃𝑖 ∀𝑖 ∈ S
+the work reported in this paper. ⎢ 𝑖,SES⎥
+
+⎣𝑆max ⎦
+
+ES
+Acknowledgement 𝑃 𝑖,S
+
+⎛ ⎡ max ⎤⎞
+[ ]
+
+∑
+
+𝑖 𝑖 𝑖 𝑖
+⎜𝑬 ⎢ ⎥⎟
+
+0𝒙0 + 𝑬p 𝑬s ≤ 𝒇 (A.4)
+This work is supported by the National Natural Science Foundation ⎢ ⎥⎟
+
+𝑖∈S ⎜ 𝑖,SES
+⎝ ⎣𝑆max ⎦⎠
+
+of China (U22A20224), CUHK Strategic Seed Funding for Collaborative 
+Research Scheme (3136080) and NSFC/RGC Joint Research Scheme Problem (A.4) is a QP problem, and therefore the optimal solution of 
+(N_CUHK422/25). problem (A.4) is equivalent to the KKT system. Therefore, the variational 
+
+equilibrium of (21) is equivalent to the optimal solution of problem 
+Appendix A (A.4), which is the same as problem (22). It can be deduced that the 
+
+variational equilibrium of (21) exists if and only if problem (22) has 
+In the model of the generalized Nash game, it can be found that 
+
+𝑿𝒊 a solution, and the equilibrium is the same as the optimal solution of 
+𝟎,𝑿
+
+𝒊
+𝟏 are both affine spaces. Therefore, the problem (21) can be 
+
+problem (22).
+abstracted as:
+
+Appendix B 
+min 𝐶 𝑖(𝒙𝑖,𝒙−𝒊) = 𝐶 𝑖 𝑖 𝑖 −𝑖
+
+0(𝒙
+𝑖 )
+
+𝒙𝑖 0) + 𝐶1(𝒙1,𝒙1
+
+𝑃 𝑖,SES
+⎡ max ⎤
+
+[ ]
+
+s.t. 𝑨𝑖 𝑖 Algorithm B1: Algorithm of standard ADMM.
+⎢ ⎥
+
+0𝒙
+𝑖
+0 + 𝑨𝑖
+
+p 𝑨s ≤ 𝒃𝑖 ∶ 𝝁𝑖
+0
+
+⎢ 𝑖,SES⎥ Initialize: 𝑃 𝑖,SES ES
+⎣𝑆max ⎦ max (1) = 0, 𝑆̃ 𝑖,S
+
+max (1) = 0, 𝑷̃ P2P = 𝟎, 𝜇𝑖
+P(1) = 0, 
+
+𝜇𝑖
+𝑃 𝑗,SES S(1) = 0, 𝜇𝑖,𝑗
+
+𝑡 (1) = 0, 𝜌 > 0, 𝑐(1) = 10000, 𝜖
+⎛ ⎡ ⎤⎞
+
+[ ] max
+∑
+
+𝑬𝑗 𝑗 𝑖 for 𝑘 = 1, 2, 3… do
+⎜ ⎢ ⎥⎟
+
+0𝒙
+𝑗
+0 + 𝑬𝑗
+
+p 𝑬s ≤ 𝒇 ∶ 𝝁1 (A.1)
+∈S ⎜ ⎢
+
+𝑗 for prosumer 𝑖 ∈ S do
+𝑆𝑗,SES⎥⎟
+
+⎝ ⎣ max ⎦⎠
+
+update 𝒙𝑖(𝑘 + 1) by problem (B.1).
+end 
+
+where 𝑨𝑖 ,𝑨𝑖
+0 p,𝑨
+
+𝑖
+s,𝑬
+
+𝑗
+0,𝑬
+
+𝑗
+p,𝑬
+
+𝑗
+s  are coefficient matrices, 𝒃𝑖,𝒇  are coefficient update assistant variables by problems (B.2), (B.3) and (B.4).
+
+vectors, and 𝝁𝑖
+0,𝝁
+
+𝑖
+1 are dual variables of the constraints. update dual variables by Eq. (B.5).
+
+The KKT system of problem (A.1) can be written as: calculate 𝑐(𝑘 + 1) by Eq. (B.6)
+if 𝑐(𝑘 + 1) < 𝜖 then
+
+∇ 𝑖 𝑖 break
+𝒙𝑖 𝐶 ) +𝑨𝑖 𝑇 𝑖 𝑇
+0 0(𝒙0 0 𝝁0 + 𝑬𝑖 𝝁𝑖
+
+0 1 = 0
+end 
+
+∑
+
+𝑎 ,SES
+p + 𝑏 𝑗 + 𝑏 𝑖,SES 𝑖 𝑇 𝑖
+
+p 𝑃max p𝑃max +𝑨p 𝝁𝑖
+0 + 𝑬𝑖 𝑇
+
+p 𝝁1 = 0 end 
+𝑗∈S
+∑
+
+𝑎 + 𝑏 𝑗,SES ES
+s s 𝑆max + 𝑏s𝑆
+
+𝑖,S +𝑨𝑖 𝑇𝝁𝑖 + 𝑬𝑖 𝑇 𝑖
+max s 0 s 𝝁1 = 0 The algorithm for standard ADMM is shown in Algorithm B1. For 
+
+𝑗∈S
+each prosumer, they need to update their decision variables by problem 
+
+𝑃 𝑖,SES
+⎛ ⎡ (B.1).
+
+] max ⎤ ⎞
+[
+
+0 ≤ 𝝁𝑖 𝑖 𝑖
+⎜ ⎢ ⎟
+
+0 ⟂ 𝑨𝑖
+0𝒙0 + 𝑨 ⎥
+
+p 𝑨𝑖
+s − 𝒃𝑖 ≤ 0
+
+⎜ ⎢ 𝑖,SES⎥ ⎟ 𝒙𝑖(𝑘 + 1) = arg min 𝐶 𝑖
+⎝ ⎣𝑆max ⎦ ⎠
+
+𝒙𝑖∈𝑿𝒊 0(𝒙
+𝑖)
+
+𝟎
+𝑃 𝑗,SES
+
+⎛ ⎛ ⎡ ⎤⎞ ⎞
+[ ] max
+
+∑ 𝜌𝑖 𝜇𝑖 )
+0 ≤ 𝝁𝑖 ⟂ 𝑗 𝑗
+
+⎜ ⎜
+
+1 𝑬 𝑗
+0𝒙0 + 𝑬 ⎢ ⎥⎟
+
+p 𝑬𝑗
+s − 𝒇⎟ ≤ 0 (A.2) + P ∥ 𝑃 𝑖,SES ) − 𝑃 𝑖,SES P(𝑘
+
+⎜𝑗∈S ⎜ ⎢ 𝑗,SE ⎥⎟ ⎟ 2 max (𝑘 2
+max + ∥
+
+𝜌𝑖 2
+P
+
+⎝ ⎝ ⎣𝑆 S
+max ⎦⎠ ⎠
+
+𝜌𝑖 𝜇𝑖 (𝑘)
++ S ∥ 𝑆̃ 𝑖,SES − 𝑆𝑖,SES + S ∥2
+
+where 0 ≤ 𝒂 ⟂ 𝒃 ≤ 0 means 𝒂𝑇 𝒃 = 0,𝒂 ≥ 𝟎, 𝒃 ≤ 𝟎. 2 max (𝑘) max 𝜌𝑖 2
+S
+
+To solve the variational equilibrium, the dual variables for the 𝑖 𝑖,𝑗
+∑∑ 𝜌
+
+common constraints of each prosumer should satisfy: + P2P 𝑗 𝜇
+∥ 𝑃 𝑖, 𝑘) − 𝑃 𝑖,𝑗 𝑡 (𝑘)
+
+B.1)
+2 𝑡 ( 𝑡 +
+
+𝑡 𝑗∈S 𝜌𝑖
+∥22 (
+
+P2P
+
+𝝁𝒊
+𝟏 = 𝝁1 (A.3) ,𝑗
+
+where 𝜇𝑖
+P, 𝜇
+
+𝑖
+S and 𝜇𝑖
+
+𝑡  are the dual variables of (25),(26), and (23), 
+respectively. 𝜌𝑖
+
+It can be easily proved that the objective of the generalized Nash P, 𝜌
+𝑖
+S, 𝜌
+
+𝑖
+P2P are constant coefficients.
+
+Then, the prosumers transmit 𝑃 𝑖,SES S
+game (A.1) 𝐶 𝑖(𝒙𝑖,𝒙−𝒊) is convex over 𝒙𝑖. The constraints are affine, which max (𝑘+1), 𝑆 𝑖,SE
+
+max (𝑘+1) to the shared 
+ESS, and transmit 𝑷 𝒊
+
+satisfy the Slater condition. Therefore, the variational equilibrium of P2P(𝑘 + 1) to the P2P transaction center. The shared 
+ESS updates the assistant variables by problems (B.2) and (B.3).
+
+(A.1) is equivalent to the solution of the KKT system (A.2), (A.3) [45].
+It can be noticed that the problem (A.4) has the same KKT system as ( )2
+
+(A.2) and (A.3) 𝑷̃ SES(𝑘 + 1) = arg min 1 ∑
+
+𝑏 𝑃 𝑖,SES
+𝑷̃ SES 2 p max
+
+𝑖∈S
+( )2 ( ) ( ) ( )
+
+∑ ∑ ∑ ∑ ∑
+
+min 𝐶 𝑖 SES
+𝒙 0(𝒙
+
+𝑖 𝑎 𝑖,SES
+0) +
+
+1 𝑏 𝑖, + 𝑎 𝑖,SES
+2 s 𝑆max + s 𝑆max 𝑝 𝑃max + 1 𝑏 𝑃 𝑖,SES2
+
+𝑖∈S 𝑖∈S 𝑖∈S 𝑖∈S 2 p max
+𝑖∈S
+
+10 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+∑ 𝜌𝑖 𝑖 𝑘) 𝜌𝑖
++ P 𝜇
+
+∥ 𝑃 𝑖,SES 𝑖,SES (
++ P ∥ 𝑃 𝑖,SES(𝑘) − 𝑃 𝑖,SES 𝜇𝑖
+
+P(𝑘) ∥2
+2 max − 𝑃max (𝑘 + 1) + P 2
+
+𝑖∈S 𝜌𝑖
+∥2 2 max max +
+
+P 𝜌𝑖 2
+P
+
+s.t. Eq.(27) (B.2) 𝜌𝑖 𝑖
++ S ∥ 𝑆̃ 𝑖,SES SES 𝜇S(𝑘)
+
+2 max (𝑘) − 𝑆 𝑖,
+max + ∥2
+
+𝜌𝑖 2
+S
+
+( )2
+∑∑ 𝜌𝑖 𝜇𝑖,𝑗
+
+SES(𝑘 + 1) = arg min 1 ∑
+
+𝑺̃ 𝑏 𝑆̃𝑖,SES + P2P ∥ 𝑃 𝑖,𝑗 𝑡 (𝑘)
+max 𝑡 (𝑘) − 𝑃 𝑖,𝑗
+
+𝑡 + ∥2
+𝑺̃SES 2 s
+
+𝑖∈S 𝑡 𝑗∈S 2 𝜌𝑖 2
+P2P
+
+( ) ( ) 𝛾 𝑖
+∑ ∑
+
++ 𝑎 𝑖,SES 1 𝑖,SES2
+s 𝑆̃ + P ∥ 𝑃 𝑖,SES 𝑃 𝑖,SES
+
+max + 𝑏s 𝑆̃ ax 2 max − max (𝑘) ∥22
+𝑖∈S 2 m
+
+𝑖∈S
+𝛾 𝑖
+
+𝜇𝑖
+∑ 𝜌𝑖 ) + S ∥ 𝑆𝑖,SES 𝑖,SES
+
++ S ∥ 𝑆̃ 𝑖,SES ,SES
+max − 𝑆𝑖 1) + S(𝑘 ∥2max (𝑘 + 2 max − 𝑆max (𝑘) ∥22
+
+𝑖∈S 2 𝜌𝑖 2
+S
+
+∑∑ 𝛾 𝑖
+s.t. Eq.(28) + P2P ∥ 𝑃 𝑖,𝑗 ,𝑗
+
+(B.3) 𝑡 − 𝑃 𝑖
+𝑡 (𝑘) ∥22
+
+𝑡 𝑗∈S 2
+ES
+
+where 𝑷̃ S = [𝑃 𝑖,SES ,SES s.t. 𝒈(𝒙𝑖) ≤ 𝟎 (C.1)
+max ∀𝑖 ∈ S], 𝑺̃SES = [𝑆̃ 𝑖
+
+max ∀𝑖 ∈ S]
+The P2P transaction center updates the auxiliary variables by solving 
+
+where the constraints 𝒈(𝒙𝑖) ≤ 𝟎 are equivalent to the set 𝑿𝒊
+problem (B.4). 𝟎. 
+
+𝛾 𝑖P, 𝛾
+𝑖
+S, 𝛾
+
+𝑖
+P2P ≥ 0
+
+𝑷̃ Apply the KKT condition on problem (C.1):
+P2P(𝑘 + 1) = arg min
+
+𝑷̃ P2P
+,𝑗 ∇𝑃 𝑖,SES𝐶 𝑖 𝒙𝑖) + 𝝀𝑖𝑇∇ 𝒈(𝒙𝑖) − 𝜇𝑖
+
+max 0( 𝑃 𝑖,SES
+max P(𝑘)+
+
+∑ 𝜌𝑖 𝑖
+𝑃 2𝑃 ∥ 𝑃 𝑖,𝑗 − 𝑃 𝑖,𝑗 𝜇
+
+(𝑘 + 1) + 𝑡 (𝑘) 2
+𝜌𝑖 ,SES ES ,SES
+
+𝑖,𝑗∈S 2 𝑡 𝑡 𝜌𝑖
+∥2
+
+P2P P(𝑃
+𝑖
+max − 𝑃 𝑖,S
+
+max (𝑘)) + 𝛾 𝑖P(𝑃
+𝑖
+max − 𝑃 𝑖,SES
+
+max (𝑘)) =
+
+s.t. Eq.(24) (B.4) ∇ 𝑖
+𝑃 𝑖,SES𝐶 𝑖
+
+ES𝒈(𝒙 ) + 𝛼𝑖 ) − 𝜇𝑖
+max 0(𝒙
+
+𝑖) + 𝝀𝑖𝑇∇𝑃 𝑖,S
+max P(𝑘 P(𝑘)+
+
+,𝑗 (𝜌𝑖 𝑖,SES SES
+where 𝑷̃ P + 𝛾 𝑖P)(𝑃max − 𝑃 𝑖,
+
+max (𝑘)) = 0
+P2P = [𝑃 𝑖
+
+𝑡 ∀𝑖, 𝑗 ∈ S]
+Then, the dual variables are updated by Eq. (B.5). ∇ 𝑇
+
+𝑆𝑖,SES𝐶 𝑖 ∇ + 𝛼𝑖
+max 0(𝒙
+
+𝑖) + 𝝀𝑖 𝑆𝑖,SES𝒈(𝒙𝑖)
+max S(𝑘) − 𝜇𝑖
+
+S(𝑘)+
+
+𝜇𝑖
+P(𝑘 + 1) = 𝜇𝑖
+
+P(𝑘) + 𝜌𝑖P(𝑃
+𝑖,SES 𝑖,SES
+max (𝑘 + 1) − 𝑃max (𝑘 + 1)) (𝜌𝑖 𝑖,SES
+
+S + 𝛾 𝑖S)(𝑆
+𝑖,SES
+max − 𝑆max (𝑘)) = 0
+
+𝜇𝑖 𝑖 ,SES
+S(𝑘 + 1) = 𝜇S(𝑘) + 𝜌𝑖S(𝑆̃
+
+𝑖
+max (𝑘 + 1) − 𝑆 𝑖,SES
+
+max (𝑘 + 1)) ∇𝑃 𝑖,𝑗𝐶 𝑖 𝝀𝑖𝑇∇ 𝑖,𝑗 +
+𝑡 0(𝒙
+
+𝑖) + 𝑃 𝑖,𝑗 𝒈(𝒙𝑖) + 𝛼
+𝑡 𝑡 (𝑘) − 𝜇𝑖,𝑗
+
+𝑡 (𝑘)
+𝜇𝑖,𝑗
+𝑡 (𝑘 + 1) = 𝜇𝑖,𝑗
+
+𝑡 (𝑘) + 𝜌𝑖 ,𝑗
+P2P(𝑃
+
+𝑖
+𝑡 (𝑘 + 1) − 𝑃 𝑖,𝑗
+
+𝑡 (𝑘 + 1)) (B.5) (𝜌𝑖 𝑖,𝑗 𝑗
+P2P + 𝛾 𝑖P2P)(𝑃𝑡 − 𝑃 𝑖,
+
+𝑡 (𝑘)) = 0 ∀𝑡, 𝑗 ∈ S
+The gap can be calculated by: ∇𝒙𝒊 𝐶
+
+𝑖 ) + 𝝀𝑖𝑇∇
+𝟎 0(𝒙
+
+𝑖
+𝒙𝒊 𝒈(𝒙
+
+𝑖) = 0
+𝟎
+
+( )
+
+∑
+
+𝑐(𝑘 + 1) = 1 𝑖 𝒈(𝒙𝑖) ≤ 0, 𝝀𝑖𝑇 𝒈(𝒙𝑖) = 𝟎 (C.2)
+𝑖 ∥ 𝜇P(𝑘 + 1) − 𝜇𝑖
+
+P(𝑘) ∥
+2 1 𝑖
+2 + + 1) − 𝜇𝑖
+
+𝑖∈S 𝜌P 𝜌𝑖
+∥ 𝜇S(𝑘 S(𝑘) ∥
+
+2
+2
+
+S 𝑖,𝑗
+where 𝝀𝑖 is the dual variable of the constraints. 𝛽𝑖
+
+∑ P, 𝛽
+𝑖
+S, 𝛽
+
+𝑖 𝑖 𝑖
+P2P, 𝛼P, 𝛼S, 𝛼𝑡
+
++ 1 ∥ 𝜇𝑖,𝑗 𝑖,𝑗 2
+𝑡 (𝑘 + 1) − 𝜇𝑡 (𝑘) ∥2 satisfy:
+
+𝑖,𝑗∈S 𝜌𝑖P2P
+∑ 𝛽𝑖
+
++ 𝜌𝑖 𝑖,SES P = 𝜌𝑖P + 𝛾 𝑖P
+P ∥ 𝑃max (𝑘 + 1) − 𝑃 𝑖,SES
+
+max (𝑘) ∥22
+𝑖∈S 𝛽𝑖 𝑖 𝑖
+
+S = 𝜌S + 𝛾S
+∑
+
++ 𝜌𝑖 ,SES
+S ∥ 𝑆̃𝑖
+
+max (𝑘 + 1) − 𝑆̃𝑖,SES
+max (𝑘) ∥22 𝛽𝑖P2P = 𝜌𝑖P2P + 𝛾 𝑖P2P
+
+𝑖∈S 𝛼𝑖 ,SES S
+∑ P(𝑘) = 𝜌𝑖P(𝑃
+
+𝑖
+max (𝑘) − 𝑃 𝑖,SE
+
+max (𝑘))
++ 𝜌𝑖 𝑗
+
+P2P ∥ 𝑃 𝑖,
+𝑡 (𝑘 + 1) − 𝑃 𝑖,𝑗
+
+𝑡 (𝑘) ∥22 (B.6)
+𝑖,𝑗∈S 𝛼𝑖 𝑖 𝑖,SES
+
+S(𝑘) = 𝜌S(𝑆max (𝑘) − 𝑆̃ 𝑖,SES
+max (𝑘))
+
+𝛼𝑖,𝑗 𝑗
+𝑡 (𝑘) = 𝜌𝑖P2P(𝑃
+
+𝑖,𝑗
+𝑡 (𝑘) − 𝑃 𝑖,
+
+𝑡 (𝑘)) (C.3)
+For prosumers, they need to transmit 𝑃 𝑖,SES
+
+max (𝑘), 𝑆 𝑖,SES
+max (𝑘) to the shared 
+
+ESS, which can infer the value of the gradient of the Lagrangian function The KKT system of the optimization problem (C.4) is also (C.2). 
+of prosumers from the sequential data. According to (B.1), Eq. (B.7) is Therefore, the problem (C.4) is equivalent to (C.1).
+always satisfied. This shows that the shared ESS can infer the gradient of 
+the Lagrangian function of prosumers. Based on a series of variable val­ 𝒙𝑖(𝑘 + 1) = arg min 𝐶 𝑖 )
+
+𝒙𝑖∈𝑿𝑖 0(𝒙
+𝑖
+
+ues and the corresponding gradient values, the function can be inferred, 
+𝛽𝑖
+
+which means the privacy of prosumers is disclosed to the shared ESS. + P ∥ 𝑃 𝑖,SES − 𝑃 𝑖,SES 𝑃 𝑖,SES
+2 max max (𝑘) ∥22 +(𝛼
+
+𝑖
+P(𝑘) − 𝜇𝑖
+
+P(𝑘)) max
+
+∇ 𝑖 ,SES
+𝑃 𝑖,SES 𝛽𝑖
+
+max (𝑘+1) 𝐿0(𝒙
+𝑖) = −𝜇𝑖
+
+P(𝑘) − 𝜌𝑖P(𝑃
+𝑖,SES
+max (𝑘) − 𝑃 𝑖
+
+max (𝑘 + 1)) (B.7)
++ S ∥ 𝑆𝑖,SES
+
+2 max − 𝑆𝑖,SES
+max (𝑘) ∥22 +(𝛼
+
+𝑖
+S(𝑘) − 𝜇𝑖
+
+S(𝑘))𝑆
+𝑖,SES
+max
+
+where 𝐿𝑖
+( )
+
+0(𝒙
+𝑖) is the Lagrangian function of prosumer 𝑖.
+
+∑∑ 𝛽𝑖
++ P2P ∥ 𝑃 𝑖,𝑗 ,𝑗 𝑖,𝑗 𝑗
+
+𝑡 − 𝑃 𝑖
+𝑡 (𝑘) ∥22 +(𝛼𝑡 (𝑘) − 𝜇𝑖,𝑗
+
+𝑡 (𝑘))𝑃 𝑖,
+𝑡
+
+Appendix C 𝑡 𝑗∈S 2
+(C.4)
+
+Take the update process of prosumers (B.1) as an example. First, a 
+proximal term is added to transform the update process (B.1) into (C.1). Let 𝜌𝑖P, 𝜌
+
+𝑖
+S, 𝜌
+
+𝑖
+P2P be time-varying [29]. In each iteration, the coefficients 
+
+The convergence is proved in [41]. are set as:
+
+𝒙𝑖(𝑘 + 1) = argmin 𝐶 𝑖 ) 𝜌𝑖
+𝒙𝑖 0(𝒙
+
+𝑖
+P(𝑘) = 𝜏 𝑖P(𝑘)𝜏
+
+𝑖
+P(𝑘)
+
+11 
+
+
+
+Y. Sun, L. Chen, Y. Chen et al. Applied Energy 407 (2026) 127368 
+
+𝜌𝑖S(𝑘) = 𝜏 𝑖S(𝑘)𝜏
+𝑖
+S(𝑘) [14] Li L, Cao X, Zhang S. Shared energy storage system for prosumers in a commu­
+
+nity: investment decision, economic operation, and benefits allocation under a 
+𝜌𝑖P2P(𝑘) = 𝜏𝑖P2P(𝑘)𝜏
+
+𝑖
+P2P(𝑘) (C.5) cost-effective way. J Energy Storage. 2022;50: 104710.
+
+[15] Li Q, Gundersen JS, Heusdens R, Christensen MG. Privacy-preserving distributed 
+
+where 𝜏 𝑖 processing: metrics, bounds and algorithms. IEEE Trans Inf Forensics Secur. 
+P(𝑘), 𝜏
+
+𝑖
+P(𝑘), 𝜏
+
+𝑖
+S(𝑘), 𝜏
+
+𝑖
+S(𝑘), 𝜏
+
+𝑖
+P2P(𝑘),̃𝜏
+
+𝑖
+P2P(𝑘) are random numbers. In 
+
+2021;16:2090–2103.
+this way, the value of 𝜌𝑖P, 𝜌
+
+𝑖
+S, 𝜌
+
+𝑖
+P2P are different in each iteration. Let [16] Zhou X, He H, Wang B, Zhu X, Sun H. Coordination-decomposition algorithm 
+
+𝛽𝑖P, 𝛽
+𝑖
+S, 𝛽
+
+𝑖
+P2P be constant numbers so that 𝛾 𝑖P, 𝛾
+
+𝑖
+S, 𝛾
+
+𝑖
+P2P can be determined. based on paillier encryption and consensus mechanism (in chinese). J Glob Energy 
+
+Interconnect. 2023;6:362–369.
+[17] Pena-Bello A, Parra D, Herberz M, Tiefenbeck V, Patel MK, Hahnel UJJ. Integration 
+
+Appendix D 
+of prosumer peer-to-peer trading decisions into energy community modelling. 
+Nature Energy. 2022;7(1):74–82.
+
+[18] Chen Y, Wei W, Li M, Chen L, Catalão JPS. Flexibility requirement when tracking 
+renewable power fluctuation with peer-to-peer energy sharing. IEEE Trans Smart 
+
+Algorithm D1: Paillier Cryptosystem. Grid. 2022;13(2):1113–1125.
+
+Key generation: [19] Chen Y, Liu N, Chen L, Yu X. Region-to-region energy sharing for prosumer clusters 
+in distribution network: a multi-leaders and multi-followers stackelberg game. IEEE 
+
+1) Choose two large prime numbers 𝑝 and 𝑞 of equal bit-length Trans Energy Mark Policy Regul. 2023.
+2) Let Γ = 𝑝𝑞, 𝜁 = 𝑙𝑐𝑚(𝑝 − 1, 𝑞 − 1) where 𝑙𝑐𝑚 means the least [20] Yan D, Chen Y. Distributed coordination of charging stations with shared energy 
+
+common multiple. Let Ω = 𝑛 + 1. storage in a distribution network. IEEE Trans Smart Grid. 2023.
+[21] Wang C, Ren K, Wang J. Secure optimization computation outsourcing in 
+
+3) Define 𝐿(𝑥) = 𝑥−1
+𝑛 . Let 𝜎 = (𝐿(Ω𝜁 𝑚𝑜𝑑 𝑛2))−1 𝑚𝑜𝑑 𝑛 cloud computing: a case study of linear programming. IEEE Trans Comput. 
+
+4) The public key is (Γ,Ω), and the private key is (𝜁, 𝜎). 2016;65(1):216–229.
+
+Encryption (𝑐 = 𝐸(𝑚), 0 ≤ 𝑚 ≤ 𝑛): [22] Zhou L, Li C. Outsourcing large-scale quadratic programming to a public cloud. 
+IEEE Access. 2015;3:2581–2589.
+
+1) Choose a random number 𝑟 ∶ 0 ≤ 𝑟 ≤ 𝑛. [23] Ahmed SA, Huang Q, Zhang Z, et al. Optimization of social welfare and mitigating 
+2) 𝑐 = Ω𝑚 ⋅ 𝑟Γ 𝑚𝑜𝑑 Γ2 privacy risks in p2p energy trading: differential privacy for secure data reporting. 
+
+Decryption (𝑚 = 𝐷(𝑐)): Appl Energy. 2024;356: 122403.
+[24] Palacios-Garcia EJ, Carpent X, Bos JW, Deconinck G. Efficient privacy-preserving 
+
+1) 𝑚 = 𝐿(𝑐𝜁 𝑚𝑜𝑑 Γ2) ⋅ 𝜎 𝑚𝑜𝑑 𝑛
+aggregation for demand side management of residential loads. Appl Energy. 
+
+Homomorphic addition 2022;328: 120112.
+
+1) 𝐸(𝑚 𝑚 𝑜𝑑 Γ21 + 2) = 𝐸(𝑚1) ⋅ 𝐸(𝑚2) 𝑚 [25] Zhang T, Zhu Q. Dynamic differential privacy for admm-based distributed classifi­
+cation learning. IEEE Trans Inf Forensics Secur. 2017;12(1):172–187.
+
+2) 𝐸(𝑎𝑚) = 𝐸(𝑚)𝑎 𝑚𝑜𝑑 Γ2
+[26] Huang Z, Hu R, Guo Y, Chan-Tin E, Gong Y. Dp-admm: admm-based dis­
+
+tributed learning with differential privacy. IEEE Trans Inf Forensics Secur. 
+2020;15:1002–1012.
+
+Algorithm D1 shows the Paillier cryptosystem, including the pro­ [27] Xie Q, Jiang S, Jiang L, et al. Efficiency optimization techniques in privacy-
+
+cesses of key generation, encryption, decryption, and the characteristics preserving federated learning with homomorphic encryption: a brief survey. IEEE 
+Internet Things J. 2024;11(14):24569–24580.
+
+of homomorphic addition. [28] Yu H, Zhang J, Ma J, Chen C, Geng G, Jiang Q. Privacy-preserving demand response 
+Notes: the data to be encrypted must be a natural number. For of aggregated residential load. Appl Energy. 2023;339: 121018.
+
+negative integers, it should be encrypted in the form of 2’s complement. [29] Zhang C, Ahmad M, Wang Y. ADMM based privacy-preserving decentralized 
+optimization. IEEE Trans Inf Forensics Secur. 2018;14(3):565–580.
+
+[30] Chen Y, Mei S, Zhou F, Low SH, Wei W, Liu F. An energy sharing game with 
+Data availability generalized demand bidding: model and properties. IEEE Trans Smart Grid. 
+
+2020;11(3):2055–2066.
+Data will be made available on request. [31] Rezaee Jordehi A. A stochastic model for participation of virtual power plants in 
+
+futures markets, pool markets and contracts with withdrawal penalty. J Energy 
+
+References Storage. 2022;50: 104334.
+[32] Wang B, Zhang C, Li C, Yang G, Dong ZY. Transactive energy sharing in a microgrid 
+
+[1] Ai W, Deng T, Qi W. Farsighted stability of distributed energy resource sharing. via an enhanced distributed adaptive robust optimization approach. IEEE Trans 
+Appl Energy. 2022;326: 119968. Smart Grid. 2022;13(3):2279–2293.
+
+[2] Gržanić M, Capuder T, Zhang N, Huang W. Prosumers as active market participants: [33] Mi Y, Tao B, Fu Y, Su X-J, Wang P. A game bidding model of electricity 
+a systematic review of evolution of opportunities, models and challenges. Renew and hydrogen sharing system considering uncertainty. IEEE Trans Smart Grid. 
+Sustain Energy Rev. 2022;154: 111859. 2024;15(3):2751–2761.
+
+[3] Choudhury S. Review of energy storage system technologies integration to mi­ [34] He X, Xiao J-W, Cui S-C, Liu X-K, Wang Y-W. A new cooperation framework with 
+crogrid: types, control strategies, issues, and future prospects. J Energy Storage. a fair clearing scheme for energy storage sharing. IEEE Trans Ind Informatics. 
+2022;48: 103966. 2021;18(9):5893–5904.
+
+[4] Dai R, Esmaeilbeigi R, Charkhgard H. The utilization of shared energy stor­ [35] Kirschen DS, Goran S. Fundamentals of power system economics. John Wiley & 
+age in energy systems: a comprehensive review. IEEE Trans Smart Grid. Sons; 2018.
+2021;12(4):3163–3174. [36] Ullah MH, Park J-D. Peer-to-peer energy trading in transactive markets considering 
+
+[5] Wang Z, Chen L, Li X, Mei S. A two-stage optimization approach-based energy stor­ physical network constraints. IEEE Trans Smart Grid. 2021;12(4):3390–3403.
+age sharing strategy selection for limited rational users. J Energy Storage. 2024;93: [37] Liu N, Yu X, Wang C, Li C, Ma L, Lei J. Energy-sharing model with price-based 
+112098. demand response for microgrids of peer-to-peer prosumers. IEEE Trans Power Syst. 
+
+[6] Xiao J, Yang Y, Cui S, Liu X. A new energy storage sharing framework with regard 2017;32(5):3569–3583.
+to both storage capacity and power capacity. Appl Energy. 2022;307: 118171. [38] Zhong W, Xie S, Xie K, Yang Q, Xie L. Cooperative p2p energy trading in active 
+
+[7] Ma L, Li X, Kong X, Yang C, Chen L. Optimal participation and cost allocation distribution networks: an milp-based nash bargaining solution. IEEE Trans Smart 
+of shared energy storage considering customer directrix load demand response. J Grid. 2021;12(2):1264–1276.
+Energy Storage. 2024;81: 110404. [39] Chen Y, Zhao C, Low SH, Wierman A. An energy sharing mechanism consider­
+
+[8] Zhao D, Wang H, Huang J, Lin X. Virtual energy storage sharing and capacity ing network constraints and market power limitation. IEEE Trans Smart Grid. 
+allocation. IEEE Trans Smart Grid. 2019;11(2):1112–1123. 2023;14(2):1027–1041.
+
+[9] Chen C, Li Y, Qiu W, et al. Cooperative-game-based day-ahead scheduling of local [40] Paillier P. Public-key cryptosystems based on composite degree residuosity classes. 
+integrated energy systems with shared energy storage. IEEE Trans Sustain Energy. International conference on the theory and applications of cryptographic tech­
+2022;13(4):1994–2011. niques; Springer; 1999:223–238.
+
+[10] Jo J, Park J. Demand-side management with shared energy storage system in smart [41] Deng W, Lai M-J, Peng Z, Yin W. Parallel multi-block ADMM with o (1/k) 
+grid. IEEE Trans Smart Grid. 2020;11(5):4466–4476. convergence. J Sci Comput. 2017;71:712–736.
+
+[11] Lai S, Qiu J, Tao Y. Individualized pricing of energy storage sharing based on [42] State grid Shandong electric power company. Announcement of industrial and 
+discount sensitivity. IEEE Trans Ind Informatics. 2021;18(7):4642–4653. commercial time-of-use tariff for 2024 (in chinese); 2024. https://www.pvmeng.
+
+[12] Zheng B, Wei W, Chen Y, Wu Q, Mei S. A peer-to-peer energy trading market com/2023/12/07/22402/. 
+embedded with residential shared energy storage units. Appl Energy. 2022;308: [43] Pindyck RS, et al. Microeconomics. Pearson; 2018.
+118400. [44] Ullah MH, Park J-D. A two-tier distributed market clearing scheme for peer-to-peer 
+
+[13] Sun B, Jing R, Zeng Y, Wei W, Jin X, Huang B. Three-side coordinated dispatching energy sharing in smart grid. IEEE Trans Ind Informatics. 2022;18(1):66–76.
+method for intelligent distribution network considering dynamic capacity division [45] Facchinei F, Kanzow C. Generalized nash equilibrium problems. Ann Oper Res. 
+of shared energy storage system. J Energy Storage. 2024;81: 110406. 2010;175(1):177–211.
+
+12

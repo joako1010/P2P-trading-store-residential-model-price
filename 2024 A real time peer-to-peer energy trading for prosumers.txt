@@ -1,0 +1,1726 @@
+﻿Electrical Power and Energy Systems 155 (2024) 109547
+
+Contents lists available at ScienceDirect 
+
+International Journal of Electrical Power and Energy Systems 
+journal homepage: www.elsevier.com/locate/ijepes 
+
+A real time peer-to-peer energy trading for prosumers utilizing 
+time-varying building virtual energy storage 
+Xiaoyu Wang a, Hongjie Jia a, Zibo Wang a,b,*, Xiaolong Jin a,*, Youjun Deng a, Yunfei Mu a, 
+Xiaodan Yu a 
+
+a Key Laboratory of Smart Grid of Ministry of Education, Tianjin University, Tianjin 30072, China 
+b China Electric Power Research Institute, Beijing 100192, China   
+
+A R T I C L E  I N F O   A B S T R A C T   
+
+Keywords: With the increasing penetration of distributed energy resources (DER) in the electric power system, Peer-to-Peer 
+Peer-to-Peer (P2P) (P2P) energy trading has become a promising paradigm for future electric power systems. Building thermal load, 
+Energy trading which is an important demand side resource, should be considered carefully in the design of a P2P trading 
+Virtual energy storage system (VESS) method. In this paper, we investigate the application of building thermal energy storage capability in P2P energy 
+Time-varying 
+Model predictive control (MPC) trading. We aggregate and model building thermal loads as a virtual energy storage and derive a time-varying 
+Trading preference virtual energy storage system (T-VESS) model to quantify the flexibility of a building. Key parameters of T- 
+
+VESS, including charging/discharging rate, energy capacity, and state of charge (SOC), are analyzed so that T- 
+VESS can be embedded in the building prosumer model to participate effectively in electricity-oriented P2P 
+energy trading. We propose a real time P2P energy trading method of prosumers based on model predictive 
+control (MPC). This method consists of an energy supply and demand quantification stage and a transaction price 
+optimization stage, which can effectively capture the time-varying nature of T-VESS. To preserve the trading 
+preference for prosumers, we propose a distributed P2P energy trading actions implementation method based on 
+the continuous double auction (CDA) considering multiple trading preference grades. Numerical results 
+demonstrate that the proposed P2P energy trading method considering T-VESS can reduce the operational cost of 
+prosumers by 3.7%, while also promoting the local integration of renewable energy by 3.1%. Furthermore, 
+compared to existing P2P trading methods considering single preference grade, the proposed method greatly 
+enhances the utilities of both individual prosumers and the overall community.   
+
+energy trading enables prosumers at the demand side to directly trade 
+1. Introduction energy with each other, which has the potential to bring higher eco
+
+nomic benefits for prosumers, and to facilitate better local power and 
+In order to reduce greenhouse emissions and realize carbon energy balance for the power grid [6]. In this context, the design of the 
+
+neutrality, governments in many countries have proposed strategic P2P energy trading method in the transactive energy market has become 
+plans to promote the integration of distributed renewable energies [1]. a research hotspot in academia and industry [7–9]. 
+For example, the installed household photovoltaic capacity has Energy storage is an essential component of the energy system with 
+increased by 21.6GW in 2021 in China compared with 2020 [2]. In this high renewable energy penetration. In P2P energy trading, prosumers 
+context, the role of the end-users has changed from traditional con can use energy storage to schedule their power consumption profiles 
+sumers to prosumers with the capabilities of both energy production and more flexibly, achieving peak- valley arbitrage by coordinating the 
+consumption. Due to the volatility of renewable energy, its high per renewable generation and the charging/discharging operations of en
+centage integration will pose pressure on the reliable operation of the ergy storage [10–11]. Some previous studies have discussed the appli
+power grid. With the advances in two-way information and communi cations of energy storage in the design of P2P energy trading method to 
+cation technology (ICT), Peer-to-Peer (P2P) energy trading is recognized maximize/balance the benefits of the prosumers, aggregators, and 
+as a promising way to address the above-mentioned problems [3–5]. P2P power grid. Ref. [12] proposes an optimal bidding strategy to increase 
+
+* Corresponding authors at: Room D/429, The Building 26, Tianjin University, Weijin Road No.92, Tianjin 300072, China. 
+E-mail addresses: wangxiaoyuted@tju.edu.cn (X. Wang), hjjia@tju.edu.cn (H. Jia), wangzibo@tju.edu.cn (Z. Wang), xljin@tju.edu.cn (X. Jin), youjun_deng0910@ 
+
+tju.edu.cn (Y. Deng), yunfeimu@tju.edu.cn (Y. Mu), yuxd@tju.edu.cn (X. Yu).  
+
+https://doi.org/10.1016/j.ijepes.2023.109547 
+Received 5 May 2023; Received in revised form 5 September 2023; Accepted 27 September 2023   
+Available online 15 October 2023
+0142-0615/© 2023 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-
+nc-nd/4.0/).
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Nomenclature cP2P
+i Predicted market clearing price at t 
+
+I All prosumers in the market 
+Indices and Sets Im
+
+i Prosumers of m-th trading preference grade trading with i- 
+i, j Index for prosumers th prosumer 
+t Index for time slots in a trading day 
+e Index for building envelopes Variables 
+k Index for energy demands Pba,chg
+
+i,t Charging power of battery of i-th prosumer at t 
+l Index for energy supplies SOCba
+
+i,t SOC of battery of i-th prosumer at t 
+Parameters of Battery and EV Pba,dischg
+
+i,t Discharging power of battery of i-th prosumer at t 
+Pba
+
+i,t Charging/discharging battery rate of i-th prosumer PEV,chg
+i,t Charging power of EV of i-th prosumer at t 
+
+Eba
+i,max Capacity of the battery of i-th prosumer PEV,dischg
+
+i,t Discharging power of EV of i-th prosumer at t 
+Pba,chg
+
+i,max Maximum charging power of the battery of i-th prosumer QTC
+i,t Heating power generated by thermostatically controlled 
+
+Pba,dischg
+i,max Maximum discharging power of the battery of i-th appliance at t 
+
+prosumer QAC
+i,t Heating power generated by air-conditioning of i-th 
+
+SOCba,max
+i Maximum SOC of the battery of i-th prosumer prosumer at t 
+
+SOCba,min
+i Minimum SOC of the battery of i-th prosumer PAC
+
+i,t Electric power of air-conditioning of i-th prosumer at t 
+tEV,a
+i , tEV,d QHP
+
+i Arrival/desired time of the EV of i-th prosumer i,t Heating power generated by heat pump of i-th prosumer at 
+SOCEV,desired
+
+i Desired SOC of the EV of i-th prosumer t 
+QHP,building
+
+i,t Supplying power of heat pump to the building of i-th 
+Parameters of T-VESS prosumer at t 
+mAC,dAC Constant coefficients of the air-conditioning QWT,chg
+
+i,t Charging power of water tank of i-th prosumer at t 
+COPHP Performance coefficient of the heat pump 
+ηWT Heat loss coefficient of the water tank PHP
+
+i,t Electric power of heat pump of i-th prosumer at t 
+
+CAir Specific heat capacity of air WWT
+i,t Stored heating energy of water tank of i-th prosumer at t 
+
+ρAir QWT,dischg
+Air density i,t Discharging power of water tank of i-th prosumer at t 
+
+VAir
+i Volume of the air in the building QHP,total
+
+i,t Total heating power of the heat pump to the building of i-th 
+Si,n Area of the n-th type of building envelope prosumer at t 
+αHD Heat-transfer coefficient of building envelope PVESS
+
+i,t Electric power of T-VESS of i-th prosumer at t 
+PTC
+
+i,t,max Maximum power of thermostatically controlled appliance PTC
+i,t Electric power generated by thermostatically controlled 
+
+of i-th prosumer 
+PTC appliance of i-th prosumer at t 
+
+i,t,min Minimum power of thermostatically controlled appliance WVESS
+i,t Capacity of the T-VESS of i-th prosumer at t 
+
+of i-th prosumer 
+T SOCVESS
+
+i,t SOC of the T-VESS of i-th prosumer at t 
+in,min Minimum comfort temperature 
+
+Tin,max Maximum comfort temperature EVESS
+i,t Stored heating energy of the T-VESS of i-th prosumer at t 
+
+SOCVESS
+i,min Minimum SOC of the T-VESS of i-th prosumer PGrid
+
+i,t Energy exchanged power between the utility grid and i-th 
+SOCVESS
+
+i,max Maximum SOC of the T-VESS of i-th prosumer prosumer at t 
+PP2P
+
+i,t Predicted trading power of i-th prosumer at t 
+Parameters of P2P Energy Trading mci,t0 ,l Marginal cost of the l-th energy supply of i-th prosumer at 
+d Number of time slots of the control horizon t
+t0 Initial time slot of the control horizon 0 
+
+cGrid,feedin mui,t0 ,k Marginal utility of the k-th energy demand of i-th prosumer 
+t Feed-in tariff of the utility grid at t at t0 
+
+cGrid,retail
+t Retail price of the utility grid at t p(asell
+
+i,l ) Energy selling ask price asell
+i,l asell
+
+i,l acceptance probability 
+cGrid
+
+t Price of the utility grid at t q(bbuy
+i,k ) Energy purchasing bid price bbuy
+
+i,k bbuy
+cba i,k acceptance 
+
+i LCOE of the battery of i-th prosumer at t 
+probability  
+
+cEV
+i LCOE of the EV of i-th prosumer at t 
+
+cP2P
+t Transactions price at t 
+
+the ratio of transaction matching success, in which the usage willingness participants equipped with batteries and solar photovoltaics is investi
+of energy storage resources including batteries and electric vehicles are gated in [15], aiming at balancing the energy supplies and demands of 
+also considered. In [13], an energy-sharing mechanism is proposed to the community P2P energy trading market. In the above studies, the 
+promote both the allocation ability of energy storage resources and the battery is used as a main energy storage device in designing P2P energy 
+self-consumption of renewable resources. The benefits of the aggregator, trading methods. However, battery costs are still high currently, espe
+the community, and the utility in trading are also discussed in some cially its application in single households or residential communities. 
+previous research. Ref. [14] regards a third- party entity with large-scale High costs and low returns made prosumers hesitant to deploy batteries 
+batteries and photovoltaics as one controllable energy storage resource, just enough, which may result in renewable energy underutilization and 
+and names it as the energy balance service provider (EBSP). Then, an impede the development of the P2P energy market even. Therefore, it is 
+optimized pricing model and a P2P trading strategy with EBSP are significant to exploit more off-the-peg auxiliary energy storage resources 
+derived to maximize the benefit of all members in the whole trading for prosumers’ P2P energy trading actions. 
+system. A dynamic energy trading method for bargaining among In fact, the thermal inertia of buildings can be modeled into the so- 
+
+2
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 1. Framework of P2P energy trading and community microgrid with two types of prosumers.  
+
+called virtual energy storage system (VESS) [16–18]. With the aid of energy storage, which can function like a battery energy storage unit to 
+such virtual storage, heating/cooling building demands can be dis well participate in the energy resources scheduling in the process of P2P 
+patched orderly to derive extra benefits without causing a disturbance to energy trading decision-making. 
+the user’s comfort. VESS has been employed and discussed in many Meanwhile, various methods have been presented for P2P energy 
+researches, such as the power grid’s ancillary service participation [19], trading considering the building thermal inertia. For instance, a bilevel 
+local renewable volatility balance [20], and building energy cost saving energy trading method using consensus algorithm is introduced for heat- 
+[21]. Ref. [19] visualizes a diagram that the VESS can be used to electricity integrated energy system [23]. Reference [24] describes a 
+participate in the ancillary services of the power grid, such as frequency game-theoretic P2P energy sharing management for a community of 
+regulation, voltage support, and power quality enhancement. In [20], energy buildings. In [25], a two-stage energy trading model based on the 
+VESS is adopted to mitigate the power imbalance problem caused by Stackelberg game and the alternating direction method of multiplier has 
+stochastic renewable energy generation. In [21], VESS is utilized to been presented for the prosumer-centric federated power plant. In [26], 
+support building energy management, in which an optimal scheduling with the coordination between electric vehicles and air-conditioning 
+approach is proposed to reduce the overall energy bills of community systems, a P2P energy trading method based on multi-time scale opti
+microgrids while maintaining indoor thermal comfort for the resident mization method is developed to maximize the total revenues of pro
+occupants. Few work in the literature investigates the application of sumers. In [27], a P2P energy trading framework for smart buildings 
+VESS in P2P energy trading. Although an optimization method is pro with air conditioning system is presented using a fully decentralized 
+posed in [22] to quantify the aggregated flexibility of the VESS of approach, aiming to minimize the total costs. Ref. [28] proposes a hi
+buildings, the time-varying nature of VESS are not properly considered, erarchical household P2P energy trading framework with two-level 
+which may result in inaccurate flexibility quantification. The estab structures, including household energy resources scheduling level and 
+lishment of the VESS model involves thermostatically controlled appli energy trading level, to improve the utilization rate of local renewable 
+ances and building thermal dynamics, in which the latter will cause energy. The above studies primarily focused on the transaction behav
+time-varying heat dissipating power due to inconstant indoor/outdoor iors between the overall energy resources flexibility of prosumers. 
+ambient temperatures. The traditional VESS model does not consider the Nevertheless, there have been limited efforts to provide a comprehen
+caused time-varying heat dissipating power, resulting in a constant sive analysis of the trading power and price of each type of energy re
+metric quantum in the whole horizon, such as constant energy capacity. sources, and the corresponding matching process between the prosumer 
+Moreover, the VESS model in [22] is derived from the perspective of with the specific type of energy resources to the particular prosumer. 
+thermal energy storage, which may be challenging to accurately and This aspect is crucial in capturing prosumers’ energy trading preferences 
+effectively solve the electricity-oriented P2P energy trading problem due accurately. Furthermore, the existing research [29–30] that takes into 
+to the complicated heat-to-electricity conversion process. Therefore, it is account heterogeneous preferences of prosumers assumes that those 
+necessary to re-formulate a VESS model from the perspective of electric with single trading preference grade only engage in transactions with a 
+
+3
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 2. Diagram of modeling the T-VESS.  
+
+small number of other prosumers, which may lead to the limited P2P communication in the real time market. In this market, the historical 
+energy trading amount, and the reduction of profits of prosumers and trading information on trading power and price is publicly available to 
+the utilization rate of renewable energy. Along with the occurrence of all prosumers within the community. Meanwhile, private information 
+prosumers with multi-type energy resources and heterogeneous energy pertaining to each prosumer’s energy resources, including energy 
+trading preferences, a more comprehensive distributed P2P energy resource configuration as well as energy resource production and con
+trading actions implementation method in the real time market needs sumption behavior, is kept confidential. The microgrid is connected to 
+further study. the utility grid which is responsible for the energy supply and demand 
+
+Motivated by the abovementioned aspects, this paper proposes a real balance, i.e., coping with energy deficits or absorbing excessive energy 
+time P2P energy trading method based on the model prediction control production. The controllable energy resources of residential or enter
+(MPC) in an urban community microgrid, which takes the time-varying prise prosumers are managed by their local energy management systems 
+VESS (T-VESS) into account, and uses a distributed method based on the (EMS). It is assumed that the controllable energy resources of a resi
+continuous double auction (CDA) to implement the trading action. The dential prosumer include one electric vehicle (EV), one battery, and one 
+main contributions are as follows:  air-conditioning; while those of an enterprise prosumer include one heat 
+
+pump and one battery. In the following sub-sections, all controllable 
+(1) A rigorous T-VESS model is developed from the perspective of energy resources will be modeled in details, in which the thermostati
+
+electric energy storage, wherein the charging/discharging rate, cally controlled appliances (i.e., air-conditioning, heat pump) will be 
+energy capacity, and state of charge (SOC) of a building are modeled into T-VESS in Section 2.3, by combining with the building’s 
+accurately defined and analyzed, resulting in fully utilize the thermal dynamics. 
+thermal storage ability of buildings. The T-VESS model is inte
+grated into the real time P2P energy trading model of prosumers, 2.1. Battery storage model 
+which can lead to the total cost reduction and renewable energy 
+utilization rate improvement.  The battery can provide prosumers with energy storage support and 
+
+(2) To effectively capture the time-varying nature of T-VESS, a real- is modeled as follows. 
+time P2P energy trading method is proposed based on the MPC. 
+This method is formulated as a two-stage structure consisting of SOCba
+
+i,t = SOCba
+i,t− 1 +(Pba,chg
+
+i,t ηba,chg
+i − Pba,dischg
+
+i,t /ηba,dischg
+i )/Eba
+
+i,max (1)  
+an energy supply and demand quantification stage (Stage I) and a 
+transaction price optimization stage (Stage II). The energy supply 0⩽Pba,chg
+
+i,t ⩽Pba,chg
+i,max (2)  
+
+and demand are quantified in Stage I by solving the formulated 
+prosumer model, and the results are used in Stage II to determine 0⩽Pba,dischg
+
+i,t ⩽Pba,dischg
+i,max (3)  
+
+the optimal energy trading price.  
+(3) A distributed P2P energy trading actions implementation method Pba,dischg
+
+i,t +Pba,chg
+i,t ⩽max{Pba,dischg
+
+i,t ,Pba,chg
+i,t } (4)  
+
+is proposed based on the CDA, which allows prosumers to 
+maximize profits while preserving their trading preferences. In SOCba
+
+i,min⩽SOCba
+i,t ⩽SOC
+
+ba
+i,max (5) 
+
+particular, prosumers sequentially match their specific energy 
+supplies and demands with other prosumers of multiple trading Eq. (2) and Eq. (3) denote the charging/discharging power limits. Eq. 
+preference grades, until successful matching or market clearance (4) is the mutual exclusion constraint for charging/discharging actions. 
+is achieved. In this way, the overall quantity of P2P energy Eq. (5) is the SOC constraint. 
+trading is increased, and the utilities of individual prosumer and 
+whole community are improved compared to the existing method 
+that considering single preference grade. 2.2. Electric vehicle model 
+
+2. P2P energy trading framework and energy resource modeling EV can be regarded as a mobile energy storage unit. Thus, Eqs. (1)– 
+(5) can be directly used to represent the EV model by replacing the su
+
+P2P energy trading is designed for an urban community microgrid as perscript “ba” with “EV”. Apart from those, EV travel behavior needs to 
+shown in Fig. 1. There are two types of solar photovoltaic (PV) inte be considered as follows. 
+grated prosumers, i.e., residential and enterprise prosumers. They have PEV,chg
+
+i,t = PEV,dischg
+i,t = 0, for t ∕∈ [tEV,a
+
+i , tEV,d
+i ] (6)  
+
+heterogeneous trading preferences, which refer to involving the 
+matching of various energy resources with their corresponding preferred SOCEV
+
+i,t ⩾SOCEV,desired
+i , for t = tEV,d
+
+i (7) 
+prosumers, and the classification of these prosumers into multiple 
+preference grades. Prosumers are connected by feeders, which enables Eq. (6) denotes that EV cannot be charged/discharged when it is on 
+them to directly trade energy with each other via two-way information the way. Eq. (7) is used to ensure the desired SOC level at the end of the 
+
+scheduling horizon to meet the next travel demand. 
+
+4
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+2.3. Time-varying virtual energy storage system model parameters are involved, i.e., the charging/discharging rate (PVESS
+i,t ), 
+
+energy capacity (WVESS
+A schematic of modeling T-VESS is shown in Fig. 2. Two basic models i,t ), and the SOC value (SOCVESS
+
+i,t ). 
+To quantify the charging/discharging rate of T-VESS, we need to 
+
+of thermostatically controlled appliances (i.e., air-conditioning and heat 
+pump) are firstly introduced. Then, the time-varying heat dissipating define and quantify a baseline power PBaseline
+
+i,t . In this case, the charging/ 
+power of the building is quantified to draw the building thermal dy discharging rate of T-VESS is calculated by the consumed electric power 
+namics. A T-VESS model is finally developed from the perspective of PTC
+
+i,t of thermostatically controlled appliances subtracting the baseline 
+electric energy storage, in which three key parameters are defined and power PBaseline
+
+i,t . 
+analyzed, including the charging/discharging rate (PVESS
+
+i,t ), energy ca PBaseline
+i,t is defined as the consumed electric power of a thermostati
+
+pacity (WVESS
+i,t ), and the SOC value (SOCVESS
+
+i,t ).  cally controlled appliance to keep the indoor temperature at the set 
+point Tset
+
+in,t . In other words, the building offers no adjustment flexibility in 
+(1) Basic models of thermostatically controlled appliances this case, which means that T-VESS is neither charged nor discharged at 
+
+this time. Further, the generated heating power from PBaseline
+i,t is defined 
+
+A thermostatically controlled appliance is functioned as heating as the heating power baseline QBaseline
+building space by absorbing electric power. In this paper, it is assumed i,t . According the electricity-heat 
+
+that the air-conditioning is used for residential prosumers, while the conversion relationship in (8) and (9), PBaseline
+i,t can be quantified by 
+
+heat pump is adopted in enterprise prosumers. Let QTC QBaseline
+i,t denotes the i,t . Therefore, the first is to calculate QBaseline
+
+i,t . It is clear that 
+generated quantum of heat power by them. QBaseline
+
+i,t can maintain the indoor temperature at the set point Tset
+in,t. Ac
+
+Due to the good performance of continuous power adjustment, cording to (14), QBaseline
+i,t is equal to QHD
+
+i,t at current time slot, as shown in 
+inverter air-conditioning is considered here. Its consumed electricity PAC
+
+i,t (15). 
+depends on the space thermal demands QAC
+
+i,t and the coefficients of 
+QBaseline D r
+
+performance (mAC and dAC), as shown in (8). i,t − QH
+i,t = CAi ρAirVAir set et
+
+i (Tin,t+1 − T s
+in,t) (14)  
+
+QTC AC C ∑N ∑N
+i,t = Qi,t = mA PAC
+
+i,t + dAC (8) QBaseline D D
+i,t = QH
+
+i,t = QH
+i,t,n = Si,nαHD(T set
+
+out,t − Tin,t) (15) 
+A heat pump is usually packed with a water tank. Energy QHP n=1 n=1
+
+i,t 
+
+generated by the heat pump is equal to the supplying energy QHP,building Substituting (15) into (8) and (9), Eq. (16) yields the corresponding 
+i,t to 
+
+the buildings plus the storing energy QWT,chg electric power baseline PBaseline
+i,t , in which (16a) and (16b) are the 
+
+i,t in the water tank as shown 
+in (9). Eq. (10) gives the electric consumption of the heat pump. And, the quantified value for residential and enterprise prosumers, respectively. 
+energy WWT ⎧
+
+i,t of the water tank is calculated based on its charging/dis ⎪ QBaseline dAC
+
+charging power and the heat loss coefficient as shown in (11). Then the ⎪ i,t
+⎨ C − (16a)
+
+PBaseline mA mAC
+
+total heating power of the heat pump to the building QHP,total i,t = (16) 
+i ⎪
+,t is given in 
+
+⎪QBaseline WT,chg T,dischg
+
+(12). ⎩ i,t Qi,t − QW
+i,t
+
+(16b)
+COPHP +
+
+COPHP
+
+QHP P,building T,chg
+i,t = QH
+
+i,t +QW
+i,t (9)  After PBaseline
+
+i,t is determined, the charging/discharging power of T- 
+VESS PVESS
+
+i,t can be presented in (17). When PVESS
+i,t is a positive value, T- 
+
+QHP HP,building WT,chg
+PHP i,t Qi,t Qi,t VESS is charged; otherwise, it is discharged. Eq. (18) gives the opera
+i,t =
+
+COPHP = )  
+COPHP +
+
+COPHP (10
+tional power boundaries of T-VESS, in which the maximum charging 
+power PVESS,chg
+
+WWT WT,chg T,dischg i,t,max and the maximum discharging power PVESS,dischg
+i,t,max are 
+
+i,t+1 = WWT
+i,t (1 − ηWT)+ (Qi,t − QW
+
+i,t )Δt (11)  calculated by (19) and (20), respectively. 
+
+QTC HP,total
+i PVESS Baseline
+,t = Qi,t = QHP,building
+
+i,t +QWT,dischg
+i,t (12)    i,t = PTC
+
+i,t − Pi,t (17)  
+
+PVESS,dischg SS ESS,chg
+(2) Quantification of time-varying heat dissipating power i,t,max ⩽PVE
+
+i,t ⩽PV
+i,t,max (18)  
+
+When a thermostatically controlled appliance is in operation, the PVESS,dischg e
+i,t,max = PBaselin
+
+i,t − PTC
+i,t,min (19)  
+
+indoor temperature Tin,t and outdoor temperature Tout,t of building are 
+different, which will cause heat exchange between the indoor and out PVESS,chg C
+
+i,t,max = PT
+i,t,max − PBaseline
+
+i,t (20) 
+door space through building envelope [22]. The heat exchange can be Following to [18] and [22], the energy capacity of T-VESS WVESS
+defined as the heat dissipating power, as shown in (13). i,t is 
+
+defined as the electric energy consumption for turning down/up the 
+∑E ∑E indoor temperature at t from (maximum comfort temperature Tin,max to 
+
+QHD
+i,t = QHD
+
+i,t,e = S HD
+i,eα (Tout,t − Tin,t) (13)  minimum comfort temperature Tin,min)/(Tin,min to Tin,max), as calculated in 
+
+e=1 e=1
+(21), in which ΔτW denotes the needed time for regulating temperature, 
+
+where QHD as calculated in (22) [31]. PHD
+i,t,e is the heat dissipating power of the e-th type of building i,t denotes the needed electric power for 
+
+envelope, and Si regulating temperature, as calculated in (23), in which (23a) and (23b) 
+,e denotes the building area of the e-th type of building 
+
+envelope.  represent the calculation formula of residential and enterprise pro
+sumers, respectively. 
+
+(3) Key model parameters of T-VESS model ∫ t+ΔτW
+WVESS
+
+i,t = PHD
+i,t dt (21)  
+
+Based on the quantum of heat generated from thermostatically t
+
+controlled appliances QTC
+i,t and the time-varying heat dissipating power n[T
+
+QHD ΔτW l in,min − Tout,t] − ln[Tin,max − Tout,t]
+= ∑N (22) 
+
+i,t , T-VESS model can be formulated mathematically. Three key model − D
+n=1Si,nαH /CAir
+
+5
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 3. Real time P2P energy trading method.  
+
+Fig. 4. Illustration of MPC in real time P2P energy trading.  
+
+⎧ HD
+⎪ Q AC ∫
+
+i t+ΔτE
+,t d
+
+⎪⎨ C − a) EVESS
+i,t = PHD
+
+i,t dt (25)  
+PHD mA mAC (23
+
+t
+i,t = (23) 
+
+⎪ HD T,chg W ,dischg
+⎪ Q
+⎩ i,t QW
+
+i,t − Q T
+i,t
+
+COPHP + COPHP (23b) ln[T n[T
+ΔτE in,min − Tout,t] − l in,t − Tout,t]
+
+= ∑N (26) 
+− HD r
+
+SOC of a T-VESS is defined as the ratio of the stored thermal energy n=1Si,nα /CAi
+
+EVESS
+i T-VESS’s SOC is subjected to constraints given by (27) and (28). Eq. 
+,t at current time slot to its energy capacity WVESS
+
+i,t , as shown in (24). 
+ΔτE is the needed time for regulating temperature from (Tin to Tin (27) denotes the relationship between EVESS SS
+
+,min). i,t , SOCVE
+i,t and PVESS
+
+i,t , and Eq. 
+Like the calculation of WVESS
+
+i (28) denotes that SOCVESS
+,t , the calculation of EVESS
+
+i,t is given in (25). i,t needs to be within the constraint range [0,1]. 
+
+EVESS SOCVESS SS
+SOCVESS i,t i,t+1 ⋅WVE
+
+i,t+1 = SOCVESS VESS S,
+i,t ⋅Wi,t +PVES
+
+i,t Δt (27)  
+i,t =
+
+WVESS (24)  
+i,t
+
+SOCVESS S VESS
+i,min ⩽SOCVES
+
+i,t ⩽SOCi,max (28) 
+
+6
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Step 7: The time slot moves forward by one time slot for next opti
+3. Real time P2P energy trading method for prosumers with T- mization. At next scheduling time t0 = 2, prosumers get the updated 
+VESS utilization forecast data for the next Np time slots and the initial state of energy 
+
+storages. 
+To effectively capture the time-varying nature of T-VESS, a real time Step 8: Implement Steps 1–7 again until all optimal schedules for 
+
+P2P energy trading method based on the MPC is designed in this section. prosumers are obtained. 
+It consists of two stages: energy supply and demand qualification stage 
+(Stage I) and prosumers’ energy transaction price optimization stage 
+(Stage II), as shown in Fig. 3. The results from the two-stage method can 3.1. Problem formulation of energy supply and demand qualification 
+be used as the trading announcement for the implementation of P2P (Stage I)  
+energy trading actions. 
+
+Stage I: energy supply and demand quantification. The stochastic (1) Optimal scheduling model of prosumers with T-VESS 
+variables (PV power outputs, and outdoor temperatures) are first fore
+casted over the prediction horizon. In contrast to day-ahead prediction, The objective of the model is to minimize the operational cost of the 
+forecasting within the MPC process is performed over an extremely i-th prosumer in the control horizon. 
+short-term scale and can thus be taken account to be similar to the actual 
+value. Moreover, T-VESS’s time-varying parameters as presented in minfi = CES
+
+i − MP2P
+i +CGrid
+
+i (29)  
+Section 2.3 and the adjustable ranges of other energy resources are 
+updated, which can be integrated into the prosumer optimal scheduling where CES
+
+i is the operational cost of energy storage; MP2P
+i is the P2P 
+
+energy trading revenue; CGrid
+model. Then, system operational conditions in the control horizon are i is the energy purchasing cost from the 
+determined with the objective of minimizing the prosumer’s cost. And, utility grid, which is related to feed-in tariff cGrid,feedin
+
+t /retail price 
+the scheduling results at the first interval of the control horizon are cGrid,retail
+
+t and the exchange power between prosumer and the utility grid 
+applied to quantify the power and the marginal price of energy supply PGrid
+
+i,t . 
+and demand of prosumers. 
+
+Stage II: transaction price optimization. The marginal price of ∑t0+d
+CGrid
+
+i = PGrid G
+i,t c rid
+
+energy supply and demand in Stage I integrated with the price accep t Δt (30)     
+t=t
+
+tance probability are then taken as weighting coefficients to formulate a 0
+
+maximum expected weighted revenue-oriented optimization model of 
+transaction price. In particular, the probability is calculated according to 
+the historical trading information. 
+
+⎧
+⎨PPV b
+
++ (P a,chg
+i,t − Pba,dischg
+
+i,t ) + (PEV,chg
+i,t − PEV,dischg
+
+i,t ) + PVESS
+i,t − PLoad
+
+i,t − PP2P
+i,t (31a)
+
+PGrid i,t
+i,t =
+
+⎩ PPV
+i,t + (Pba,chg
+
+i,t − Pba,dischg (31)   
+i,t ) + PVESS
+
+i,t − PLoad
+i,t − PP2P
+
+i,t (31b)
+
+In this paper, MPC is implemented for real time P2P energy trading of 
+prosumers considering T-VESS, due to its ability to handle uncertainties ⎧
+
+⎨ Grid,feedin
+t PGrid
+
+at prosumers. Using MPC in energy trading can accurately quantify the cGrid − c i,t > 0
+t = (32)  
+
+⎩ − cGrid,retail
+key parameters of T-VESS model. And it can further make full use of T- t otherwise
+VESS in energy trading, resulting in the total cost reduction of prosumers 
+and renewable energy self-consumption ratio improvement. The illus where PLoad
+
+i,t and PPV
+i,t are the basic load and the electric power generated 
+
+tration of MPC in real time P2P energy trading is shown in Fig. 4. And it by PV of the i-th prosumer, respectively. Eq. (31a) and Eq. (31b) are the 
+has the following five steps. exchange powers of residential and enterprise prosumers, respectively. 
+
+Step 1: At the first scheduling time t0 = 1, prosumers obtain the CES
+i in (33) depends on both the levelized cost of electricity (LCOE) 
+
+forecast data over the Np prediction steps Hp
+t0 = {t0, t0 + 1, ..., t0 + Np − which is determined by the degradation cost and the charging/dis
+
+1} and the initial state of energy storages, which can be the control input charging power of the energy storage. 
+of MPC. And the uncertainty is considered into the forecast data in this ⎧
+step. ⎪∑t0+d[⃒
+
+⎪ ⃒ b ]
+⎪ P a,chg
+⎨ i,t − Pba,dischg
+
+i,t |cba
+i + |PEV,chg
+
+i,t − PEV,dischg
+i,t |cEV
+
+Step 2: Obtain the optimal schedules of prosumers by solving the i Δt(33a)
+
+model of Stage I over the Nc control steps Hc CES t=t0
+t = {t0, t0 + 1, ..., t0 + i =
+0 ⎪ ∑t0+d
+
+⎪ [⃒ ]
+Nc − 1}. ⃒Pba,chg
+
+i,t − Pba,dischg
+⎪⎩ i,t |cba
+
+i Δt(33b)
+Step 3: Quantify the power and marginal cost/utility of energy t=t0
+
+supply and demand for trading by applying the optimal schedule for the (33)  
+first-time slot at t0 obtained in Step 2. 
+
+Step 4: Obtain the optimal price of energy supply and demand for where |⋅| is the absolute value. Eq. (33a) and Eq. (33b) give the formula 
+trading according to the marginal cost/utility from Step 3. of CES
+
+i for residential and enterprise prosumers. 
+Step 5: Implement P2P energy trading based on CDA for the energy To accurately quantify the energy supply and demand of the i-th 
+
+supplies and demands with the power from Step 3 and the optimal price prosumer at t0, its expected energy trading profit for t > t0 is considered 
+from Step 4. in the optimal scheduling, but the profit at t0 is not be taken into 
+
+Step 6: Apply the adjusted optimal schedules at t0 based on the account. 
+trading result from Step 5, which can be considered as the control output 
+of MPC. 
+
+7
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 5. The marginal price curves of prosumers.  
+
+∑t0+d energy supplies and demands. cMCP
+t is the predicted market clearing 
+
+MP2P P
+i = PP2
+
+i,t cP2P
+t Δt (34)  price at t.  
+
+t=t0
+
+{
+cMCP (2) Energy supply and demand quantification 
+
+cP2P t t > t0
+t = (35)  
+
+0otherwise According to the scheduling result of the first interval of the control 
+horizon t0 in the above, the tradeable powers and marginal prices of 
+
+where PP2P
+i,t is the predicted energy trading power of the i-th prosumer at energy supplies and demands of prosumers can be quantified. 
+
+t, a positive (or negative) value denotes energy selling to (or purchasing Taking the i-th prosumer as an example, the quantification process is 
+from) other prosumers. It also can be denoted as possible trading be as follows. Firstly, the i-th prosumer makes the tradable power PP2P
+
+i,t in 
+0 
+
+haviors of prosumers, which may affect the quantification result of 
+
+8
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E l e  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 6. Flow chart of the proposed P2P energy trading.  
+
+Table 1 Table 2 
+Typical configuration of thermal controlled appliances.  Typical configuration of energy resources.  
+
+Parameters  Prosumers   Parameters  Prosumers   
+
+Residential Enterprise Enterprise Residential Enterprise Enterprise 
+(#1-#90) (#91) (#92-#94) (#1-#90) (#91) (#92-#94) 
+
+AirConditioning Peak Power 2 kW / /  Load Power 3 kW 128 kW 30 kW  
+Constant 2, − 15 / / Operation 17:00–24:00 17:00–24:00 8:00–17:00 
+Coefficients Periods 
+
+Heat Pump Performance / 3.4 3.4  PV Peak Power 3 kW 50 kW 8 kW 
+Coefficient Battery Capacity 13.5 kWh 450 kWh 60 kWh  
+Peak Power / 80 kW 80 kW Max. Charging & 3.5 kW 50 kW 15 kW  
+
+Water Tank Capacity / 1300 kWh 800 kWh  Discharging 
+Heat Loss Rate / 0.01 0.01  Power 
+
+LCOE 0.42 CNY/ 0.38 CNY/ 0.38 CNY/ 
+kWh kWh kWh 
+
+(31) be in the constraint with a step size of δ. The constraint’s upper and EV Capacity 70 kWh / /  
+lower bounds are defined as PP2P
+
+i,t0 ,max and PP2P
+i,t0 ,min, respectively, which are Max. Charging & 2 kW / /  
+
+Discharging 
+calculated by the adjustable ranges according to the parameters of en Power 
+ergy resources from (31), as shown in (36) and (37). And time-varying LCOE 0.26 CNY/ / /  
+parameters of T-VESS are considered here. kWh 
+
+9
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E l e  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 7. Retail price and feed-in tariff of the utility grid.  
+
+Fig. 8. Solar radiation and outdoor temperature.  
+
+Table 3 Table 4 
+Prosumer building thermal parameters.  P2P trading results of residential prosumer group in Case I, Case II and Case III.  
+
+Parameters Prosumers Results Case I Case II Case III 
+(kWh) (kWh) (kWh) 
+
+Residential Enterprise Enterprise 
+(#1-#90) (#91) (#92-#94) P2P trading energy 1907.3 1896.5 1844.2 
+
+Energy sold to the utility grid 177.8 186.1 223.1 
+Building Door Area 4 m2 420 m2 24 m2 
+
+Energy bought from the utility grid 510.6 507.1 498.4 
+Building Roof Area 50 m2 2400 m2 1400 m2 
+
+Battery charging/discharging 72.8/72.8 75.5/75.5 87.4/87.4 
+Building Window Area 53 m2 2600 m2 1500 m2 
+
+energy 
+Building Wall Area 180 m2 9200 m2 5300 m2  
+
+EV charging/discharging energy 98.8/98.8 98.8/98.8 102.5/102.5 
+T-VESS/VESS charging/discharging 133.3/ 125.1/ /  
+
+energy 124.2 116.3 
+PP2P VESS,chg VESS EV,chg
+i,t0 ,max = min{Pi,t ,WVESS
+
+,t − E in{P ,WEV
+0 ,max i i,t } + m EEV
+
+0 0 i,max i − i,t }+0
+
+min ba,chg
+{P a ba
+
+i,max ,W
+b
+i − Ei,t } + PPV
+
+0 i,t0
+(36)  f ) − f P
+
+mp i(PP2P
+i,t i(PP2
+
+i,t − δ)
+(PP2P 0 0
+
+i,t ) = (38) 
+0 δ
+
+PP2P dischg VESS V,dischg V
+i,t n ESS,
+
+{PV
+0 ,min = mi i,t0 ,max ,Ei,t } + min{PE
+
+0 i,max ,EE
+i,t }+0  The marginal price curves of PP2P
+
+i,t are formed as shown in Fig. 5. It can 
+0 
+
+min ba,dischg (37)
+{P ba d
+
+i,max ,Ei,t } + PLoa
+0 i,t be seen that the curves have the nature of segmentation. Assume the 
+
+Then, the marginal prices of PP2P marginal cost curve consists of L segments, and each segment contains 
+i,t at different values is obtained in 
+
+0 the information of energy supply (marginal price and tradable power) 
+(38) by calculating the differentiation of the operation cost fi(⋅) given in for price optimization and trading implementation. For the l-th segment 
+(29) to PP2P
+
+i,t . 
+0
+
+10
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E l e  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Table 5 
+P2P trading results of enterprise prosumer group in Case I, Case II and Case III.  where Putility
+
+i,t0 ,k− 1 and Putility
+i,t0 ,k are the lower bound powers of the k-th and (k- 
+
+1)-th segment, respectively. 
+Results Case I Case II Case III 
+
+(kWh) (kWh) (kWh) 
+3.2. Transaction price optimization (Stage II) 
+
+P2P trading energy 1907.3 1896.5 1844.2 
+Energy bought from the utility grid 688.4 698.3 756.5 
+Battery charging/discharging 478.3/ 483.4/ 513.4/513.4 Based on the marginal prices of energy supplies and demands ob
+
+energy 478.3 483.4 tained in Stage I and the calculated price probabilities, transaction prices 
+T-VESS/VESS charging/discharging 67.6/63.1 63.3/60.1 /  for energy supplies and demands can be optimized in this stage. 
+
+energy Prosumers execute the price optimization of energy supplies and 
+demands with marginal prices from Stage I to obtain the optimal price. 
+
+as shown in Fig. 5(a), the supplied power (PP2P,supply
+i,t0 ,l ) can be determined Specifically, the marginal prices of energy supply and demand can be the 
+
+by (39) which is equal to the length of the power interval 1. And, the upper/lower limit in the price optimization, which can improve the 
+profit of the prosumers in energy trading. Thus, the ask price optimi
+
+relationship of PP2P,supply
+i,t0 ,l and PP2P
+
+i,t0 ,max can be represented in (40). The zation model for the l-th energy supply with the marginal cost mci,l and 
+marginal cost mci,t0 ,l can be determined as the length of the price interval the bid price optimization model for the k-th energy demand with the 
+2. It can serve as the foundation for price optimization in Stage II. Then, marginal utility mui,k are shown in (43) and (44), respectively. 
+PP2P,supply
+
+i,t0 ,l and mci,t0 ,l are included into a defined set sP2P,supply
+i,t0 ,l , which is 
+
+regarded as the l-th energy supply at t0. πsell
+i,l = max [(asell
+
+i,l − mci,l)⋅p(a
+sell
+i,l )] (43)  
+
+asell
+i,l ∈(ob,oa)
+
+PP2P,supply
+i,t0 ,l = Pcost
+
+i,t0 ,l − Pcost
+i,t0 ,l− 1 (39)  
+
+πbuy
+i,k = max [(mui,k − bbuy
+
+i,k )⋅q(b
+buy
+i,k )] (44)  
+
+bbuy
+i,k ∈(ob,oa)
+
+∑L
+PP2P,supply
+i,t0 ,l = PP2P
+
+i,t0 ,max (40)  
+1 where asell
+
+i,l is the transaction ask price to be optimized for the l-th energy 
+
+where Pcost supply, and bbuy
+i,t0 ,l and Pcost
+
+i,t0 ,l− 1 are the lower bound powers of the l-th and (l-1)- i,k is the transaction bid price to be optimized for the k-th 
+th segment, respectively. energy demand. Note that the transaction price to be optimized needs to 
+
+Similarly, assume that there are K segments in the marginal utility be limited between the highest ask price and the lowest bid price (ob, oa)
+curve as shown in Fig. 5(b). For the k-th segment, the power demand in the historical trading information. p(asell
+
+i,l ) and q(bbuy
+i,k ) are the accep
+
+(PP2P,demand
+i,t0 ,k ) is calculated in (41). The relationship of PP2P,demand
+
+i,t0 ,k and tance probability if the i-th prosumer offers asell
+i,l for energy selling, and 
+
+PP2P
+i,t0 ,min is represented in (42). The marginal utility mui,t0 ,k can be ob the i-th prosumer bids bbuy
+
+i,k for energy purchasing, which can be obtained 
+tained in the same way as the marginal cost of l-th segment. Then, 
+PP2P,demand
+
+i,t0 ,k and mui,t0 ,k are included into a defined set bP2P,demand
+i,t0 ,k , which is Table 6 
+
+taken as the k-th energy demand at t0. Daily cost of each enterprise prosumer.  
+
+PP2P,demand
+i,t0 ,k = Putility
+
+i,t0 ,k− 1 − Putility Enterprise prosumer number Case I Case II Case III 
+i,t0 ,k (41)  
+
+#91 491.3 CNY 498.6 CNY 527.5 CNY 
+
+∑K
+#92 156.8 CNY 163.1 CNY 183.2 CNY 
+
+PP2P,demand
+i,t0 ,k = PP2P
+
+i,t0 ,min (42)  #93 216.8 CNY 226 CNY 256.2 CNY 
+1 #94 448.9 CNY 459 CNY 493.3 CNY  
+
+Fig. 9. Daily profit of each residential prosumer.  
+
+11
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 10. Capacity and charging/discharging power of T-VESS/VESS in Case I and Case II.  
+
+by analyzing the historical trading information. The historical trading is made, then all bid prices dbuy⩾asell
+i,l would have the opportunity to be 
+
+information is the record of previous trading information of matching ∑
+accepted. RA(dsell) denotes the total number of the rejected ask prices 
+
+results in the market [32]. In each auction, prosumers can extract some ∑
+that are less than asell
+
+i,l . Similarly, TB(dbuy) denotes the total number of 
+latest trading information from the historical trading information to 
+calculate the probability in (45)–(46). Considering this probability in the accepted bid prices dsell ∑
+
+that are less than or equal to bbuy
+i,k . A(dsell)
+
+price optimization can meet the demand for maximizing the final energy denotes the total number of ask prices dsell that are less than or equal to 
+trading profit of prosumers while improving the convergence efficiency. bbuy ∑
+
+i,k . RB(dbuy) denotes the total number of the rejected bid prices dbuy 
+∑ sell ∑ b
+
+dsell⩾asellTA(d ) +
+p i dbuy⩾asellB(d uy) that are greater than bbuy
+
+i,k . 
+∑ ,l
+
+(asell
+i,l ) = ∑ i,l ∑
+
+dsell⩾asellTA(dsell) + B(dbuy) + ell
+l ds <asellRA(dsell (45)  
+
+)
+i dbuy⩾asell Eqs. (29)–(46) determine the power and optimal price of each energy 
+,l i, i,l
+
+supply and demand to be traded. Prosumers have heterogeneous trading 
+∑ preferences for each energy supply and demand, which is difficult to be 
+
+b TB(dbuy ∑
+) +
+
+q buy d uy⩽bbuy
+i dsell⩽bbuyA(dsell)
+
+(b ∑ ,k ∑ i,k
+i,k ) = ∑ guaranteed for the existing trading actions implementation method. 
+
+dbuy⩽bbuyTB(dbuy) + sell b u
+,k d ⩽ b yA(dsell) + buy buyRB(dbuy (46)  
+i i,k d >b )
+
+i,k Thus, a comprehensive and accurate method is urgently needed. 
+∑
+
+where TA(dsell) denotes the total number of the accepted ask prices 4. P2P energy trading actions implementation for prosumers 
+dsell that are greater than or equal to asell
+
+i,l . And, it also indicates that if an 
+ask price asell
+
+i,l has been accepted, all ask prices dsell⩾asell
+i,l would be A real-time distributed P2P energy trading actions implementation 
+
+∑
+accepted. B(dbuy) denotes the total number of bid prices dbuy that are method is proposed through the adoption of the CDA. More specifically, 
+
+the procedure of the energy trading consists of following steps, and is 
+greater than or equal to asell
+
+i,l . And, it indicates that if a bid price dbuy⩾asell
+i,l summarized in the following pseud code. 
+
+12
+
+
+
+X. Wang et al.                                                                                                                                            I n t e r n a t i o n a l  J o u r n a l  o f  E l e c t r i c a l  P o w e r  a n d  E n e r g y  S y s t e m s 155 (2024) 109547
+
+∑⃒ ⃒
+max ⃒ b y ll⃒ P2P,supply
+
+⃒b u
+j − ase
+
+i,l ⃒Pi,l
+i=∕j (47)  
+
+s.t. PP2P,supply
+i,l ⩽PP2P,demand
+
+j
+
+∑⃒ ⃒
+max ⃒ b y
+
+⃒b u
+i,k − asell⃒ P2P,d
+
+j ⃒P emand
+i,k
+
+i=∕j (48) 
+s.t. PP2P,demand
+
+i,k ⩽PP2P,supply
+j
+
+Step 4: If the matching model is unavailable, the failed matching 
+information can also be recorded, and the i-th prosumer may adjust the 
+price of energy supply (energy demand) by retrying the price optimi
+zation in accordance by updated acceptance probabilities from Step 0. 
+Then the i-th prosumer will refresh announcements, and repeat the 
+above steps 0–3. 
+
+Step 5: If the new adjusted price of the i-th prosumer remains un
+changed (same as the price that failed to match with Im
+
+i,l/In
+i,k), the i-th 
+
+prosumer selects prosumers Im− 1
+i,l /In− 1
+
+i,k of lower preference grade for 
+matching, and repeat the above steps 0–4. This process is executed 
+continually until the energy trading market is clearing.  
+
+Algorithm 1 Trading process based on the CDA 
+
+1: While the energy trading market is clearing do 
+2: randomly select the i-th prosumer 
+3: generate the Ssell
+
+i /Dbuy
+i and publish the ssell
+
+i,l /dbuy
+i,k 
+
+4: go to Step 3; 
+5: if the matching model is solvable 
+6: record the trading result; 
+7: else 
+8: go to Step 4; 
+9: if the new adjusted price is same as the price that failed to match with 
+
+Imi,l/Ini,k 
+10: go to Step 5; 
+11: end if 
+
+Fig. 11. Energy supplies and demands in a whole day.  12: end if 
+13: end while  
+
+Step 0: Calculating the power of energy supply and demand and the 
+optimal price from Section 3. 
+
+Step 1: Generating the energy supply announcements Ssell The flowchart of the proposed real-time P2P energy trading is shown in 
+i = {ssell
+
+i,1 ,
+
+ssell
+i,2 ,⋯, ssell Fig. 6. Firstly, in each round, the forecasted environmental data in the 
+
+i,l } and energy demand announcements Dbuy
+i = {dbuy
+
+i,1 , dbuy
+i,2 ,⋯, prediction horizon and previous transaction results are input to the 
+
+dbuy
+i,k } of the i-th prosumer based on Step 0. The announcement includes model. By applying the energy supply and demand quantification (Stage 
+
+the optimal price and the power of energy supply and demand (ssell I), the marginal prices and the powers of energy supplies and demands 
+i,l = {
+
+are obtained. Then, the transaction price optimization (Stage II) is 
+asell
+
+i,l , PP2P,supply
+i,l } and dbuy
+
+i,k = {bbuy
+i,k ,PP2P,demand
+
+i,k }). implemented according to the updated historical trading information. 
+Remark 1. In the energy trading, prosumers with energy supply an The P2P transaction results are finally determined through the distrib
+nouncements will act as the seller in energy trading, whereas those with en uted implementation method. The energy trading process is repeated 
+ergy demand announcements will act as the buyer. If prosumers have both until the end of the scheduling period. 
+energy supply and demand announcements within one time interval, they are 
+able to function as both buyers and sellers. 5. Case studies 
+
+Step 2: Selecting the ssell
+i,l /dbuy
+
+i,k of the i-th prosumer and publishing it 5.1. Test system 
+to the other prosumers Im
+
+i,l/In
+i,k of the m-th/n-th trading preference grade. 
+
+In particular, the i-th prosumer with ssell
+i,l /dbuy A typical grid-connected community microgrid in [14] is taken to 
+
+i,k classifies the other pro verify the effectiveness of the proposed P2P energy trading method. 
+sumers into multiple grades Ii,l = {Im
+
+i,l, I
+m− 1
+i,l , Im− 2
+
+i,l ,⋯, I1
+i,l}/Ii,k = {In
+
+i,k, I
+n− 1
+i,k , There are 94 prosumers composed of 90 residential prosumers (indexed 
+
+In− 2 by #1-#90) and 4 enterprise prosumers (indexed by #91-#94). Ther
+i,k ,⋯,I1
+
+i,k}. The j-th prosumer received ssell
+i,l /dbuy
+
+i,k is one of the prosumers 
+Im
+i,l (j ∕= i, j ∈ I, i ∈ I, j ∈ Im
+
+i,l)/In
+i,k (j ∕= i, j ∈ I, i ∈ I, j ∈ In mostatically controlled appliances and the energy resources of pro
+
+i,k). 
+Step 3: The energy supply and demand matching models are pro sumers are shown in Table 1 and Table 2 [14 22]. The arrival and 
+
+posed, aiming to maximize the profit. Specifically, the i-th prosumer departure time of EV are 17:00 and 7:00, respectively. The desired SOC 
+preferentially select the lower-priced energy supply (higher-priced en level of EV is 0.75 according to [15]. 
+ergy demand), as shown in (47) and (48). And the trading power is The retail price and feed-in tariff of the utility grid are shown in Fig. 7 
+
+[34]. The density and specific heat capacity ratio of the air are set as 1.2 
+determined by the power of ssell
+
+i,l /dbuy
+i,k . If the model is solvable, the kg/m3 and 1000 J/(kg ◦C), respectively [33]. Heat-transfer coefficient is 
+
+trading result of ssell
+i set as 2.8 W/(m2 ◦C). The solar radiation and outdoor temperature on a 
+,l /dbuy
+
+i,k is recorded in the historical trading 
+information. typical winter day are shown in Fig. 8[34]. There are 96 time slots in one 
+
+day. Time interval is set as 15 min. The size of the prediction and control 
+horizons are set as 8 slots. Three types of buildings are considered and 
+
+13
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 12. Marginal cost curves of residential prosumer #1.  
+
+the corresponding parameters are given in Table 3 [14]. And, the 5.2. P2P trading results  
+buildings for prosumers without VESS maintain the indoor temperature 
+at the desired set point (18 ◦C), but the buildings with T-VESS/VESS (1) P2P trading results considering T-VESS 
+adjust the indoor temperature within the desired comfort range (18 ◦C- 
+20 ◦C). Energy consumption and production behaviors of residential/enter
+
+To verify the effectiveness of the proposed method, the following five prise prosumers are analyzed in Case I, Case II, and Case III. One day with 
+cases are considered. 24 h is divided into three periods, i.e., the daytime period (6:00–17:00), 
+
+Case I: The proposed method. the nighttime living period (17:00–24:00), and the idle period 
+Case II: The traditional VESS in [22] is adopted in the proposed (0:00–6:00). 
+
+method. In the market of P2P energy trading, the energy production and 
+Case III: No consider the utilization of T-VESS/VESS in the proposed consumption of each prosumer group in Case I, Case II, and Case III are 
+
+method. shown in Table 4 and Table 5. For the residential prosumers, in Table 4, 
+Case IV: Without the real-time method and the day-ahead scheduled it can be seen in the daytime period that they will sell more energy to 
+
+scheme in Case I is strictly executed in the real-time operation process enterprise prosumers for charging T-VESS/VESS of enterprise pro
+(namely single optimal scheduling [35]). sumers, which exceeds the amount of energy selling. As a result, the 
+
+Case V: Without the consideration of multiple trading preferences redundant PV power intended to sell to the utility grid is reduced by 
+grades and the trading actions between prosumers with single prefer 20.41% and 16.58% in Case I and Case II, respectively. Also, the battery 
+ence grade in Case I are implemented. is selected to reduce the charging energy. During the nighttime living 
+
+period, compared with Case III, residential prosumers will charge their 
+T-VESS/VESS by buying more discharged energy from the batteries of 
+enterprise prosumers, which has the lower marginal cost than charging 
+
+14
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E l e  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Fig. 13. Marginal utility curves of enterprise prosumer #91.  
+
+Table 7 Table 8 
+Numerical results in five cases.  Overall community costs in two methods with different forecast errors.  
+
+Results Case I Case II Case III Case IV Case V Method Perfect σ = 0.1Yt σ = 0.2Yt σ = 0.3Yt 
+forecast 
+
+P2P trading energy 1907.3 1896.5 1844.2 1856.5 1801.2 
+kWh kWh kWh kWh kWh MPC 413.8 CNY 424.2 431.3 441.1 
+
+Energy sold to the 177.8 186.1 232.1 221.9 273.8 CNY CNY CNY 
+utility grid kWh kWh kWh kWh kWh Single optimal 433.1 CNY 447.7 451.4 461.8 
+
+Overall cost of 413.8 429.8 564.3 433.1 464.2 scheduling CNY CNY CNY  
+community CNY CNY CNY CNY CNY 
+
+Renewable resources 88.7 % 85.6 % 75 % 86.3 % 83.6 % 
+self-consumption from the utility grid. Therefore, T-VESS/VESS in Case I and Case II can 
+ratio provide more flexibility on energy resources scheduling and trading 
+
+Peak transmission 178.8 186.7 189.1 193.7 201.8 
+power kW kW kW kW kW  compared with Case III. 
+
+At the same time, in contrast to Case II, Case I takes into account the 
+time-varying nature of T-VESS, which leads to more accurate quantifi
+
+the battery in the daytime period. cation of key parameters. T-VESS can further enhance the energy re
+On the other hand, enterprise prosumers will adjust accordingly their sources transactions due to its higher capacity at most times of a day. E. 
+
+energy resources scheduling and trading schemes. As shown in Table 5, g. from 7:30 to 24:00, since the capacity of T-VESS is higher than that of 
+the changing trend of enterprise prosumers in energy transactions is the VESS in Case II, the trading energy in Case I is higher, which can reduce 
+same as that of residential prosumers. The T-VESS/VESS is discharged to the energy purchased from grid and battery discharging energy. Based 
+reduce the power production from the battery and the power purchased on the above analysis, it is obvious that the method in Case I can utilize 
+
+15
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+Table 9 around 0.4 kW by optimization, as shown in Fig. 10(b). The positive 
+Numerical results in two methods with different forecast errors.  value in Fig. 10(b) indicates charging, otherwise discharging. The in
+
+Results Method Perfect σ = σ = σ = crease of T-VESS charging/discharging power in Case I compared with 
+forecast 0.1Yt 0.2Yt 0.3Yt Case II also follows the same changing trend (as presented in Fig. 10(a)) 
+
+P2P trading MPC 1907.3 1889.2 1873.1 1861.5 as the capacity of T-VESS. 
+energy kWh kWh kWh kWh Furthermore, to demonstrate the impact of the T-VESS in Case I on 
+
+single 1856.5 1839.3 1826.9 1813.2 the energy supplies and demands quantification of prosumers, the 
+optimal kWh kWh kWh kWh whole-day energy supplies and demands results of both prosumers #1 
+scheduling 
+
+Energy sold to the MPC 177.8 195.9 212.0 223.3 and #91 in Case I and Case II are presented in Fig. 11. A positive power 
+utility grid kWh kWh kWh kWh value represents the total power of energy supplies, otherwise the total 
+
+single 221.9 239.1 251.5 265.2 power of energy demands. It can be seen that during the T-VESS being 
+optimal kWh kWh kWh kWh charged/discharged in Case I, the total powers of energy demands are 
+scheduling unchanged/increased while the total powers of energy supplies are 
+
+Renewable MPC 88.7 % 87.6 % 86.5 % 85.8 % 
+resources self- single 86.3 % 85.0 % 84.7 % 83.5 % strengthened/unchanged compared with Case II, respectively. 
+consumption optimal Specifically, Fig. 12 shows the marginal cost curves of residential 
+ratio scheduling prosumer #1 at t = 45 (11:00–11:15) and t = 46 (11:15–11:30), and 
+
+Peak transmission MPC 178.8 197.1 214.3 227.2 Fig. 13 shows the energy purchasing utility curves of enterprise pro
+power kWh kWh kWh kWh 
+
+single 193.7 210.1 223.1 238.5 sumer #91 at t = 63 (17:30–17:45) and t = 64 (17:45–18:00). It can be 
+optimal kWh kWh kWh kWh  seen that the tradable power and marginal price of multi-type energy 
+scheduling resources for energy trading can be obtained by analyzing the curves. It 
+
+also can be found that the utilization of the T-VESS in Case I can improve 
+the flexibility of energy supplies and demands of prosumers compared 
+
+Table 10 with Case II, resulting better economy for prosumers. For the residential 
+Overall cost of the community with different ranges.  prosumer, as shown in Fig. 13(a) and (b), due to lower marginal cost 
+
+(0.46 CNY/kWh) at t = 45, more PV power production (0.46 kWh) at 
+Ranges Case I Case II this interval can be saved into the T-VESS in Case I due to its higher 
+18 ◦C-20 ◦C 413.8 CNY 429.8 CNY capacity compared with Case II. It will be sold to the utility grid at t = 46 
+17 ◦C-20 ◦C 392.1 CNY 418.7 CNY when the marginal cost is higher (0.63 CNY/kWh), which makes the 
+16 ◦C-20 ◦C 371.5 CNY 414.2 CNY 
+15 ◦C-20 ◦C 371.6 CNY 410.3 CNY increase of the total power of energy supplies at that time. 
+14 ◦C-20 ◦C 372.4 CNY 410.5 CNY  For the enterprise prosumer, as shown in Fig. 13(a) and (b), more 
+
+energy is charged into the T-VESS in Case I with the higher capacity at t 
+= 63 with the marginal utility (0.61 CNY/kWh) compared with Case II. It 
+
+the T-VESS to facilitate well the complementary coordination of energy increases the total power of energy demands at t = 63. As a result, the 
+resources between residential and enterprise prosumers. stored energy level of T-VESS in Case I can further reduce the grid energy 
+
+Moreover, the system overall benefit can be improved when purchase demand of the prosumer at t = 64 where the marginal utility is 
+considering the participation of T-VESS/VESS. The battery and EV 0.87 CNY/kWh. And the energy demand of T-VESS/VESS discharging in 
+charging/discharging quantities are reduced, since T-VESS/VESS in Case Case I and Case II will not affect the total power of energy demands at t =
+I and Case II has no degradation cost. Meanwhile, compared with Case 64. Overall, compared with Case II, the T-VESS in Case I can provide 
+III, T-VESS/VESS in Case I and Case II provides more flexibility on energy more flexibility to the energy resources trading of prosumers.  
+trading for prosumers, resulting in energy reduction exchanged with 
+utility grid and P2P energy trading energy increment. At the same time, (3) Utilities analysis 
+T-VESS in Case I can further make full use of the thermal storage ability 
+of buildings. Due to the larger and more accurate capacity of T-VESS, T- Furthermore, the renewable energy self-consumption ability of the 
+VESS in Case I can provide the greater adjustable ability on P2P energy microgrid with or without considering the T-VESS/VESS participation is 
+trading. It can further promote the increment of P2P energy trading evaluated. During the daytime period, the redundant PV generation in 
+quantity, charging/discharging quantity reduction of battery/EV, and Case I and Case II is better consumed since enterprise prosumers have 
+the trading quantity reduction with the utility grid. The overall com purchased more PV energy provided by residential prosumers. And T- 
+munity cost in Case I is reduced from 564.3 CNY to 429.8 CNY and 413.8 VESS in Case I with higher capacity can store much more PV generation 
+CNY in Case II and Case III. From the perspective of individual pro for self-usage, which can further improve the PV energy self- 
+sumers, the economic benefit of each residential prosumer in Case I is consumption compared with Case II. Compared with Case II and Case 
+improved by increasing the profits to some extent, and that of each in III, energy transmitted from the microgrid to the utility grid in Case I is 
+dustrial prosumer in Case I is enhanced by reducing some daily costs, decreased by 4.83% and 24.44%; local renewable energy self- 
+compared with Case II and Case III, as shown in Fig. 9 and Table 6.  consumption ratio is increased by 3.1% and 13.7%; peak transmission 
+
+power is decreased from 189.1 kW to 186.7 kW and 178.8 kW; and load 
+(2) Analysis of the energy supply and demand quantifications peak-to-valley difference is decreased by 1.8% and 4.8%, respectively. 
+
+Therefore, as summarized in Table 7, T-VESS in Case I can make full use 
+Taking residential prosumer #1 as example, Fig. 10(a) shows the of the thermal storage capability in energy trading, and improve the 
+
+quantified capacity of T-VESS/VESS in Case I and Case II. It can be seen overall utilities of the microgrid. Then, compared with the case without 
+that capacity of VESS in Case II remains constant for the whole day EVs, the overall cost of the community in Case I is reduced by 1.6 %. The 
+because it is only related to the indoor temperature comfort range. cost reduction is due to EVs’ participation in the P2P energy trading. 
+While, capacity of T-VESS in Case I is regulated according to temperature Specifically, EVs’ batteries can store the purchased electricity from the 
+changes during the daytime and nighttime living periods. And, when T- grid when the retail prices are low. And the stored electricity can be used 
+VESS is charged resulting the indoor temperature incretion, its capacity when the retail prices are high. Moreover, the computational time is an 
+is increased. Moreover, the T-VESS charging/discharging power is important aspect to evaluate the performance of a trading mechanism. 
+influenced by the capacity of T-VESS and the retail price. T-VESS con The computational time of Case I is 209 s, and the time of other cases is 
+ducts multiple charging/discharging behaviors with the power at similar as that of Case I, because these cases utilize the same pricing 
+
+16
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E l e  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+method that contribute to the computational performance. heterogeneous trading preferences of prosumers. Several key conclu
+sions are drawn form case study: 1) after considering the T-VESS, each 
+
+5.3. Trading preferences and uncertainties prosumer obtains more economic benefits in P2P energy trading; 2) the 
+proposed method improves the comprehensive utility of the whole 
+
+To validate the effectiveness of the proposed real time method community, including operational cost, renewable energy accommo
+considering trading preference and uncertainty, Table 7 reports the dation and peak transmission power reduction. 3) the economic benefits 
+numerical results in Case I, Case IV and Case V. For the trading prefer of the community can be further improved through setting a suitable 
+ence, due to the larger number of successfully matched transactions temperature comfort range. 
+between prosumers compared with Case V, it can be seen that in Case I The future research will be focused on the following aspects:  
+considering the trading preference, the total amount of trading energy is 
+increased. And, less energy is traded to the utility grid, which shows that (1) Study the applicability of the price optimization utilizing the 
+the proposed method can facilitate the local P2P energy trading among historical trading information in different market conditions.  
+prosumers. As a result, compared with Case V, the daily cost of the whole (2) Consider the optimal profit of system operator in P2P energy 
+community is decreased by 10.8 % in Case I. And the profit of utility grid trading to sustain the operation and maintenance of grid. 
+is reduced. It can be also found that both the local renewable integration Therefore, the coordination between system operator and pro
+can be improved. Meanwhile, for the uncertainty, the optimization is sumers will be studied referred to [37,38]. 
+only executed once throughout the overall scheduling day using the day- 
+ahead forecast data in Case IV. Each type of the whole community CRediT authorship contribution statement 
+utilities in Case I has increased compared with Case IV by applying the 
+MPC method. Xiaoyu Wang: Conceptualization, Methodology, Software, Writing – 
+
+To further highlight the advantages of the MPC method, we have also original draft. Hongjie Jia: Supervision. Zibo Wang: Validation, Visu
+presented more cases using MPC method and the single optimal sched alization, Data curation. Xiaolong Jin: Writing – review & editing. 
+uling method with different levels of uncertainty. And the different Youjun Deng: Data curation, Writing – review & editing. Yunfei Mu: 
+levels of uncertainty can be represented as the different forecast errors Visualization, Investigation. Xiaodan Yu: Data curation, Formal 
+[36], which are obtained by adjusting the forecast data with a white analysis. 
+noise distortion following a Gaussian distribution over each prediction 
+horizon. The overall community costs in two methods with different Declaration of Competing Interest 
+forecast errors are shown in Table 8. It can be observed that both the 
+costs in two methods are increasing with the increase of the forecast The authors declare that they have no known competing financial 
+errors. Meanwhile, the costs using MPC are lower than that using the interests or personal relationships that could have appeared to influence 
+single optimal scheduling method with different forecast errors. It is the work reported in this paper. 
+worth noting that since using MPC method can consider the adjusted 
+initial state of energy resources in each time slot, the costs of prosumers Data availability 
+with perfect forecast using single optimal scheduling method are much 
+higher than that using MPC. The other results using MPC method with The data that has been used is confidential. 
+different forecast errors perform better than that the single optimal 
+scheduling method, as shown in Table 9. Therefore, the MPC method is Acknowledgments 
+more advanced than the single optimal scheduling method. 
+
+This work was supported by the project of NSFC of China (Nos. 
+5.4. Sensitivity analysis 52277116 and 52207133) and the National Natural Science Foundation 
+
+of China Smart Grid Joint Foundation (No. U2066211). 
+As presented in Section 2.3, the capacity and flexibility of the T-VESS 
+
+in Case I and the VESS in Case II are bound to the indoor temperature References 
+comfort range setting of prosumers. In this section, a sensitivity analysis 
+is conducted to validate its impact. Table 10 shows the energy cost of the [1] Tushar W, Yuen C, Saha TK, et al. Peer-to-peer energy systems for connected 
+
+communities: A review of recent advances and emerging challenges. Appl Energy 
+whole community with different indoor temperature comfort range 2021;282:116131. 
+settings. The greater the indoor temperature comfort range setting, the [2] Jin X, Wu Q, Jia H. Local flexibility markets: Literature review on concepts, models 
+higher the scheduling flexibility of the T-VESS will be. It can be seen and clearing methods. Appl Energy 2020;261:114387. 
+
+from Table 10 that with the broadening of indoor temperature comfort [3] Pouttu A, Haapola J, Ahokanga P, et al. P2P model for distributed energy trading, 
+grid control and ICT for local smart grids. In: 2017 European Conference on 
+
+range, the energy cost is decreased gradually. Especially, when the Networks and Communications (EuCNC); 2017, pp. 1–6. 
+bandwidth of the indoor temperature comfort range is set to over 3 ◦C in [4] Nosratabadi SM, Hooshmand RA, Gholipour E. A comprehensive review on 
+Case I or 4 ◦C in Case II, the trend of energy cost reduction is no longer microgrid and virtual power plant concepts employed for distributed energy 
+
+resources scheduling in power systems. Renew Sustain Energy Rev 2017;67: 
+obvious. 341–63. 
+
+[5] Morstyn T, Farrell N, Darby SJ, McCulloch MD. Using peer-to-peer energy-trading 
+6. Conclusion platforms to incentivize prosumers to form federated power plants. Nat Energy 
+
+2018;3(2):94–101. 
+[6] Zhang C, Wu J, Zhou Y, et al. Peer-to-Peer energy trading in a Microgrid. Appl 
+
+This paper proposes a novel real time P2P energy trading method Energy 2018;220:1–12. 
+with the utilization of T-VESS. A T-VESS model is developed and inte [7] Dong J, Song C, Liu S, et al. Decentralized peer-to-peer energy trading strategy in 
+
+energy blockchain environment: A game-theoretic approach. Appl Energy 2022; 
+grated into the energy resources scheduling model of prosumers. Then, 325:119852. 
+an MPC-based P2P energy trading method is proposed, which includes [8] An J, Lee M, Yeom S, et al. Determining the Peer-to-Peer electricity trading price 
+energy supply and demand quantification stage and transaction price and strategy for energy prosumers and consumers within a microgrid. Appl Energy 
+
+2020;261:114335. 
+optimization stage. The quantified energy supplies and demands are [9] Zhou Y, Wu J, Song G, et al. Framework design and optimal bidding strategy for 
+used as input into the second stage to determine the optimal energy ancillary service provision from a peer-to-peer energy trading community. Appl 
+transaction prices. The time-varying nature of T-VESS can be captured Energy 2020;278:115671. 
+
+effectively. Moreover, a distributed P2P energy trading actions imple
+mentation method is proposed based on the CDA, which can preserve 
+
+17
+
+
+
+X. Wang et al.                                                                                                                                            I  n t e  r n  a  t i o n  a  l  J o  u  r n  a  l  o f   E  le  c t r  i c a  l  P  o w   e r   a n  d   E  n  e r g  y   S y  s t e  m   s 155 (2024) 109547
+
+[10] Deng Y, Zhang Y, Luo F, et al. Operational planning of centralized charging stations [25] Song M, Gao C, Ma S, et al. Distributed scheduling of HVACs based on transactive 
+utilizing second-life battery energy storage system. IEEE Trans Sustain Energy energy and ADMM. Appl Energy 2022;325:119831. 
+2021;12(1):387–99. [26] Wu J, Hu J, Ai X, et al. Multi-time scale energy management of electric vehicle 
+
+[11] Deng Y, Zhang Y, Luo F, et al. Many-objective HEMS based multi-scale occupant model-based prosumers by using virtual battery model. Appl Energy 2019;251: 
+satisfaction modelling and second-life BESS utilization. IEEE Trans Sustain Energy 113312. 
+2022;13(2):934–47. [27] Cheng L, Jia Y, Zhao X. Fully decentralized peer-to-peer energy sharing framework 
+
+[12] Zhang Z, Tang H, Wang P, et al. Two-stage bidding strategy for Peer-to-Peer energy for smart buildings with local battery system and aggregated electric vehicles. Appl 
+trading of Nanogrid. IEEE Trans Ind Appl 2020;56(2):1000–9. Energy 2021;299(1):117243. 
+
+[13] Li S, Zhu J, Dong H. A novel energy sharing mechanism for smart microgrid. IEEE [28] Mea B, Ms A, Dt A. A hierarchical and decentralized energy management system 
+Trans Smart Grid 2021;99:1. for peer-to-peer energy trading. Appl Energy 291, pp. 116766. 
+
+[14] Wang Z, Yu X, Mu Y, et al. Peer-to-Peer energy trading strategy for energy balance [29] Li J, Xu GD, Wang J, et al. P2P multigrade energy trading for heterogeneous 
+service provider (EBSP) considering market elasticity in community microgrid. distributed energy resources and flexible demand. IEEE Trans on Smart Grid 2023; 
+Appl Energy 2021;303:117596. 14:1577–89. 
+
+[15] Wang Z, Yu X, Mu Y, et al. A distributed Peer-to-Peer energy transaction method [30] Morstyn T, McCulloch M. Multiclass energy management for Peer-to-Peer energy 
+for diversified prosumers in Urban Community Microgrid System. Appl Energy trading driven by prosumer preferences. IEEE Trans on Power Systems 2019;34: 
+2020;260:114327. 4005–14. 
+
+[16] Jin X, Mu Y, Jia H, et al. Dynamic economic dispatch of a hybrid energy microgrid [31] Cristofari C, Norvaisiene R, Canaletti J, et al. Innovative alternative solar thermal 
+considering building based virtual energy storage system. Appl Energy 2016;194: solutions for housing in conservation-area sites listed as national heritage assets. 
+386–98. Energ Buildings 2015;89:123–31. 
+
+[17] Jin X, Jiang T, Mu Y, et al. Scheduling distributed energy resources and smart [32] Gjerstad S, Dickhaut J. Price formation in double auctions. Games Econ Behav 
+buildings of a Microgrid via multi-time scale and model predictive control method. 1998;22(1):1–29. 
+IET Renew Power Gener 2019;13(6):816–33. [33] Dashamir M, Richrad A, Christina J. Sizing domestic air-source heat pump systems 
+
+[18] Song M, Gao C, Yan H, et al. Thermal battery modeling of inverter air conditioning with thermal storage under varying electrical load shifting strategies. Appl Energy 
+for demand response. IEEE Trans Smart Grid 2017. 2019;255:1–14. 
+
+[19] Vang D, Jing X, Qiu J, et al. Coordinated dispatch of virtual energy storage systems [34] Jiang T, Li Z, Jin X, et al. Flexible operation of active distribution network using 
+in LV grids for voltage regulation. IEEE Trans Industrial Informatics 2018. integrated smart buildings with heating, ventilation and air-conditioning systems. 
+
+[20] Kumar K, Vijayakumar K, Kalpesh C. Virtual energy storage capacity estimation Appl Energy 2018;226:181–96. 
+using ANN-based kWh modelling of refrigerators. IET Smart Grid 2018:31–9. [35] Lu Y, Yu X, Jin X, et al. Bi-level optimization framework for buildings to heating 
+
+[21] Gao Y, Li S, Fu X, et al. Energy management and demand response with intelligent grid integration in integrated community energy systems. IEEE Trans Sustain 
+learning for multi-thermal-zone buildings. Energy 2020;210:118411. Energy 2020;12(2):860–73. 
+
+[22] Zhao X, Li L, Tao Y, et al. Aggregated operation of heterogeneous small-capacity [36] Zhou Y, Wang C, Wu J, et al. Optimal scheduling of aggregated thermostatically 
+distributed energy resources in peer-to-peer energy trading. Int J Electr Power controlled loads with renewable generation in the intraday electricity market. Appl 
+Energy Syst 2022;141:108162. Energy 2017;188:456–65. 
+
+[23] Liu N, Tan L, Sun H, et al. Bilevel heat–electricity energy sharing for integrated [37] Liu Y, Gao Y, Li Y, et al. A non-iterative network utilization pricing mechanism for 
+energy systems with energy hubs and prosumers. IEEE Trans Ind Inform 2022;18: P2P energy trading. CSEE J Power Energy Syst, doi: 10.17775/ 
+3754–64. CSEEJPES.2022.01410. 
+
+[24] Cui S, Xiao J. Game-based peer-to-peer energy sharing management for a [38] Yang Y, Chen Y, Hu G, et al. Optimal network charge for Peer-to-Peer energy 
+community of energy buildings. Int J Electr Power Energy Syst 2020;123:106204. trading: a grid perspective. IEEE Trans on Power Systems 2023;38(3):2398–410. 
+
+18

@@ -1,0 +1,1271 @@
+﻿Received: 9 November 2022 Revised: 6 March 2023 Accepted: 7 March 2023
+
+DOI: 10.1002/est2.464
+
+R E S E A R CH AR T I C L E
+
+Optimal sizing of RES and BESS in networked microgrids
+based on proportional peer-to-peer and peer-to-grid energy
+trading
+
+Vankudoth Lokesh | Altaf Q. H. Badar
+
+Department of Electrical Engineering,
+National Institute of Technology Abstract
+Warangal, Warangal 506004, India Networked microgrids emerged from the growing deployment of microgrids in
+
+the distribution network. The coordinated operation of networked microgrids
+Correspondence
+Vankudoth Lokesh, Department of offers technical and economical benefits to microgrid owners, customers, grid/
+Electrical Engineering, National Institute utility, and other stakeholders. The optimal capacity sizing of renewable
+of Technology Warangal, Warangal energy sources and battery energy storage systems allows microgrids to mini-
+506004, India.
+Email: vlokesh@student.nitw.ac.in mize costs and maximize reliability. A multi-objective optimization problem is
+
+developed for optimal sizing in a networked microgrid consisting of four differ-
+ent microgrids. The annual energy costs and loss of power supply probability
+index are taken as objectives. Peer-to-peer and peer-to-grid energy trading
+approaches are employed. The peer-to-peer energy trading among microgrids
+employs the proposed “proportional trading method” via a networked micro-
+grid manager or aggregator. The multi-objective optimization problem formu-
+lated is solved using Multi-Objective Particle Swarm Optimization. The
+individual objective optimization results for annual energy cost and loss of
+power supply probability are also analyzed. The proposed method decreases
+the interaction between the grid and the MGs, and the usage of renewable
+energy sources is enhanced. The capacity of battery energy storage systems is
+lowered by 96%, 53.2%, 48.86%, 21% for respective microgrids in networked
+microgrids. The results of proportional peer-to-peer energy trading-based
+multi-objective optimization show that trading energy among microgrids mini-
+mizes annual energy cost by 0.75% while maintaining system reliability.
+
+KEYWORD S
+
+battery energy storage system, multi-objective optimization, multi-objective particle swarm
+optimization, networked microgrids, peer-to-peer energy trading, peer-to-grid energy
+trading, photo-voltaic, wind turbine
+
+1 | INTRODUCTION concerns. With DGs, sustainable energy is becoming
+increasingly viable worldwide because they rely signifi-
+
+INCREASING deployment of the DGs into the electrical cantly on RES (primarily solar PV and WT). However,
+grid is observed to address the issues such as energy the stochastic nature of solar PV, WT, etc., and inelastic
+source limitations, carbon emissions, aging infrastruc- loads result in a supply-load mismatch. These imbalances
+ture, rising energy consumption, and energy security can be addressed by ESS. Furthermore, using DG in
+
+Energy Storage. 2023;5:e464. wileyonlinelibrary.com/journal/est2 © 2023 John Wiley & Sons Ltd. 1 of 16
+https://doi.org/10.1002/est2.464
+
+
+
+2 of 16 LOKESH and BADAR
+
+conjunction with ESS moves the energy paradigm toward Recently, with growth in the number of MGs with
+decentralization. The weighted Levelized Cost of Electric- diverse features, the MMGs or NMGs framework is pro-
+ity (LCOE) of solar PV and onshore wind energy fell 88% posed in the literature. In the distribution network of a
+and 68%, respectively, from 2010 to 2021.1 The LCOS of regional power system, these interconnected MGs form-
+BESS is expected to be reduced by one-third by 2030 and ing NMGs are geographically near to each other. Differ-
+a half by 2050,2 and the energy capacity to weighted- ent MGs have varying generation and load curves during
+average installed costs decreased by 72% between 2015 the day. At any given time, the quantity of energy gener-
+and 2019.3 ated by local RES in the MGs may be higher or lower
+
+The notion of MGs is developed to maximize on the than the local demand in MGs. In the event of a power
+benefits of DERs (DGs and ESS).4 In terms of grid charac- deficit, MGs obtain power from the utility grid, which
+teristics, MG is considered self-sufficient, with DGs, ESS, may be costly. The NMG architecture allows the inter-
+and controlled loads working as a single entity inside a connected MGs to trade energy with the connected MGs.
+specific electrical boundary.5 The MG supports two Energy trading among MGs enables the NMGs to opti-
+modes of operation: grid-connected and islanded. In grid- mize their economic benefits, maximize the use of DERs,
+connected mode, the MG can connect to the grid, trade reduce losses, and maximize security and reliability.15
+
+energy, and provide ancillary services. In islanded mode, The primary issue in energy trading is the extent of par-
+the MG is disconnected from the grid and is exclusively ticipation of an individual MG in the total energy traded
+responsible for the system's reliability, power quality, and within the NMG framework. For this, we propose a
+security. MGs are positioned near the consumption sites proportional-based P2P energy trading among the MGs,
+at low or medium-voltage levels. MGs offer a high poten- to be considered while determining optimal sizes of RES
+tial for electrical system enhancement by handling vari- and BESS.
+ability, enhancing power quality and reliability, enabling In Reference 16, the ideal size for NMGs is deter-
+local self-healing, minimizing investment costs, cutting mined by taking resilience and cost into account using a
+carbon emissions, and decreasing distribution network three-level approach. The proposed approach incorpo-
+power losses.6 rates the adaptive genetic algorithm, the non-dominated
+
+To maximize the benefits for MGs, adequate sizing sorting genetic algorithm-II, and the time-coupled AC-
+of DERs is required because of varied characteristics of optimal power flow. To increase the resilience and reli-
+generating resources. The optimal size minimizes oper- ability, in Reference 17, optimal sizing of the ESS is stud-
+ating costs by assuring minimal investment, optimal ied for NMG. This problem is modeled as a bi-level
+DER utilization, and operation at optimal conditions in problem, reduced to a single-level problem, and solved
+response to load demands.7 In literature, the optimal using mixed-integer linear programming. Boundaries,
+sizing in individual MGs is performed considering vari- optimum size, and siting of DGs for various MGs are pro-
+ous objectives and different techniques. In Reference 8, posed in Reference 18. The imperialist competitive algo-
+optimization problem with three objectives, that is, rithm is used to optimize the operating costs of MMG by
+cost, DPSP and REDR, is solved using improved multi- determining DG placement and size in regard to load
+objective grey wolf optimization for an isolated MG. In allocation. After the DGs are assigned, the borders of the
+Reference 9, for sizing an autonomous hybrid MG of a MGs are determined based on all geographical and elec-
+village, a multi-objective problem considering LCOE, trical constraints, but power trade between MMGs is not
+LPSP, and REF is solved using multi-modal delayed considered. The optimal siting, sizing, type, and dispatch
+PSO algorithm. of DERs, including allocation of section switches, are pro-
+
+Similarly, the optimal sizing is performed for an inte- posed in Reference 19. The objective is modeled as
+grated MG considering COE and LPSP using social spider mixed-integer linear programming and solved using
+optimizer for Alijouf region.10 In Reference 11, the auton- MOPSO. In Reference 20, the appropriate placement and
+omous hybrid MG design is assessed by determining the size of various components in various buildings acting as
+dynamic energy pricing and evaluating the steady-state smart MGs for a pilot project in Iran are discussed. Sizing
+and transient behavior of the system. The multi-objective and siting are done to lower MG costs and losses, respec-
+problem considering TNPC, COE, and uncertainty in tively, using PSO. This study does not address the topic of
+RES is solved using MOPSO. In Reference 12, optimal trading amongst MGs. In Reference 21, a two-stage NMG
+sizing of an industrial MG is performed considering the planning strategy is given, with the first stage centered
+effect of DR. The objectives of the problem are to mini- on minimizing MG's yearly investment costs. While the
+mize the LCC and CO2 emissions which is solved using second stage focuses on reducing daily operating
+genetic algorithm. Similarly, the optimal sizing of real- expenses in both grid-connected and island modes. In
+world MGs is studied in References 13,14. Reference 22, a case study in Adelaide is provided to
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 3 of 16
+
+minimize the total yearly cost to fulfill the annual load gives the problem formulation for minimizing AEC and
+demand. According to this study, an individual home in LPSP. Section 4 presents the solution methodology for
+the area acts as an MG, and together these homes form solving the problem, that is, using PSO and MOPSO
+an MMG framework. The study shows that MMG methodologies. Section 5 describes the data considered
+decreases DG capacity needed for installation and for the study and the results obtained. Finally, in
+enhances grid interaction. Section 6, the conclusions are presented.
+
+RE generation planning is studied in Reference 23, con-
+sidering the long-term investment and short-term operating
+costs. A Nash bargaining mechanism is used to divide the 2 | NMG MODEL AND ENERGY
+costs among the MGs. The energy exchange between MG TRADING FORMULATION
+and grid is not taken into account in this study. Optimal siz-
+ing of DG, ES, and the market clearing price for energy The NMG topology considered in this study is described,
+trading is accomplished in Reference 24. Interaction and modeling of various components such as PV, WT,
+between the MMG and real-time electricity market is con- BESS, and loads of each MG in the NMG framework is
+sidered to reduce the MMG's overall cost. The Cournot discussed in this section. Also, the proportional P2P
+equilibrium determines the market-clearing price, while energy trading scheme is formulated.
+optimal decision variables are determined using quantum-
+PSO. To reduce operational expenses,25 considers optimum
+planning of single and multi-carrier MGs. The problem 2.1 | NMG topology
+addresses all the technical, environmental, and mechanical
+limitations while obtaining the optimal sizing according to This paper aims to determine the optimal capacity of PV-
+the change in load for every season. The optimal capacity WT-BESS in an NMG considering proportional P2P trading.
+allocation of RES and BESS is determined to maximize the For this, we implement a modified version of the standard
+AEP in Reference 26. The problem is considered as a coop- NMG benchmark system described in Reference 29. In the
+erative game and solved for nash bargaining solution using system, each MG is connected to the grid at different loca-
+PSO. In References 27,28, nash equilibrium and cooperative tions and interconnected with other MGs via tie-lines. This
+game are proposed, respectively, for multi-objective game allows energy trading among MGs and the grid directly
+theoretic problem in RES and BESS capacity allocation. through the NMG manager or aggregator and DNO. The
+PSO is applied in both works with the objective to maxi- schematic of NMGs' trading strategy is depicted in Figure 1.
+mize AEP and reliability. Each MG is considered to consist of PV or WT or both of
+
+The literature studied does not consider the trading of them along with loads and BESS. Each MG in the system
+energy through NMG manager/aggregator among sellers has an MGO responsible for managing energy in the corre-
+and buyers for determining ideal sizes of RES and BESS. sponding MG. NMG manager or aggregator receives the
+In the proposed research work, we focus on designing deficit/excess energy information from the MGs and the
+the optimal capacity sizing of RES and BESS of each MG energy is dispatched among peer MGs based on a propor-
+in an NMG framework considering a proportional tional approach. Here we consider the DNO, which acts as
+method for trading energy among sellers and buyers. The an operator for P2G trading. It decides the electricity selling
+contributions of the paper can be listed as: and buying prices with the grid. For P2P trading amongst
+
+MGs the prices for energy trading in the NMG framework
+1. The optimal sizing of RES and BESS is performed for are determined by the NMG manager or aggregator.
+
+MGs in the NMG framework through a multi-objective
+problem of minimizing AEC and maximizing reliability.
+
+2. The proportional energy trading approach is proposed 2.2 | NMG modeling
+for P2P energy trading between buyers and sellers.
+
+3. Individual objectives are optimized separately using This section discusses the modeling of PV, WT, load, and
+PSO and compared with the optimal results obtained BESS for each MG in the NMG framework.
+through the multi-objective problem using MOPSO,
+considering P2G trading and P2P trading individually.
+
+2.2.1 | PV, wind, and load modeling
+This article is categorized into five sections: Section 2
+
+discusses the NMG framework, the modeling of compo- The hour-wise PV and WT generation, along with the
+nents of each MG for the NMG framework, and the pro- load data are statistically modeled according to Reference
+portional P2P trading approach. Subsequently, Section 3 29 as mentioned in Equations (1)-(3). The constraints for
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+4 of 16 LOKESH and BADAR
+
+FIGURE 1 Modified single line diagram of NMG.29
+
+maximum WT and PV capacity for generation are given adaptability of the system. BESS is characterized by the
+in Equations (4) and (5). charging and discharging of power. The BESS is
+
+charged by the MG whenever the RE generation is
+greater than the load (PVt
+
+i þWt
+i > ldti) and when
+
+ldti ¼
+%ldw,ti %ldd,ti  ld ,
+10 100 cy,i 8i f1 Ng ð1Þ
+0 BEt
+
+i <BEmax
+i . Similarly, it discharges whenever the RE
+
+generation is lesser than the load in an MG
+PVt (PVt
+
+i þWt
+i < ldti) and when BEt
+
+i >BEmin
+i . The maximum
+
+PVt l,i
+i ¼
+
+% a PV
+10 cy,i 8i f1,Ng ð2Þ
+0 charging and discharging power constraints for BESS at a
+
+particular time are given by Equations (6) and (7). The
+Wt
+
+Wt %
+i ¼ al,i W 8  f , ð energy capacity of BESS at a specific hour is given by
+
+100 cy,i i 1 Ng 3Þ
+Equation (8). The energy stored in the BESS is limited by
+Equation (9). The flowchart of BESS scheduling is given
+
+PVmin,i ≤PVt
+i ≤PVmax,i 8i f1,Ng ð4Þ in Figure 2.
+
+Wmin,i ≤Wt
+i ≤Wmax,i 8i f1,Ng ð5Þ BPmin
+
+i,c ≤BPt
+i,c ≤BPmax
+
+i,c 8i f1,Ng ð6Þ
+
+BPmin
+i,d ≤BPt
+
+i,d ≤BPmax
+i,d 8i f1,Ng ð7Þ
+
+2.2.2 | Battery energy storage system
+modeling  
+
+ð ÞBPt
+BEt
+
+i ¼BEt1
+i þ BPt
+
+i,c ηc Δ h i,d ΔðhÞ
+The BESS allows the storage of electrical energy for ηd ð8Þ
+use at a later time. This improves the flexibility and 8i f1,Ng
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 5 of 16
+
+F IGURE 2 BESS scheduling in MG.
+
+8
+BEmin
+
+i ≤BEt
+i ≤BEmax
+
+i 8i f1,Ng ð9Þ ><  
+PVt t
+
+i þWi  BEt1
+i þBPt
+
+i,c ηc ΔðhÞ  ldt
+
+i 8i S
+
+MGt
+i,sur ¼>:  
+
+þWt
+i þ BEt1
+
+i BPt 
+PVt i,d
+
+i ΔðhÞ  ldti 8iB
+ηd
+
+where ηc and ηd are considered as 0.95 and 0.92.29 ΔðhÞ is ð10Þ
+the time period for which the battery is charging or dis-
+charging that is, 1 hour. The total amount of excess/deficit energy with seller
+
+MGs and buyer MGs is given in Equations (11) and (12)
+respectively.
+
+2.3 | Energy Trading Strategy in NMG XS
+Energy is either excess or deficit in an MG at a given hour (t), Et
+
+T,ex ¼
+ 
+MGt
+
+i,sur 8 SN ð11Þ
+Xi¼1
+
+depending on the load and generation balance in the corre-
+sponding MG. If PVt
+
+i þWt
+i > ldti where i f1,Ng B
+
+, at a par- Et
+T,df ¼
+
+ 
+MGt
+
+i,sur 8 BN ð12Þ
+ticular hour, then the MGi, initially stores excess energy i¼1
+
+in the BESS, as per the strategy. If the MG still has excess
+energy remaining after charging BESS, then MGi acts as Excess energy from the seller MG is sold according to
+a seller in the NMG framework. In a contrary case, where the proportional sharing method as given in Equation (13)
+PVt
+
+i þWt
+i < ldti , MGi will discharge BESS to meet the load and the amount of energy received by the buyer MG, is
+
+demand. If the load is still not satisfied, MGi is required given by Equa8tion (14), for different conditions.
+to buy energy and acts as a buyer. S represents the set of
+all MGs with excess energy, whereas B is the set of MGs >< MGt  
+
+i,sur i
+PMGt Et f Et
+
+f þEt
+T,ex ≥ 0
+
+with deficit energy. Equation (10) gives the excess/deficit s,i ¼> T,df Et T,d
+
+: T,ex   ð13Þ
+energy in MGi at time “t” based on the set it belongs to, MGt t
+
+i,sur if ET,df þEt
+T,ex <0
+
+that is, either set S or B.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+6 of 16 LOKESH and BADAR
+
+FIGURE 3 Proportional P2P energy trading in NMG.
+
+8><   reliable power. The reliability of power is calculated
+MGt
+
+i,sur if Et
+T,df þEt
+
+T,ex ≥ 0 using the index LPSP.
+PMGt
+
+b,i ¼>: MGt   ð14Þ
+i,sur
+
+Et  if t
+Et Et
+
+T,df þET,ex <0
+T,df T,ex 3.1 | Annual energy cost
+
+The excess energy remaining with seller MGs after AEC depends on several parameters: income from power
+trading among the NMGs is sold to the grid, and vice versa utilization of RES and BESS, salvage income, investment
+for buyer MGs, as given in Equation (15). The flowchart cost, operation, and maintenance cost, the cost of energy
+for energy trading in the NMGs based on proportional traded with the grid, and NMG framework. The AEC for
+sharing is shown in Figure 3. The total energy generated, each MG is given by Equation (16). The AEC for the total
+energy traded within MGs and the grid must satisfy the NMG framework is given by Equation (17).
+total load in the NMG framework.
+
+(   AECi ¼CINV
+i þCO&M
+
+i  IU,RE
+i  IU,B
+
+i  ISLi CEC
+i ð16Þ
+
+PGt
+s,b,i ¼
+
+MGt
+i,sur PMGt
+
+s,i if MGt
+i,sur ≥ 0 ð15Þ
+
+MGt
+i,sur PMGt
+
+b,i if MGt
+i,sur <0 XN
+
+AECNMG ¼ AECi 8i f1,Ng ð17Þ
+i
+
+3 | PROBLEM FORMULATION
+3.1.1 | Investment cost
+
+The objective of this study is to optimize the capacity of
+PV-WT-BESS in the NMG system considering P2P energy The amortized cost for installing the RES and BESS is
+such that minimum AEC is achieved while guaranteeing determined using Equation (18).
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 7 of 16
+
+income values for RES are calculated using
+CINV
+i ¼PG,cy
+
+i EIC
+i  Dð1þDÞLi  ð18Þ Equation (25).
+
+ð1þDÞLi 1
+
+ISIi ¼PG,cy
+i ESI
+
+i  D  ð25Þ
+ð1þDÞLi 1
+
+3.1.2 | Operation and maintenance
+cost (O&M)
+
+3.1.6 | Cost of energy traded with grid
+The O&M cost of RES and BESS is obtained using and NMG
+Equation (19).
+
+The cost of energy traded with the main grid is given in
+CO&M Equation (26). The cost for energy traded within the
+i ¼ PG,cy
+
+i EO&M
+i ð19Þ
+
+NMG framework is given using Equation (27). The total
+cost of energy traded is given in Equation (28). The costs
+
+3.1.3 | Income from utilization of RE would be negative when energy is sold by the MG and
+generation vice versa.
+
+The total RE power generated during “t” is given in CEG,t
+i ¼PGt
+
+s,b,i Et
+p,s,b ð26Þ
+
+Equation (20). The amount of RE utilized in an MG dur-
+ing each “t” depends on the total RE power generated
+
+CEMG,t
+i ¼ PMGt
+
+and load as given by Equation (21). The income gener- b,s,i Et
+p,MG ð27Þ
+
+ated for energy utilized from RES in each MG is given in
+Equation (22). XT
+
+CEC
+i ¼ 
+
+CEG,t M , 
+i þCE G t
+
+i ð28Þ
+i¼1
+
+PG,RE,t
+i ¼ PVt
+
+i þWt
+i ð20Þ
+
+( 3.2 | Loss of power supply probability
+PU,RE,t
+i ¼ PVt
+
+i þWt
+i PG,RE,t
+
+i ≤ ldti
+ldti PG,RE,t ð21Þ
+
+i > ldti The reliability of the NMG is calculated using the index
+
+X of LPSP. The LPSP is used to measure the probability that
+T optimized PV, WT, and BESS capacity, can satisfy the
+
+IU,RE
+i ¼ Et
+
+p,b PU,RE,t
+i ð22Þ
+
+t¼ load demand in the corresponding MG. The LPSP is cal-
+1
+
+culated as the total number of hours the load is not satis-
+fied divided by the total evaluation period. The value of
+
+3.1.4 | Income from utilization of BESS LPSP is in the range [0,1]. If the power generated from
+the optimized RES and BESS satisfies the demand at each
+
+The battery is discharged whenever the load exceeds the hour, LPSP converges to zero. For a single MG, the LPSP
+total RES power generated and vice versa, based on dif- is calculated using Equation (29).
+ferent constraints. The total power consumed in MG is
+given in Equation (23). Annual income generated from PT
+
+H
+the utilization of BESS is given in Equation (24). t
+
+ LPSPMGi ¼ t¼1 ð29Þ
+T
+
+Pt
+i,CD ¼ ldti þ BEt
+
+i BEt 
+1
+
+i ð23Þ 8
+X <  
+
+1 if ldt
+Ht ¼ i PVt
+
+i Wt
+i þ
+
+BEt
+i BEt1
+
+i
+
+: ð Þ >0
+T Δ h ð30Þ
+
+IU,B
+i ¼ Et
+
+p,b 
+
+BEt
+
+i BEt 
+1
+
+i ð24Þ 0 otherwise
+t¼1
+
+3.1.5 | Salvage income where Ht returns 1 when the optimized hybrid RESs and
+battery do not satisfy the load for the tth hour and 0 for
+
+This is the income generated by selling the RES all other cases.
+and BESS equipment at the end of their useful life. The For the NMG, LPSP and its calculation considering
+salvage income from BESS is neglected. The salvage the P2P energy trading is given in Equation (31). In the
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+8 of 16 LOKESH and BADAR
+
+NMG framework, the additional power with the seller F ¼ min½AECNMG,LPSPNMG ð32Þ
+MG is sold to the buyer MGs in proportion and the
+remaining excess/deficit energy after selling/buying is In summary, the objective of the problem is to obtain
+sold/bought from the main grid. optimal capacity of RESs and BESS to minimize the AEC
+
+0 and simultaneously minimize LPSP while considering P2P
+
+BPN 1 energy trading among the MGs. In P2P trading the energy is
+
+B LPSPMG
+
+@ i
+
+LPSPNMG ¼ i¼1 CC8
+N A traded in a proportional manner among buyers and sellers.
+
+i 1,2,…,N ð31Þ
+
+4 | MULTI-OBJECTIVE
+OPTIMIZATION (MOO)
+
+The multiple objectives of the problem under consid-
+eration, are to minimize the AEC and simultaneously MOO is used for solving problems with multiple objective
+minimize LPSP as given by Equation (32). functions which can be either conflicting or agreeing.
+
+FIGURE 4 Flowchart for the implementation of MOPSO for minimization AEC and LPSP.
+
+TABLE 1 Details of MGs in NMG system.29
+
+BESS range
+MGs Buses Lines PV range (kW) WT range (kW)
+
+Energy (kWh) Power (kW)
+
+Min Max Min Max Min Max Min Max
+
+MG1 6 11 0 6400 0 0 0 10 000 0 6400
+
+MG2 9 8 0 5600 0 1300 0 12 000 0 5600
+
+MG3 18 17 0 5600 0 1700 0 12 400 0 5600
+
+MG4 7 8 0 5600 0 0 0 12 000 0 5600
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 9 of 16
+
+The MOO either minimizes or maximizes multiple con- 4.1.2 | MOPSO
+flicting objective functions, as described in Equation (33).
+
+In comparison to PSO, in MOPSO, each objective function
+Minimize FðxÞ¼ ½f 1ðxÞ, f 2ðxÞ,…, f nðxÞ has its own neighborhood to update its position.32 The
+subject to velocity update of particles for MOPSO is given in
+giðxÞ≤ 0, i¼ ð33Þ
+
+1,2,…,m Equation (36). The global best particle for each objective
+
+hiðxÞ¼ 0, i¼ 1,2,…,k function is stored in the repository. The values stored in the
+repository (REP) are non-dominated results and are used
+for updating the particles. The mutation operator is applied
+
+where x is the decision variable vector, f iðxÞ. to increase the diversity of the search in order to obtain the
+i¼ 1,…,n are the objective functions of x to be mini- optimal solution.33 The particles stored in the repository
+
+mized or maximized, and giðxÞ and hiðxÞ are the con- after convergence are considered solutions. The step-by-step
+straint functions for the problem. The MOPSO approach procedure for MOPSO is presented in Algorithm 1.
+is considered in this paper to solve the considered multi-
+objective problem. vti ¼ω vt1
+
+i þ c1 
+randðÞ  xpbest 
+
+
+xt
+
+i i
+
+þc2 RandðÞ REPðhÞ 
+xt
+
+ð36Þ
+i
+
+4.1 | Particle Swarm Optimization (PSO)
+where REPðhÞ is a value considered from the repository.
+
+PSO is a heuristic technique based on the social behavior
+of birds inside a flock.30 This is a simplistic population-
+based approach. Each particle in PSO defines a feasible
+solution to the defined problem. The particles in PSO, ALGORITHM 1 Algorithm for MOPSO
+travel through the hyper-dimensional search space and
+changes their position within the search space to probe
+optimal result. Each particle in PSO is associated with Require: c1,c2,w, itermax ,swarmsize,repositorysize
+
+the particle's best position and global best position. These Require: gridsize,mutationrate,InflationRate
+
+particle's path relies on the particle's velocity set in a cer- Require: LeaderSelectionPressure,
+tain direction depending on the particle's personal best DeletionSelectionPressure
+
+and global best that is, the particle's personal flying expe- Initialize Swarm.
+
+rience and its neighbors.31 Initialize leaders into the repository that is,
+external archive.
+
+for i¼ 1 : itermax do
+4.1.1 | PSO for single objective functions Select Leader
+
+for i¼ 1 : swarmsize do
+In single objective optimization, the position of particles Update Velocity using Equation (36).
+
+is changed based on the particle's personal flying experi- Update Particle Position using
+
+ence and neighborhood experience, as in Equation (34). Equation (34).
+Verify if the particles are satisfying
+
+xti ¼ xt1
+i þ vti ð34Þ constraints.
+
+Calculate Fitness.
+
+where xti is the position of the particle pi at time “t.” The Apply Mutation.
+
+velocity vti is added to this position. The velocity is Calculate Fitness.
+
+defined as given in Equation (35). Check for Dominance.
+Update Personal Best.
+
+vti ¼ω vt1
+i þ c1 randðÞ   
+
+x xt end for
+pbesti i
+
+þ Update leaders in the repository.
+c2 RandðÞ  xgbest 
+
+
+t ð35Þ
+x
+
+i i i = i++
+if i¼ itermax then
+
+where ω is the inertia constant, rand() and Rand() are Get Results from the external archive.
+
+random values  ½0,1. x end if
+pbest and x
+
+i gbest are the personal
+i
+
+best and global best of the particle “i.” c1 and c2 are the end for
+acceleration coefficients.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+10 of 16 LOKESH and BADAR
+
+The step-by-step procedure for minimization of AEC are shown in Table 1. The input parameters considered
+and LPSP problem as MOO using MOPSO is shown in for calculations are shown in Table 2.27 The optimization
+Figure 4. is applied for annual data but for representation purposes
+
+we have shown results for single day. The optimization
+techniques are implemented in MATLAB software.
+
+5 | RESULTS AND DISCUSSIONS The results in this study are presented in a 2-fold
+manner. First, we analyze the AEC and LPSP individu-
+
+NMG system given in Reference 29 is modified in this ally using PSO for both the P2G trading and P2P trading
+paper as shown in Figure 1, for the implementation of scheme. Then an analysis for the same NMG framework
+the proposed method. The modified system is considered considering multi-objective optimization using MOPSO
+to be interconnected among each other for trading and for both trading schemes is presented. The prices for trad-
+the conventional generation is neglected from the stan- ing are assumed to be fixed and given in Table 3.
+dard benchmark system. The system consists of four dis-
+tinct MGs (N = 4), where first bus of each MG is
+considered as a slack bus. The maximum capacity of PV, 5.1 | Optimization of individual
+WT, and BESS permitted in each MG and details of NMG objectives using PSO
+
+In this section, the results for the minimization of AEC
+TABLE 2 Input parameters for NMG.27 and LPSP as individual objectives, using PSO are pre-
+Parameters Value sented. The optimum RES and BESS sizes for each objec-
+D 12% tive are compared in Tables 4 and 5. The PSO is run for
+
+200 iterations, 100 particles, and the acceleration coeffi-
+LWT 20 years
+
+cients c1 and c2 are considered to be 2. The ω and ω
+EIC damp
+WT 770 $/kW
+
+are considered to be 1 and 0.99, respectively.
+EO&M
+WT 20 $/(kW.year)
+
+EIC
+PV 1890 $/kW
+
+LPV 20 years 5.1.1 | AEC
+EO&M
+PV 20 $/(kW.year)
+
+For AEC optimization, the cost is reduced for P2P energy
+LBESS 10 years trading compared to P2G energy trading as shown in
+EIC
+BESS 100 $/kW Table 4. The optimal size of BESS for MG1 and MG3
+
+EO&M
+BESS 1 $/(kW.year) obtained is 0 kW. Based on the sizing obtained, the RES
+
+Esi
+WT 77 $/kW generation, the BESS charging and discharging pattern
+
+for MGs, amount of energy traded with the grid (PMGG),
+Esi
+PV 189 $/kW
+
+and among the MGs for P2P energy trading (PMGM) is
+shown in Figure 5. Similarly for P2G energy trading
+results are shown in Figure 6.
+
+TABLE 3 Energy trading prices.27
+
+Parameters Value
+
+(Et
+p,MG) 0.15 $/kWh 5.1.2 | LPSP
+
+(Et
+p,s) 0.10 $/kWh
+
+LPSP is minimized considering P2P energy trading
+(Et
+
+p,b) 0.28 $/kWh compared to P2G energy trading as shown in Table 5.
+
+TABLE 4 Comparison of P2G and P2P energy trading for AEC using PSO.
+
+Optimal size P2G energy trading P2P energy trading
+MG
+
+PV (kW) WT (kW) BESS (kWh) LPSP AEC ($) LPSP AEC ($)
+
+MG1 6400 0 0 0.95557 37 273 107.21 0.95278 37 252 885.65
+
+MG2 5600 1300 0
+
+MG3 5600 1700 3716.23
+
+MG4 5600 0 10 603.05
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 11 of 16
+
+TABLE 5 Comparison of P2G and P2P energy trading for LPSP using PSO.
+
+Optimal size P2G energy trading P2P energy trading
+MG
+
+PV (kW) WT (kW) BESS (kWh) LPSP AEC ($) LPSP AEC($)
+
+MG1 6400 0 979.913 0.95184 37 368 050.9 0.95062 37 353 669.22
+
+MG2 5600 1300 12 000
+
+MG3 5600 1700 9920
+
+MG4 5600 0 10 375.07
+
+FIGURE 5 P2P energy trading pattern for AEC using PSO.
+
+FIGURE 6 P2G energy trading pattern for AEC using PSO.
+
+FIGURE 7 P2P energy trading pattern for LPSP using PSO.
+
+Considering LPSP, as the objective function, the RES for P2P energy trading. Similarly, for P2G energy trading,
+generation, charging and discharging of BESS, energy LPSP is minimized, and the results are shown in
+traded with grid, and among MGs is shown in Figure 7 Figure 8.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+12 of 16 LOKESH and BADAR
+
+FIGURE 8 P2G energy trading pattern for LPSP using PSO.
+
+TABLE 6 Comparison of P2G and P2P energy trading using MOPSO.
+
+Optimal size P2G energy trading P2P energy trading
+MG
+
+PV (kW) WT (kW) BESS (kWh) LPSP AEC ($) LPSP AEC ($)
+
+MG1 6400 0 387.064 0.95278 37 262 735.86 0.95139 37 249 249.21
+
+MG2 5600 1300 5613.047
+
+MG3 5600 1700 6340.179
+
+MG4 5600 0 9390.615
+
+FIGURE 9 P2G energy trading pattern using MOPSO.
+
+FIGURE 10 P2P energy trading pattern using MOPSO.
+
+The optimal size of RES remains the same when AEC LPSP. Similarly, while considering LPSP as an objective,
+and LPSP are optimized individually. The capacity of BESS reliability is improved as compared to the objective being
+is more while optimizing the LPSP than AEC. The cost is AEC. In both objectives, the results are better for P2P
+lower when considering AEC as an objective compared to energy trading when compared with P2G energy trading.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 13 of 16
+
+TABLE 7 Comparison of P2P and P2G trading.
+
+Parameter ($) Maximum capacity P2G trading P2P trading
+
+Investment cost MG1 1 753 276.50 1 624 579.69 1 624 579.69
+
+Investment cost MG2 1 711 640.20 1 626 132.45 1 626 132.45
+
+Investment cost MG3 1 758 230.02 1 677 101.87 1 677 101.87
+
+Investment cost MG4 1 577 627.54 1 537 994.27 1 537 994.27
+
+O&M cost MG1 138 000 128 387.06 128 387.06
+
+O&M cost MG2 150 000 143 613.05 143 613.05
+
+O&M cost MG3 158 400 152 340.18 152 340.18
+
+O&M cost MG4 124 000 121 039.61 121 039.61
+
+Cost of trade with grid MG1 14 369 000.00 14 388 000.00 14 370 000.00
+
+Cost of trade with grid MG2 9 678 900.00 9 685 900.00 9 686 500.00
+
+Cost of trade with grid MG3 10 681 000.00 10 684 000.00 10 682 000.00
+
+Cost of trade with grid MG4 7 517 700.00 7 519 300.00 7 524 000.00
+
+Cost of trade with NMG MG1 9418.60 0.00 9479.40
+
+Cost of trade with NMG MG2 1822.10 0.00 1988.60
+
+Cost of trade with NMG MG3 260.20 0.00 492.30
+
+Cost of trade with NMG MG4 7336.40 0.00 6998.50
+
+Income utilization of RES MG1 2 856 800.00 2 856 300.00 2 856 300.00
+
+Income utilization of RES MG2 3 126 000.00 3 118 300.00 3 118 300.00
+
+Income utilization of RES MG3 3 333 300.00 3 330 800.00 3 330 800.00
+
+Income utilization of RES MG4 2 438 600.00 2 417 600.00 2 417 600.00
+
+Income utilization of BESS MG1 4183.40 1718.10 1718.10
+
+Income utilization of BESS MG2 64 353.00 52 302.00 52 302.00
+
+Income utilization of BESS MG3 47 288.00 44 914.00 44 914.00
+
+Income utilization of BESS MG4 150 950.00 139 040.00 139 040.00
+
+Salvage income MG1 16 787.77 16 787.77 16 787.77
+
+Salvage income MG2 16 078.57 16 078.57 16 078.57
+
+Salvage income MG3 16 506.03 16 506.03 16 506.03
+
+Salvage income MG4 14 689.30 14 689.30 14 689.30
+
+Annual cost MG1 13 391 675.37 13 266 037.59 13 257 822.07
+
+Annual cost MG2 8 332 292.53 8 268 950.37 8 267 572.08
+
+Annual cost MG3 9 199 735.76 9 120 756.24 9 119 196.24
+
+Annual cost MG4 6 607 773.509 6 606 991.661 6 604 658.82
+
+AEC 37 531 477.18 37 262 735.86 37 249 249.21
+
+TABLE 8 Output for single and multi-objective optimization. 100 particles. The MOPSO parameters: repository size is
+Method AEC ($) LPSP considered to be 100, the acceleration coefficients c1 and
+
+c2 are considered 2, inflation rate (α) is 0.1, leader selec-
+PSO—AEC 37 252 885.65 0.95278
+
+tion pressure (β) is 2, deletion selection pressure (γ) is 2,
+PSO—LPSP 37 353 669.22 0.95062 mutation rate (μ) is 0.1, ω is 1 and ωdamp is 0.99. The opti-
+MOPSO 37 249 249.21 0.95139 mum RES and BESS sizes obtained for MOPSO are
+
+shown in Table 6. The results for P2G trading and P2P
+5.2 | Multi-objective optimization using energy trading considering MOPSO are shown in
+MOPSO Figures 9 and 10.
+
+From Table 6, the AEC achieved is lesser for P2P trad-
+In this section, the results for MOO using MOPSO are ing compared to P2G trading. Also, the LPSP is mini-
+presented. MOPSO is run for 200 iterations and mized when considering P2P energy trading. A
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+14 of 16 LOKESH and BADAR
+
+FIGURE 11 Optimal capacity of MGs in NMG.
+
+comparison of various costs and income for different DR demand response
+MGs considering P2P and P2G energy trading in the DSM demand side management
+NMG framework using MOPSO is shown in Table 7. ESS energy storage system
+
+The optimal sizes of RES and BESS in MG1, MG2, LCC life cycle cost
+MG3 and MG4 obtained are shown in Figure 11. In LCOE levelized cost of electricity
+Table 8, a comparison of the different single objective LPSP loss of power supply probability
+results obtained through PSO and multi-objective result MG microgrid
+obtained through MOPSO is shown. MGO microgrid operator
+
+MMG multiple microgrids
+MOPSO multi-objective particle swarm optimization
+
+6 | CONCLUSION NMG networked microgrids
+P2P peer-to-peer
+
+The optimal sizing of RES and BESS for MGs in the PCC point of common coupling
+NMG framework is presented in this research, with cost PSO particle swarm optimization
+minimization and reliability enhancement as objectives. PV photo-voltaic
+While determining the ideal sizes of RES and BESS for RE renewable energy
+MGs, two energy trading schemes, P2G and P2P, based REDR renewable energy discard rate
+on a proportional sharing approach, are employed. A REF renewable energy factor
+MOO problem is modeled and implemented using RES renewable energy sources
+MOPSO. P2P energy trading among MGs reduces cost T total operating hours
+and increases reliability when compared to P2G energy TNPC total net present cost
+trading. The difference in cost between maximum capac- WT wind turbine
+ity and optimal capacity obtained through P2P energy
+trading using proportional sharing for each MG is: Indices
+MG1—133 853.30 ($), MG2—64 720.45 ($), MG3— b index for buyer microgrids
+80 539.52 ($), MG4—3114.69 ($). As a result, the quantity d index of day
+of RES utilization is maximized, the interaction with the i index of microgrids
+grid is decreased, and the BESS capacity required is low- s index for seller microgrids
+ered through P2P energy trading using a proportional t index of hour
+sharing approach. w index of week
+
+Parameters
+NOMENCLATURE ηc charging efficiency
+Acronyms ηd discharging efficiency
+AEC annual energy cost AECi annual energy cost of MGi
+AEP annual energy profit AECNMG annual energy cost of NMG
+BESS battery energy storage system BEmax
+
+i maximum BESS energy allowable in MGi
+COE cost of energy BEmin
+
+i minimum BESS energy allowable in MGi
+D discount rate BEt
+
+i battery energy in MGi at time t
+DER distributed energy resource BPmin
+
+i,c minimum BESS charging power allowable
+DG distributed generation in MGi
+DNO distribution network operator BPmax
+
+i,c maximum BESS charging power allowable
+DPSP deficiency of power supply probability in MGi
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+LOKESH and BADAR 15 of 16
+
+BPt
+i,c BESS charging power in MGi at time t Sets
+
+BPmax
+i,d maximum BESS discharging power allowable B set of buyers
+
+in MGi N total number of microgrids
+BPmin
+
+i,d minimum BESS discharging power allowable S set of sellers
+in MGi
+
+BPt
+i,d BESS discharging power in MGi at time t DATA AVAILABILITY STATEMENT
+
+CEC
+i energy purchase cost of MGi from grid/NMG Data sharing is not applicable to this article as no new
+
+CEG,t
+i cost for energy purchased/sold by MGi from data were created or analyzed in this study.
+
+grid during t
+CEMG,t ORCID
+i cost for energy purchased/sold by MGi from Vankudoth Lokesh https://orcid.org/0000-0002-0906-
+
+NMG during t
+CINV 118X
+i investment cost of MGi Altaf Q. H. Badar https://orcid.org/0000-0002-1572-
+
+CO&M
+i operation & maintenance cost of MGi
+
+EIC 3717
+i investment cost of RES/BESS in MGi
+
+EO&M
+i operation & maintenance cost of RES/BESS
+
+REFERENCES
+in MGi
+
+ESI 1. IRENA (2022). Renewable Power Generation Costs in 2021,
+i salvage cost of RES/BESS in MGi
+
+Et Report. Abu Dhabi: International Renewable Energy Agency;
+p,b grid to peer energy trading price during t
+
+2022.
+Et
+p,s peer to grid energy trading price during t 2. Schmidt O, Melchior S, Hawkes A, Staffell I. Projecting the
+
+Et
+T,df total deficit energy with buyer MG0s during t future levelized cost of electricity storage technologies. Joule.
+
+Et
+T,ex total excess energy with seller MG0s during t 2019;3(1):81-100.
+
+ISLi salvage income of MGi 3. E. I. A. (EIA). Battery Storage in the United States: An Update
+IU,B on Market Trends. https://www.eia.gov/analysis/studies/
+i income of MGi from utilization of BESS
+IU,RE
+i income of MGi from utilization of RE electricity/batterystorage/. 2021. Accessed January 13, 2023
+
+L 4. Lasseter RH, Paigi P. Microgrid: a conceptual solution. 2004 IEEE
+i life time of RES/BESS in MGi 35th Annual Power Electronics Specialists Conference (IEEE Cat.
+
+ldcy,i load capacity in MGi No. 04CH37551). Vol 6. Aachen: IEEE; 2004:4285-4290.
+ldd,ti % load available in MGi at time t during 5. Ton DT, Smith MA. The US department of energy's microgrid
+
+day d initiative. Electr J. 2012;25(8):84-94.
+ldti load in MGi at time t 6. Farzin H, Moeini-Aghtaie M, Fotuhi-Firuzabad M. A hierarchi-
+ldw,ti % load available in MGi at time t during week cal scheme for outage management in multi-microgrids. Int
+
+w Trans Electr Energy Syst. 2016;26(9):2023-2037.
+
+LPSP 7. Yang H, Lu L, Zhou W. A novel optimization sizing model for
+MGi LPSP of individual MGi
+
+hybrid solar-wind power generation system. Solar Energy.
+LPSPNMG LPSP of NMG framework
+
+2007;81(1):76-84.
+MGt
+
+i,sur surplus energy in MGi during t 8. Zhao G, Cao T, Wang Y, Zhou H, Zhang C, Wan C. Optimal
+PG,cy
+i power generation capacity of each source sizing of isolated microgrid containing photovoltaic/photother-
+
+in MGi mal/wind/diesel/battery. Int J Photoenergy. 2021;2021:1-19.
+PG,RE,t
+i renewable energy generated in MGi during t 9. Mouachi R, Jallal MA, Gharnati F, Raoufi M. Multiobjective
+
+PU,RE,t
+i renewable energy utilized in MGi during t sizing of an autonomous hybrid microgrid using a multimodal
+
+PGt delayed PSO algorithm: a case study of a fishing village. Com-
+s,b,i energy bought/sold by MGi during t from/
+
+to grid put Intell Neurosci. 2020;2020:1-18.
+10. Fathy A, Kaaniche K, Alanazi TM. Recent approach based
+
+PMGt
+b,i energy bought by buyer MGi during t social spider optimizer for optimal sizing of hybrid pv/-
+
+PMGt
+s,i energy sold by seller MGi during t wind/battery/diesel integrated microgrid in aljouf region. IEEE
+
+PVt
+al,i % PV generation available in MGi at time t Access. 2020;8:57 630-57 645.
+
+PVcy,i PV capacity in MGi 11. Haidar AM, Fakhar A, Helwig A. Sustainable energy planning
+PVt
+
+i PV generation in MGi at time t for cost minimization of autonomous hybrid microgrid using
+PV combined multi-objective optimization algorithm. Sustain Cit-
+
+min,i minimum PV capacity in MGi
+PV ies Soc. 2020;62:102391.
+
+max,i maximum PV capacity in MGi
+Wt 12. De Clercq S, Zwaenepoel B, Vandevelde L. Optimal sizing of
+
+al,i % wind generation available in MGi at time t
+an industrial microgrid considering socio-organisational
+
+Wcy,i wind capacity in MGi aspects. IET Gener Transm Distrib. 2018;12(14):3442-3451.
+Wt
+
+i wind generation in MGi at time t 13. Muleta N, Badar AQ. Techno-economic analysis and design of
+Wmax,i maximum wind capacity in MGi hybrid renewable energy microgrid for rural electrification.
+Wmin,i minimum wind capacity in MGi Energy Harvest Syst. 2022;9(1):39-51.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+
+16 of 16 LOKESH and BADAR
+
+14. Muleta N, Badar AQ. Designing of an optimal standalone 25. Ghanbari A, Karimi H, Jadid S. Optimal planning and opera-
+hybrid renewable energy micro-grid model through different tion of multi-carrier networked microgrids considering multi-
+algorithms. J Eng Res. 2023;11(1):100011. energy hubs in distribution networks. Energy. 2020;204:117936.
+
+15. Che L, Zhang X, Shahidehpour M, Alabdulwahab A, 26. Ali L, Muyeen S, Bizhani H, Ghosh A. Optimal planning of
+Abusorrah A. Optimal interconnection planning of community clustered microgrid using a technique of cooperative game the-
+microgrids with renewable energy sources. IEEE Trans Smart ory. Electr Power Syst Res. 2020;183:106262.
+Grid. 2015;8(3):1054-1063. 27. Ali L, Muyeen S, Bizhani H, Ghosh A. A peer-to-peer energy
+
+16. Wang Y, Oulis-Rousis A, Strbac G. A three-level planning trading for a clustered microgrid—game theoretical approach.
+model for optimal sizing of networked microgrids considering Int J Electr Power Energy Syst. 2021;133:107307.
+a trade-off between resilience and cost. IEEE Trans Power Syst. 28. Ali L, Muyeen S, Bizhani H, Ghosh A. A multi-objective opti-
+2021;36:5657-5669. mization for planning of networked microgrid using a game
+
+17. Xie H, Teng X, Xu Y, Wang Y. Optimal energy storage sizing theory for peer-to-peer energy trading scheme. IET Gener
+for networked microgrids considering reliability and resilience. Transm Distrib. 2021;15:3423-3434.
+IEEE Access. 2019;7:86 336-86 348. 29. Alam MN, Chakrabarti S, Liang X. A benchmark test system
+
+18. Mojtahedzadeh S, Ravadanegh SN, Haghifam M-R. Optimal for networked microgrids. IEEE Trans Ind Informatics. 2020;
+multiple microgrids based forming of greenfield distribution 16(10):6217-6230.
+network under uncertainty. IET Renew Power Gener. 2017; 30. Kennedy J, Eberhart R. Particle swarm optimization. Proceed-
+11(7):1059-1068. ings of ICNN'95-International Conference on Neural Networks.
+
+19. Samadi Gazijahani F, Salehi J. Stochastic multi-objective Vol 4. Perth: IEEE; 1995:1942-1948.
+framework for optimal dynamic planning of interconnected 31. Shi Y, Eberhart RC. Empirical study of particle swarm optimi-
+microgrids. IET Renew Power Gener. 2017;11(14):1749-1759. zation. Proceedings of the 1999 Congress on Evolutionary
+
+20. Hakimi SM, Hasankhani A, Shafie-khah M, Catalão JP. Opti- Computation-CEC99 (Cat. No. 99TH8406). Vol 3. Washington:
+mal sizing and siting of smart microgrid components under IEEE; 1999:1945-1950.
+high renewables penetration considering demand response. 32. Coello CC, Lechuga MS. MOPSO: a proposal for multiple
+IET Renew Power Gener. 2019;13(10):1809-1822. objective particle swarm optimization. Proceedings of the 2002
+
+21. Cao X, Wang J, Zeng B. Networked microgrids planning Congress on Evolutionary Computation. CEC'02 (Cat.
+through chance constrained stochastic conic programming. No. 02TH8600). Vol 2. Honolulu: IEEE; 2002:1051-1056.
+IEEE Trans Smart Grid. 2019;10(6):6619-6628. 33. Coello CAC, Pulido GT, Lechuga MS. Handling multiple objec-
+
+22. Wouters C, Fraga ES, James AM. An energy integrated, multi- tives with particle swarm optimization. IEEE Trans Evol Com-
+microgrid, MILP (mixed-integer linear programming) approach put. 2004;8(3):256-279.
+for residential distributed energy system planning—a South
+Australian case-study. Energy. 2015;85:30-44.
+
+23. Wang H, Huang J. Cooperative planning of renewable genera- How to cite this article: Lokesh V, Badar AQH.
+tions for interconnected microgrids. IEEE Trans Smart Grid. Optimal sizing of RES and BESS in networked
+2016;7(5):2486-2496.
+
+microgrids based on proportional peer-to-peer and
+24. Hakimi SM, Hasankhani A, Shafie-khah M, Catalão JP. Sto-
+
+chastic planning of a multi-microgrid considering integration peer-to-grid energy trading. Energy Storage. 2023;
+of renewable energy resources and real-time electricity market. 5(7):e464. doi:10.1002/est2.464
+Appl Energy. 2021;298:117215.
+
+ 25784862, 2023, 7, Downloaded from https://onlinelibrary.wiley.com/doi/10.1002/est2.464 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [05/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License

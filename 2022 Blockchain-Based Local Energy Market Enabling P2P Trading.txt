@@ -1,0 +1,1545 @@
+﻿Received 15 November 2022, accepted 23 November 2022, date of publication 28 November 2022,
+date of current version 1 December 2022.
+Digital Object Identifier 10.1109/ACCESS.2022.3224936
+
+Blockchain-Based Local Energy Market Enabling
+P2P Trading: An Australian Collated Case Study
+on Energy Users, Retailers and Utilities
+LIAQAT ALI 1, (Senior Member, IEEE), M. IMRAN AZIM 1, (Member, IEEE), JAN PETERS1,
+VIVEK BHANDARI1, (Senior Member, IEEE), ANAND MENON1, VINOD TIWARI1,
+JEMMA GREEN1, AND S. M. MUYEEN 2, (Senior Member, IEEE)
+1Powerledger, Perth, WA-6000, Australia
+2Department of Electrical Engineering, Qatar University, Doha 2713, Qatar
+
+Corresponding authors: Liaqat Ali (la@powerledger.io) and S. M. Muyeen (sm.muyeen@qu.edu.qa)
+
+This research work was supported by Powerledger, Perth, Australia. The publication of this article was funded by Qatar National Library.
+
+ABSTRACT This paper presents a collated case study on local energy market (LEM) in Australia, in which
+energy users take part frequently in peer-to-peer (P2P) energy trading among themselves considering the
+agile presence of energy retailers and distribution utilities. To do so, first, an overview is provided in regard
+to LEM architecture, trading model with energy retailers, and the blockchain structure. Then, a new P2P
+trading mechanism is proposed in the LEM that enables both energy users, i.e., sellers and buyers, to reap
+financial benefits compared to the existing business-as-usual (BAU) model—where local power is exported
+and imported via feed-in-tariff (FiT) and time-of-use (ToU) rates. The proposed LEM framework also
+exploits residential battery energy storage systems (RBESSs); and the community battery energy storage
+systems (CBESSs) to balance local supply and demand appropriately and contributes towards lowering
+exports/imports from/to power grids bymeans of bilateral P2P transactions while the inclusion of responsible
+energy retailers are assured. Moreover, the margins of both energy retailers and distribution utilities are kept
+unchanged or increased to some extent by the proposed trading model to incorporate them in the LEM
+framework effectively. Finally, diverse case studies are provided to validate the proposed LEM mechanism
+with various studied models and demonstrate the superior performance in contrast with the present-day BAU
+model.
+
+INDEX TERMS Blockchain, community battery, distribution utility, energy retailer, local energy market,
+peer-to-peer energy trading, smart contracts.
+
+I. INTRODUCTION to export excess energy at a price fixed by the energy retailer
+A. BACKGROUND in a centralised manner, which could be static or dynamic
+In today’s world, the owners of small-scale distributed depending upon the location, energy requirement, and net-
+energy resources (DERs), such as rooftop solar photovoltaic work policy [2]. To expedite the rooftop solar PV uptake,
+(PV) systems; residential battery energy storage systems a high FiT rate was chosen. For instance, it was approximately
+(RBESSs); and community battery energy storage systems 40 c/kWh in Western Australia (WA), leading to a significant
+(CBESSs), are becoming interested to receive attractive number of WA homes equipped with solar PVs [3]. However,
+financial returns in lieu of energy export [1]. In the last it could not last long due to unplanned installation of solar
+decade, feed-in-tariff (FiT) has emerged as such a mecha- PVs at the residential level, causing excessive export into the
+nism that allows these owners, commonly called prosumers, power grid, and energy price hike for non-solar PV customers
+
+[4]. Currently, it is capped at around 3 c/kWh inWA [5], mak-
+The associate editor coordinating the review of this manuscript and ing prosumers dissatisfied. Therefore, a better incentivising
+
+approving it for publication was Salvatore Favuzza . mechanism is required to satisfy prosumers financially.
+
+VOLUME 10, 2022 This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/ 124429
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+A local energymarket (LEM) is essentially a sub electricity Further, electricity cost reduction is regarded as one of
+market that allows energy management, trading, and flexibil- the key drivers in [18], [19] that can influence P2P trading
+ity services in a transactive environment following required decisions extensively. The authors in [20] acknowledge this
+rules and regulation set by the LEM operator (LEMO) — fact and develop a robust P2P decision-forming strategy that
+which coordinates with the authorised distribution utility and guarantees a minimisation in energy users’ energy bills. The
+energy retailer [6]. It is technically and economically fea- energy users are directed to trade between the FiT rates and
+sible to stimulate clean energy integration into the power time-of-use (ToU) tariffs in [21] so that P2P trading becomes
+grid [7]. A LEM is characteristically different from exist- lucrative both for sellers (energy users have more generation
+ing DER management systems, such as distributed resource than demand) and buyers (energy users have more demand
+management systems (DERMS) and advanced distribution than generation). The application of RBESSs is exercised in
+management systems (ADMS), as it is operated by mutual [22], [23] to cut down electricity costs of both sellers and buy-
+negotiations between prosumers, consumers, and LEMOwith ers as RBESSs facilitate them to govern their local generation,
+a view to benefiting them to a greater extent [8]. Peer-to-peer consumption, and dispatch autonomously. The authors in [24]
+(P2P) trading is one of the aspects of LEM, empowering both also introduce the concept of P2P negawatt trading to lessen
+prosumers and consumers to trade energy among themselves their energy costs further through rescheduling energy usage
+simultaneously in a decentralised fashion to control local- behaviour. Moreover, P2P trading in the LEM is analysed
+scale DERs fully and operate as independent energy contrac- from social attributes’ point of view in [25] with the purpose
+tors [9]. A distributed ledger technology, such as blockchain, of enhancing its preference among energy users.
+can be adopted to accommodate smart contracts for energy The scopes of integrating the power grid and distribu-
+trading between various prosumers and consumers [10]. tion utilities in the LEM are also reported in some research
+
+P2P trading operates in two levels: 1) financial layer and studies. A grid-satisfactory P2P trading mechanism is pro-
+2) physical layer. Financial layer deals with local trading posed in [26], where power demand is handled by means of
+setup and decision-making strategy using a secured infor- community instructions. A bilateral negotiation-driven peak
+mation platform. Whereas the physical layer is responsible demand management strategy is proposed in [27] — this
+for energy dispatch in actual power grids respecting network type of P2P trading is labelled as a potential alternative to
+constraints prescribed by authorised energy retailers [11]. traditional demand response. To balance supply and demand
+P2P trading in the LEM could be conducted in three different within a local energy community, P2P trading orders are
+structures: 1) fully decentralised; 2) community-based; and utilised in [28]. The authors in [29] incentivise the energy
+3) hybrid. While a fully decentralised P2P trading is executed users optimally who show their interests to assist in balancing
+without the involvement of a centralised entity, a community local energy supply and demand. The uncertainty of DERs
+operator manages community-based P2P trading structure. is also considered in [30] while P2P orders are settled to
+In contrast, in a hybrid P2P trading structure, the financial avoid any imbalance in demand and supply. The activation of
+part is carried out in a decentralised manner between various present-day and futuristic potential flexibilities in the power
+entities and a responsible LEMO only guarantees the safe grid is also explored in [31], [32].
+operation of the power grid. Due to its operational suitability, As for the distribution utilities, an integrated users-
+hybrid P2P trading structure can readily be applicable in distribution utility approach is applied in [33] to maintain
+modern power grids [12]. the power grid constraints, that include power loss [34];
+
+congestion [35]; voltage limit [36]; and thermal resistance
+[37], in the LEM. The power grid usage charge is included in
+
+B. LITERATURE REVIEW, LIMITATIONS, AND MOTIVATIONS the P2P trading model in [38] to help the distribution utility
+A large number of recent research studies devout towards maintain the financial part of the network. The authors in [39]
+prioritising energy users’ preferences to motivate them to also acknowledge the importance of the presence of energy
+engage in P2P trading in LEM. Energy users’ beliefs related retailers in practical LEMs. For this reason, the role of an
+to their perceived behaviour, subjective norms, and attitudes energy retailer is justified by the authors in [40]. Besides, the
+are analysed and an appropriate model is designed in [13] transition of aggregated prosumers into a prospective energy
+to demonstrate the preferences concerning P2P trading. In a retailer for a futuristic LEM is also discussed in [41].
+competitive LEM, energy users are permitted to declare their Several research studies also deal with the application of
+preferred P2P trading quantities, prices, periods, and partners P2P trading-driven LEM in community microgrids (MGs).
+in [14]. Energy users are also given the flexibility to perform The sizing and planning of this type of LEM framework
+P2P trading individually or as a part of a group in [15]. are explained in [42] and [43] respectively. To guarantee
+It is recommended in [16] to formulate effective P2P trading monetary gains for all entities in a MG, a new method is
+decisions to reap maximum benefit from the LEM via P2P implemented in [44]. In addition, data- and model-driven
+trading. The authors in [17] report that while P2P trading approaches are proposed for home MGs in [28]. The authors
+decisions are heavily dependent on climate change; place in [45] consider diversified P2P energy users’ factors to
+attachment; and political orientation, difference in trust plays deploy the LEM-MGmechanism in an urban area. An innova-
+the primary role. tive algorithm is added to the P2P trading in [46] to ascertain
+
+124430 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+energy balance within the MG. A two-stage control is pro- countries like Australia, where the national electricity market
+posed to share energy in a defined MG in the most flexible (NEM) has recently suffered from sudden price hike; and
+way in [47]. The physical nature of energy flow is brought 4) take the pioneering step to speed up the LEM software
+into the decision-making processes in a well-functioning MG development confirming the present-day electricity market
+in [48]. A novel multi-hierarchical approach is also reported suitability.
+in [49] to conduct P2P bidding among different community
+MGs. Finally, a strategy is developed in [50] to enhance the C. CONTRIBUTIONS
+resilience of networked MGs via P2P trading. This paper focuses on developing a LEM framework; in
+
+Clearly, all these literatures lay the foundation to promote which P2P transactions are executed in a decentralised fash-
+P2P trading-facilitated LEM models from various perspec- ion assuming a blockchain-assisted platform, and the finan-
+tives to increase wider acceptability. An example of energy cial interests of all entities — such as various energy users;
+and information flow of such LEM models are shown in power grid and distribution utilities; and energy retailers —
+Fig. 1. However, these research studies are usually specific are guaranteed for real deployment in today’s electricity mar-
+to convince one particular entity of the LEM at a time, ket. The main contributions of this paper are summarised as
+i.e., energy users/power grid and distribution utilities/energy follows:
+retailers. In other words, the existing works are either energy
+
+• A succinct overview is provided to introduce the LEM
+users-centric, power grid and distribution utilities-centric,
+
+system required to settle P2P contracts and transactions.
+or energy retailers-centric. This may not be motivational to
+
+• A P2P trading-driven LEM framework is proposed sat-
+involve all parties simultaneously in the LEM for P2P trad-
+
+isfying operational and financial constraints to use, sell,
+ing in today’s electricity market and thus, it is required to
+
+and buy locally generated energy effectively.
+extend the available LEM models by incorporating various
+
+• A collated case study is conducted using real data from
+energy users, power grid and distribution utilities, and energy
+
+different parts of Australia, where various entities are
+retailers.
+
+considered, and their benefits are evaluated in compari-
+son with the existing BAU model.
+
+• The developed LEM model reduces energy bills of all
+energy users, minimises power grid’s export and import,
+and keeps margins of distribution utilities and energy
+retailers unaffected.
+
+D. PAPER STRUCTURE
+The reminder of this paper is organised as follows. LEM
+architecture, energy retailer’s model, the use of blockchain
+technology in the LEM framework are provided in Section II.
+Section III presents the mathematical formulation of the pro-
+posed LEM model. The following sections (Section IV and
+Section VI) demonstrate the considered power grids’ models
+followed by simulation results to evaluate the performance
+of our proposed LEM. Finally, Section VI wraps up the
+paper with concluding remarks and a number of future work
+directions.
+
+II. LEM SYSTEM OVERVIEW
+FIGURE 1. Energy and information signals in P2P trading-based LEM This section demonstrates an overview of the LEM sys-
+platform. tem. Particularly, a LEM architecture is discussed in
+
+Subsection II-A. Besides, single energy retailer and cross
+To this end, the importance of developing a unique LEM retailers trading concepts are introduced in the following
+
+framework with different possible models is stressed in this subsection (Subsection II-B). Lastly, the fundamentals of
+paper involving various energy users; power grid and distri- blockchain and its use in the LEM are narrated briefly in
+bution utilities; and energy retailers. Further, a collated case Subsection II-C.
+study to validate the proposed framework is also provided in
+this paper to: 1) articulate if an innovative LEM can create a A. LEM ARCHITECTURE
+win-win scenario for all types of energy users, the power grid, LEM permits energy users to trade energy among themselves
+the distribution utility, and energy retailers; 2) demonstrate in a P2P fashion to utilise their DERs and RBESS optimally
+the advantageous feature of integrating a CBESS-enabled and attain monetary gains [12]. Fig. 2 describes the high-level
+MG in the LEM; 3) highlight the suitability of LEM in architecture of a LEM consisting of various types of energy
+
+VOLUME 10, 2022 124431
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 2. High-level LEM architecture with consumers and prosumers
+connected at different distribution substations.
+
+users connected through feeder lines and fed by distribution FIGURE 3. Example of P2P trading in the LEM platform among different
+substations. Energy users interested in LEM participation energy users within the considered LEM architecture shown in Figure 2.
+
+could be connected at the same feeder (fed by the same
+distribution substation) or different feeders (fed either by the
+same distribution substation or different ones). In general, CBESS is also adopted to balance the total energy flow in
+energy users could be of three types: 1) traditional consumers the LEM following the instruction given by the authorised
+(without solar PVs and RBESSs); 2) prosumers with solar distribution utility. The results are also sent to the energy
+PVs; and 3) prosumers with PVs and RBESSs. retailer to settle energy bills at the end of a billing cycle.
+
+An example of P2P trading in the LEM platform among While energy users are physically connected at a distri-
+different energy users within the considered LEM architec- bution substation through feeders, there is no physical con-
+ture, as depicted in Fig. 2, is illustrated in Fig. 3. In other nection between the energy retailer and the substation. The
+words, Fig. 3 represents a part of Fig. 2; where the P2P trading virtual presence of the energy retailer is shown in Fig. 3 while
+among several energy users in the LEM platform is captured settling P2P transactions among energy users. LEM architec-
+as an example, and also shown blockchain integration. Both ture has twomain parts – energy flow andmoney flow.Money
+prosumers with solar PVs (second type of energy users) flows between the energy users/producers through a retailer.
+and prosumers with PVs and RBESSs (third type of energy This is controlled by smart contracts, and the transactions is
+users) can sell and buy energy in the LEM platform. Whereas stored in the blockchain.
+traditional consumers (first type of energy users) can only buy
+energy in the LEM platform through P2P trading. B. BLOCKCHAIN PLATFORM AND LEM INTEGRATION
+
+In a forward-facing market, as presented in Fig. 3, energy Blockchain is a secure, distributed, and encrypted database of
+users’ demand; solar PV generation; and storage status are shared information — called transaction [51]. It incorporates
+forecast and monitored continuously in the LEM trading a chronologically organised set of transactions termed as
+platform. Energy users are guided to announce their chosen blocks— that are immutable and irreversible, and maintained
+rates in the range between FiT and ToU prices to enable both by unambiguous consensus-empowered protocols. Thus, the
+energy sellers and buyers to get economic benefits. They are requirement of an intermediate third party can be excluded
+also provided with the option to sustain their chosen trading [52]. Fig. 4 demonstrates the blockchain structure which
+prices prior to their decision to replace (e.g., by using a web connects blocks in a single-way direction (new blocks are
+interface in a user-friendly way). added chronologically).
+
+The LEM platform basically follows an optimised mech- There are two main components of each block, namely
+anism to finalise bilateral biddings for selling and buying block header and block body [53]. The block header contains
+energy in the virtual presence of an energy retailer and a block number, hash values of the block and previous block,
+distribution utility. The subsequent matching results are dis- nounce, timestamp, and address of the block creator.Whereas
+closed to successful energy users and associated control and an automatic hash algorithm generates the hash/merkle tree
+price signals are transmitted to RBESS control systems. The to store all transaction data in the block body. The Merkle
+
+124432 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 4. Blockchain structure [54].
+
+FIGURE 6. Types of blockchain structure [62].
+
+example of this form of blockchain. Longer validation and
+vulnerability to bad actors are major downsides of public
+and private blockchains respectively, which are addressed
+in consortium and hybrid blockchains. The permission is
+
+FIGURE 5. Smart contract structure [54]. required in consortium blockchains, but these are governed
+by a group of authorities rather than a single authority like
+private blockchains, leading to more decentralisation and
+
+root connects the block header and block body [55]. Nonethe- greater security. In contrast, hybrid blockchains are controlled
+less, once transaction data is validated and stored in the by a single authority with some processes that do not need
+blockchain, it does not allow any further alteration or deletion permission [62].
+to ensure the data storage immutability [56]. To materialise The distributed feature of blockchain and its capability
+all of these aspects, a convergence of various modern tech- of preserving transaction history are well-suited to accom-
+nologies related to network; data; identity; communication; modate bilateral P2P trading in the LEM. Thus, blockchain
+automation; and consensus is requisite [57]. technology has been rated as one of the most promis-
+
+Smart contracts are predominantly adopted to guarantee ing P2P trading platforms in many recent research stud-
+the occurrence of the transactions in the blockchain in an ies and tech companies. For instance, smart contracts are
+auto- mated fashion. They are essentially computerised trans- designed and evaluated for a blockchain-enabled LEM
+action protocols arranged to satisfy the legal terms and con- in [63], which are irreversible in nature. Smart contracts
+ditions of archetypal contracts [58]. The purpose is to evade on the blockchain are also exercised to balance energy
+an intermediary service while the contractual clauses, such and demand in the LEM in [64] and address cost con-
+as terms of agreement and diverse conditions, are converted cerns in [65] respectively. The privacy and security of a
+into embedded codes in a deterministic way [59]. Besides, blockchain-based LEM is guaranteed through specifying
+the deployment of these embedded codes on the blockchain the requirements of message authenticity code or a digi-
+ascertains that they remain unchanged [60]. The reduction tal signature, confidentiality in both symmetric and asym-
+of malicious circumstances can also be expedited by dint metric encryption, entity authentication challenge-response
+of smart contracts [61]. A smart contract structure — in protocol, authorisation to counter elevation of privilege
+the context of blockchain — is exhibited in Fig. 5, which attacks, non-repudiation adopting asymmetric cryptography,
+depicts that a smart contract is triggered generally by the participant’s privacy-preservation using pseudonyms and
+transaction, assigned with an address (unique), and saved on signature schemes, and availability for detecting attacks;
+the blockchain as a script. and classifying and filtering messages in [66]. A multi-
+
+There could be four types of blockchain structures in gen- agent deep reinforcement learning mechanism is also incor-
+eral, that includes public, private, consortium, and hybrid porated in [67] to validate the scalability of the LEM
+blockchains as displayed in Fig. 6. Public blockchains operation.
+are entirely decentralised in nature (no central authority), In fig. 7 blockchain integration with LEM is shown, where
+enabling anyone to join with equal rights without any per- energy exchange between users takes place at the infras-
+mission (permissionless). Examples include Ethereum, tructure layer, and each user is physically connected with
+
+Bitcoin, and Litecoin. On the contrary, private blockchains a distribution line. Through the user interface (UI) the user
+are completely controlled by a single authority and per- connects to the blockchain and accesses their smart contract
+mission is required for everyone to join. Hyperledger is an details. The same UI is also used to place the bids.
+
+VOLUME 10, 2022 124433
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+TABLE 1. Rates of energy retailer-1.
+
+FIGURE 7. LEM integration with energy users and blockchain.
+
+In the third layer, smart contract and blockchain exe-
+cute market clearing mechanism, billing and settlement, and
+stores/record bidding transactions.
+
+C. ENERGY RETAILERS
+In this paper, two different LEM models with a single energy
+retailer and two energy retailers are considered; where AGL
+is energy retailer-1 (for both single energy retailer and cross
+energy retailer models) and Origin is energy retailer-2 (for
+cross energy retailer model). In order to ensure maximum
+benefits for the energy users and increase P2P trading vol- FIGURE 8. P2P Trading in the LEM platform with a single energy retailer.
+
+umes, a ToU tariff structure is used.
+
+1) SINGLE ENERGY RETAILER MODEL reveals that a prosumer sells 1 kWh at 12.87 c (P2P energy
+A LEM with a single energy retailer model is considered in price in the LEM). On the contrary, to get 1 kWh, the con-
+this subsection for P2P trading. Table 1 captures the elec- tracted consumer pays 37.92 c, which is a combined price
+tricity rates for BAU fixed by the AGL (energy retailer-1). of P2P energy price (12.87 c), network fee (21.3 c), LEM
+Without a loss of generality, a case of two energy users (one platform cost (0.5 c), energy retailer-1 margin (1.75 c) and
+prosumer and one consumer) is taken into account in this taxes (1.5 c). In the trading platform money flow is managed
+table who intend for P2P trading in the LEM but remain through smart contracts and all placed bids are stored in
+as customers of energy retailer-1. It is observed that energy blockchain. In this example, both prosumer and consumer
+prices of them are varied (assumed values) compared to BAU receive 1.53 c and 0.78 c more benefits than the BAU
+through P2P buying executed with other energy users in the respectively.
+LEM at different time periods although P2P trading involves
+a certain amount of LEM platform cost. Also, LEM allows 2) CROSS ENERGY RETAILERS’ MODEL
+the prosumer to sell energy at a different price than the FiT A P2P trading-driven LEM model with two energy retailers
+rate. However, daily supply charge; network fees, renewable is considered in this part. Table 1 and Table 2 show the
+energy target (RET), and energy retailer-1’s margin remain electricity rates for BAU fixed by the AGL (energy retailer-
+the same. 1) and Origin (energy retailer-2) respectively. In cross energy
+
+The energy flow, cash flow and price signals of a single retailers’ model, two energy users (one prosumer and one
+energy retailer-based LEM is illustrated in Fig. 8, which consumer) are considered who intend for P2P trading and are
+
+124434 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+TABLE 2. Rates of energy retailer-2. transactions are securely stored in blockchain. LEM trading
+platform sends price signals and volume of energy to retailers
+for settlement. This case enables prosumer and consumers to
+gain 7.37 c and 0.74 c profit and saving in comparison with
+BAU respectively.
+
+III. PROPOSED P2P TRADING FORMULATION
+IN THE LEM
+In the proposed LEM strategy, some relevant assumptions are
+considered such as: 1) all energy users are connected at a
+single low-voltage (LV) distribution network; 2) while energy
+users without solar PVs and BESSs can participate as sole
+energy buyers, energy users’ with either only solar PVs or
+both solar PVs and RBESSs can join in the LEM as both
+sellers and buyers; 3) sellers and buyers are directed to declare
+their preferred trading prices between FiT and ToU prices
+to receive maximum financial benefits through P2P trading
+in the LEM; 4) charged and discharged power of RBESSs
+are sold in the LEM once all solar PVs’ power are sold; and
+
+customers of two different energy retailers, e.g., the prosumer 5) the CBESS helps in balance power in the LEM.
+and consumer are customers of energy retailer-1 and energy Let each feeder line of a typical LV distribution network
+retailer-2 respectively. The tables demonstrate that prosumer be indexed by f ∈ F , where F refers to the set of all feeder
+and consumer conduct P2P trading in the LEM at prices dif- lines. Assume this network has the total number of |K | energy
+ferent from BAU keeping daily supply charge, network fees, users, k and K imply index of each energy user and the set of
+RET, and energy retailer- 2’s margin unchanged. Further, all energy users respectively. The sets of energy users who are
+energy retailer-1 receives an additional margin to allow its sole energy users (without solar PVs and RBESSs), energy
+prosumer to take part in the LEM. users with solar PVs, and energy users with both solar PVs
+
+The energy flow, cash flow and price signals of a cross and RBESSs are subsets of K .
+energy retailer-facilitated LEM are displayed in Fig. 9, that Let solar PV power and demand of each energy user k ∈ K
+indicates that a prosumer sells 1 kWh at 12.37 c (P2P be symbolised by Ppvk,f ,t and P
+
+dm
+energy price in the LEM). In contrast, 37.43 c is paid by k,f ,t respectively at any time
+
+t ∈ T . RBESS’s self-charged and self-discharged power are
+the contracted consumer to buy 1 kWh. This brought amount indicated Pcr
+includes P2P energy price (12.37 c), network fee (21.3 c), k,f ,t and P
+
+dc
+k,f ,t , respectively. The net power status
+
+of each energy user k ∈ K is calculated as:
+LEM platform cost (0.5 c), energy retailer-2 margin (1.50 c), ( ) ( )
+energy retailer-1 margin (0.25 c), and taxes (1.5 c). All the Pstk,f ,t = Pdm pv
+
+k,f ,t + P
+cr
+k,f ,t − Pk,f ,t + P
+
+dc
+k,f ,t ;
+
+money flow is organised through smart contracts and the
+∀k ∈ K , ∀t ∈ T (1)
+
+where Pcrk,f ,t and Pdck,f ,t signify each RBESS’s charged
+and discharged power respectively. Note that Pcrk,f ,t com-
+prises both self-charged power Pcrk,f ,t (sf ) and P2P-charged
+power Pcrk,f ,t (pr). Similarly, Pdck,f ,t is the summation of self-
+discharged power Pdck,f ,t (sf ) and P2P discharged Pdck,f ,t (pr).
+
+The excess power (after meeting self-power requirements)
+and insufficient power (after using self-generation) of each
+energy user k ∈ K are{expresse}d as:
+
+Pepk,f ,t = −mi{n Pstk,f ,t ,}0 ; ∀k ∈ K , ∀t ∈ T (2)
+
+Pip st
+k,f ,t = max Pk,f ,t , 0 , ∀k ∈ K , ∀t ∈ T (3)
+
+In BAU, Pcrk,f ,t (pr) ,P
+dc
+k,f ,t (pr) = 0. As per (2) and (3), Pepk,f ,t
+
+is exported into the network at the FiT rate ft
+λt . Whereas Pipk,f ,t
+
+is imported from the network at the ToU price λtut .
+Assume a LEM structure, in which the indices of each
+
+seller and each buyer are denoted by x ∈ X ⊂ K and y ∈
+FIGURE 9. P2P Trading in the LEM platform with cross energy retailers. Y ⊂ K , respectively. Sets X and Y are the sets of all sellers
+
+VOLUME 10, 2022 124435
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+and all buyers respective∑ly. A seller x can trad∑e with multiple the distribution utility λubt as discussed in Table 1 and Table 2
+buyers in Y . Suppose y∈Y P
+
+lm dc
+x,f ,t (y) and y P (
+
+∈Y x,f ,t y) in Subsection II-B. Thus, the relation between λrbt and λubt
+symbolise sold solar PV power and RBESS discharged power with λtut (as per BAU) can be expressed as follows:
+respectively by each seller x ∈ X in the LEM trading platform
+at time t and price λlmx,t (y). Likewis∑e, a buyer y can also λrbt < λtut ; ∀t ∈ T (7)
+t∑rade with multiple sellers in X . Let x∈X P
+
+lm
+y,f ,t (x) to buy λubt < λtut ; ∀t ∈ T (8)
+
+power from solar PV and RBESSs’ discharge power and
+Also, λrlt and λult refer to margins of energy retailer and dis-
+
+x∈X P
+cr
+y,f ,t (x) be bought power by each buyer y ∈ Y at
+
+tribution utility respectively during P2P trading in the LEM
+time t and price λlmy,t (x) at meet up load demand and charge platform. To involve the energy retailer and distribution utility
+its RBESS respectively. in the LEM platform, λrlt and λult cannot be higher than λrb
+
+The total earning β lmx,t of each seller x ∈ X by participating t
+
+in the LE∑M is de(s(cribed as: ) ) and λubt respectively. The LEM platform cost is indicated by
+λlmt .
+
+β lm (( Plm dc
+x,t = y x, ,t (y)+ P) ,t ( ) ×
+
+∈Y f x,f y 1)t × λlmx,t (y) No∑netheless, the total equivalent expenseβ
+bu
+y∑,t of each buyer
+
+y ∈ Y if equivalent LEM quantities, i.e., both x∈X P
+lm
+y,f ,t (x)cr f
+
++ Px,f ,t (cs)+ P
+t ft
+x,f ,t ×1t × λt ; and x Pcr (
+
+∈X y,f ,t x) = 0 (in BAU), are brought at λtut (=
+eg
+
+∀x ∈ X ⊂ K , ∀t ∈ T (4) λt + λ
+tx
+t + λ
+
+r∑mt + λumt ()(— as per BAU— is w) ritten as:
+
+where Pcrx,f ,t (cs) denotes the power sold to charge the CBESS βbu Plm cr
+y,t = x y, ,t (x)+ P ,t ( ) ×
+
+∈X f y,f x 1t
+by each seller x at ft
+
+λt rate. Whereas the power sold to the eg )
+× ((λ( tx um
+
+t + λ
+rm
+
+t + λt + λ)t )
+power grid by each seller x at ft
+
+λt rate is denoted by Pftx,f ,t . )
+c
+
+Note that if there are not enough buyers in Y , a seller x sells + Pdy,f ,t (cs)+ P
+tu tu
+y,f ,t ×1t × λt ;
+
+power first to the CBESS and then to the power grid at ft
+λt rate ∀y ∈ Y ⊂ K , ∀t ∈ T (9)
+
+(same as BAU).
+The total equivalent earning βbux,t of each seller x ∈ X , Note that the second part of (6) and (9) are the same as they
+
+i∑ ∑
+f equivalent LEM quantities, i.e., both y∈Y P
+
+lm
+x,f ,t (y) and
+
+capture the power traded with the CBESS and power grid.
+
+y Pdc
+However, the first part of (6) and (9) are the saving decider
+
+(
+∈Y x,f ,t y) = 0 (in BAU), are sold at ft
+
+λt rate — as per
+BAU— is∑calculat(e(d as: ) ) for each buyer y, as they seek to trade in the LEM at a price
+
+cheaper than the ToU price. In other words, (λlmy,t (x)+ λ
+lm
+t +
+
+βbu Plm dc
+x,t = (y x,f t (y)+ P f t (y ×1
+
+∈Y , x, , ) )t ft e
+λrlt + λ
+
+ul
+t ) < ( g
+
+λt + λ
+tx
+t + λ
+
+rm
+t + λ
+
+um
+× λt t ).
+
+The main objective of the proposed P2P trading-driven
+cr
+
++ (P ft
+x,f ,t (cs)+ Px,f ,t )×1t
+
+ft
+× λt ; LEM is to provide sellers and buyers with profits and sav-
+
+∀x ∈ X ⊂ K , ∀t ∈ T (5) ings respectively so that they reduce their electricity costs in
+contrast to BAU. Note that at different time intervals, over the
+
+Note that the second part of (4) and (5) are the same as they course of T, sellers can also play the role of buyers and vice
+capture the power traded with the CBESS and power grid. versa depending upon the power status. Thus, electricity cost
+However, the first part of (4) and (5) are the profit decider reduction can demonstrate the overall benefit.
+for each seller x, as they seek to trade in the LEM at a price The formulated objective function OF (defined for each
+higher than the FiT rate. In other words, λlm f
+
+x,t (y)
+t
+
+> λt . seller x ∈ X and each buyer y ∈ Y ) along with all constraints
+The total expense β lmy,t of each buyer y ∈ Y by participating (defined for the ent[ir(e LEM) are)illus(trated as fo)ll]ows:in the LEM is∑written(a(s: ) OF = max β lm bu
+
+x,t − β
+bu
+x,t + β lm
+
+y,t − βy,t ;
+
+β lm ( Plm cr
+y,t = x y, ,t (x)+ P ,t ( ) ×
+
+∈X f y,f x)) 1t ( ∀x ∈)X ⊂ K(, ∀y ∈ Y ⊂) K , ∀t ∈ T (10)
+
+(( m m r u
+× λl l t l
+
+y,t (x)+ λt + λt )+ λt ) where β lm
+ft bu
+
+x,t − βx,t and β lm
+y,t − βy,t refer to profit and
+
+Pdc u
++ y,f ,t (cs)+ P
+
+tu t
+y,f ,t ×1t × λt ; saving for each seller x and each buyer y at time t .
+
+∀y ∈ Y ⊂ K , ∀t ∈ T (6) Subject to constraints illustrated in (11-37).
+P2P trading price constraints:
+
+where Pdcy,f ,t (cs) represents the power brought from the dis-
+(λlm e
+y,t (x)+ λ
+
+lm
+t ) < ( g
+
+λt + λ
+tx
+
+charge of CBESS by each buyer y at λtut rate. Whereas the t );
+power brought from the power grid by each buyer y at λtut ∀y ∈ Y ⊂ K , ∀t ∈ T (11)
+rate is represented by Ptuy,f ,t . Note that if there are not enough λrlt < λrbt ; ∀t ∈ T (12)
+sellers in X , a buyer y buys power first from the CBESS and f
+
+λlmx,t (y
+t
+
+) > λt ;then from the power grid at λtut rate (same as BAU). λtut com-
+prises energy (coming from upstream generators) cost eg
+
+λ ∀x ∈ X ⊂ K , ∀t ∈ T (13)
+t ,
+
+taxes λtxt , and margin of the energy retailer λrbt , and margin of λult < λubt ; ∀t ∈ T (14)
+
+124436 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+(11)-(14) describe the price constraints for P2P trading in (19)-(21) explain RBESS charging constraints for P2P
+the LEM. Sellers and buyers are sorted according to min- trading in the LEMplatform. The RBESS P2P-charging order
+imum, and maximum declared prices (first) and maximum Pcrk,f ,t (pr) in the LEM is bounded by the P2P-charging rate
+declared amounts (if necessary) in X and Y respectively. α¯crk,t and the power available to execute P2P-charging order
+At each P2P trading slot t , P2P contract prices λlmx,t (y) and Pcr ). Ppv PV.
+( k,f ,t (av k,f (pk) implies peak time solar
+λlm lm
+y,t (x) + λt ) for each seller x ∈ X and buyer y ∈ Y are
+
+In addition, RBESS discharging constraints for P2P trading
+considered as in between the FiT and ToU (energy and tax
+
+in the LEM platform are depicted in (22-24). The RBESS
+components only) rates. The margins of the energy retailer
+
+P2P-discharging order Pdc
+the same or above the BAU k,f ,t (pr) in the LEM is bounded by
+
+and distribution utility are kept
+so as to encourage them to participate in the LEM. the P2P-discharging rate α¯dck,t and power available to execute
+RBESS self-charging an(d self(-discharging con)st)raints: P2P-discharging order Pdck,f ,t (av). P
+
+dm
+k,f (pk) refers to peak time
+
+load demand.
+πk,f ,t = π (,t−1 + γ cr cr
+
+k,f k Pk,)f ,t (sf )×1t CBESS charging and discharging co(nstraints: )
+Pdck,f ,t (sf )×1t πcs,f ,t = πcs(,f ,t−1 + (γ cr r
+
+cs )Pccs,f ,t ×1t− c ; ∀k ∈ K , ∀t ∈ T
+γ dk Pdccs,f ,t ×1t
+
+(15) + ∈ T (25)
+γ dc
+
+; ∀t
+cs
+
+πk,f ,t (min) ≤ π(k,f ,t ≤ πk,f ,t (m)ax) ; ∀k ∈ K , ∀t ∈ T πcs,f ,t (min) ≤ π
+16)
+
+≤ π
+(min) (cs,f ,t(
+
+cs,f ,t (max) ;) ∀t ∈ T (26)
+αcrk,f ≤ Pcrk,f ,t (sf )×1t αcr in) ≤ Pcr
+
+cr cs,f (m cs,f ,t ×1t
+≤ α(k,f (max) ; ∀k)∈ K , ∀t ∈ T (17) cr
+
+≤ αcs,f (max) ;
+αdck,f (min)
+
+c
+≤ Pdk,f ,t (sf )
+
+) ∀t ∈ T (27)
+×1t (
+
+αdccs,f (min)
+dc
+
+≤ Pcs,f ,t ×1tcr
+≤ αk,f (max) ; ∀k ∈ K , ∀t ∈ T (18)
+
+αdc≤ cs,f (max) ; ∀t ∈ T (28)
+The RBESS constraints for charging and discharging (25-28) represent CBESS charging and discharging con-
+
+are demonstrated in (15-18). πk,f ,t represents the state- straints. The operation of CBESS is controlled by the
+of-charge (SoC), which maintains the RBESS opera- SoC, which is bounded by minimum and maximum SoCs
+tion and is bounded by minimum and maximum SoCs
+
+π
+and cs,f ,t (min) and πcs,f ,t (max) respectively. γ cr
+
+π cs and γ dccs refer
+πk,f ,t (min) k,f ,t (max) respectively. γ crk and γ dck refer to CBESS charging and discharging efficiencies respectively.
+to RBESS charging and discharging efficiencies respectively. CBESS charged power Pcr r
+RBESS self-charged power Pcr t = Pcx,f ,t (cs) is bounded by
+
+k,f ,t (slf ) is bounded by min- cs,f ,
+minimum and maximum charging capacities αcr
+
+nd maximum charging capacities αcr cs,f (max) andimum a k,f (max) and
+αcr BESS discharged power
+
+αcr harged cs,f (min) respectively. Similarly, C
+k,f (min) respectively. Similarly, RBESS self-disc
+
+c Pdc (cs) is also bounded by minimum and max-
+power Pd cs,f ,t = Pdcy,f ,t
+
+k,f ,t (slf ) is also bounded by minimum and maxi-
+imum discharging capacities αdc
+
+um discharging capacities αdc x) and αdc cs,f (max) and α
+dc
+cs,f (min) atm k,f (ma k,f (min) at time time length 1t .
+
+length 1t . Local power balance constraints:
+RBESS P2P-charging and P2P-discharging constraints: Assume,
+
+Pcr
+∑ ∑∑
+
+k c X
+,f ,t (pr)×1t = min{α¯crk,t , (P
+
+cr ∑
+k,f ,t (av)×1t)}; Plmx,f ,t (y)+ Pd
+
+19) ∑x∈X∑y∈Y ∑ x,f ,t (y) = pf ,t (29)
+∀k ∈ K , ∀t ∈ T ( x∈X∑y∈Y
+
+α¯crk,t = (αcrk,f (max)
+cr
+
+× γ cr Y
+k )− (Pcrk,f ,t (sf )×1t); Plmy,f ,t (x)+ Py,f ,t (x) = Pf ,t (30)
+
+∀k ∈ K , ∀t ∈ T (20) y∈Y x∈X y∈Y x∈X
+
+Pcrk,f ,t (av)×1t = πk,f ,t (max)− πk,f ,t−1 If ideal case,
+− (Ppvk,f (pk)×1t)− (Pcrk,f ,t (sf )×1t); PXf ,t − P
+
+Y
+f ,t = 0; ∀t ∈ T (31)
+
+∀k ∈ K , ∀t ∈ T (21)
+If,PX
+
+Pdc ) f ,t > PY
+k,f ,t (pr)
+
+dc
+×1t = min{α¯dck,t , (Pk,f ,t (av ×1t)
+
+f ,t
+}; ∑ ∑
+
+PX Y cr
+∀k ∈ K , ∀t ∈ T (22) f ,t = Pf ,t + Px,f ,t (cs Pft)+ x,f ,t ;
+
+α¯dc dc x∈X x∈X
+k,t = (αk,f (max)
+
+c
+× γ dk )− (Pdck,f ,t (av)×1t); ∀t ∈ T (32)
+
+∀k ∈ K , ∀t ∈ T (23) If, PY
+c f ,t > PXf ,t
+
+Pd ∑
+k,f ,t (av)×1t = πk,f ,t−1 − πk,f ,t−1(min)
+
+∑
+PY X
+f ,t = Pf ,t + Pdcy,f ,t (cs)
+
+tu
++ Py,f ,t ;
+
+− (Pdmk,f (pk)×1t)− (Pdck,f ,t (sf )×1t); y∈Y y∈Y
+∀k ∈ K , ∀t ∈ T (24) ∀t ∈ T (33)
+
+VOLUME 10, 2022 124437
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+The power balance constraints in the LEM are captured
+(29-33). In the LEM, the total power of the sellers should
+be equal to the total power of the buyer, i.e., PXf ,t = PYf ,t
+as is shown in (31) to clear the market. However, it is an
+ideal case. If PXf ,t > PYf ,t ; (P
+
+X
+f ,t − PYf ,t ) is stored in the
+
+CBESS. Once the CBESS is full, but the entire excess power
+is not consumed, the rest of the power is exported into the
+network at the FiT rate. (32) illustrates this power balance
+case. Likewise, if PYf ,t > PXf ,t ; (P
+
+Y
+f ,t − PXf ,t ) is satisfied via
+
+CBESS discharge first and from the power grid (once CBESS
+reaches the maximum discharge limit). This power equation
+is described in (33).
+Power grid export and import constraints: FIGURE 10. Average profile (kW) of a) load consumption and b) solar PV
+
+generation.
+
+∑ ∑ 
+Pep has a capacity of 100 kWh with a charger of 50 kW. The
+x,f ,t (min) ≤ Plm dc
+
+x,f ,t (y)+ Px,f ,t (y) case study used real world (randomly selected fromAusGrid)
+y∈Y y∈Y
+
+≤ Pep
+24 hours average load consumption and solar PV radiation
+
+x,f ,t (max) ; ∀x ∈ X ⊂ K , ∀t ∈ T
+
+∑ data of 100 households from New South Wales (NSW) over
+(34) one example summer day. The annual averaged profiles in
+
+PX ep Fig. 10 illustrate that load consumption is maximum during
+f ,t <  Pk,f ,t (35)
+
+k∈X⊂K
+
+Pip
+∑ ∑  evening times and solar PVs generatemaximumpower during
+
+afternoon times.
+In the LEM trading platform, the status of generation and
+
+,f ,t (min) ≤  Plmy y,f ,t (x) Pcr+ 
+x,f ,t (y)
+
+x∈X y load consumption are monitored and forecasted regularly.
+∈Y
+
+ip The energy users in the automated platform are capable to
+≤ Py,f ,t (max) ; ∀y ∈ Y ⊂ K , ∀t ∈ T
+
+∑ place their buy and sell orders within set limits to perform
+(36) the merit order mechanism, and their results are processed
+
+PY through the RBESS control system to successfully complete
+f ,t < Pipk,f ,t (37)
+
+k∈Y⊂K the P2P trading. Themain objectives of the P2P-assisted LEM
+platform are to minimise the electricity bills of energy users
+
+The power grid export constraints are explained in (34) and maintain the margins for energy retailers and distribution
+and (35). The total exported power of each seller x in the LEM utilities. In addition, it ensures the LEM development and
+is bounded by minimum and maximum limits Pepx,f ,t (min) applicability in the real world.
+and Pep
+
+∑ x,f ,t (max) respectively. The total exported power of all
+sellers in the LEM is less than that of BAU, i.e., PXf ,t < A. MODEL-A WITH A SINGLE ENERGY RETAILER
+
+k∈X⊂K P
+ep
+k,f ,t . In the LEMmodel A, one single retailer (z= 1) is responsible
+
+(36) and (37) demonstrate the power grid import con- for energy trading between seller and buyer and confirms
+straints. The power grid imported power of each buyer y that set margins are distributed among the distribution utility,
+in the LEM is bounded by minimum and maximum limits trading platforms, upstream energy retailers (generators) and
+Pipy government bodies. The energy retailer ensures that all the
+,f ,t (m∑in) and P
+
+ip
+y,f ,t (max) respectively. The total imported
+
+power of all buyers in the LEM is less than that of BAU, i.e., energy users fulfil their energy requirement and get full ben-
+PY k∈Y⊂K P
+
+ip
+f ,t < k,f ,t . efit by either P2P trading (first preference) or BAU (once P2P
+In the following sections (Section IV and Section V), the trading is terminated) at different ToU intervals. Fig. 11 illus-
+
+proposed LEM framework is split into three different models trates that one energy retailer manages the selling and buying
+and rigorous case studies are presented for the performance requirements amongst 100 energy users connected in one LV
+analysis. distribution substation, where the first feeder has 80 energy
+
+users including consumers and prosumers with solar PVs,
+IV. CONSIDERED NETWORK MODELS and the second feeder has 20 prosumers with solar PVs and
+The proposed LEM architecture consists of 100 residential RBESSs. Note that no CBESS is considered in model-A, i.e.,
+energy users including 60 consumers, 20 prosumers with Pcrx,f ,t (cs) ,P
+
+dc
+y,f ,t (cs) = 0.
+
+solar PVs, and 20 prosumers with solar PVs and RBESSs
+in a single substation and distributed through two feeders. B. MODEL-B WITH CROSS ENERGY RETAILER
+The capacity of the solar PV system is 6 kW per user and In the LEMmodel-B, two energy retailers (z= 2) enable, the
+the installed size of RBESS is 12 kWh with a charger of P2P energy trading between the sellers and the buyers and
+3.3 kW. A CBESS is considered at the substation level and ensure that set margins are distributed among the distribution
+
+124438 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 13. Model-C with cross energy retailers and CBESS.
+
+separate feeder as seen in Fig. 13. The LEM platform and
+CBESS are administered by the distribution utility that allows
+energy users to perform P2P trading and excess energy is
+
+FIGURE 11. Model-A with a single energy retailer. first utilised by the CBESS and then the residual is traded
+with the power grid. The LEM model has 100 energy users
+connected in one LV distribution substation, where the first
+feeder has 80 energy users including consumers and pro-
+sumers with solar PVs, the second feeder has 20 energy
+users with solar PVs and RBESSs. Besides, the CBESS
+is managed by a third feeder connected to the distribution
+substation. Note that CBESS is considered in model-C, i.e.,
+Pcrx,f ,t (cs) ,P
+
+dc
+y,f ,t (cs) 6= 0
+
+V. RESULTS AND ANALYSIS
+In this section, the studied LEMmodels are simulated, where
+all the functional constraints; described in Section III; are
+solved through adoptedmarket rules to obtain themain objec-
+tives which are to reduce the energy cost of the energy users,
+improve or maintain the margins for the distribution utility
+and energy retailers, and minimise the power grid congestion
+
+FIGURE 12. Model-B with cross energy retailers. issues with the integration of RBESSs and the CBESS. In the
+case studies, blockchain technology is used for price flow
+
+utility, trading platforms, upstream energy retailers (gener- within energy users. LEM platform stores securely bidding
+ators) and government bodies. The energy retailer ensures information and executes smart contracts for each energy
+that all the energy users fulfil their energy requirement and user. Further, the results of LEM model-A, model-B and
+get full benefit by either P2P trading (first preference) or model-C are analysed in comparison with the existing BAU
+BAU (once P2P trading is terminated) at different ToU inter- model [2] and also a brief comparative analysis among the
+vals. Fig. 12 illustrates that two energy retailers ensure the studied models are carried out to rate the most suitable one in
+selling and buying requirements amongst 100 energy users today’s energy market.
+connected in one LV distribution substation, where the first
+feeder has 80 energy users including consumers and pro- A. LEM FRAMEWORK MODEL-A CASE STUDY
+sumers with solar PVs and the second feeder has 20 pro- The average electricity cost reduction for consumers, pro-
+sumers with solar PVs and RBESSs. It is also evident that sumers with solar PVs, and prosumers with solar PVs and
+energy retailer-1 has all three types of energy users including RBESSs are compared among an existing BAU model [71]
+consumers, prosumers with solar PVs, and prosumers with and the proposed LEM model-A in Fig. 14. On average, P2P
+solar PVs and RBESSs, however, energy retailer-2 only has trading reduces the electricity costs of consumers; prosumers
+consumers. Note that no CBESS is considered in model-B, with solar PVs; and prosumers with solar PVs and RBESSs
+i.e., Pcrx,f ,t (cs) ,P
+
+dc
+y,f ,t (cs) = 0. by 5.24 %; 13.58 %; and 21.04 %, respectively, compared to
+
+the BAU model. The rapid decrease in prosumer electricity
+C. MODEL-C WITH CROSS ENERGY RETAILERS cost can definitely encourage the energy users to invest in
+AND A CBESS DERs and participate in the LEM platform as prosumers to
+In the LEM model-C, two energy retailers (z = 2) facilitate earn maximum benefit.
+the P2P energy trading between the sellers and the buy- Fig. 15 (a) shows the BAU average daily load profile in
+ers. The distribution utility is assumed to own the CBESS, kWh, where most of the load requirements are met by the
+that is operational within a distribution substation through a power grid; and solar PVs and RBESSs contributions are
+
+VOLUME 10, 2022 124439
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 14. Energy users’ average daily electricity cost comparison
+between BAU model and LEM model-A with proposed P2P trading.
+
+FIGURE 16. Power export and import comparison between BAU model
+and LEM model-A with proposed P2P trading.
+
+FIGURE 17. Energy retailer’s margin comparison between the BAU model
+and LEM model-A with proposed P2P trading.
+
+PVs’- and RBESSs’-empowered P2P trading can minimise
+the power grid congestion issue and improve the network self-
+sufficiency with local DERs.
+
+Fig. 17 portrays the energy retailer’s margin for an existing
+BAU model and the proposed LEM model-A. The results
+
+FIGURE 15. Average daily residential profiles (kWh): a) BAU model and highlight an increase in daily margin owing to the fact of an
+b) LEM model-A with proposed P2P trading. additional fee per P2P traded kWh as well as an increased
+
+P2P trading volume due to RBESSs’ charging from other
+prosumers equipped with excessive solar PVs. On the other
+
+noticeable during afternoon and evening times, respectively. hand, the income of the distribution utility is displayed in
+Fig. 15 (b) depicts that the amounts of energy bought from Fig. 18, which clarifies that the distribution utility is not
+the power grid are decreased in the afternoon and evening benefitted like the energy users in terms of daily income.
+due to P2P trading in the proposed LEM model-A. Partic- However, importantly, P2P trading can significantly lead to
+ularly, more solar PVs perform P2P trading in the afternoon the reduction of the capital expenditures and operational
+and RBESS-based trading (through discharging) are executed expenditures of the distribution utility.
+during the evening time.
+
+A typical day export/import from/to the power grid is rep- B. LEM MODEL-B CASE STUDY
+resented in Fig. 16 for the existing BAU and proposed LEM In LEM model-B, two energy retailers are integrated to man-
+model-A. As is shown in Fig. 16, the proposed LEM model age the energy trading among energy users, and provide max-
+decreases the power grid export by 17.2 % due to RBESS imum opportunity to all of them to minimise their electricity
+charging and P2P trading during off-peak and shoulder times. expenditures. Fig. 19 shows that the reduction of electricity
+Further, the power import from the power grid is reduced costs for consumers, prosumers with solar PVs, and pro-
+by 13.7 % because of RBESS discharging and P2P trading sumers with solar PVs and RBESSs are 8.54 %, 23.77 %
+during peak demand times. That clearly justifies that solar and 51.46 %, respectively on average. The main reason for
+
+124440 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 18. Distribution utility’s margin comparison between the BAU
+model and LEM model-A with proposed P2P trading.
+
+FIGURE 20. Average daily residential profiles (kWh): a) BAU model and b)
+proposed LEM model-B.
+
+FIGURE 19. Energy users’ average daily electricity cost comparison
+between the BAU model and proposed LEM model-B.
+
+the slight reduction in consumers’ average electricity bill is
+due to the fact that most consumers (50 out of 60) are with
+energy retailer 2, who has higher prices during the shoulder
+period. Therefore, these consumers can offer higher buying
+prices compared to their peers under energy retailer-1 and
+are prioritised in merit order. Additionally, priority for P2P
+trading is given to the energy users who have largest invest-
+ments on DERs in the LEM like prosumers with solar PVs FIGURE 21. Power grid’s export and import comparison between the BAU
+and RBESSs. Therefore, the largest electricity cost cutback model and proposed LEM model-B.
+
+of prosumers can motivate other energy users to invest more
+in DERs. Huge reduction in electricity cost compared to LEM
+model-A is a result of high selling prices to consumers of Overall, as shown in Fig. 21, compared to the existing BAU
+energy retailer-2, who can offer up to 19 c/kWh for solar PV model, the proposed LEMmodel-B reduces the energy export
+excess. to the power grid by 16.7 % and energy import from the
+
+The average daily load consumption in the existing BAU power grid by 12.9 % due to the RBESSs’ charging during
+model is shown in Fig. 20(a) and it is compared with LEM off-peak and shoulder periods, and their discharging during
+model-B (with proposed P2P trading) in Fig. 20(b). In the peak demand periods.
+BAU model, most of the energy actually comes from the Themargins for both energy retailers (energy retailer-1 and
+power grid during evening and night times, and excess solar energy retailer-2) are captured in Fig. 22, where the margins
+PV generation is sold to the power grid at the FiT rate. are kept at or above BAU level. Energy retailer-1 has a set of
+In contrast, if P2P trading is performed in LEM model-B; consumers, prosumers with solar PVs, and prosumers with
+the amounts of excess solar PV generation are traded with solar PVs and RBESSs. The daily margin increases by 4.1%
+neighbouring energy users during afternoon and morning due to an additional fee per kWh of P2P traded amount
+times that clearly cut down power imported/exported from/to and an increased volume of RBESSs’ charging via P2P at
+the power grid. various ToU intervals. On the other hand, energy retailer-2
+
+VOLUME 10, 2022 124441
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+C. LEM MODEL-C CASE STUDY
+In LEM model-C, two energy retailers are considered with a
+CBESS managed by the distribution utility and connected at
+a third feeder. When the energy users participate in the LEM
+and perform P2P trading, their electricity expenses compared
+to the existing BAU model are provided in Fig. 24. The
+average electricity bill reduction percentages for consumers,
+prosumers with solar PVs, and prosumers with solar PVs and
+RBESSs with two energy retailers given in Table 4, which
+suggests they lower their expenses by 9.68 %, 29.87 %, and
+53.81 %, respectively. Similar to LEM model-A and LEM
+model-B, prosumers with solar PVs and RBESSs are the
+winners in the LEM model-C with proposed P2P trading
+when it comes to diminishing energy expenditures.
+
+FIGURE 22. Energy retailer’s margin comparison between the BAU model
+and proposed LEM model-B.
+
+FIGURE 24. Energy users’ average daily electricity cost comparison
+between the BAU model and proposed LEM model-C.
+
+An average daily load profile in BAU is shown in
+Fig. 25(a), where energy bought from the energy network
+
+FIGURE 23. Distribution utility’s comparison between the BAU model and fulfils most portions of the load requirement, that includes
+proposed LEM model-B. the discharge from the CBESS in the evenings. Rest of the
+
+portions are fulfilled by solar PVs’ supply and RBESSs’
+discharged during afternoon and evening periods. Fig. 25(b),
+
+contains only consumers and retains its BAU margin in the on the contrary, depicts the daily load profile in the LEM
+proposed LEMmodel-B. This advocates that energy retailers model-C with proposed P2P trading, where energy bought
+serving more prosumers with solar PVs and RBESSs can from the power grid (apart from the CBESS) is reduced
+achieve higher margins due to receiving an additional fee substantially and most of the load requirements are met by
+per kWh amount of P2P transaction sold from within their internal solar PVs and RBESSs by means of P2P. It is also
+portfolio. manifest that a bulk part of P2P trading is conducted by
+
+Fig. 23 exhibits the distribution utility income for the prosumers with solar PVs, while some portion is executed by
+proposed model-B that is increased marginally compared to prosumers with solar PVs and RBESSs.
+the existing BAUmodel because of the enhanced P2P trading Fig. 26 displays power import and export caused by the
+volume for RBESSs’ charging during afternoon times. The LEMmodel-Cwith proposed P2P trading and compares these
+income margin of the distribution utility due to P2P trading with the BAU (with CBESS) results. It is presented that the
+is impacted to a little extent. However, the LEM can reduce proposed LEM model-C lessens the power grid export by
+the problems that the distribution utility is experiencing due 55.2 % due to charging of RBESSs controlled by the P2P
+to higher DERs’ penetration into the power grid. Further, the trading during off-peak and shoulder times. The import from
+proposed LEM can bring down the network operational and the power grid also declines by 20.6 % owing to discharging
+capital expenditures. Eventually, it can encourage the distri- of RBESSs with the help of P2P trading during peak times.
+bution utility to permit more prosumers with solar PVs and These results emphasise that integration of CBESS with the
+RBESSs to participate in the LEM and get the opportunity to LEM framework significantly drives away the power grid
+make more profits. congestion, e.g., 220.93 % and 230.53 % more reduction in
+
+124442 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+FIGURE 27. Energy retailer’s margin comparison between the BAU model
+and proposed LEM model-C.
+
+FIGURE 25. Average daily residential profiles (kWh): a) BAU model and
+b) proposed LEM model-C.
+
+FIGURE 28. Distribution utility’s daily income comparison between the
+BAU model and proposed LEM model-C.
+
+point out the uniform fact, as seen in LEMmodel-A and LEM
+FIGURE 26. Power grid’s export and import comparison between the BAU model-B, that an energy retailer with more prosumers and
+model and proposed LEM model-C. enlarged P2P trading volume is awarded with greater income
+
+margins.
+The daily income margin of the distribution utility is found
+
+export compared to LEMmodel-A and LEMmodel-B respec- to be marginal in the proposed LEM model-C in contrast
+tively; and 50.36 % and 56.20 % more reduction in import with the BAU model as shown in Fig. 28, and it does not
+compared to LEM model-A and LEM model-B respectively, receive larger income margins compared to energy users like
+and effectively controls the power grid problem of import and LEM model-A and LEM model-B. However, LEM model-C
+export. with proposed P2P trading helps the distribution utility curtail
+
+The energy retailers’ margins are laid out in Fig. 27 for the the detrimental repercussions of unregulated local DERs’
+BAU (with CBESS) and LEM model-C with proposed P2P penetrations through P2P trading and scales down the power
+trading. Energy retailer-1 income margin from the trading grid’s operational and capital expenditures.
+group grows by 5% as a function of P2P traded volume due
+to the fact of RBESSs’ and CBESSs’ charging/discharging VI. CONCLUSION
+from/to neighbouring energy users. However, energy retailer- In this paper, a hoarded case study on multifarious entities
+2 consists of a set of sole consumers that causes it to retain the in Australia; that include residential energy users, energy
+incomemargin for every kWh tradedwithin the LEM (instead retailers, and the distribution utility, has been demonstrated to
+of buying the same amount from the power grid). The results validate the proposed P2P trading-enabled LEM framework
+
+VOLUME 10, 2022 124443
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+assumed to be operated by the blockchain technology. This forecasting and dynamic physical network constraints can be
+article has started with a brief explanation on contemporary incorporated in the LEM platform to extend the proposed P2P
+literature focusing on the advent of P2P trading in the LEM trading model.
+followed by its architecture, retailers’ model for trading, and
+blockchain structure. The proposed P2P trading settlement in REFERENCES
+the LEM has then been described in detail that guarantees [1] B. C. Neagu, O. Ivanov, G. Grigoras, and M. Gavrilas, ‘‘A new vision
+all energy users’ notable cost reduction in contrast with the on the prosumers energy surplus trading considering smart peer-to-
+existing BAUmodel while ascertaining the appropriate adop- peer contracts,’’ Mathematics, vol. 8, no. 2, pp. 1–27, Feb. 2020, doi:
+
+10.3390/math8020235.
+tions of RBESSs’ and the CBESS to balance local supply and [2] S. W. Ndiritu and M. K. Engola, ‘‘The effectiveness of feed-in-
+demand, and cutback power grid’s export and import remark- tariff policy in promoting power generation from renewable energy
+ably. Further, the income margins of both energy retailers in Kenya,’’ Renew. Energy, vol. 161, pp. 593–605, Dec. 2020, doi:
+
+and the distribution utility have been kept the same or above 10.1016/j.renene.2020.07.082.
+[3] FiT: Synergy. Accessed: Sep. 29, 2022. [Online]. Available: https://www.
+
+as the BAU model to include them in the proposed LEM synergy.net.au/Global/FIT-Faq
+mechanism. Lastly, assorted case studies, through desktop [4] M. I. Azim, S. A. Pourmousavi, W. Tushar, and T. K. Saha, ‘‘Feasi-
+simulation, have been presented to authenticate the perfor- bility study of financial P2P energy trading in a grid-tied power net-
+
+work,’’ in Proc. IEEE Power Energy Soc. Gen. Meeting (PESGM),
+mance of the proposed P2P trading-based LEM framework Atlanta, GA, USA, Aug. 2019, pp. 1–5, doi: 10.1109/PESGM40551.
+under three different models labelled as LEMmodel-A, LEM 2019.8973809.
+model-B, and LEM model-C respectively. The simulation [5] FiT Plummeted: ABC News. Accessed: Sep. 29, 2022. [Online]. Available:
+
+https://www.abc.net.au/news/2021-09-29/solar-feed-in-tariff-energy-
+results have stressed the following key findings compared to australia-tesla-battery/100498592
+the existing BAU model: [6] R. Faia, J. Soares, T. Pinto, F. Lezama, Z. Vale, and J. M. Corchado,
+
+‘‘Optimal model for local energy community scheduling considering peer
+• All three types of energy users, including consumers to peer electricity transactions,’’ IEEE Access, vol. 9, pp. 12420–12430,
+(without solar PVs and RBESSs); prosumers with solar 2021, doi: 10.1109/ACCESS.2021.3051004.
+
+PVs and prosumers with solar PVs and RBESS, have [7] B. Lin, J. Chen, and P. K. Wesseh, Jr., ‘‘Peak-valley tariffs and solar
+prosumers: Why renewable energy policies should target local electric-
+
+been able to minimise their energy costs in compar- ity markets,’’ Energy Policy, vol. 165, Jun. 2022, Art. no. 112984, doi:
+ison with their existing billing system. This verifies 10.1016/j.enpol.2022.112984.
+
+the energy users-centric feature of the proposed P2P [8] LEM Project: Powerledger. Accessed: Sep. 29, 2022. [Online]. Avail-
+able: https://www.powerledger.io/media/lemdo-you-want-to-do-a-project-
+
+trading-facilitated LEM strategy. with-us
+• Although consumers have received some monetary [9] U. Cali and O. Çakir, ‘‘Energy policy instruments for distributed
+gains without investing anything on local DERs, it is ledger technology empowered peer-to-peer local energy markets,’’ IEEE
+
+Access, vol. 7, pp. 82888–82900, 2019, doi: 10.1109/ACCESS.2019.
+the prosumers with solar PVs and RBESSs who have 2923906.
+been incentivised the most due to the negotiable usage [10] D. Kirli, B. Couraud, V. Robu, M. Salgado-Bravo, S. Norbu, M. Andoni,
+of their RBESSs whenever required, leading to a fact of I. Antonopoulos, M. Negrete-Pincetic, D. Flynn, and A. Kiprakis,
+
+investing more on local DERs. ‘‘Smart contracts in energy systems: A systematic review of fundamental
+approaches and implementations,’’ Renew. Sustain. Energy Rev., vol. 158,
+
+• The export/import to/from the power grid has been Apr. 2022, Art. no. 112013, doi: 10.1016/j.rser.2021.112013.
+found to be reduced substantially because of the effec- [11] H. Javed, M. Irfan, M. Shehzad, H. A. Muqeet, J. Akhter,
+
+tive operation of multiple RBESS (via P2P) and the V. Dagar, and J. M. Guerrero, ‘‘Recent trends, challenges, and
+future aspects of P2P energy trading platforms in electrical-based
+
+CBESS, resulting in improving network self-sufficiency networks considering blockchain technology: A roadmap toward
+with local DERs and trimming away the congestion environmental sustainability,’’ Frontiers Energy Res., vol. 10, pp. 1–20,
+
+issue. Mar. 2022.
+[12] M. I. Azim, W. Tushar, T. K. Saha, C. Yuen, and D. Smith, ‘‘Peer-to-
+
+• The margins of energy retailers have been retained the peer kilowatt and negawatt trading: A review of challenges and recent
+same, but it has been observed that they can escalate their advances in distribution networks,’’ Renew. Sustain. Energy Rev., vol. 169,
+margins by allowing their customers — who have solar Nov. 2022, Art. no. 112908.
+
+[13] M. Karami and R. Madlener, ‘‘Business models for peer-to-peer energy
+PVs and RBESSs— to participate more in the proposed trading in Germany based on households’ beliefs and preferences,’’ Appl.
+P2P trading framework, and contributing towards low- Energy, vol. 306, Jan. 2022, Art. no. 118053.
+ering the dropout of installing the local DERs rate. [14] A. Hackbarth and S. Löbbe, ‘‘Attitudes, preferences, and intentions of
+
+German households concerning participation in peer-to-peer electricity
+• Themargins of the distribution utility have been retained trading,’’ Energy Policy, vol. 138, Mar. 2020, Art. no. 111238.
+or raised slightly by the proposed P2P-enabled LEM [15] W. Amin, Q. Huang, M. Afzal, A. A. Khan, K. Umer, and S. A. Ahmed,
+mechanism, confirming their portions to spur their vig- ‘‘A converging non-cooperative & cooperative game theory approach
+
+orous participation. On top of it, they can avoid out- for stabilizing peer-to-peer electricity trading,’’ Electr. Power Syst. Res.,
+vol. 183, Jun. 2020, Art. no. 106278.
+
+standing expenditures on capital and operation required [16] U. J. J. Hahnel, M. Herberz, A. Pena-Bello, D. Parra, and T. Brosch,
+to maintain the network assets. ‘‘Becoming prosumer: Revealing trading preferences and decision-making
+
+strategies in peer-to-peer energy communities,’’ Energy Policy, vol. 137,
+Future work will focus on extending the proposed LEM Feb. 2020, Art. no. 111098.
+
+model by incorporating real-time operations of P2P trad- [17] U. J. J. Hahnel and M. J. Fell, ‘‘Pricing decisions in peer-to-peer and
+prosumer-centred electricity markets: Experimental analysis in Germany
+
+ing using state-of-the-art techniques like blockchain based and theUnitedKingdom,’’Renew. Sustain. Energy Rev., vol. 162, Jul. 2022,
+tokenomics and synthetic intelligence. Further, accurate Art. no. 112419.
+
+124444 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+[18] C. Oliveira, D. F. Botelho, T. Soares, A. S. Faria, B. H. Dias, M. A. Matos, [38] Y. Jin, J. Choi, and D. Won, ‘‘Pricing and operation strategy for peer-
+and L. W. de Oliveira, ‘‘Consumer-centric electricity markets: A com- to-peer energy trading using distribution system usage charge and game
+prehensive review on user preferences and key performance indicators,’’ theoretic model,’’ IEEE Access, vol. 8, pp. 137720–137730, 2020.
+Electr. Power Syst. Res., vol. 210, Sep. 2022, Art. no. 108088. [39] M. Mehdinejad, H. Shayanfar, and B. Mohammadi-Ivatloo, ‘‘Peer-to-peer
+
+[19] L. Ali and F. Shahnia, ‘‘Impact of annual load growth on selecting the decentralized energy trading framework for retailers and prosumers,’’Appl.
+suitable sustainable standalone system for an off-grid town in western Energy, vol. 308, Feb. 2022, Art. no. 118310.
+Australia,’’ in Proc. IEEE Int. Conf. Power Syst. Technol. (POWERCON), [40] L. Ali, M. I. Azim, J. Peters, V. Bhandari, A. Menon, V. Tiwari, and
+Sep. 2016, pp. 1–5, doi: 10.1109/POWERCON.2016.7754043. J. Green, ‘‘A local energy market benefiting power grids and energy users:
+
+[20] J. An, T. Hong, and M. Lee, ‘‘Determining the optimal trading price of A P2P trading-based case study,’’ in Proc. 10th Int. Conf. Smart Grid
+electricity for energy consumers and prosumers,’’ Renew. Sustain. Energy (icSmartGrid), İstanbul, Turkey, Jun. 2022, pp. 1–6, doi: 10.1109/icSmart-
+Rev., vol. 154, Feb. 2022, Art. no. 111851. Grid55722.2022.9848531.
+
+[21] M. I. Azim, W. Tushar, and T. K. Saha, ‘‘Regulated P2P energy trading: A [41] Y. Xiao, X. Wang, P. Pinson, and X. Wang, ‘‘Transactive energy based
+typical Australian distribution network case study,’’ in Proc. IEEE Power aggregation of prosumers as a retailer,’’ IEEE Trans. Smart Grid, vol. 11,
+Energy Soc. Gen. Meeting (PESGM), Montreal, QC, Canada, Aug. 2020, no. 4, pp. 3302–3312, Jul. 2020.
+pp. 1–5. [42] L. Ali, S. M. Muyeen, and A. Ghosh, ‘‘Development and planning of a
+
+[22] L. Ali, ‘‘Development and improvement of renewable energy integrated hybrid power system based on advance optimization approach,’’ in Proc.
+with energy trading schemes based on advanced optimization approaches,’’ 31st Australas. Univ. Power Eng. Conf. (AUPEC), Sep. 2021, pp. 1–6, doi:
+Ph.D. thesis, School Elect. Eng., Comput. Math. Sci., Curtin Univ., 10.1109/AUPEC52110.2021.9597822.
+Perth, WA, Australia, 2021. Accessed: Apr. 29, 2022. [Online]. Available:
+http://hdl.handle.net/20.500.11937/84949 [43] L. Ali, S. M. Muyeen, and H. Bizhani, ‘‘Optimal sizing and profit maxi-
+
+mization of clustered microgrid using game theory techniques,’’ in Proc.
+[23] L. Ali, F. Shahnia, A. Arefi, H. Iu, and T. Fernando, ‘‘Feasibility analysis
+
+9th Int. Conf. Power Energy Syst. (ICPES), Dec. 2019, pp. 1–6, doi:
+of a sustainable system for an Australian remote town,’’ in Proc. 3rd Int.
+
+10.1109/ICPES47639.2019.9105648.
+Conf. Power Gener. Syst. Renew. Energy Technol. (PGSRET), Apr. 2017,
+pp. 118–122, doi: 10.1109/PGSRET.2017.8251812. [44] L. Ali, M. I. Azim, V. Bhandari, A.Menon, V. Tiwari, J. Green, H. Bizhani,
+
+[24] M. I. Azim, W. Tushar, and T. K. Saha, ‘‘Cooperative negawatt P2P energy and S. M. Muyeen, ‘‘P2P as a smarter way of energy trading: A game
+trading for low-voltage distribution networks,’’ Appl. Energy, vol. 299, theoretic case study for multi-microgrids,’’ in Proc. 10th Int. Conf. Smart
+Oct. 2021, Art. no. 117300. Grid (icSmartGrid), İstanbul, Turkey, Jun. 2022, pp. 1–5, doi: 10.1109/icS-
+
+[25] L. Chen, N. Liu, C. Li, and J. Wang, ‘‘Peer-to-peer energy sharing with martGrid55722.2022.9848556.
+social attributes: A stochastic leader–follower game approach,’’ IEEE [45] Z. Wang, X. Yu, Y. Mu, and H. Jia, ‘‘A distributed peer-to-peer energy
+Trans. Ind. Informat., vol. 17, no. 4, pp. 2545–2556, Apr. 2021. transaction method for diversified prosumers in urban community micro-
+
+[26] L. Ali, S. M. Muyeen, H. Bizhani, and M. G. Simoes, ‘‘Economic plan- grid system,’’ Appl. Energy, vol. 260, Feb. 2020, Art. no. 114327.
+ning and comparative analysis of market-driven multi-microgrid system [46] Z. Wang, X. Yu, Y. Mu, H. Jia, Q. Jiang, and X. Wang, ‘‘Peer-to-peer
+for peer-to-peer energy trading,’’ IEEE Trans. Ind. Appl., vol. 58, no. 3, energy trading strategy for energy balance service provider (EBSP) consid-
+pp. 4025–4036, May 2022, doi: 10.1109/TIA.2022.3152140. ering market elasticity in community microgrid,’’ Appl. Energy, vol. 303,
+
+[27] M. I. Azim and W. Tushar, ‘‘P2P negawatt trading: A potential alternative Dec. 2021, Art. no. 117596.
+to demand-side management,’’ in Proc. IEEE PES Innov. Smart Grid [47] C. Long, J. Wu, Y. Zhou, and N. Jenkins, ‘‘Peer-to-peer energy sharing
+Technol., Brisbane, QLD, Australia, Dec. 2021, pp. 1–5. through a two-stage aggregated battery control in a communitymicrogrid,’’
+
+[28] L. Ali, ‘‘Optimisation of energy storages in microgrid for power generation Appl. Energy, vol. 226, pp. 261–276, Sep. 2018.
+uncertainties,’’ M.Phil. thesis, School Elect. Comput. Eng., Curtin Univ., [48] S. N. Islam and A. Sivadas, ‘‘Optimisation of buyer and seller preferences
+Perth, WA, Australia, 2016. Accessed: Apr. 29, 2022. [Online]. Available: for peer-to-peer energy trading in a microgrid,’’ Energies, vol. 15, no. 12,
+http://hdl.handle.net/20.500.11937/48485 p. 4212, Jun. 2022.
+
+[29] A. Paudel, K. Chaudhari, C. Long, and H. B. Gooi, ‘‘Peer-to-peer energy [49] T. Gokcek, I. Sengor, and O. Erdinc, ‘‘A novel multi-hierarchical bid-
+trading in a prosumer-based community microgrid: A game-theoretic ding strategy for peer-to-peer energy trading among communities,’’ IEEE
+model,’’ IEEE Trans. Ind. Electron., vol. 66, no. 8, pp. 6087–6097, Access, vol. 10, pp. 23798–23807, 2022.
+Aug. 2019. [50] M. M. Arsoon and S. M. Moghaddas-Tafreshi, ‘‘Peer-to-peer energy bar-
+
+[30] Y. Xia, Q. Xu, H. Qian, and L. Cai, ‘‘Peer-to-peer energy trading consider- tering for the resilience response enhancement of networked microgrids,’’
+ing the output uncertainty of distributed energy resources,’’ Energy Rep., Appl. Energy, vol. 261, Mar. 2020, Art. no. 114413.
+vol. 8, pp. 567–574, Apr. 2022. [51] U. Bodkhe, S. Tanwar, K. Parekh, P. Khanpara, S. Tyagi, N. Kumar, and
+
+[31] S. Schreck, S. Thiem, A. Amthor, M. Metzger, and S. Niessen, ‘‘Activating M. Alazab, ‘‘Blockchain for industry 4.0: A comprehensive review,’’ IEEE
+current and future flexibility potential in the distribution grid through local Access, vol. 8, pp. 79764–79800, 2020.
+energy markets,’’ in Proc. CIRED Berlin Workshop, Berlin, Germany, [52] M. Andoni, V. Robu, D. Flynn, S. Abram, D. Geach, D. Jenkins,
+Sep. 2020, pp. 606–609. P. McCallum, and A. Peacock, ‘‘Blockchain technology in the energy sec-
+
+[32] L. Ali, H. Bizhani, S. M. Muyeen, and A. Ghosh, ‘‘Optimal sizing tor: A systematic review of challenges and opportunities,’’ Renew. Sustain.
+of a networked microgrid using Nash equilibrium for mount magnet,’’ Energy Rev., vol. 100, pp. 143–174, Feb. 2019.
+Int. J. Smart Grid Clean Energy, vol. 9, no. 1, pp. 82–90, 2020, doi:
+
+[53] Z. Guo, Z. Gao, Q. Liu, C. Chakraborty, Q. Hua, K. Yu, and S.Wan, ‘‘RNS-
+10.12720/sgce.9.1.82-90.
+
+based adaptive compression scheme for the block data in the blockchain
+[33] D. F. Botelho, L.W. deOliveira, B. H. Dias, T. A. Soares, and C. A.Moraes, for IIoT,’’ IEEE Trans. Ind. Informat., vol. 18, no. 12, pp. 9239–9249,
+
+‘‘Integrated prosumers–DSO approach applied in peer-to-peer energy and Dec. 2022, doi: 10.1109/TII.2022.3182766.
+reserve tradings considering network constraints,’’ Appl. Energy, vol. 317,
+Jul. 2022, Art. no. 119125. [54] M. I. Azim, ‘‘Peer-to-peer energy trading in low-voltage distribution net-
+
+[34] M. I. Azim, W. Tushar, and T. K. Saha, ‘‘Investigating the impact of P2P works,’’ Ph.D. thesis, School Inf. Technol. Elect. Eng., Univ. Queensland,
+trading on power losses in grid-connected networkswith prosumers,’’Appl. Brisbane, QLD, Australia, 2022.
+Energy, vol. 263, Apr. 2020, Art. no. 114687. [55] C. Castellon, S. Roy, P. Kreidl, A. Dutta, and L. Bölöni, ‘‘Energy efficient
+
+[35] H. Liu, J. Li, S. Ge, X. He, F. Li, and C. Gu, ‘‘Distributed day-ahead Merkle trees for blockchains,’’ in Proc. IEEE 20th Int. Conf. Trust, Secur.
+peer-to-peer trading for multi-microgrid systems in active distribution Privacy Comput. Commun. (TrustCom), Oct. 2021, pp. 1093–1099.
+networks,’’ IEEE Access, vol. 8, pp. 66961–66976, 2020. [56] F. Casino, E. Politou, E. Alepis, and C. Patsakis, ‘‘Immutability and decen-
+
+[36] L. Ali, S. M. Muyeen, H. Bizhani, and A. Ghosh, ‘‘A multi-objective tralized storage: An analysis of emerging threats,’’ IEEE Access, vol. 8,
+optimization for planning of networked microgrid using a game theory pp. 4737–4744, 2020.
+for peer-to-peer energy trading scheme,’’ IET Gener., Transmiss. Distrib., [57] F. S. Ali, M. Aloqaily, O. Alfandi, and O. Ozkasap, ‘‘Cyberphysical
+vol. 15, no. 24, pp. 3423–3434, Dec. 2021, doi: 10.1049/gtd2.12308. blockchain-enabled peer-to-peer energy trading,’’Computer, vol. 53, no. 9,
+
+[37] D. Qiu, Y. Ye, D. Papadaskalopoulos, and G. Strbac, ‘‘Scalable coordi- pp. 56–65, Sep. 2020.
+nated management of peer-to-peer energy trading: A multi-cluster deep [58] M. Giancaspro, ‘‘Is a ‘smart contract’ really a smart idea? Insights from a
+reinforcement learning approach,’’ Appl. Energy, vol. 292, Jun. 2021, legal perspective,’’ Comput. Law Secur. Rev., vol. 33, no. 6, pp. 825–835,
+Art. no. 116940. Dec. 2017.
+
+VOLUME 10, 2022 124445
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+[59] Z. Zheng, S. Xie, H.-N. Dai, W. Chen, X. Chen, J. Weng, and M. Imran, M. IMRAN AZIM (Member, IEEE) received the
+‘‘An overview on smart contracts: Challenges, advances and platforms,’’ Bachelor of Science degree in electrical and elec-
+Future Gener. Comput. Syst., vol. 105, pp. 475–491, Apr. 2020. tronic engineering from the Rajshahi University
+
+[60] S. N. Khan, F. Loukil, C. Ghedira-Guegan, E. Benkhelifa, and of Engineering and Technology, Bangladesh, the
+A. Bani-Hani, ‘‘Blockchain smart contracts: Applications, challenges, and Master of Engineering degree in electrical engi-
+future trends,’’ Peer-to-Peer Netw. Appl., vol. 14, no. 5, pp. 2901–2925, neering from The University of New South Wales,
+Apr. 2021. Australia, in 2013 and 2017, respectively, and
+
+[61] K. Christidis and M. Devetsikiotis, ‘‘Blockchains and smart contracts for the Ph.D. degree in electrical engineering from
+the Internet of Things,’’ IEEE Access, vol. 4, pp. 2292–2303, 2016.
+
+[62] Types of Blockchain Structure. Accessed: Sep. 29, 2022. [Online]. The University of Queensland, Australia, in 2022.
+Available: https://www.foley.com/en/insights/publications/2021/08/types- He is currently working with a mission to develop
+of-blockchain-public-private-between and implement decentralized, decarbonized, and digitalized technologies
+
+[63] K. Christidis, D. Sikeridis, Y. Wang, and M. Devetsikiotis, ‘‘A framework in real-time software and hardware environments. He is passionate about
+for designing and evaluating realistic blockchain-based local energy mar- modern power and energy system technologies. His research interests include
+kets,’’ Appl. Energy, vol. 281, Jan. 2021, Art. no. 115963. local energy markets and control systems, flexibility services, microgrids,
+
+[64] D. Strepparava, L. Nespoli, E. Kapassa, M. Touloupou, L. Katelaris, and and smart power grids.
+V. Medici, ‘‘Deployment and analysis of a blockchain-based local energy
+market,’’ Energy Rep., vol. 8, pp. 99–113, Nov. 2022.
+
+[65] S. Seven, G. Yao, A. Soran, A. Onen, and S. M. Muyeen, ‘‘Peer-to-peer
+energy trading in virtual power plant based on blockchain smart contracts,’’ JAN PETERS received the B.S. degree in renew-
+IEEE Access, vol. 8, pp. 175713–175726, 2020. able energy systems from the University of Tech-
+
+[66] N. Z. Aitzhan and D. Svetinovic, ‘‘Security and privacy in decentral- nology and Economics, Berlin, in 2020.
+ized energy trading through multi-signatures, blockchain and anonymous He is currently working as a Product Analyst
+messaging streams,’’ IEEE Trans. Depend. Sec. Comput., vol. 15, no. 5, with Powerledger in Perth to analyse and simulate
+pp. 840–852, Oct. 2018, doi: 10.1109/TDSC.2016.2616861. local energy markets, peer-to-peer energy trading
+
+[67] Y. Ye, Y. Tang, H. Wang, X.-P. Zhang, and G. Strbac, ‘‘A scalable
+privacy-preserving multi-agent deep reinforcement learning approach and flexibility services, and to conduct research
+for large-scale peer-to-peer transactive energy trading,’’ IEEE activities in energy markets and environmental
+Trans. Smart Grid, vol. 12, no. 6, pp. 5185–5200, Nov. 2021, doi: commodities. He also has experienceworking for a
+10.1109/TSG.2021.3103917. solar consultancy in Berlin. He has research inter-
+
+[68] Retailer (AGL) Tariff Source. Accessed: Sep. 29, 2022. [Online]. Available: ests around renewable energy integration, grid decentralization, smart and
+https://www.energymadeeasy.gov.au/plan?id=AGL15218MRE13 microgrids, power system services, peer-to-peer energy trading, and battery
+&postcode=2267 technologies.
+
+[69] Endeavour Energy—Network Price List 2021–2022. Accessed:
+Sep. 29, 2022. [Online]. Available: https://www.Endeavourenergy.com.au/
+-/media/Project/EndeavourEnergy/Website/Files/Our-
+Network/NetworkPriceListandExplanatoryNotes202122.pdf?la=en&hash VIVEK BHANDARI (Senior Member, IEEE)
+=27ABB8D4860B06A54384491ED29EE2AE2F31EAA6 received the B.E. degree in electrical and elec-
+
+[70] Retailer (ORIGIN) Tariff Source. Accessed: Sep. 29, 2022. [Online]. Avail- tronics from Kathmandu University, in 2010, and
+able: https://www.energymadeeasy.gov.au/plan?id=ORI334925MRE2 the master’s and Ph.D. degrees in electrical engi-
+&postcode=2765 neering from the University of Minnesota Twin
+
+[71] T. Capper, A. Gorbatcheva, M. A. Mustafa, M. Bahloul, J. M. Schwidtal, Cities, Minneapolis, USA, in 2014 and 2019,
+R. Chitchyan, M. Andoni, V. Robu, M. Montakhabi, I. J. Scott, C. Francis, respectively.
+T. Mbavarira, J. M. Espana, and L. Kiesling, ‘‘Peer-to-peer, community
+self-consumption, and transactive energy: A systematic literature review He has decades of global experience in engi-
+of local energy market models,’’ Renew. Sustain. Energy Rev., vol. 162, neering, IT, OT, sales, general management, teach-
+Jul. 2022, Art. no. 112403, doi: 10.1016/j.rser.2022.112403. ing, and consultancy. He has led the digitalization
+
+of projects globally, along with mega projects in energy and sustainability
+across Asia, North America, Europe, and Australia. He has held leader-
+ship positions at Fortune 200 companies as well as budding startups. His
+experience spans life-cycle projects including research and development,
+sales, delivery, and post-delivery services. He is currently writing a book
+called Modern Electricity Systems: Engineering, Operations, and Policy to
+Address Human and Environmental Needs. He utilizes his vast knowledge
+in electrical engineering and software development to provide Powerledger
+
+LIAQAT ALI (Senior Member, IEEE) received with a global edge.
+the B.E. degree in electrical engineering from
+the NED University of Engineering and Technol-
+ogy, Pakistan, in 2006, and the M.Phil. and Ph.D.
+degrees in electrical engineering from Curtin Uni- ANAND MENON received the B.E. degree in
+versity, Bentley, Australia, in 2017 and 2021, electrical and electronics from the Birla Institute
+respectively. of Technology and Science, India, in 1985.
+
+He is currently working Powerledger in Perth He has spent decades working across the energy
+to devise and implement new mechanisms to opti- sector on system protection designs for major
+mise local energy markets, peer-to-peer energy projects such as China’s Three Gorges, Malaysia’s
+
+trading, and flexibility services. He has ten years of industrial experience, 500kV corridor, and for the AMI architecture
+across Southern Asia, the Middle East, and Australia in engineering, com- in the Malaysian smart meter roll-out. He has
+mercial, operational, and management roles. His research interests include held senior roles such as VP of Technology and
+smart grids, peer-to-peer energy trading, model-driven development, grid Business Development in Smart Infrastructure at
+congestion, voltage management, power system planning, optimization, Siemens as well as Global Product Manager for electrical Protection solu-
+modeling, data mining, and machine learning. That can enable different tions and the Head of the Department for Electrical Protection at ABB.
+electricity stakeholders to receive satisfactory financial returns at present and As part of Powerledger’s Digital Energy and Strategy, he provides a wealth
+in the future. of experience and expertise to the development of the Powerledger platform.
+
+124446 VOLUME 10, 2022
+
+
+
+L. Ali et al.: Blockchain-Based Local Energy Market Enabling P2P Trading: An Australian Collated Case Study
+
+VINOD TIWARI received the B.E. degree in S. M. MUYEEN (Senior Member, IEEE) received
+electrical and electronics from the Birla Institute the B.Sc. degree in electrical and electronic engi-
+of Technology and Science, India, in 1985, the neering from the Rajshahi University of Engineer-
+M.B.A. degree from the University of Western ing and Technology (RUET), formerly known as
+Australia, Australia, in 2000, and graduated in the Rajshahi Institute of Technology, Bangladesh,
+Berkeley Executive Leadership Program from the in 2000, and theM.Eng. and Ph.D. degrees in elec-
+University of California, Berkeley, in 2012. trical and electronic engineering from the Kitami
+
+He expertise in electrical and electronics engi- Institute of Technology, Japan, in 2005 and 2008,
+neering and international business makes the con- respectively. He is currently working as a Full Pro-
+nections that push Powerledger forward. He forged fessor with the Department of Electrical Engineer-
+
+a successful career with GE where he twice won the President’s Club ing, Qatar University. He has published more than 250 articles in different
+award for performance excellence. He has held many senior roles within the journals and international conferences, and seven books as the author or an
+Australian energy sector, previously as the COOof Regen Power, the General editor. His research interests include power system stability and control, elec-
+Manager Sales at Perth Energy and Senior Advisor Future Effect. He goes trical machine, FACTS, energy storage systems (ESSs), renewable energy,
+hiking around the hills of WA with his wife and reads Indian poetry to relax. andHVDC systems. He is a fellow of Engineers Australia. He is serving as an
+
+Editor/Associate Editor for many prestigious journals from IEEE, IET, and
+other publishers, including IEEE IEEE TRANSACTIONSON ENERGYCONVERSION,
+IEEE POWER ENGINEERING LETTERS, IET Renewable Power Generation, and
+IETGeneration, Transmission&Distribution. He has been a keynote speaker
+
+JEMMA GREEN received the bachelor’s degree and an invited speaker at many international conferences, workshops, and
+in commerce from Murdoch University, Perth, in universities.
+2002, the two post-graduate diplomas in sustain-
+ability with a Master’s degree at the University of
+Cambridge, and the Ph.D. degree from Curtin Uni-
+versity, Perth, in 2017. She returned to Australia in
+2013. Her research looked at environmental risks
+in corporate ratings for the mining and oil and
+gas sectors globally. Her research interests include
+disruptive innovation, stranded assets, renewable
+
+energy and energy storage for housing, and prefabricated modular building
+systems. She is a Chairman and co-founder of Power ledger, a technology
+company that uses block chain to facilitate energy tracking, tracing and
+trading. Setting her career trajectory early on, she became the voice of
+sustainability and corporate social responsibility in the business of bigmoney
+lending while at JP Morgan, London. She set up the first fossil fuel-free
+pension fund and has sat on numerous boards championing sustainable
+business such as Carbon Tracker and Climate-KIC Australia. In 2016, Power
+ledger won Sir Richard Branson’s Extreme Tech Challenge. In 2018, she was
+made EY Fintech Entrepreneur of the Year.
+
+VOLUME 10, 2022 124447

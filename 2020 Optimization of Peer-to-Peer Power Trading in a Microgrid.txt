@@ -1,0 +1,1286 @@
+﻿sustainability
+
+Article
+
+Optimization of Peer-to-Peer Power Trading in a
+Microgrid with Distributed PV and Battery Energy
+Storage Systems
+Hui Huang, Shilin Nie *, Jin Lin, Yuanyuan Wang and Jun Dong
+
+North China Electric Power University, Department of Economic Management, Beijing 102206, China;
+hh@ncepu.edu.cn (H.H.); 120192206099@ncepu.edu.cn (J.L.); 120192206002@ncepu.edu.cn (Y.W.);
+dongjun@ncepu.edu.cn (J.D.)
+* Correspondence: 1182206131@ncepu.edu.cn
+
+
+
+Received: 26 December 2019; Accepted: 17 January 2020; Published: 27 January 2020 
+
+Abstract: Integrating distributed generation (DG) into the main grid is a challenge for the safety and
+stability of the grid. The application of peer-to-peer (P2P) technology in microgrids with distributed
+generation is expected to facilitate increased self-consumption of distributed and renewable energy,
+and the rise of prosumers’ monetary benefits. A P2P energy trading model in microgrids with
+photovoltaic (PV) distributed generation and battery energy storage systems (BESSs) is proposed
+in this paper. We additionally designed a P2P electricity trading mechanism based on coalition
+game theory. A simulation framework of this model is presented which assumed a local community
+with 30 households under comprehensive constraints encompassing a customer load profile, PV
+system, BESSs, market signals including feed-in tariffs, and retail prices. Firstly, individual customers
+can post orders (purchasing orders or selling orders) and exchange information in a P2P energy
+trading market. Secondly, the microgrid operator can validate the orders based on how to achieve
+the minimum overall energy consumption in microgrids and set reasonable real-time purchasing
+and selling prices for P2P energy transactions. Thirdly, the orders can be automatically conducted
+and completed at the designed optimal price. This mechanism can be a practical solution motivating
+individual customers to participate in P2P electricity trading, assist with electricity cost reduction,
+benefit from electricity supply increases, and help the grid operators to make the most economically
+and socially friendly decisions.
+
+Keywords: photovoltaic distributed generation; battery energy storage systems (BESSs); peer-to-peer
+power trading; microgrid; game theory
+
+1. Introduction
+
+Deterioration of the global environment and the depletion of fossil fuel energy has led to growing
+attention being focused on distributed and renewable forms of generation, like solar energy and
+wind power. Within a global context of rapid development of solar photovoltaic (PV), Australia
+has the leading position in the penetration of PV panels for residential users [1]. Globally, due
+to the shift of energy supply technology and patterns, energy markets are also undergoing a shift
+toward a decentralized and digital economy, while peer-to-peer (P2P) energy trading for distributed
+generation (DG) is finding its way into the energy sector. The application of P2P makes it possible
+for individual consumers to become prosumers and to share their excess energy with neighbors [2–4].
+They can achieve a win–win situation by looking for a reasonable trading price and by making a
+deal in a seamless way [5,6]. P2P energy trading empowers customers to trade electricity at a P2P
+marginal price that is cheaper than the time of use (TOU) price and higher than feed-in tariffs (FIT),
+
+Sustainability 2020, 12, 923; doi:10.3390/su12030923 www.mdpi.com/journal/sustainability
+
+
+
+Sustainability 2020, 12, 923 2 of 20
+
+respectively, which provides attractive savings for buyers and profit for sellers. In particular, it will
+support local consumption of distributed energy while reducing fossil energy consumption and carbon
+dioxide emissions.
+
+In 2017, the Chinese government issued a guideline named A Pilot Approach to Facilitate the
+Construction of the Grid-Connected Microgrid [7]. Its conclusion can be summarized into the following
+four statements: (1) Generally, the maximum annual exchange capacity between a microgrid and the
+main grid is 50% of the total amount of annual electricity consumption in microgrids. (2) The microgrid
+operator (or associated agency) is responsible for the operation and maintenance management of the
+microgrid, the internal and external power balance, and electricity exchanges. (3) It is important to
+encourage the establishment of a price system for self-negotiation between any two parties where at
+least one uses a microgrid, as well as a trading mechanism for energy markets that covers various
+energy resources like cold energy, hot energy, and electricity. (4) Complying with market rule, the
+microgrid operator needs to take charge of electricity exchanges and the corresponding transmission
+and distribution costs. As a result, P2P as a new mechanism allows energy from one prosumer to be
+directly sold to another prosumer within the network at a negotiated price without any influence of a
+provincial transaction center. At the same time, the network served as a whole can sign a contract with
+the provincial transaction center for any external generation that is produced in the wholesale market.
+The microgrid operator is in charge of maintaining the distributed energy balance and managing
+consumption rather than the main grid operators, whose job it is to check the exchange capacity
+of the also controllable tie line. In addition, pressure to approve intermediaries’ cost can be eased
+by including distribution costs within the microgrid into P2P electricity prices. Hence, P2P trading
+provides much promise both for academic circles and for the energy ecosystem.
+
+The state-of-the-art literature relating to P2P trading in the energy sector is discussed in this paper
+and they can be classified into two main categories: (a) applications of P2P trading in the energy
+sector and (b) a pricing mechanism for a P2P energy trading market. In the first category, P2P energy
+transactions require advanced technical support, which is usually obtained by using online services
+based on information and communication technology [8]. A hierarchical system architecture has
+been proposed to identify and classify the key elements and technologies involved in P2P energy
+trading. In addition, a P2P energy trading platform has been presented and illustrated in a simulation
+whose results show that P2P energy trading can help with network and congestion management and
+allow more DG to be more widely shared within a community [9]. A two-level aggregation control
+technology for P2P energy trading in microgrids in communities was devised, which empowers users
+to follow their orders through a third party, i.e., an energy sharing coordinator. In the first phase, a
+constrained nonlinear programming (CNLP) optimization with a rolling horizon was used to minimize
+the community’s energy costs. In the second phase, the control setting point was updated with a
+change of real-time measurement results, and was operated based on a price mechanism. It was found
+that a P2P energy trading model helps households to obtain 30% lower energy costs than the traditional
+energy trading model [10]. An architecture model for the design and interoperability of P2P energy
+trading components in microgrids was also proposed and simulated based on game theory, involving
+a specific customer-to-customer business model being introduced into a reference grid-connected
+microgrid and a core component of the bidding system, Elecbay, being presented [11]. Ottesen et
+al. proposed an aggregator exclusive available to the prosumer market, which would be intelligent
+enough to make electricity trading decisions on behalf of prosumers. The flexibility and stochastic
+planning of bidding in the day-ahead market with the help of an aggregator was investigated and the
+results showed that the system flexibility increases with the presence of an aggregator [12].
+
+In the second category of the state-of-the-art literature, a novel dynamic pricing method was
+proposed to promote market-oriented decentralized energy transactions and provide the most
+economical benefits for owners with distributed generation [13]. A P2P energy trading mechanism
+for energy auctions was presented, which ensures the fairness and efficiency of energy auction by
+establishing a market design mechanism for energy auction. The Bayesian game strategy is used to
+
+
+
+Sustainability 2020, 12, 923 3 of 20
+
+develop an optimal bidding strategy for distributed energy owners, so that each participant can obtain
+an efficient and economic bidding price. The results show that this model can maximize the utility of
+typical distribution network users [14,15]. Tushar W et al. introduced how motivational psychology
+encourages distributed energy owners to actively participate in P2P energy trading, and proposed a
+game theory P2P energy trading scheme [16]. A P2P trading mechanism was proposed, in which the
+decision-making process is modeled by game theory and Shapley value. The game theory approach
+provides a distributed energy management solution for individual decision-making with respect
+to the optimality and fairness among consumers. Compared with the existing trading mechanism,
+the Shapley value trading mechanism helped P2P energy trading achieve better optimization and
+fairness [17]. A synchronous game theory based on P2P energy trading in a day-ahead market was
+presented, which will empower participants, without limitation to its number, to decide the transaction
+price, and VaR is introduced, a risk analysis tool to reduce the risk of transaction failure, maximize
+the market interests, and increase the success rate of energy trading [18]. Chen K et al. regarded the
+continuous double auction (CDA) market as a promising mechanism for a P2P market that empowers
+interactions among prosumers and consumers in distribution grids. For prosumers, achieving optimal
+operations and maximize profits necessitates acting as price makers and simultaneously optimizing
+their operations and trading strategies [19].
+
+Existing pieces of literature on P2P energy trading have contributed to the applications of
+technology and transaction price mechanism modeling. However, there is an imperative gap in
+user-centered P2P energy trading. Therefore, a P2P energy trading mechanism based on the coalition
+game theory was devised to bridge the gap. The focus of the coalition game is how to motivate
+independent decision makers (users) to act together in alignment to elevate their status (or utility) in
+the game. The coalition’s stability lies in two bases: (1) The revenue of the grand coalition surpasses
+the sum of the benefits that each member would achieve if they were allowed to self-operate. (2) The
+revenue allocation of the grand coalition should be based on Pareto improved property, which means
+each member will receive a revenue no less than the benefits under independent action. Among the
+members, the transparent sharing of information between each other and the enforcement of signed
+agreements are the keys to maintain the stability of the coalition.
+
+The main contribution of this paper lies in the following aspects:
+
+(1) A peer-to-peer (P2P) energy trading mechanism in the microgrid with distributed photovoltaic
+distributed generation and battery energy storage systems (BESSs) was devised and users in the
+microgrids were reasonably classified.
+
+(2) A mixed integer linear programming (MILP) method based on YALMIP [20] (it is a modular
+language for defining and solving advanced optimization problems, which are written in MATLAB
+language) is proposed to optimize the decision-making of P2P electricity transactions considering
+a large number of users with distributed photovoltaic generation and battery energy storage
+systems (BESSs). The proposed model respects variable real-world constraints, including P2P
+power trading, microgrid users, customer load profile, PV system, battery energy storage systems
+(BESSs), and market signals.
+
+(3) Based on the coalition game theory, this paper improves the market intermediate rate price model
+and introduces the weight variables α and β. By changing the values of α and β, the trajectory
+of P2P transaction price can be obtained, which changes the P2P power transaction price from
+statics to dynamics, more in line with reality.
+
+The rest of this paper is organized as follows: Section 2 presents the structure of the microgrid P2P
+energy trading system with distributed photovoltaic generation and battery energy storage systems
+(BESSs), and proposes a mathematical model. Section 3 describes how to design the P2P power trading
+mechanism and trading process in this paper. Section 4 discusses and analyzes the results. In Section 5,
+some concluding remarks are drawn with future research.
+
+
+
+Sustainability 2020, 12, 923 4 of 20
+
+2. Operational Model Analysis and Mathematical Model Construction of P2P Power Trading
+
+SustainIanbitlihtyis20s2e0c, t1i2o,nx ,FOthRePsEtErRucRtEuVrIeEWof the power trading system with PV only based on peer-to4-opfe2e2r
+(P2P) technology is presented. Among this system, PV, BESSs, microgrid scheduling, and balance and
+amnadnmagaenmagenemt seynstesmyssteamrescaornescidoenrseid.erFeudr.thFeurrmthoerem, tohre,mthaethmematahteimcaal tmicoadl meloodf elaochf ecaocmhpconmepnotnaenndt
+athneddtheseigdnesoigf nthoefPt2hPe Pp2oPwperowtraedr itnragdminegchmaencishmanwisimll bweildl ebme odnemstroantestdr.ated.
+
+2..1.. The Operattiion Modell off P2P Power Tradiing wiitth PV
+
+IIn lliightt off tthe sttattus quo off a P2P iin power ttradiing,,we propose a P2P power ttradiing systtem iin
+tthe miicrogriid wiitth PV wiitth respectt tto a siinglle fform off energy,, ii..e..,, ellecttriiciitty.. As shown iin Fiigure 1,,
+energy ffllow reffers tto tthe flflow off power bettween buyers and sellllers and cash flflow iillllusttrattes tthe cosstt
+and iincome of ellectriiciity trade..
+
+FFiigguurree 11.. AArrcchhiitteeccttuurree ooff ppeeeerr--ttoo--ppeeeerr ((PP22PP)) eenneerrggyy ttrraaddiinngg ssyysstteemm iinnmmiiccrrooggrriiddss..
+
+TThhee mmaaiinn mmaarrkkeett ssuubbjjeeccttss iinn tthhee mmiiccrrooggrriidd ccoonnssttrruucctteedd iinn tthhiiss ppaappeerr mmaaiinnllyy iinncclluuddee tthhee
+ffoolllloowwiinngg ttyyppeess::
+
+CCoonnssuummeerrss:: uusseerrsswwiitthhoouuttPPVV ccaann bbee ccllaassssiififieedd iinnttoo ttwwoommaajjoorrccllaasssseess:: ccoonnssuummeerrsswwiitthhBBEESSSSss
+((rreepprreesseenntteedd bbyyWW)) aanndd ccoonnssuummeerrsswwiitthhoouutt BBEESSSSss ((rreepprreesseenntteedd bbyyMM))..BByyppuurrcchhaassiinngg eelleeccttrriicciittyy aattaa
+lloowweerr pprriiccee iinn PP22PP ppoowweerr ttrraaddiinngg,, ccoonnssuummeerrss ccaann rreedduuccee eelleeccttrriicciittyy eexxppeennddiittuurree..
+
+PPrroossuummeerrss:: uusseersrswiwthitPhVPcaVn bceanclabsseificeldasisnitfoietdwoinctaotegtworoiesc:apterogsourmiese:rspwroitshuBmEeSrSss (wreipthresBeEntSeSds
+(bryepNre)saenndtepdrobsyumNe)rsanwdithporuostuBmESerSss (wreipthroeusetnBteEdSSbsy R(r)e.pRreecseenivtiendg bcyonRsi)d. eRraebcleeivbienngeficot nbsyidseerllaibnlge
+bsuenrpelfuitsbeylecsterlilcinitgy tsournpelaursbyeluescetrrisciotrycthoarngeianrgbyenuesrgerysinotrocshtaorrgaignegweinllemrgoytiivnattoe sutsoerrasgteowpailrltimcipoatitveaitne
+uPs2ePrsptoowpearrttriacidpiantge. in P2P power trading.
+
+TThheemmiiccrrooggrriidd ooppeerraattoorr:: aa tthhiirrdd ppaarrttyy iiss rreessppoonnssiibbllee ffoorr tthhee ooppeerraattiioonn aanndd mmaaiinntteennaannccee ooff tthhee
+mmiiccrrooggrriidd aanndd tthhee sseettttlleemmeenntt ooff tthhee ttrraannssaaccttiioonn ffeeeess.. AAss wwiitthh tthhee iimmpplleemmeennttaattiioonn ooff tthhee PP22PP eenneerrggyy
+ssyysstteemm,, oorrggaanniizziinngg aanndd ssuuppeerrvviissiinngg tthhee ttrraaddiinngg ppllaattffoorrmm iiss tthhee ooppeerraattoorr’’ss rreessppoonnssiibbiilliittyy aasswweellll..
+
+IInn tthhiiss ssyysstteemm,,PPVVppoowwereerdedbybythtehseusnucnancabnebtheetheneeerngyersgoyurscoeuorcfeusoefrus.seSrusr.pSluusrpelluecstreilceictytriwciitlyl
+wfirisllt bfierssttobreedstoinrethdeinbatthteerbyaotrtesroyldortosuolsdertsoinustheresminictrhoegrmidi,ctrhoegnritdra, dtheednwtritahdtehdewgriitdh. tOhengthriedc.oOnntrathrye,
+cpounrtcrhaarsyi,ngpuerlecchtarsicinitgy ferloemctroictihteyrfmroimcroogtrhiderumseircsrowgirllidbeucsoenrssuwmilelrbs’eficrosnt scuhmoiceersa’sfwirsetllcihnositceeadasofwtheell
+ignrsitde.aTdhoefPth2ePgernider.gTyhteraPd2iPngenseyrsgtyemtraednisnugressysthteemuseenrssuorefsththeemuiscerorsgroifdthene jmoyicprorigorriidtyeinnjoeylepcrtrioicriittyy
+itnraenlseaccttriiocnitsy. Ttrhaensmaicctrioognrsi.dTshcehemduiclrionggraidndscbhaeladnucleinmgaannadgebmaelanntcseysmteamnaigseompeernattesdysbtyemtheismoipcreorgatreidd
+boypetrhaetomr,iacrnodgrwidhaotpiesrmatoorre, ,atnhde mwhicartogisrimdoorpee, rtahteormisicarolsgorirdesoppoenrsaitbolre ifsoralesnoerregsyptornasnisbalcetifoonrsebneeirnggy
+tcraarnrsieadctioountsinbeainngorcdaerrrliyedmoauntnienr,apnurocrhdaesrelyanmdansanleer,exppuernchseasseseatntldemsaelnet,eaxnpdeninsetesrsaectttiloenmwenitth, atnhde
+ignrtiedr.aIcttsiownowrkiitnhg tmheecghraindi.smItsiswtoorpkuinrcghamseecthhaensiusmrpluiss etolecpturirccihtyasoef tthheemsuicrrpolgursideulescetrrsicaittythoefPt2hPe
+mtraicnrsoagcrtiiodnupsreircse,aatntdhethPen2Psetlrlaint stoacottiohnerpmriiccero, garnidd uthseerns.sIefllthietrteoisosthuerpr lmusicerloecgtrriidcituys, eitrsw. iIlfl stehlelriet tios
+sthuerpmluasinelgercitdriacittyth, eitFwITi,llasseolpl pitotsoedthtoe pmuaricnhagsriindgaetlethcteriFciItTy, farsomoptphoesgerdidtoatpTuOrcUhapsrinicge ewlehcetnricthitey
+fsruopmpltyheofgerliedctarticTitOyUispinriscueffiwchieennt.thPelasyuipnpglaysoaf tehleircdtrpicairtytyisininthsuefmficiciernotg.rPidla,ythinegmaiscraotghriirddoppaerrtaytoinr
+tshigenms aicrcoognrtirda,ctthweitmh iucrsoegrsr,idoffoepresraatorerasl-itgimnseamcoonnittroarcint gwsitehrvuicseervsi,aoaffderisspaatrcehailn-tgimanedmboanlaitnocriinngg
+smeravniacgeevmiaeantdsiyspstaetmchitnogeaxnedcubtaeltahnecicnognmtraacnta,gaenmdegnutasryasntetemestotheexepcruioteritthyeocfotnhteramcti,carongdrigduaursaenrsteiens
+tehleecptrriicoitryitytraonfstahcetiomnisc.roTghreidmuicsreorgsriind eolpeecrtraitcoirtyfutrnacntisoancstiloiknes.aTnhientmelilcigroengrticdonotprearcattbour tfuitnisctdioiffnesrleinkte.
+an intelligent contract but it is different. When the microgrid is in short supply, the microgrid
+operator can make a deal with the grid to satisfy the user’s demand. Furthermore, the microgrid
+operator also provides the users with technical support, such as operation and maintenance service,
+energy generation prediction, and the like. Therefore, the implementation of the P2P energy
+transaction in the microgrid can not only increase the effectiveness of energy utilization in the
+
+
+
+Sustainability 2020, 12, 923 5 of 20
+
+When the microgrid is in short supply, the microgrid operator can make a deal with the grid to satisfy
+the user’s demand. Furthermore, the microgrid operator also provides the users with technical support,
+such as operation and maintenance service, energy generation prediction, and the like. Therefore, the
+implementation of the P2P energy transaction in the microgrid can not only increase the effectiveness of
+energy utilization in the microgrid, but also significantly promote the distributed energy consumption
+and cut down the electricity costs of the users.
+
+The traditional operation mode of microgrid usually operates in a way that the distributed
+generation in microgrids is served first to meet the needs of individual customers, and then to trade
+the surplus electricity, if any, with the grid at the FIT of new energy. Nevertheless, the operation
+mode of the microgrid integrating peer-to-peer (P2P) technology into power trading will empower
+individual customers of the microgrid to trade with each other in real time and then sell the surplus
+power to microgrid at the P2P trading price. The application of P2P technology in energy transactions
+in microgrids, which enables decentralized transactions, will help with better network and congestion
+management, allowing a more efficient trading process, assisting with the renewable generation
+intermittency problem and bringing more social capital into the energy sector.
+
+2.2. Mathematical Model
+
+In this paper, a mixed integer linear programming (MILP) model is proposed to optimize
+operational decisions with respect to a large number of distributed resources and participation in
+P2P energy trading. In the proposed model, the P2P energy trading mechanism and the real-world
+limitations on distributed resources, especially PV and BESSs, as well as the fluctuation of market
+electricity price, is taken into account. The objective function is to minimize the total energy expenditure
+of all individual customers in the microgrid. In the final step, the model is solved by MATLAB R2016b
+and CPLEX Optimization Studio v12.8.
+
+2.2.1. The Objective Function
+
+This paper assesses the monetary benefit of P2P energy trading in microgrid from the view of
+the microgrid operator. From this point on, we formulate the objective function by looking for the
+minimum total energy expenditure of all individual customers in the microgrid.
+
+The inputs for the model include the sets of individual customers and their demand, physical
+constraints of photovoltaic panels and energy storage, and market price signals. Decision variables
+include real-world PV generation, actual user electricity consumption, battery charge and discharge,
+P2P power transaction price, electricity interacting with the main network, and so on.
+
+f = min(Cbtg + Cbtp + Cpv + Cess −Cstg −Cstp) (1)
+
+where Cbtg and Cbtp are the cost of purchasing electricity from the grid and P2P energy market,
+respectively. Cpv and Cess represent the cost of maintaining PV and BESSs, respectively. Cstg represents
+the benefit to the grid from selling electricity and Cstp is the benefit to individual customers from selling
+electricity in the P2P energy market.
+
+(1) The cost and benefit of interacting with the main grid
+
+∑∑T ∑ ∑T
+C g
+
+btg = Psell( Qgtu,i,t + Qgtb,i,t) (2)
+i∈Ω t=1 i∈W∪R t=1
+
+∑ ∑T ∑ ∑T
+Cstg = Pg
+
+buy( Qpvtg,i,t + Qbtg,i,t) (3)
+i∈N∪R t=1 i∈W∪R t=1
+
+
+
+Sustainability 2020, 12, 923 6 of 20
+
+where Pg
+sell and Pg
+
+buy are the selling and purchasing price of electricity of the grid. Qgtu,i,t and
+Qgtb,i,t are energy bought from the grid for household Ω and BESSs. Qpvtg,i,t represents the energy
+sold to the grid from PV and Qbtg,i,t is the energy sold to the grid from BESSs discharge.
+
+(2) The cost and benefit of individual customers participating in P2P energy trading
+
+∑ ∑T ∑ ∑T
+Cbtp = PP2P
+
+buy ( Qpvtm,i,t+ Qbtm,i,t) (4)
+i∈N∪R t=1 i∈W∪R t=1
+
+where PP2P
+buy represents the purchasing price of electricity in the microgrid. Qpvtm,i,t is the energy
+
+sold to the microgrid generated by PV and Qbtm,i,t is the energy sold to the microgrid discharged
+from BESSs. ∑∑T ∑ ∑T
+
+Cstp = PP2P
+sell ( Qmtu,i,t + Qmtb,i,t) (5)
+
+i∈Ω t=1 i∈W∪R t=1
+
+where PP2P
+sell represents the selling price of electricity in the P2P energy trading market. Qmtu,i,t
+
+and Qmtb,i,t are the energy bought from the P2P energy trading market by individual customers
+for daily life and BESSs, respectively
+
+(1) The cost of maintaining PV
+
+∑ ∑T ∑∑T
+CPV = RPV( (Qpvtg,i,t + Qpvtu,i,t + Qpvtm,i,t) + Qpvtb,i,t) (6)
+
+i∈N∪R t=1 i∈R t=1
+
+where RPV is the operation and maintenance cost of PV per unit electricity. Qpvtu,i,t and Qpvtb,i,t
+represent the energy generated by PV for household and BESSs.
+
+(2) The cost of maintaining BESSs
+
+∑∑T ∑ ∑T
+Cess = Ress( Qpvtb,i,t + (Qgtb,i,t + Qmtb,i,t + Qbtg,i,t + Qbtm,i,t + Qbtu,i,t)) (7)
+
+i∈R t=1 i∈W∪R t=1
+
+where Ress is the operation and maintenance cost of BESSs per unit of electricity.
+
+2.2.2. Demand Constraint
+
+Depending on the type of individual customers, constraints of customers’ demand can be classified
+into four categories.
+
+(1) Neither PV nor BESSs
+Di,t = Qmtu,i,t + Qgtu,i,t. (8)
+
+(2) PV but BESSs
+Di,t = Qmtu,i,t + Qgtu,i,t + Qpvtu,i,t. (9)
+
+(3) BESSs but PV
+Di,t = Qmtu,i,t + Qgtu,i,t + Qbtu,i,t. (10)
+
+(4) Both PV and BESSs
+Di,t = Qmtu,i,t + Qgtu,i,t + Qpvtu,i,t + Qbtu,i,t. (11)
+
+The constraints (8)–(11) ensure that each class of users’ needs can be met. Individual customers in
+electricity deficiency without the distributed generation will first purchase electricity from the P2P
+energy trading market and then the grid. Households with PV and BESSs will first participate in the
+P2P market to sell surplus electricity to peers in the microgrid.
+
+
+
+Sustainability 2020, 12, 923 7 of 20
+
+2.2.3. The Output Constraint of PV
+
+Affected by the solar intensity and temperature, photovoltaic generation is intrinsically intermittent
+and fluctuant. According to research [21,22], solar intensity is approximately subordinate to the beta
+distribution during a certain period of time, and the probability density formulation is:
+
+Γ(α+ β) G α−1 G β−1
+f (G) = × ( ) × (1− ) (12)
+
+Γ(α)Γ(β) Gm Gm
+
+where Γ(•) is a gamma function in which G and Gm are the real-world and maximum solar intensity
+during a certain period of time. Shape parameters α, β can be obtained by making use of the average
+light intensity and variance during this period[ of time. ]
+
+Gu × (1−Gu)
+α = Gu × (13
+
+σ2 − 1 )
+
+[ ]
+G × (1−G
+
+β = (1−G u u)
+u) × (1 )
+
+σ2 − 1 4
+
+where Gu is the average solar intensity during a certain period of time and σ2 represents variance of
+solar intensity.
+
+Measuring the temperature of the photovoltaic cell directly is not that easy due to the technical
+limitations, therefore, for the packaged solar cell assembly, the working temperature of the photovoltaic
+cell can be estimated by measuring the ambient temperature according to function (15).
+
+G
+Tw = Te + 30× (15)
+
+1000
+
+where Tw and Te are the working and ambient temperature of photovoltaic cells, respectively.
+The output of the PV can be expressed as follows [23]:
+
+G
+Ppv = Ps × × [1 + K(T − T
+
+G w r)] (16)
+s
+
+where Gs is the solar intensity under new conditions of the standard test and Gs = 1000 W/m2. Ps is
+the maximum output under the standard test. K is the power temperature coefficient. Tr represents
+
+◦
+
+the reference temperature, and Tr = 25 C. As shown in Figure 2, the output of the PV is simulated
+according to thSeushtaiinsabtiolitry i2c02a0,l12s,ox lFaORr PiEnEtReRnEVsIiEtWy and the temperature data. 8 of 22
+
+Figure 2. RelaFitgiuornes2h. Rieplabtioentswhiepebnetwpehenoptohovtoovlotlataiiccppoowwereorutopuuttapnudtsoalanrdradsioaltiaorn irnatednisaittyi.on intensity.
+
+Depending on the classes of individual customers, the output of the PV can be classified into
+two categories.
+(1) PV only
+
+Qpv,i,t Qpvtu,i,t Qpvtm,i,t Qpvtg ,i,t
+Q , , Q
+
+ (17)
+pv i t pv,i,t
+
+(2) Both PV and BESSs
+
+Qpv,i,t Qpvtu,i,t Qpvtm,i,t Qpvtg ,i,t Qpvtg ,i,t
+Q , , Q
+
+ (18)
+pv i t pv,i,t
+
+The electricity generated by the PV can be used for households, BESSs, and trade. The
+constraints (17) and (18) ensure that the energy generated by all PV systems will not exceed the
+maximum predicted power generation Q
+
+pv,i,t .
+
+2.2.4. The Constraint of Battery Energy Storage Systems
+During a period of time, the storage capacity and physical constraints of the BESSs can be
+
+modeled by a simplified linear function and described as follows:
+
+
+
+Sustainability 2020, 12, 923 8 of 20
+
+Depending on the classes of individual customers, the output of the PV can be classified into
+two categories.
+
+(1) PV only
+Qpv,i,t = Qpvtu,i,t + Qpvtm,i,t + Qpvtg,i,t
+Q (
+
+pv,i,t ≤ Q∗ 17)
+pv,i,t
+
+(2) Both PV and BESSs
+
+Qpv,i,t = Qpvtu,i,t + Qpvtm,i,t + Qpvtg,i,t + Qpvtg,i,t
+Q (
+
+pv,i,t ≤ Q∗ 18)
+pv,i,t
+
+The electricity generated by the PV can be used for households, BESSs, and trade. The constraints
+(17) and (18) ensure that the energy generated by all PV systems will not exceed the maximum predicted
+power generation Q∗pv,i,t.
+
+2.2.4. The Constraint of Battery Energy Storage Systems
+
+During a period of time, the storage capacity and physical constraints of the BESSs can be modeled
+by a simplified linearfunction and described as follows
+
+ (: )
+ P
+
+ Q P
+
+ B,i,t = QB,i,t−∆t × (1− ηsd,i,t) + cha,i,tη
+diss,i,t
+
+cha,i,t − η ∆t
+
+ diss,i,t
+
+ SOC QB,i,t
+i,t = Q × 100%
+
+ B,i
+
+ SOC
+
+ min,i ≤ SOCi,t ≤ SOCmax,i (19)
+
+ 0 ≤ P
+
+ cha,i,t ≤ Pmax
+
+ cha,i,tUcha,i,t
+
+ 0 ≤ Pdiss,i,t ≤ Pmax
+diss,i,tUdiss,i,t
+
+Ucha,i,t + Udiss,i,t ≤ 1
+
+where QB,i,t is the storage capacity of BESSs at hour t and ηsd,i,t represents self-discharge rate. To simplify
+the computational process, ηsd,i,t is considered to be [10]. Pdiss,i,t and Pdiss,i,t are charging/discharging
+power. SOCi,t is the storage capacity status of BESSs. SOCmax,i and SOCmin,i are the maximum and
+minimum of storage capacity status of BESSs related to the property of the BESSs. Ucha,i,t and Udiss,i,t
+represent the charge and discharge power state of the BESSs with the opposite binary value of (0 or 1),
+for the battery cannot be charged or discharged at the same time.
+
+These constraint functions are formulated by considering the state of the battery, the technical
+limitations on battery capacity, and charging/discharge operation. At a certain moment, the battery
+can either be charged or discharged, and the maximum storage capacity cannot go beyond its rated
+capacity. However, this paper highlights the application of P2P in energy trading, so only the basic
+model of the battery was considered in this paper.
+
+3. P2P Energy Trading Mechanism
+
+3.1. P2P Energy Trading Process
+
+Figure 3 presents four major stages of the P2P energy trading process in the microgrid containing
+user demand, initiation of transactions, system verification, and execution of transactions. The
+transaction process can be implemented based on blockchain technology or other similar distributed
+networks. The blockchain record transaction information in the form of smart contracts spread to each
+node through a distributed network and form a consensus [24–26].
+
+
+
+Sustainability 2020, 12, x FOR PEER REVIEW 10 of 22
+
+dSuesstaiginnabaitlietyd20P202,P12,p9u23rchasing and selling prices and external orders (orders with main gri9do)f 2a0t
+clearing prices.
+
+FFiigguurree 33.. PP22PP eenneerrggyy ttrraaddiinngg pprroocceessss..
+
+3.2. CIonatlihteiosntaGgaemoef the customer demands, users forecast the electricity demand and energy generation
+at timTehesloPt2tPbaseenderognyretaralidtyi,nagndmfeocrhmanthisemdemisanddesiingfnoerdmattoione.ncourage the participation in the
+decenIntrathliezestdageeneorfgtyhemianritkieatt,iohnelopfwthiethtrtahnesarcetnioenw,aibf ltehegeunseerra’stinoent ilnotaedrm(loitatedndcyemparonbdlemmin, ucus tendeorwgyn
+egleencetrriactiitoyn)eixsppeonsdititivuer,e,coarnredspeolenvdaetnetltyh, ea pmuorncheatasreyorbdeenrewfitillobfedgiesntreirbautteeddbygetnheerPa2tiPonenoewrgnyetrrsa.dTinhge
+spulactcfeosrsmo,foPth2ePrwtriasde ianngedleecptreincditys osanlethoerddeerswiginll boef agerneearsaotnedab. lAe fttreardthinagt,mtheecohradneirssmw. iMll abneysepnitetcoesthoef
+lmitiecrraotgurriedhtahvroeumghadteheredliesvtrainbtustteuddnieestw, sourckh. as direct method [27], indirect method [2], and FIT [28].
+In dirInectthme settahgoedo, fatshiengselecudriisttyricbhuetcekd, rfierssotluyr,cteheisocrodnertrsowlleildl baenvdemrifianedagbeydthbye manicarogggrriedgastcohre,dwuhliinlsgt
+iannddirbeactlanmceethmoadnargeefemrsenttosythsteemstruantedgeyr tihnewcohniscthraaintcsenoftreanl eorgrgyabnaizlaanticoen, tsheenrdesal-atimsigeneallecttorictihtye
+dpirsictreibouf ttehdegmeanienragtrioidn, oawndnethrsetmo ianfifmecutmtheoipr eerleactitorincaitlycocostnosufmthpetsioynstaenmd. pSeocwoenrdglye,ntehreatoiopntimdeacliPsi2oPn.
+UpunrdcehrastihnegFaInTdmseellcihnagnpisrmice, shwowillebveerc,altchuelaetnegdabgyemMeInLtPoofpptirmoiszuamtioerns, aisndmpourebliusnheeqdutiovothcealufsoerrst.he
+prodIuncethrse tsotasgeellosfuerxpelcuustieolnecotrfitcriatydidnigr,eacfttleyrttohethoerdmearsinhagvriedbaenend cpoumrcphleatseede, lfeocrtreiaccithypfarortmicitphaentm, tahien
+gmriicdroifgnriededoepde.raWtoercwanilnloset tdtleencyhtahregecsonoftriinbtuetrinoanloofrdtheirssr(eosredaerrcshwinithPi2nPthapepmliiccartoiognri,db)uatt tdheesriegnisastetidll
+aP2kPeypugarcphiansitnhge apnradcstieclalilnPg2pPrmiceeschaanndisemxtecrennatleorerddeorns (porrodseurms werist.h main grid) at clearing prices.
+
+3.2. CTohaelirteiofonrGe,amane improved midmarket rate (MMR) model based on the coalition game theory is
+proposed to bridge the gap between the research and practical application in the P2P energy
+tradinTghemPe2cPheanneisrgmy itnratdhinisgpmapecehr.anTihsme pisridnecsipiglneeodfttoheenMcoMurRag[e29th]eispathrtaict itphaetiorenfeinretnhceedpecriecnetroafliPze2dP
+ternaenrsgayctimonarskiests,ehtealspthweitmhetahne vraelnueewoafbtlheegeelnecetrraictiiotynpinutrecrhmasiitntegnacnydpsreolblilnegmp, rciucet odfotwhne melaeicntrgicriitdy,
+aenxpdetnhdeiptuurrec,haansdinegleavnadtesethlleinmgopnriectearoyf beleencetrfiitciotyf dinistthriebuPt2ePdmgeanrkeerat tiisobnaosewdnoenrst.hTrheee sscuecncaersisoos.f P2P
+trading depends on the design of a reasonable trading mechanism. Many pieces of literature have
+(m1)adeTrheeletvoatanlt esntuedrgieys,gseuncehraatsiodniroecfttmheetphroodsu[2m7e],rsinidsireeqcutaml etothtohde [o2v],earnaldl FdIeTm[a2n8d]. Iinn dmiriecrcotgmriedths.oIdn,
+a singthleisdcisatsrei,btuhteedPr2ePsotruardceinigs cpornicteroellqeudaalsntdhme aavneargaegdebvyaaluneaogfgtrhegeaetloerc,twrichiitlystpinudrcihreacstinmgeathnoddsreelfleinrsg
+to theprsitcreaotefgthyeinmwaihnigchrida.central organization sends a signal to the distributed generation owners
+(t2o)a The total energy generation of the prosumers is greater than the overall demand in microgrids. Inffect their electricity consumption and power generation decision. Under the FIT mechanism,
+howetvheisr,stihtueaetniognag, ethmeePnt2Pofppurorcshuamsienrgs ips rmicoereofuneleeqcutriivcoitcyalefqouratlhsetphreoadvuecreargsetovsaellulesuorfptlhues eelleeccttrriicciittyy
+direcptluyrctohatshinegmaanidn sgerlildinganpdricpeuorcfhthaseemealeinctgrirciidtyseftrobmy tthheepmrinaicnipgleriodf itfhneebeadlaendc.eWbeetwcaenennotthedeconsyt
+the caonndtrtihbue tiinocnomofetohfisthreesmeaicrrcohgirnidPo2pPeraaptporli.cation, but there is still a key gap in the practical P2P
+(m3)echTahneistmotacel netneerregdyognepnreorasutimonerosf. the prosumers is smaller than overall demand in microgrids, in
+
+wThheicrehfocraes,eatnheimPp2rPovseedllinmgidpmriacrekoetf realetect(rMiciMtyRi)smeqoudaell btoastehde oanvetrhaegecovaaliltuioenogf atmhee ethleecotrriyciitsy
+propposuerdchtaosbinrgidagnedthseelglianpg bpertiwceeoefntthheemreasienagrcrhidasnedt bpyratchteicparlianpcpiplilecaotfiotnheinbathlaenPc2ePbeetnweregeyn ttrhaedcinosgt
+mechaanndistmheinintchoismpeaopfetrh. eThmeicprroingcriidploepoefrtahteorM. MR [29] is that the reference price of P2P transactions is
+set as the mean value of the electricity purchasing and selling price of the main grid, and the purchasing
+and selling price of electricity in the P2P market is based on three scenarios.
+
+
+
+Sustainability 2020, 12, 923 10 of 20
+
+(1) The total energy generation of the prosumers is equal to the overall demand in microgrids. In
+this case, the P2P trading price equals the average value of the electricity purchasing and selling
+price of the main grid.
+
+(2) The total energy generation of the prosumers is greater than the overall demand in microgrids. In
+this situation, the P2P purchasing price of electricity equals the average value of the electricity
+
+Sustainpabuilritcyh2a0s2i0n, g12a, xnFdOsRelPlEinEgRpREriVcIeEWof the main grid set by the principle of the balance between th1e1 ocfo2s2t
+and the income of the microgrid operator.
+
+(3) TThheePto2tPalmenarekrgetymgeencehraantiisomn omf ethnetiopnroedsuambeorvseiswsimthalllietrtlethraensioliveenrcaellhdaesmaanlidmiintedmiecfrfoegctridosn,
+encouirnagwinhgichpacratsiceipthaetioPn2PinsePll2iPngenperricgeyotfraedleinctgr.icTithyeisfoecquusaolftoa tchoealaivtieornaggeamvaeluisehoofwthetoemlecottriivcaittye
+indeppeunrdcehnatsidnegcaisnidonsemlliankgerpsritcoe oafctthteogmeathinergraisd asewt bhyotlheetopreinlecvipalteeotfhtehire bstaaltaunsce(obretuwtieleitny)thienctohset
+gamea. nGdatmhee inthcoeomreyoifsthae mmiactrhoegmriadtiocpael ratotoorl. used to analyze coping strategies in competitive
+environments, in which the behavior of one player depends on the behavior of the other players
+[30]. TGhaemPe2Pthmeoarrykectamn ecbheanroisumghmlyendtiivoindeedd aibnotvoe twiothclaittetlgeorrieessi:liennocnecohoaps earaltiimveitegdameffeesctanond
+ceonocpoeurraatgivineggapmaretisc.iTphaetiroenairne Ptw2Po ebnaesergsyfotrrathdeinsgta. bTihlietyfoocfuthseofcoaacliotaiolinti:o(n1)gTahmeeoivsehraolwl rteovemnouteivthataet
+tihnedegpraennddecnotadlietcioisniocnanmaackheiresvteoiascgtrteoagteetrhtehraans tahwe hsuomle toofetlheevaretevethneuier swtahteuns (eoarchutmilietym)binerthoepegraamtees.
+iGnadmepeetnhdeeonrytlyis. a(2m) aFtohremeaacthicaml teomolbuers,edthteo aanllaolcyazteiocnopoifngresvterantueegiesshoinulcdomabpiedtietivbeyetnhveirpornimnceinptlse, ionf
+Pwahriectho tihmepbreohvaevmioernot.f Ionnoetphlearywerodredps,enthdes roenvethneubeethhaavt ieoarcohfmtheemotbheerrmplaayyeartsta[i3n0]is. Gnoamleessthtehoarnytchaant
+obfenroout gjohilnyindgivitdheedailnlitaontcwe.oTchaetegchoarireasc:tenroinstciocsopoefrathtievecogaalmitieosnangdamcoeoepnesruatrievethgoasmeecso.nTdhietiroenasretotwboe
+sbaatsisefsiefdor, twhheiscthabmilietaynosfmtheemcobaerlistioonf :th(1e) aTlhlieanocveereaxllchreavnegneuientfhoarmt tahteiognraannddctohaelitsiiognnecadnaagcrheieemveenist
+mgruesattebrethenanfotrhceedsu. m of the revenue when each member operates independently. (2) For each member,
+the allocation of revenue should abide by the principle of Pareto improvement. In other words, the
+3re.2v.e1n. TuheethDaet seiagcnhomf ePm2PbeTrrmadaiyngatMtaienchisannoismlesss than that of not joining the alliance. The characteristics
+of thAe cccooarlditiinogn tgoamthee emnosutirveattihoonsael cposnydchitoiolongsytoofbeusseartsistfioepda, rwtihciipchatme ienanmsicmroegmrbiderPs2oPf ttrhaedainllgia,nthcee
+Pex2cPhtarnagdeinignfporrmiceastiionnmanicdrothgerisdisgnfaeldl iangrteheemreanntgme oufst bPe egnforgced.
+
+ buy ,Psell  , which can be converted to linear
+w3.e2i.1g.hTtihneg,DaensdigtnheofrePd2PlinTeraidniFniggMurec4hailnluissmtrastes the trajectory of P2P trading prices.
+
+According to the motivational psychoPlogy g g
+ P2P [ofu ]
+
+PgP
+sers
+buy 
+
+topParticipate in microgrid P2P trading, the P2P
+sell
+
+trading prices in microgrids fall in the range of buy, Pg
+sell , which can be converted to linear weigh(2ti0n)g,
+
+and the red line in Figure 4 illustrates thetrajecto1ry of P2P trading prices.
+
+g g  PP2P = αPg
+buy + βPg
+
+where Pbuy and Psell are the purchasing and selling price of electricity of the main grid. PP2P
+sell (b2uy0)
+
+α+ β = 1
+P2P
+
+and Psel are the purchasing and selling price of electricity in the P2P market. Qnl (t) is the
+where Pg
+
+buy and Pg
+sell are the purchasing and selling price of electricity of the main grid. PP2P
+
+buy and PP2P
+energy demand of the user n at time slot t and Qnpv(t) is the energy generated by PV n at tismelle
+are the purchasing and selling price of electricity in the P2P market. Qn(t) is the energy demand of the
+sulsoetr nt .at time slot t and Qn
+
+pv(t) is the energy generated by PV n at time slot t.
+
+FFiigguurree 44.. TThhee ttrraajjeeccttoorryyooffPP22PP ttrraaddiinnggpprriicceess..
+
+The P2P energy trading mechanism is designed to facilitate the consumption of distributed
+resources in local areas, have revenue of distributed generation retained locally, and give social
+capital a boost in distributed generation and microgrid.
+
+P2P energy trading price is set in reference to PP2P and the principle of balance between
+income and cost of microgrid operators. The formula can be expressed as follows:
+
+
+
+Sustainability 2020, 12, 923 11 of 20
+
+The P2P energy trading mechanism is designed to facilitate the consumption of distributed
+Sruesstoaiunracbielistyin20l2o0c, 1a2l,axrFeOasR,PhEaEvReRrEeVvIeEnWue of distributed generation retained locally, and give social c1a2poift2a2l
+a boost in distributed generation and microgrid.
+
+P2P energy trading priNce is set in referencNe to PP2P andN the principNle of balance between income
+and cost of micro dP2oPperatorsnP Qp.vT(th)efoPr
+
+Pm2P
+
+gri ulacanQbnbuy e(et)xpreQdn
+sell pavs(tf)ollowsQ: n (t) P
+
+ n1 n1 ∣ n1 n1
+
+ ∣
+ ∣ess
+
+ N N N ∣
+ P2P N ∑ n N ∑ ∣ ∣
+ ∣
+ P
+if     ∑ (t) =PP2P n t) ±
+
+ sell × Qpv buy × Q ( ∣
+=Qn
+
+1 ∣ ∑N Qn ∑
+pv(t) − Qn(t)∣∣× P
+
+ n pv (t) Qn (t)n=10,     P nP g
+=b1uy n=1 ∣ (21)
+
+ Nn1 N
+
+ n1
+
+ i f n ∑
+pv(t) n
+
+− Q (t) > 0, P = Pg 21)
+
+ N N
+
+ n
+if    ∑
+
+Q
+=1 n
+N Qn (t) ∑ (
+
+=1 buy
+
+Ni f Qn Qn (t)  0,     P  P g
+
+ pv sell
+ n pv(t) − Qn(t , P g
+
+) < 0 = P
+n n ll
+=11 n=11 se
+
+IInn oorrddeerr ttoo pprreesseenntt tthhee pprriicciinngg pprroocceessss ooff tthhee PP22PP maarrkkeett moorree ssppeecciiffiiccaallllyy,, wee ddiivviiddeedd tthhee
+ooppeerraattiioonn ooff miiccrrooggrriidd iinnttoo tthhrreeee ppoossssiibbllee sscceennaarriiooss aanndd aannaallyyzzee tthheem rreessppeeccttiivveellyy..
+ScenaSrcieon1a:rpioro1d: upcrtoidonucetqiounalesqdueamlsadnedm, aasndsh, oaws snhionwFniginurFeig5u. re 5.
+
+FFiigguurree 55.. PPrroodduuccttiioonn eeqquuaa∑llssddeemaanndd..N ∑N
+In this case, P2P trading price can be calculated by N Qn
+
+pv(t) − N Qn(t) = 0, which means
+In this case, P2P trading price can be calculated by n=1 Qn (t)n=1
+
+∑ Qn
+pv (t)  0 , which means
+
+N ∑N n1 n1
+
+PP2P N N P 2P
+sell × Qn
+
+p2v
+(t) =PP2P
+
+buy × Qn(t)PP2
+sell = PP
+
+buy = PP2P (22)
+Sustainability 2020, 12, x FOR PEER RnE=V1IEPP P
+
+W Qn (t) 2
+n=1PP P Qn
+
+sell pv buy (t) 13 of 22
+n1 n1
+
+ScenaSrcieon2a:rpioro2d: upcrotidouncetxiocneeedxscedeed
+(22)
+
+msadnedm, aansdsh, aoswsnhoinwFniginurFeig6u. re 6.
+PP2P PP2P
+sell buy PP2P
+
+∑ Figure 6. Production exceeds demand.
+N
+N ∑N
+
+In this case, Qn N
+pv(t) − Qn(t) > 0 and prosumers will be price takers for surplus energy that
+
+In this case,n=1 Qn (t)n=1 Qn
+pv (t)  0 and prosumers will be price takers for surplus energy
+
+has to be exported tno1the grid atnP
+g
+
+1buy to maintain the energy balance in the microgrid. Therefore, in the
+
+that has to be exported to the grid at Pg
+buy to maintain the energy balance in the microgrid.
+
+Therefore, in the microgrid, users will be the price taker, which means the P2P energy purchasing
+PP2P PP2P
+
+price buy PP2P and sell is set based on the equal value of cost and benefit.
+
+N N N
+PP2P Qn (t)  (Qn (t) Qn (t)) P g
+buy pv buy
+
+PP2P  n1 n1 n1
+sell N (23)
+
+Qn
+pv (t)
+
+n1 .
+Scenario 3: demand exceeds production, as shown in Figure 7.
+
+Figure 7. Production is less than demand.
+
+N N
+In this case, Qn (t)Qn
+
+pv (t)  0 and users in energy deficiency will be price takers for
+n1 n1
+
+Pg
+the necessary amount of energy that has to be imported from the main grid at sell to ensure the
+demand is met in the microgrid. Therefore, in the microgrid, prosumers will be the price taker,
+which means the P2P energy selling price PP2P
+
+sell  PP2P and PP2P
+buy is set based on the equal
+
+value of cost and benefit.
+
+
+
+Sustainability 2020, 12, x FOR PEER REVIEW 13 of 22
+
+Scenario 2: production exceeds demand, as shown in Figure 6.
+
+Figure 6. Production exceeds demand.
+
+N N
+In this case, Qn
+
+pv (t)Qn(t)  0 and prosumers will be price takers for surplus energy
+n1 n1
+
+Sustainability 2020, 12, 923 12 of 20
+that has to be exported to the grid at Pg
+
+buy to maintain the energy balance in the microgrid.
+Tmhiecrroefgorried,, iunsethrsewmiilclrboegrthide,pursiecrestawkiellr,bwe hthicehpmriecaentsakthere,Pw2hPicehnemrgeyanpsutrhcheaPs2inPgepnreircgeyPpP2uPrchasing
+
+P2P buy = PP2P
+panridcePPP2P
+
+sellbuyis setP
+P2P
+
+bPa2sPedaonndthPesellquailsvsaeltubeaosfecdoostnatnhde beqenueafil tv.alue of cost and benefit.
+
+N NN N
+P2PP2P
+
+N
+∑ n
+
+QQn ( )+((∑ n
+Qn
+
+ppvv((tt))
+∑N n
+
+Pbbuuyy × (t)t −Qn((tt))))× g
+Pg
+buuyy
+
+PPP2PP2P  n=n11 n=n11 n=n1
+b
+
+1
+sseellll = ∑N . (2(32)3)
+
+N
+Qnn
+
+ppvv(t))
+nn=11 .
+
+ScenaSrcieon3a:rdioem3:adnedmeaxncdeeedxsceperdods upcrotidoun,ctaisonsh, oaswsnhoinwFniginurFeig7u. re 7.
+
+Fiigurre 7.. Producttiion iis lless tthan demand.∑ .
+
+N ∑N
+In this case, NQn n(t) < 0 and users in energy deficiency will be price takers for the
+In this case, pv(t)
+
+N
+n
+
+n=1 Qn − Q
+pv (t)n=1 Q (t)  0 and users in energy deficiency will be price takers for
+
+necessary amount onf1energy thanth1 as to be imported from the main grid at Pg
+sell to ensure the demand is
+
+tmheetninectehsesamryicaromgoriudn. tTohfeerenfeorrgey, itnhathtehmasictroobgeridim, pproorstuedmefrrosmwitlhl ebemthaienpgrricide taatkePr, wg hich means the
+P2P energy selling price PP2P ed on the equal value of cosstelal
+
+to ensure the
+nd benefit.
+
+demand is met in the miscerll
+= PP2P and PP2P
+ogrid. Thereforbuey is set bas
+
+, in the microgrid, prosumers will be the price taker,
+N ∑N ∑N P 2P
+
+hich means the P2P energy selling price PP2P
+w
+
+PP2P ∑ n sell  P P
+P2P and n buy isg set based on the equal
+
+value of cost and benefit. sell × Qpv(t) + ( Qn(t) − Qpv(t)) × P
+PP2P n=1 n
+
+buy = ∑=1 n=1 sell
+. (24)
+
+N
+Qn(t)
+
+n=1
+
+3.2.2. Assumptions
+
+Based on the coalition game theory, we make three assumptions for the P2P trading mechanism:
+
+(1) All participants are rational decision makers.
+(2) All participants must comply with the internal agreement and forbid members to withdraw
+
+casually from the grant union.
+(3) All participants enjoy priority in purchasing energy from the microgrid and selling electricity to
+
+peers in the microgrid.
+
+In Figure 1, prosumers will sell surplus electricity to the microgrid operator and customers will
+buy energy from the microgrid operator. According to the real-time monitoring data of the microgrid
+scheduling and balance management system, the microgrid operator will balance the internal system
+by exporting surplus electricity to the main grid or importing deficient energy from the main grid.
+The P2P trading price is set based on the principle that cost is equal to revenue. Meanwhile, the main
+monetary benefit of microgrid operator comes from registration fees for users and services charges,
+including PV maintenance, PV output prediction, etc.
+
+
+
+Sustainability 2020, 12, 923 13 of 20
+
+4. Case Study
+
+To show the feasibility of the proposed P2P energy trading system, we tested it on an artificial
+situation, which contained 30 households, including 5 residential customers without PV and BESSs,
+5 with BESSs only, 10 with PV only, and 10 with both PV and BESSs. For each residential customer in
+the microgrid, it was assumed that their maximum demand is 80 kW. Gross capacity of solar panels and
+BESSs whose specification is the same as PV were assumed to be 115 kW and 50 kW, respectively. The
+real-time energy usage of residents can be demonstrated in the scheduling and balance management
+system of microgrid. The value of the FIT price was assumed to be 0.381 ¥/kWh. The tiered selling
+price ofSeulsetacintarbiilcitiyty202f0r,o1m2, xtFhOeRgPErEidR RtEoVrIEeWsidential is shown in Figure 8. 15 of 22
+
+FiguFriegu8r.eM8.aMinaignrgirdidrereaall--ttiimmeeppuurcrhchasaesaenadnsdalesaplreicpe.rice.
+
+In this Ipnatpheisr,pthapeemr, itxheedmiinxteedgienrtelginerealirnpearrogprroagmramimngin(gM(MILILPP) )mmeetthhoodd bbaasseeddoonnYYAALLMMIPIPwwasas used
+to solveustehde tmo osdolevle. tYhAe LmModIePl. iYsAaLsMoIlPutisona tsoolultbionx twoorlibtotexnwirnittMenAiTnLMAABTlLaAnBgulanggeu.agIet.cIatncaonptimize
+the objeocptitvimeizfuenthcetioobnjebctyivceaflulinncgtioonnbay vcaalrliinegtyonofacvoamriemtyeorcf icaolmompetirmciailzoaptitoimnizsaotlivonersso,lsvuercsh, sauschLaPsSOLVE,
+CPLEX,LaPnSOdLGVRE,UCOPLBEI.XI,nantdhiGsRaUrtOicBleI.,Iwn ethwis raorttieclteh, we eprworgorteamthecpordoegrtahmrocuogdehtthhreouYgAhLthMe IYPAtLoMoIlPbox and
+called Ctoolbox and called CPLEX in the MATLAB operation environment to optimize the solution. FinallywPeLgEoXt tihne tohpetiMmaAl TpLricAeBofotpheer2a4tiohnP2ePnvpiurrocnhmaseenant dtosaolpe tpimriciezeinththeesmolicurtoigornid. ,Faisnsahlolywnwiengot the
+optimalFpigruicree o9af,bth, ean2d4thhePm2Pinpimuurmchtaostealaonpdersaatilnegpnreictecoinst tohfethme imcricorgorgirdid, aflsuschtuoawtednwinitFhigthuervea9luae,bo,fand the
+minimupmaratomteatleroperaatnindg ne,tacsosshtoowfntihneFmiguicrreo1g0r. id fluctuated with the value of parameter α and β, as
+shown in Figure 10.
+
+In Figure 9a, the line of the main grid sales price is always at the top, indicating that purchasing
+electricity from the P2P market is always cheaper than that in the main grid no matter how the value of
+α and β change, which is conducive to encouraging microgrid users to participate in P2P transactions.
+In Figure 9b, the FIT price is fixed and the P2P selling price of electricity fluctuates with the value
+of α and β. When α = 0.6, β = 0.4, the lower limit of the optimal P2P selling price of electricity
+obtained for the P2P selling price of electricity is higher than the FIT price at this point, and it keeps
+rising. Therefore, when α = 0.6, β = 0.4, the minimum operating net cost of the microgrid can be
+achieved. In Figure 10, with the change of α and β, the net operating cost of microgrid gradually
+increases, which is due to the increase in the P2P transaction price, and the growth rate of internal cost
+of the microgrid is greater than that of internal revenue. Simultaneously meeting the conditions of the
+minimum operating net cost of the microgrid and a higher P2P sales price than FIT, we thus got the
+best P2P energy transaction price at α = 0.6, β = 0.4.
+
+
+
+Sustaiinabiilliity 2020,, 12,, x92F3OR PEER REVIEW 164 off 220
+
+(a)
+
+(b)
+Fiigure 9.. P2P energy transaction price.. ((a))Energy purchase price of P2P transaction.. (b) Energy sale
+priice offP2P ttransacttiion..
+
+
+
+SSuussttaaiinnaabbiilliittyy22002200,,1122,,x92F3OR PEER REVIEW 1175ooff2220
+
+FFiigguurree1100..Neettccoossttooff2244hhooppeerraattiioonnooffmiiccrrooggrriidd..
+
+4.1. AInnaFlyigsiusroef t9hae,OtvheeralllinOepeorfatitohneofmthaeinMgicrriodgrsidales price is always at the top, indicating that
+purchAassisnhgoewlenctirnicFitiygufrroem11t,hferoPm2P0:m00artkoe6t :i0s0a, lPwVaystsocphsefaupnecrtitohnaningthaant dinhtohuesmehaoinldgsrcidannmo emeat tttheer
+hdoewmatnhde bvyadluisechoafrging thanedbattery acnhdanimgep,owrtihnigcheliesctcroicnitdyufcroivme tthoeemnacionugrraigdi.nIgn tmheicdroagy,rfidromus7e:r0s0 ttoo
+p1a6r:0ti0c,itphaetePVinstPa2rtPs ttoragnesnaecrtaiotense.leIcntriFciigtyu,rtehe9obu, ttphuetsFoITf wphriicche ciasnfisxaetdisfyantdhetnheeedP2foPr soevlelirnagll dperimceanodf
+einlecthtreicmityicrflougcrtiuda. tTeos wbeitehxtahcet,vhaoluuseeohfolds wainthdPV a.nWdhBeEnSSs w=i0ll.6fir,stm=ee0t.4th,etihreelleocwtreicriltiymdietmofatnhde,
+oapntdimthaelnP2cPhasreglelinthgepbraictteeoryf etolegcterticrietvyeonbuteaibnyedseflolirntghesuPr2pPlusseellliencgtrpicriitcyetofpeelecrtsrincityheismhiicgrhoegrritdhaonr
+tehxepFoIrTtinpgritcoetahtetmhiasinpogirnidt,.aFnrdomit 1k7e:e0p0stori2s3in:0g0.,Twheerceafnorse,ewthhaetnPVsy=s0te.6m,s do n=o t0g.4en,etrhaetemeliencitmricuimty
+oapnedrathtiengenneertgcyorsetsofutrhcee fmorichrogursiedhcoaldnsbceoamcehsiefvroedm. BInESFSigsudriesc1h0a, rwgiitnhgtohreicmhpaonrgteinogf from athnedmain,
+tghreidn. eFtigoupreer1a1tinilglusctorsatteosfthmaitcernoegrrgidy tgrraandsaucatliloynsinincrtehaesePs2,Pwmhaicrhkeitsmdauinelytoocthcuerifnrcormea7s:e00intot1h6e:0P02oPf
+ttrhaensdaacyt,ioonf wphriicche,thanedgretheen pgarortwotfhthreatbearocfhianrttesrtnaanldcsofsotr oenf etrhgeympuicrrcohgarsiedd ifsrogmretahteerP2thPamnatrhkaett boyf
+ihnoteursneahlorldevseannudet.hSeimorualntagneefoour selnyemrgeyestoinldg itnhethceoPn2dPitmionarskoeft bthyehmouinseimhouldms.oIpfePrVatoinugtpnuetts ceoxscteeodf tthhee
+mdeicmroagnrdidofapnrdosaumhiegrhse, ritPw2iPll bsaelmesopreriactetrtahcatniveFIfTor, pwreostuhmusergsottotfihrestbtersatdPe2ePlecetnreicrigtyy itnrathnesaPc2tiPomn aprrkiceet,
+aatndth=e n0e.x6p,ortsu=r p0lu.4s e.nergy to the main grid cleared at retail price under the organization of the P2P
+operator, as the selling price of energy in the P2P market is relatively higher than that in the main grid
+4a.n1d. Athnealpyusirscohfatshine gOpvreircaelliOs qpueriatetiothneoofpthpeoMsitiec.roIgnrgideneral, the proposed P2P energy trading mechanism
+can achieve favorable savings for households with PV systems installed, decrease the electricity costs
+for uAsesrsshinowthne imnicFrioggurried,1a1n, dfroremali0z:e00a twoin6:–0w0,inPVsitustaotpiosnfufonrcptiroonsiunmg earnsdanhdoucsueshtoomldesrsc.an meet the
+demand by discharging the battery and importing electricity from the main grid. In the day, from
+74:.020. Otope1r6a:t0io0n, atlhPeerPfoVrmsatanrctesotfoPrgoesnuemreartseAenleaclytrsicsity, the outputs of which can satisfy the need for
+overaTllhdeeompearnadtioinnatlhpeermfoicrmroagnrcide.oTf porboesuemxaecrts,whiothusPeVhoglednserwatiitohnPaVndaBndESBSEsSisSislluwsitlrlaftierdstinmFeiegtutrhee1i2r.
+eTlhecetrPicVityoudtepmutasnfdr,oamnd7:t0h0entoc1h7a:r0g0ectahnebbeatdteivryidteodgienttroevfoeunruecabteygsoerlileinsgacscuorprdluinsgelteocttrhiecitmyettohpodeeorsf
+ienntehregymuicsarogger: i(d1)oSreelfx-pcoonrtsiunmg tpotitohnefmorapinrogsruimd.eFrrso.m(2)1C7:h0a0rgtoin2g3t:0h0e,bwaettecrayn. (s3e)eTtrhaadtePiVn Psy2sPtemmasrkdeot.
+n(4o)tEgxepnoerrtattoetheleemctraiicnitgyriadn.dP2thPeeneenregrygytrardesinogurfocer tfhoerdhiostursibeuhtoelddsgecnoemraetsiofnroismaBprEoSmSsisdinigscmhaercghianngisomr
+itmhaptoerntianbglesfrtohme suthrpe lumsaeinnerggryido.fFpirgousurem1e1rs itlolubsetrcaotnessutmheadt ienntehregyloctaralnarseaac,tigoinvsinginritsheetoPt2hPe rmevaernkueet
+mofapinrloysuomcceurrs,frhoemlp7in:0g0wtoit1h6e:0le0cotrficthiteydcoayst, roefdwuhctiicohnt.hAesgtrheeenCphainrtesoef gthoevberanrmcheanrttgsrtaadndusalfloyrreendeurcgeys
+pthuercshuabsseiddyfrfoomr ththeenPe2wPemnearrgkyetfebeydh-ionutsaerhi olds and the orange for energy sold in the P2P market byffs, the investment of social capital in the development and
+hcoounssterhuocltdiosn. oIff nPeVw eonuetrpguytsis eaxlscoeegdradthuealldyermedauncdingo,fwphriochsutmo esorsm, eitexwteinllt hbiendmerosrteheadttervaecltoivpemefonrt
+prosumers to first trade electricity in the P2P market, and then export surplus energy to the main
+grid cleared at retail price under the organization of the P2P operator, as the selling price of energy
+
+
+
+Sustainability 2020, 12, x FOR PEER REVIEW 18 of 22
+
+iSnustthaienaPbi2liPty 2m02a0r,k1e2,t9i2s3 relatively higher than that in the main grid and the purchasing price is1q6uofit2e0
+the opposite. In general, the proposed P2P energy trading mechanism can achieve favorable savings
+foofr nheowuseenhoerldgys winidthusPtrVy.syTshteemresfoirnes,taallsecdie,ndteificrceaasnedtrheeaseolencatrbilceitPy2cPosttrsadfoinrgumseorsdeinisthceonmdiucrcoivgeridto,
+and realize a win–win situation for prosumers and customers.
+encouraging social capital to invest in new energy construction.
+
+Sustainability 2020, 12, x FOR PEER REVIEW 19 of 22
+
+energy resource, as PV starts producing energy at this period. Owing to the friendly mode of
+electricity usage containing PV and BESSs, the PV output abandonment rate is considerably
+reduced.
+
+Figure 11. A 24 h operation state of the microgrid.
+Figure 11. A 24 h operation state of the microgrid.
+
+4.2. Operational Performance of Prosumers Analysis
+The operational performance of prosumerswith PV generation and BESSs is illustrated in Figure 12.
+
+The PV outputs from 7:00 to 17:00 can be divided into four categories according to the method of energy
+usage: (1) Self-consumption for prosumers. (2) Charging the battery. (3) Trade in P2P market. (4)
+Export to the main grid. P2P energy trading for the distributed generation is a promising
+mechanism that enables the surplus energy of prosumers to be consumed in the local area, giving
+rise to the revenue of prosumers, helping with electricity cost reduction. As the Chinese
+government gradually reduces the subsidy for the new energy feed-in tariffs, the investment of
+social capital in the development and construction of new energy is also gradually reducing, which
+to some extent hinders the development of new energy industry. Therefore, a scientific and
+reasonable P2P trading mode is conducive to encouraging social capital to invest in new energy
+construction.
+
+For microgrid users with PV only, the actual operation is similar to that of microgrid users
+with PV and BESSs. The power generated by PV production first meets its own needs, and then is
+sold to the P2P market to satisfy the demand of peers in the microgrid. If there is any surplus power,
+it will be sold to the main grid through the microgrid operator. The difference between the
+households with PV and battery is that they do not need to charge the battery. When the electricity
+produced by PV cannot meet their own needs, the only way to obtain electricity is to purchase
+electricity from the P2P market or the main grid, while the households with battery can meet their
+own needs by discharging the battery to reduce electricity expenditure.
+
+In Figure 13, the energy sources of households with PV and BESSs is depicted. From 0:00–6:00
+and 16:00–23:00, FPFiVigguursreteo11p22.s.AAfpupppnlilccictaiatoitoinoninncgclalasassinfiifidccaathitoioonnuosofefphphoholodttosovvoopltlrtaeaicficeprpoowtwoeerrgggeeetnneeerralaetticiootnrn.i.city from battery
+dischaFrogrem. IifcrtohgisridisunsoetrsewnoituhgPhV, hoonulyse, hthoeldasctwuaillloipmepraotritoneliescstrimiciitlyarftroomthatthoefmmaiicnroggrriidd uusnedresrwtihteh
+hPeVlpaonfdmBiEcSroSgs.riTdhoeppeorawtoerr.gFernoemra7te:0d0b–y15P:0V0,pwroedcuacntiosenefitrhsattmheoeutsseihtsolodwsnlikneeetdost,raenatdPthVeansisthseolfdirstot
+
+Figure 13. Sources of power consumption of consumers with PV and battery.
+
+
+
+Sustainability 2020, 12, x FOR PEER REVIEW 19 of 22
+
+energy resource, as PV starts producing energy at this period. Owing to the friendly mode of
+electricity usage containing PV and BESSs, the PV output abandonment rate is considerably
+reduced.
+
+Sustainability 2020, 12, 923 17 of 20
+
+the P2P market to satisfy the demand of peers in the microgrid. If there is any surplus power, it will be
+sold to the main grid through the microgrid operator. The difference between the households with
+PV and battery is that they do not need to charge the battery. When the electricity produced by PV
+cannot meet their own needs, the only way to obtain electricity is to purchase electricity from the P2P
+market or the main grid, while the households with battery can meet their own needs by discharging
+the battery to reduce electricity expenditure.
+
+In Figure 13, the energy sources of households with PV and BESSs is depicted. From 0:00–6:00
+and 16:00–23:00, PV stops functioning and households prefer to get electricity from battery discharge.
+If this is not enough, households will import electricity from the main grid under the help of microgrid
+operator. From 7:00–15:00, we can see that households like to treat PV as the first energy resource, as
+PV starts producing energy at this period. Owing to the friendly mode of electricity usage containing
+PV and BESSs, theFiPgVuroeu1t2p.uAtpapbliacnatdioonncmlaesnsitfircaatteioins ocfopnhsoidtoevraolbtalyicrpeodwuecredge.neration.
+
+Figure 13. Sources of power consumption of consumers with PV and battery.
+Figure 13. Sources of power consumption of consumers with PV and battery.
+
+4.3. Operational Performance of Households Only with BESSs Analysis
+
+Figure 14 demonstrates the energy consumption profile of households only with BESSs throughout
+the day. We can see that from 0:00–7:00 the primary energy resources of households are battery discharge
+and the main grid. During the day, from 8:00–16:00, households purchase electricity from the P2P
+market for self-consumption and battery charge. Due to fact that the P2P price is more favorable
+than the retail price of the main grid, households prefer to purchase electricity form the P2P market
+rather than the main grid. From 17:00–23:00, the P2P trading market is off because PV outputs are not
+available and the energy consumed by households comes from battery discharge and the main grid.
+
+
+
+Sustainability 2020, 12, x FOR PEER REVIEW 20 of 22
+
+4.3. Operational Performance of Households Only with BESSs Analysis
+Figure 14 demonstrates the energy consumption profile of households only with BESSs
+
+throughout the day. We can see that from 0:00–7:00 the primary energy resources of households are
+battery discharge and the main grid. During the day, from 8:00–16:00, households purchase
+electricity from the P2P market for self-consumption and battery charge. Due to fact that the P2P
+price is more favorable than the retail price of the main grid, households prefer to purchase
+electricity form the P2P market rather than the main grid. From 17:00–23:00, the P2P trading market
+
+Siusstoaifnfabbileitcya2u02s0e, 1P2V, 92o3utputs are not available and the energy consumed by households come1s8 forfo2m0
+battery discharge and the main grid.
+
+FFiigguurree1144..SSoouurrcceessooffppooweerrccoonnssuumppttiioonnooffccoonnssuumeerrsswwitithhbbaatttteerryy. .
+
+55..CCoonncclluussiioonnss
+IInn tthhiissppaappeerr,, aaPP22PPeenneerrggyy ttrraaddiinngg mooddeell iinnmmiiccrrooggrriiddsswwiitthh PPVV aanndd BBEESSSSss iisspprrooppoosseedd..
+
+HHoouusseehhooldldsscocuouldldbrboraodaldylbyebdeivdidiveiddeindtoinfotourfomuarjomr acljaosrseclsa.sAsems.oAngmtohnesge,thhoesues,ehhooludssewhoitlhdsPVwictohuPldV
+schoaureldsusrhpalrues esluercptrliucsityelwecitthricoitthyerwpirtohsuomtheerrs.pBraosseudmoenrst.heBcaoseadlitioonn gthame ecothaeliotrioy,nthgeatmraeditnhgeoprryic,etihse
+stertabdyincgonpsriidceeriisnsgetthbeymcionnimsiduemrinovgetrhaellmeninerimgyucmonosvuemrapltlioenneirngmy iccornosgurimdsptuionndeirnvmariicoruogsrsicdesnuarnidose.r
+Tvhaerimouosdeslceisniallruiosstr.aTtehde imn oadsieml iuslailtliuosntrfaratemdewinoarks.imAsulaarteiosnultf,rathmisewmoecrhk.anAissma froersuPl2tP, tehnisermgyectrhaadniinsgm
+pfroormPis2ePs aenloetrfgoyr cthraadnignigngphrooumseisheosldas’lporteffeorrenccheatnogwinagrdhthoeuisreohwolndgs’enperreafteiorennacnedtsoewlfa-crodnstuhmeirptoiownn,
+rgeednuecrinatgiothne danepdensdelefn-ccoenosfuthmepdtiisotnri,bureteddugcienngerathtieondoenpseunbdseidnicees, oenf ctohueragdiinstgritbhuetsecdalegoefnperroastiuomnerosn
+bsoutbhsiinditehse, beunscionuesrsaganindgththeeressicdaelentoiafl spercotsoursm, aesrssisbtiontghwinithththeebduisstirnibesusteadnadndthreenreewsiadbelentgiaenl esreacttioorns,
+ianstseirsmtiintgtenwciythptrhoebldemist,raibnudteednaabnlidngremneowreaebffilecgieennteraantdioenffienctteivrme nitetetwncoyrkpmroobnleimto,rianngd. enabling more
+efficLieonotkainndg eaftfeecctoivneonmeitcwaosrpkemctos,niwtoirthingth. e help of the P2P energy trading model, it will lower
+
+houseLhoooldksin’ geleacttreicciotnyoemxpicenadsiptuecrtesa, nwditbhrinthgecohnelspidoerfatbhlee iPn2cPomeeneforgryprtorsaudminegrsm. Iofdthele, hitouwsielhl ollodwiesr
+ihnoeulescethroiclidtys’deeleficctireincictyy, ethxepeenxdtriatuerneeargnydgberninegracteodnsbidyePrVabalendinsctoomreedfionr tphreobsuatmteerrys.wIfillthbeehaovuaisleahboleld,
+wishiicnh ewleilcltcriuctitdyowdenfitchieenccoys,t othfepuerxcthraasienngeregleyctgriecniteyr.aTtehde BbEySPSsVpaarntdicisptaotriendg iinnPt2hPe ebnaetrtgeyrymwariklletbse
+aatvpaeilaakbhleo,uwrshwichillwunillloccuktmdoorwenbetnheefictsosfot rotfhpeuorwchnaesrisnogf BelEeSctSrsi.city. The BESSs participating in P2P
+enerAgys fmorarskoectiaslabtepneeafiktsh,oPu2rPsewnielrlguyntlroacdkinmgofroerbtheneedfiiststrfibour ttehde goewnneerarstioonf BisEaSSmse. chanism that shifts
+
+the enAersgfyo, rdesolicviearlinbgeneenfeirtsg,yPi2nPaemnoerregyfletxraibdlienagnfdodr etcheendtriasltirziebdutwedayg, eennearbalitniognthise saumrpelcuhsaenniesrmgythoaft
+psrhoisfutsmtheresetonebregcyo,ndseulmiveedriningtehneelrogcyalianreaa.mItowreilfllebxriinbglemanordedsoeccieanltcraapliiztaeldtowtahye,eennearbglyinsgectthoer, rseudrupclues
+setnateergfuynodfspirnospuomweerrs itnofbraesctrouncstuumreesd, ainndthfeacloilcitaaltaertehae. Idtewvielllobprminegnmt oofredsisotcriiabluctaepditaanldtortehneewenaebrlgey
+esneecrtogry,. reHdeunccee,stPa2teP feunnedrgsyintrpadowinegrwiniflrlalsetarduchtuoruesse,haonlddsfatocilsihtaitfet ftrhoemdecovnelsoupmmeernsttoofpdroissturimbuetresd.
+Correspondingly, it will increase the need for equipment for distributed energy generation and BESSs,
+assist with redundant capacity elimination, and indirectly give rise to the employment demand.
+
+Note that some shortcomings in this paper are that some factors, including the environmental
+benefits, photovoltaic distributed construction costs, and investment recovery cycle, are not considered.
+From this point on, factors mentioned above will be taken into account in future research to elevate
+existing P2P energy trading models and to inspire the application of P2P technology in the energy sector.
+
+
+
+Sustainability 2020, 12, 923 19 of 20
+
+Author Contributions: J.D. and H.H. supervised the proposed research work, whereas S.N. conceptualized the
+proposed research work, collected the data, programmed and analyzed the methodology, and wrote the original
+draft, J.L. and Y.W. helped in review writing and editing with validation of research work. All authors have read
+and agreed to the published version of the manuscript.
+Funding: This research was funded by the Beijing Social Science Foundation Research Base Project (18JDGLB037).
+Conflicts of Interest: The authors declare no conflict of interest.
+
+References
+
+1. Nguyen, S.; Peng, W.; Sokolowski, P.; Alahakoon, D.; Yu, X. Optimizing rooftop photovoltaic distributed
+generation with battery storage for peer-to-peer energy trading. Appl. Energy 2018, 228, 2567–2580. [CrossRef]
+
+2. Morstyn, T.; Farrell, N.; Darby, S.J.; McCulloch, M.D. Using peer-to-peer energy-trading platforms to
+incentivize prosumers to form federated power plants. Nat. Energy 2018, 3, 94–101. [CrossRef]
+
+3. Long, C.; Wu, J.; Zhou, Y.; Jenkins, N. Aggregated battery control for peer-to-peer energy sharing in a
+community Microgrid with PV battery systems. Energy Procedia 2018, 145, 522–527. [CrossRef]
+
+4. Park, C.; Yong, T. Comparative review and discussion on P2P electricity trading. Energy Procedia 2017, 128,
+3–9. [CrossRef]
+
+5. Liu, Y.; Wu, L.; Li, J. Peer-to-peer (P2P) electricity trading in distribution systems of the future. Electr. J. 2019,
+32, 2–6. [CrossRef]
+
+6. Zhou, Y.; Wu, J.; Long, C. Evaluation of peer-to-peer energy sharing mechanisms based on a multiagent
+simulation framework. Appl. Energy 2018, 222, 993–1022. [CrossRef]
+
+7. National Development and Reform Commission, National Energy Administration, a Pilot Approach to
+Facilitate the Construction of the Grid-Connected Microgrid. Available online: http://www.gov.cn/xinwen/
+2017-07/24/content_5213167.htm (accessed on 23 November 2019).
+
+8. Hamari, J.; Sjöklint, M.; Ukkonen, A. The sharing economy: Why people participate in collaborative
+consumption. J. Assoc. Inf. Sci. Technol. 2016, 67, 2047–2059. [CrossRef]
+
+9. Zhang, C.; Wu, J.; Zhou, Y.; Cheng, M.; Long, C. Peer-to-Peer energy trading in a Microgrid. Appl. Energy
+2018, 220, 1–12. [CrossRef]
+
+10. Long, C.; Wu, J.; Zhou, Y.; Jenkins, N. Peer-to-peer energy sharing through a two-stage aggregated battery
+control in a community Microgrid. Appl. Energy 2018, 226, 261–276. [CrossRef]
+
+11. Zhang, C.; Wu, J.; Cheng, M.; Zhou, Y.; Long, C. A bidding system for peer-to-peer energy trading in a
+grid-connected microgrid. Energy Procedia 2016, 103, 147–152. [CrossRef]
+
+12. Ottesen, S.Ø.; Tomasgard, A.; Fleten, S.E. Prosumer bidding and scheduling in electricity markets. Energy
+2016, 94, 828–843. [CrossRef]
+
+13. Liu, Y.; Zuo, K.; Liu, X.A.; Liu, J.; Kennedy, J.M. Dynamic pricing for decentralized energy trading in
+micro-grids. Appl. Energy 2018, 228, 689–699. [CrossRef]
+
+14. Leong, C.H.; Gu, C.; Li, F. Auction Mechanism for P2P Local Energy Trading considering Physical Constraints.
+Energy Procedia 2019, 158, 6613–6618. [CrossRef]
+
+15. PankiRaj, J.S.; Yassine, A.; Choudhury, S. An Auction Mechanism for Profit Maximization of Peer-to-Peer
+Energy Trading in Smart Grids. Procedia Comput. Sci. 2019, 151, 361–368. [CrossRef]
+
+16. Tushar, W.; Saha, T.K.; Yuen, C.; Morstyn, T.; McCulloch, M.D.; Poor, H.V.; Wood, K.L. A motivational
+game-theoretic approach for peer-to-peer energy trading in the smart grid. Appl. Energy 2019, 243, 10–20.
+[CrossRef]
+
+17. Long, C.; Zhou, Y.; Wu, J. A game theoretic approach for peer to peer energy trading. Energy Procedia 2019,
+159, 454–459. [CrossRef]
+
+18. Zhang, Z.; Tang, H.; Huang, Q. Risk Implemented Simultaneous Game-Theoretic Approach for Energy
+Trading in Residential Microgrids. Energy Procedia 2019, 158, 6679–6686. [CrossRef]
+
+19. Chen, K.; Lin, J.; Song, Y. Trading strategy optimization for a prosumer in continuous double auction-based
+peer-to-peer market: A prediction-integration model. Appl. Energy 2019, 242, 1121–1133. [CrossRef]
+
+20. Multi-Objective Problems in YALMIP. Available online: https://yalmip.github.io/multiobjective (accessed on
+14 January 2020).
+
+21. Qing, X.; Jie, C.; Xiu, Y. Dynamic economic dispatch of microgrid with different types of distributed
+generations. Proc. CSU-EPSA 2013, 25, 22–28.
+
+
+
+Sustainability 2020, 12, 923 20 of 20
+
+22. Wang, C.S.; Zheng, H.F.; Xie, Y.H.; Chen, K. Probabilistic power flow containing distributed generation in
+distribution system. Dianli Xitong Zidonghua (Autom. Electr. Power Syst.) 2005, 29, 39–44.
+
+23. Guo, J.H. Electric Power System and Automation. Ph.D. Thesis, North China Electric Power University,
+Beijing, China, 25 March 2010.
+
+24. Andoni, M.; Robu, V.; Flynn, D.; Abram, S.; Geach, D.; Jenkins, D.; McCallum, P.; Peacock, A. Blockchain
+technology in the energy sector: A systematic review of challenges and opportunities. Renew. Sustain. Energy
+Rev. 2019, 100, 143–174. [CrossRef]
+
+25. Hayes, B.P.; Thakur, S.; Breslin, J.G. Co-simulation of electricity distribution networks and peer to peer
+energy trading platforms. Int. J. Electr. Power Energy Syst. 2020, 115, 105419. [CrossRef]
+
+26. Zhang, C.; Wu, J.; Long, C.; Cheng, M. Review of existing peer-to-peer energy trading projects. Energy
+Procedia 2017, 105, 2563–2568. [CrossRef]
+
+27. Ruiz, N.; Cobelo, I.; Oyarzabal, J. A direct load control model for virtual power plant management. IEEE
+Trans. Power Syst. 2009, 24, 959–966. [CrossRef]
+
+28. Ye, L.C.; Rodrigues, J.F.; Lin, H.X. Analysis of feed-in tariff policies for solar photovoltaic in China 2011–2016.
+Appl. Energy 2017, 203, 496–505. [CrossRef]
+
+29. Long, C.; Wu, J.; Zhang, C.; Thomas, L.; Cheng, M.; Jenkins, N. Peer-to-peer energy trading in a community
+microgrid. In Proceedings of the 2017 IEEE Power & Energy Society General Meeting, Chicago, IL, USA,
+16–20 July 2017.
+
+30. Basar, T.; Olsder, G.J. Dynamic Noncooperative Game Theory, 2nd ed.; Siam: Philadelphia, PA, USA, 1999.
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access
+article distributed under the terms and conditions of the Creative Commons Attribution
+(CC BY) license (http://creativecommons.org/licenses/by/4.0/).

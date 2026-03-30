@@ -1,0 +1,1154 @@
+﻿Energy & Buildings 300 (2023) 113645
+
+Contents lists available at ScienceDirect 
+
+Energy & Buildings 
+journal homepage: www.elsevier.com/locate/enb 
+
+Peer-to-peer trading price and strategy optimization considering different 
+electricity market types, tariff systems, and pricing models 
+Ruixiaoxiao Zhang a, Minhyun Lee a,*, Dongqi Zhao b, Hyuna Kang c, Taehoon Hong c 
+
+a Department of Building and Real Estate, The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong 
+b School of Artificial Intelligence and Automation, Key Laboratory of Image Processing and Intelligent Control of Education Ministry, Huazhong University of Science and 
+Technology, Wuhan, Hubei, China 
+c Department of Architecture and Architectural Engineering, Yonsei University, Seoul, South Korea   
+
+A R T I C L E  I N F O   A B S T R A C T   
+
+Keywords: This study investigated the peer-to-peer (P2P) trading price and strategy based on market-driven methods within 
+Peer-to-Peer energy trading a residential microgrid consists of two prosumers (i.e., P1 and P2) and one consumer (i.e., C1), which establishes 
+Time-of-Use a diverse microgrid trading market in terms of peer characteristics (e.g., system configurations and electrical load 
+Energy storage system profile). Five cases are proposed in this study considering different electricity market types (i.e., peer-to-grid and 
+Photovoltaic system 
+Price optimization P2P markets), retail tariff systems (i.e., progressive and time-of-use (ToU) tariff systems) as well as market-driven 
+
+P2P trading pricing models (i.e., uniform and individual pricing models). Peer electrical load data are collected 
+from three typical four-person households in Hong Kong along with their domestic electrical appliance utiliza
+tion pattern. The results indicate that the individual pricing model has led to the dynamics of P2P electricity 
+trading price than the uniform pricing model, and P2P trading is more economically efficient under the ToU tariff 
+system. The maximum electricity bill saving of the entire microgrid can be achieved by 31.33% in summer and 
+by 43.02% in winter. Besides, it is observed that the installation of battery energy storage system (BESS) has 
+facilitated the self-consumption ratio of the renewable energy system to 91.98% in summer and 100% in winter. 
+This implies that the BESS plays a pivotal role in improving the flexibility in managing the P2P trading strategy, 
+and enhancing the efficiency in electricity dispatching within the microgrid. This study contributes to the novelty 
+in science since it provides a comprehensive framework that can adapt to changing market conditions.   
+
+The emergence of DG enables residential, commercial, and industrial 
+sectors to become individual installers of DERs systems, and remunerate 
+
+1. Introduction or sell the electricity generated from them to the utility companies 
+through peer-to-grid (P2G) trading mechanism under certain policies (e. 
+
+Distributed energy resources (DERs), such as solar photovoltaics g., net metering (NM) and feed-in tariff (FiT)). NM policy is imple
+(PVs), wind turbines, hydroelectric generators, and geothermal and tidal mented in 70 countries including the United States, Canada, and India, 
+plants, are actively proliferated in many countries to not only contribute which allows the installers of DERs systems to pay their electricity bills 
+to the alleviation of climate change issues according to the Paris according to their net usage of electricity considering the amount of 
+Agreement, but also facilitate the wide accommodation of clean energy electricity consumed from and transmitted to the grid [3]. FiT policy, 
+regionally or domestically. Subsequently, distributed generation (DG), which is regarded as a fixed-term contract between the utility companies 
+which utilizes DERs to generate electricity, has become an alternative to and individual installers, is currently adopted by 111 states or countries, 
+traditional centralized electrical networks. With the active development and the government or a utility company pays a FiT rate as per unit of 
+of DG, the share of renewable electricity (RE) has increased from 20.4 % electricity (i.e., kWh) to the individual installers as an incentive [4]. In 
+in 2011 to 28.3 % in 2021 globally, of which solar and wind power are Hong Kong, rather high FiT rates (i.e., 0.32 to 0.51 US$/kWh) are 
+witnessed to be increased most drastically from 2 % in 2011 to 10 % in offered to the installers as the FiT scheme has been launched relatively 
+2021 [1]. In building energy, the share of RE is anticipated to expand to recently in 2019 [5]. But as the market matures, this financial support 
+35 % by 2050 compared to 2019′s level (i.e., less than 20 %) [2]. 
+
+* Corresponding author. 
+E-mail addresses: ruixiaoxiao.zhang@connect.polyu.hk (R. Zhang), minhyun.lee@polyu.edu.hk (M. Lee), hyuna_kang@yonsei.ac.kr (H. Kang), hong7@yonsei.ac. 
+
+kr (T. Hong).  
+
+https://doi.org/10.1016/j.enbuild.2023.113645 
+Received 11 September 2023; Received in revised form 7 October 2023; Accepted 13 October 2023   
+Available online 14 October 2023
+0378-7788/© 2023 Elsevier B.V. All rights reserved.
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Nomenclature Gsur grid surplus RE in the microgrid (kWh) 
+Qshor grid electrical load shortage in the microgrid after RE self- 
+
+Acronyms consumption (kWh) 
+DERs distributed energy resources GRE to load RE consumed for meeting the electrical load in the 
+DG Distributed generation microgrid (kW) 
+PV photovoltaic GRE to BESS RE used for BESS charging after self-consumption (kW) 
+RE renewable electricity Qgrid electrical load demand of the microgrid (kW) 
+P2G peer-to-grid Tnonpeak non-peak time slots (Hour). 
+NM Net metering GBESS to load BESS discharging for satisfying the electrical load in the 
+FiT feed-in tariff microgrid (kW) 
+P2P peer-to-peer Tpeak peak time slots (Hour) 
+BESS battery energy storage system SRpeer i surplus ratio of a specific peer i 
+ToU time-of-use DRpeer i demand ratio of a specific peer i 
+SDR supply–demand ratio Q
+SR surplus ratio shor peer i electrical load shortage of peer i after self-consumption 
+
+(kWh) 
+DR demand ratio Q
+SoC state of charge peer i electrical load demand for peer i (kWh) 
+
+GRE i load RE consumed by peer i to satisfy its own electrical load 
+CLP China Light & Power Company Syndicate (kW) 
+AMI advanced metering infrastructure G
+SCR self-consumption ratio RE i BESS RE used for BESS charging by peer i after self- 
+
+consumption (kW) 
+SSR self-sufficiency ratio G
+NPV net present value RE i load j surplus RE traded from peer i to peer j to satisfy the load 
+
+shortage of peer j (kW) 
+List of Symbols GBESS i load BESS discharging by peer i to satisfy its own electrical 
+Rg global radiation on an hourly basis (W/m2) load (kW) 
+I0 solar constant value (W/m2) GBESS i load j BESS discharging traded from peer i to peer j to satisfy 
+DOY day-of-year the load shortage of peer j (kW) 
+γs solar altitude angle (degree, ◦) QP2P,t amount of electricity traded through P2P (kWh) 
+φ latitude (degree, ◦) Qgrid,t amount of electricity traded through the grid (kWh) 
+δ declination angle (degree, ◦) Pretail electricity retail price (US¢/kWh) 
+ω hour angle (degree, ◦) ECF net electricity cash flow (US$) 
+t local solar time CP2P,t cost of purchasing electricity through P2P trading (US$) 
+Ge,t Hourly solar PV electricity generation (W) Cgrid,t cost of purchasing electricity through P2G trading (US$) 
+A the total area of solar panels (m2) BP2P,t benefit from selling surplus electricity generated from P2P 
+∊ solar panel yield (%) trading (US$) 
+PR performance ratio Bgrid,t benefit from selling surplus electricity generated from P2G 
+Pchar,t charging limits of BESS system (kW) trading (US$) 
+Pdis,t discharging limits of BESS system (kW) CAPEX capital expenditure of the PV and PV-BESS systems (US$) 
+Pchar,max maximum charging limits (kW) OPEX operation expenditure (US$) 
+Pdis,max maximum discharging limits (kW) i discount rate 
+ηb charging/discharging efficiency of the battery (%) λ electricity retail price annual increasing rate 
+Ib total capacity of the battery (amp-hours) CEeq monthly equivalent carbon emissions 
+SoCmin minimum limit of state of charge Gimport imported electricity from the grid (kWh) 
+SoCmax maximum state of charge Gexport exported electricity from RE to the grid (kWh) 
+SDRgrid supply–demand ratio of the whole microgrid CEFeq equivalent CO2 emissions  
+
+from the utility companies to individual installers may gradually fade to become prosumers [11]. The operational flexibility of P2P trading is 
+out and become no longer available. Instead, RE will be sold back to the usually ensured by energy storage systems including battery energy 
+utility companies at an export price, which is regarded as another form storage system (BESS), electric vehicles, flywheels and compressed-air, 
+of P2G trading. For instance, in South Korea, the system marginal price etc. [12]. 
+can be regarded as the export price, which can be applied when public or Microgrid-level P2P trading has aroused increasing attention 
+private installers of DERs systems sell their RE to the utility companies recently, attributed to its different features from P2G trading in terms of 
+[6]. the following aspects. First, P2P trading is considered as a more flexible 
+
+Nonetheless, the capacity of electrical network may still be insuffi energy trading mechanism against P2G trading, and thus economically 
+cient due to the excessive uptake of DERs, even though the NM and FiT more viable for both prosumers and consumers, because P2P trading 
+policies are implemented actively to accommodate the RE [7]. Under price will tend to be set higher than the electricity export price, while 
+this circumstance, peer-to-peer (P2P) trading has become an alternative lower than the electricity retail price [11]. Second, since P2P trading 
+to NM and FiT, which enables the prosumers (i.e., individual installers of within a microgrid (e.g., a community) involves only direct trading 
+DERs systems) to directly trade RE with other prosumers, or to other between prosumers and consumers, it is believed to be cost-effective at 
+consumers (i.e., residential and business end-users) [8]. P2P trading has the microgrid-level because the energy loss during electricity trans
+facilitated the operational flexibility within the electricity grid [9], mission can be eliminated [13]. Third, the determination of the P2P 
+which leads to the reduction of the electricity bill for both prosumers trading price is more flexible. Compared to FiT, which is typically 
+and consumers [10], and further encourages more traditional consumers determined by levelized cost of electricity, and NM, which is usually at 
+
+2
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+the retail price or flat rates [14], the investigation on P2P trading price As for the market-driven methods, Liu et al. [23] adopted the uni
+involves various methods in accordance with different trading strategies form and individual pricing model established based on supply–demand 
+and pricing algorithms. As a result, the P2P trading price can be in ratio (SDR), surplus ratio (SR) and demand ratio (DR), considering 
+various forms, including (i) flat rates, which refers to a fixed rate at any residential and commercial PVs, wind turbines and electric vehicles in 
+time of the day; (ii) time-of-use (ToU) rates, which refers to a fluctuating combined P2G and P2P market, to propose a ToU P2P trading price for 
+rate according to the time of energy use; or (iii) discrete-time rates, prosumers. Yu et al. [24] introduced priority indices models to propose a 
+which refers to a fluctuating rate that corresponds to a certain interval of flat P2P trading rate regarding various SDR scenarios. The price for 
+time (e.g., every 15 min), which will be comprehensively introduced in prosumers depends on the seller priority indices, while the price for 
+the next section. consumers depends on the buyer priority indices, and they considered 
+
+PVs and wind turbines just in P2P trading market. Xu et al [25] analyzed 
+2. Literature review PVs with energy storage systems configuration, in combined P2G, P2P, 
+
+distributed double auction market, and used SDR based energy behav
+Existing studies on determining P2P trading prices vary from one or iour model, reservation price model and market clearing rule for pro
+
+more electricity market types (e.g., P2P, NM and P2G), energy system sumers and consumers, to propose a flat P2P trading rate. Xiong et al. 
+configurations (e.g., PVs, wind turbines, BESS and electric vehicles) and [26] employed the overall and scattered transaction methods based on 
+methodologies (e.g., cost optimization, blockchain technology and SDR and proposed ToU P2P trading price just for P2P market with PVs. 
+supply–demand ratio). Accordingly, the determination of P2P trading Accordingly, based on the above literature review, research gaps are 
+price can be categorized as two anticipated purposes. The first purpose observed in three aspects. First, the same P2P trading price for all peers 
+focuses on minimizing the cost or maximizing the profit for consumers within the microgrid is proposed by most of the existing literature, 
+and prosumers, which is usually conducted by price-driven methods; except Liu et al. [23]’s study. Specifically, regardless of price-driven or 
+The second purpose aims to propose a P2P trading strategy with market-driven methods, P2P selling price for all prosumers and P2P 
+decision-making rules under P2P market conditions, and is usually buying price for all consumers are co-determined buy all peers within 
+achieved by market-driven methods. the proposed microgrid. Therefore, a uniform P2P trading price is 
+
+For the price-driven methods, An et. al [14] employed the profit offered to all peers in most of the existing studies. However, an indi
+maximization algorithm to maximize the profit of selling surplus RE for vidual pricing model for determining an individual P2P trading price for 
+prosumers, and maximize the electricity bill savings for consumers. It is each peer based on their intrinsic SR and DR has not been widely applied 
+conducted just under P2P trading market with fixed capacity PVs. As a in existing studies. Second, it is found that in the existing literature, the 
+result, they proposed a flat P2P trading rate. Neves et al. [15] used cost energy system configurations for all prosumers are the same (e.g., all 
+minimization algorithm considering the economic profit of PVs with prosumers are PV and BESS installers at the same time). Therefore, the 
+randomly installed capacity for prosumers and consumers under a characteristics of the prosumers are undiversified. Third, it is observed 
+flexible market (i.e., both P2G and P2P trading available), and proposed that only a few studies considered ToU P2P trading price in most of the 
+a flat and ToU P2P trading price, respectively. Mengelkamp et al. [16] literature. It can be found that flat P2P trading rates are frequently 
+adopted blockchain technology to investigate bid minimum and bid proposed for both price-driven or market-driven methods, which has left 
+maximum price limits, respectively, for prosumers and consumers in a considerable research gap regarding real-time pricing market. 
+P2P trading market, and proposed a pricing mechanism with time To fill the research gaps above, this study aims to establish a P2P 
+discrete at every 15 min. This study considers PVs, electric vehicles and trading strategy applied to a microgrid with different peers, which 
+BESS as the energy system configuration. Johnson et al. [17] did not consists of the following residential prosumer and consumer: (i) Pro
+analyse the P2P trading price for prosumers and consumers separately. sumer 1 (P1): a prosumer with a standalone PV; (ii) Prosumer 2 (P2): a 
+Instead, they utilized Monte Carlo Simulation on PVs with random ca prosumer with a PV-BESS; and (iii) Consumer 1 (C1): a consumer 
+pacity energy storage systems to calculate the P2P benchmark price. without any DERs system. Besides, this study adopts both uniform and 
+Different from other studies, they combined power purchase agreement individual pricing models based on market-driven methods. To consider 
+with P2P trading market. Kong et al. [18] used fuzzy optimization and the diversity of electricity market structures in the microgrid, this study 
+mixed-integer linear programming to minimize the cost of prosumers proposes five cases according to different electricity market types (i.e., 
+and consumers within a combined NM and P2P market only considering P2G and P2P), retail tariff systems (i.e., progressive and ToU tariff sys
+PVs. As a result, they proposed flat P2P trading rate with two single- tems) as well as market-driven P2P trading pricing models (i.e., uniform 
+objective scenarios: electricity bill minimization and carbon emission and individual pricing models). In order to verify the models used in all 
+minimization. Chen et al. [19] adopted Fast practical Byzantine fault scenarios, a case study will be conducted in Hong Kong’s context 
+tolerance algorithm considering the profit maximization for prosumers, regarding the following reasons; (i) Data availability. Hong Kong was 
+and the electricity cost and satisfaction cost for consumers, respectively, selected due to its high suitability for scenario analysis in terms of data 
+and proposed dynamic and nondynamic P2P trading price for both P2G availability, which offers a unique advantage as it currently operates 
+only and flexible markets. Yaldiz et al. [20] maximized the net profit of under a progressive tariff system while having prior experience with a 
+peers installing PV-BESS by means of mixed-integer linear programming ToU tariff system as a pilot project. In addition, actual electrical load 
+for two consumers and two prosumers, and the dynamic P2P trading data is collected based on three typical four-person households in Hong 
+price is calculated and resulted the same for two prosumers. They also Kong along with their occupation status, daily routine, and domestic 
+concluded that the P2P trading price is equal to the electricity retail electrical appliance utilization pattern; (ii) Seasonal variation. Hong 
+price when P2G market is inactive. Su et al. [21] also used mixed-integer Kong exhibits distinct electricity utilization patterns between summer 
+linear programming to maximize the electricity bill saving for PV-BESS and winter, making it an ideal case study to investigate the impact of 
+installers, and their P2P trading pricing model is established based on a seasonal variations on economic, technical, and environmental perfor
+benchmark price named “clearing price,” and the P2P trading rules mances. (iii) Relevance to research objectives. Hong Kong’s character
+stipulated that P2P selling happens only when the P2P price is lower istics align closely with the research objectives of the study, specifically, 
+than the clearing price, and P2P buying happens only when the P2P by focusing on this region, the research is expected to effectively eval
+price is higher than the clearing price. Yang et al [22] proposed a two- uate the implications of various tariff systems and energy transition 
+stage P2P trading strategy model considering non-peak and peak models within a real-world urban context. 
+period during a day for PV-BESS installers, and maximised the P2P 
+trading benefits in two stages, respectively. As a results, ToU P2P trading 
+price for prosumers are generated. 
+
+3
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 1. Schematic architecture of five cases.  
+
+3. Methodology back to the grid instantaneously. Therefore, both the two pro
+sumers are considered to be equipped with a standalone PV.  
+
+This study develops a diverse microgrid with one consumer (i.e., C1) (ii) Cases 2 and 3: Cases 2 and 3 serve as advanced models to 
+and two prosumers (i.e., P1 and P2) powered by a standalone PV and PV- initialize the P2G trading to P2P trading under current residential 
+BESS under five different cases as illustrated in Fig. 1 and the schematic retail tariff system (i.e., progressive tariff system). More specif
+architectures are explained below:  ically, Cases 2 and 3 are established based on the trading mech
+
+anisms of the progressive tariff system and the proposed P2P 
+(i) Case 1: Case 1 is developed as a baseline model which represents electricity trading system. Besides, in Cases 2 and 3, P1 is a 
+
+the existing RE trading mechanism in Hong Kong. Under Case 1, prosumer with a standalone PV, whereas P2 is a prosumer with a 
+only P2G trading is considered in model development, which PV-BESS. The difference between Cases 2 and 3 is that the pro
+means that all PV system-generated electricity are sold to the posed P2P trading price under Case 2 is a uniform price, which 
+power grid at the electricity export price. In contrast, all house means that all peers within the microgrid adopt the same P2P 
+hold electricity demand is satisfied by electricity purchasing from selling/buying price. However, the proposed P2P trading price 
+the utility company at the electricity retail price. It should be under Case 3 is an individual price, which assigns individual 
+noted that under Case 1, installing BESS is economically unfa selling/buying price to each peer.  
+vorable since all PV-generated electricity are required to be sold (iii) Cases 4 and 5: Cases 4 and 5 are developed as superior models to 
+
+adopt the ToU tariff system into P2P trading. Superior to Cases 2 
+
+4
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 2. Occupation status and daily routine for typical village household members.  
+
+and 3, the trading mechanism under Cases 4 and 5 is operated information, this study has established three representative household 
+according to real-time-pricing on an hourly-basis, which has been types (i.e., H1, H2, and H3), each composed of four household members. 
+launched by the utility company as a 1-year pilot scheme from The occupation status and daily routine of a typical four-person family in 
+2017 [27]. The introduction of the ToU tariff system into the Hong Kong is collected from Wan and Yik’s questionnaire [29] and 
+model is to investigate the managerial flexibility on electricity illustrated by Fig. 2, which has shown that on weekdays, 75 % of the 
+allocation and pricing within the microgrid. Accordingly, P1 and household members will not be at home during daytime (i.e., 08:00 – 
+P2 will remain the same as Cases 2 and 3, prosumers with a 17:00) and almost all household members will be at home after 21:00. 
+standalone PV and a PV-BESS, respectively. Similarly, Case 4 The time household members return home from work or school varies 
+adopts the same P2P trading pricing model as Case 2, proposing a and depends on their employment status (i.e., employed or unemployed) 
+uniform selling/buying P2P trading price for all peers within the as well as occupation. The types of electrical appliances for household 
+microgrid, whereas Case 5 adopts the same P2P trading pricing daily use are collected from [29] and [30] and the input power and 
+model as Case 3, proposing an individual selling/buying P2P estimated running cost of appliances are collected from [31] and [32]. 
+trading price for each peer. Specifically, this study has considered different domestic electricity 
+
+consumption (EC) pattern during summer and winter since Hong Kong 
+locates in a hot climatic region, the EC from air conditioning (AC) ac
+
+3.1. Development of database counts for as much as 39 % of the total EC [32], which could signifi
+cantly affect the electricity demand for households. Referring to the 
+
+3.1.1. Electrical load profile domestic energy usage pattern in Tso and Yau’s study [33], in most 
+According to the summary results of 2021 Population Census [28], cases, the AC is frequently utilized from nighttime to midnight in sum
+
+50 % of domestic household is composed of more than three household mer to cool down the room temperature for improving sleeping quality. 
+members including couple and unmarried children, lone parent and Besides, no noticeable difference in EC pattern is found between week
+unmarried children, couple and at least one of their parents, or couple, days and weekends. Therefore, a maximum of 9-hour utilization of AC in 
+at least one of their parents and their children. Based on this summer is assumed in this study based on Wang et al.’s study [34], and 
+
+Table 1 
+Input power and estimated running cost of appliances, and domestic electrical appliance utilization pattern in summer.  
+
+Operating mode Appliance Input Power (W) Estimated running cost (US$) Utilization duration 
+H1 H2 H3 
+
+On/Off Television 100 0.018/hour 19:00 – 22:00 17:00 –22:00 19:00 – 22:00 
+AC 960 1.140/8 h 18:00 – 02:00 18:00 – 02:00 20:00 – 02:00 
+Hair dryer 500 0.022/15 min 21:00 – 22:00 21:00 – 22:00 22:00 – 23:00 
+Computer 135 0.023/hour 20:00 – 21:00 20:00 – 21:00 21:00 – 22:00 
+Lighting 48 0.008/hour 18:00 – 22:00 18:00 – 22:00 20:00 – 24:00 
+Video/CD player 20 0.004/hour 19:00 – 20:00 19:00 – 20:00 21:00 – 22:00 
+Hi-Fi set 200 0.034/hour 19:00 – 20:00 19:00 – 20:00 21:00 – 22:00 
+Electric kettle 2000 0.057/10 min 20:00 – 21:00 20:00 – 21:00 22:00 – 23:00 
+Toaster 800 0.006/3min 06:00 – 07:00 06:00 – 07:00 05:00 – 06:00 
+Coffee maker 500 0.014/10 min 06:00 – 07:00 06:00 – 07:00 05:00 – 06:00 
+Iron 600 0.100/hour 19:00 – 20:00 08:00 – 09:00 21:00 – 22:00 
+Vacuum cleaner 600 0.052/30 min 20:00 – 21:00 09:00 – 10:00 22:00 – 23:00 
+Exhaust fan 50 0.009/hour 19:00 – 20:00 12:00 – 13:00 21:00 – 22:00 
+Washing machine 500 0.038/45 min 21:00 – 22:00 13:00 – 14:00 23:00 – 24:00 
+Microwave oven 900 0.078/30 min 18:00 – 19:00 12:00 – 13:00, 18:00 – 19:00 – 
+Rice cooker 500 0.029/20 min 17:00 – 18:00 11:00 – 12:00, 17:00 – 18:00 – 
+Range hood 130 0.023/hour 17:00 – 18:00 11:00 –12:00, 17:00 – 18:00 – 
+
+Continuous-running Refrigerator 115 0.15/Day 01:00 – 24:00 01:00 – 24:00 01:00 – 24:00  
+
+5
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 3. Electrical load profile for peers H1, H2 and H3 in the microgrid.  
+
+6
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Table 2 angle in standard International Organization for Standardization system 
+Parameters in PV modelling.  (0◦
+
+− 360◦ ) [36], γs is calculated by Eq. (2): 
+Parameters Description γs = sinφ*sinδ − cosφ*cosδ*cosω (2)  
+PV module 320 W polycrystalline PV 
+
+module [43] where φ, δ and ω represent the latitude, declination angle and the hour 
+Unit solar panel area 1.6 m2 [43] angle, respectively (degree, ◦). The value of φ is reliably determined 
+Installed capacity 6.4 kW 
+Solar panel yield 16.53 % [43] from the official website of Hong Kong Observatory [37,38] while δ and 
+Performance ratio 0.75 [44] ω can be calculated by Eqs. (3) and (4): 
+Latitude 22.3106◦N [37,38] ( ( ))
+Unit capital cost 3,185 US$/kW [45] 284 + DOY
+
+δ = 23.45*sin 360* (3)  
+Unit O&M cost (proportion of unit capital cost) 1 % [46] 365
+Unit decommissioning cost (proportion of unit 5 % [47] 
+
+capital cost) ω = t*15 (4)  
+Degradation rate 0.9 % [48–50] 
+System service life 25 years 
+System title angle 14 – 22◦ [51] where t is the local solar time. 
+System orientation South [51] Finally, Ge,t is calculated based on Eq. (5) [39–41]: 
+Solar constant 1,367 m2  
+
+Ge,t = Rg*A*∊*PR (5)  
+
+no utilization of AC is assumed in winter. Other than AC, the utilization where Ge,t is the hourly PV system electricity generation (W), A is the 
+of electrical appliances is assumed to be the same between summer and total area of solar panels (m2), ∊ is the solar panel yield (%), which 
+winter. The utilization duration of all appliances is collected from represents the amount of energy harvested from solar panels, which are 
+[29–31]. Table 1 summarizes the electrical appliance utilization pattern subjected to external factors such as orientation, wind speed, shade, 
+in summer for H1, H2, and H3, and the electrical load profile is even ambient temperature, and dust deposition. PR is the performance ratio, 
+tually established and illustrated in Fig. 3. which measures the efficiency of energy output and thus considers the 
+
+possible internal losses during the conversion of solar energy into elec
+3.1.2. PV modelling tricity (i.e., inverter losses and cable losses) by the PV system. 
+
+Hourly solar PV electricity generation (Ge,t) is calculated based on A is determined according to Green and Amenity Facilities in New 
+hourly global radiation (Rg) [35,36], which is calculated from Eq. (1): Territories Exempted Houses, which is issued by the Building Department 
+
+( ( )) of Hong Kong and it stipulates that half of the rooftop area is legal for PV 
+360*DOY
+
+R installation [42]. Therefore, considering the rooftop area of a typical 
+g = I0* 1+ 0.033*cos *sinγ
+
+36 s (1)  
+5 village house is 65 m2, the legal area for PV installation is then deter
+
+mined as 32 m2. Besides, 320 W polycrystalline PV module with unit 
+where Rg denotes the global radiation on an hourly basis (W/m2), I0 is solar panel area of 1.6 m2 is utilized in this study [43], which means that 
+the solar constant value (W/m2), DOY represents the day-of-year, which the total PV system installed capacity is decided as 6.4 kW. The pa
+equals to the value of the n th day of the year. γs represents the solar rameters utilized in the PV modelling is summarized in Table 2. 
+altitude angle (degree, ◦). Following the clockwise measurement of solar As a result, hourly solar PV system output during one typical summer 
+
+Fig. 4. Hourly solar PV output in summer and winter.  
+
+7
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Table 3 than this limit), SoCmax is the maximum state of charge above which the 
+Parameters in BESS modelling.  battery should not be charged. The battery type used in this study is 
+
+Parameters Description NP100-12FR Lead-Acid with a capacity of 100 Ah/12 V [53], the 
+number of series of batteries is 20, which is decided by the average value 
+
+Battery type NP100-12FR Lead-Acid [53] 
+Battery capacity 100 Ah/12 V [53] of residential BESS capacity data reported by National Renewable En
+Number of series 20 [54] ergy Laboratory [54]. The maximum battery charge limit should be 
+Minimum SoC 0.3 [30,55] determined based on the limit of nominal battery capacity so that at any 
+Maximum SoC 0.9 [30,55] instant of time, the battery should not be charged beyond 100 % as 
+Charging and discharging efficiency 90 % [53] 
+Maximum charging and discharging limit 1 [30]  expressed in Eq. (11). The parameters utilized in the BESS modelling is 
+
+summarized in Table 3. 
+P
+
+day (DOY char,t
+= 210, July) and one typical winter day (DOY = 1, January) 
+
+is calculated and illustrated in Fig. 4. η + SoCt− 1 ≤ 1 (11)  
+b*Ib
+
+Moreover, to provide a sustainable energy supply, the SoC
+3.1.3. BESS modelling en is generally 
+
+limited not to be lower than the SoCin as expressed in Eq. (12): 
+The charging and discharging capacity of BESS is constrained by the 
+
+charging and discharging limits of the battery, as well as the state of SoCin ≤ SoCen (12)  
+charge (SoC) limits, as expressed by Eqs. (6) to (8) [30,52]. 
+
+where SoCin and SoCen represent the initial state and end state of BESS 
+0 ≤ Pchar,t ≤ Pchar,max (6)  each day. 
+
+0 ≤ Pdis,t ≤ Pdis,max (7)  
+3.2. P2P trading pricing models 
+
+SoCmin ≤ SoCt ≤ SoCmax (8)  
+3.2.1. Uniform P2P trading pricing model 
+
+Where Pchar,tandPdis,t are the charging and discharging limits of BESS A uniform P2P trading price is determined based on the SDR in the 
+system (kW), respectively, which are subject to the maximum charging whole microgrid which is determined by Eq. (13) [23,56,53]. The dy
+and discharging limits Pchar,maxandPdis,max (kW), respectively. SoCt is the namic energy supply available for P2P trading within the microgrid is 
+state of charge, which represent the level of the charge status of a battery the sum of surplus RE after the self-consumption by prosumers. The 
+and it is affected by the battery capacity. SoCt is updated hourly by Eq. dynamic energy demand within the microgrid is the sum of electrical 
+(9), subject to Eq. (10): load shortage after the self-sufficiency of all peers. Based on these dy
+
+namic energy supply and demand, it is found that the P2P selling price is 
+P
+
+SoC char,t Pdis,t*η
+η − b
+
+t = SoCt− 1 +( ) (9)  inversely proportional to the SDR as shown in Fig. 5, with a maximum 
+b*Ib Ib value equal to electricity retail price when SDR is zero and a minimum 
+
+value equal to electricity export price when SDR exceeds one. Accord
+SoCmin ≤ SoCt ≤ SoCmax (10)  ingly, the P2P selling and buying price are determined by Eqs. (14) and 
+where ηb is the charging/discharging efficiency of the battery (%) (15). 
+and Ib is the total capacity of the battery (amp-hours). SoCmin is the G
+
+SDR sur grid
+minimum limit of state of charge (battery should not be discharged less grid = (13) 
+
+Qshor grid
+
+Fig. 5. Uniform P2P trading pricing model.  
+
+8
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 6. Individual P2P trading pricing model.  
+
+⎧ and buying prices are independent from each other. Accordingly, SR and 
+⎪ P ail*P
+⎨ ret export
+
+( ) , 0 ≤ SDR ≤ 1 DR are determined by Eqs. (20) and (21), and P2P selling and buying 
+Psell = f (SDRgrid) Pretail − Pexport *SDR + Pexport (14)  
+
+⎪⎩ prices are therefore calculated by Eqs. (22) and (23). 
+Pexport, 1 < SDR
+
+G
+{ SR sur peer i
+
+peer i = (20)  
+( ) Ge,t
+
+P R Psell*SDR + Pretail*(1 − SDR), 0 ≤ SDR ≤ 1
+buy = f SD grid = Pexport, 1 < SDR (15)  
+
+Q
+DR shor peer i
+
+peer i = (21)  
+where SDRgrid is the supply–demand ratio of the whole microgrid, Qpeer i
+
+Gsur grid is the surplus RE in the microgrid while Qshor grid is the electrical 
+( )
+
+load shortage in the microgrid after RE self-consumption (kWh). Spe P
+Psell i = f SR retai)l
+
+*Pexport
+peer i = ( (22)  
+
+cifically, under the ToU tariff system with uniform P2P trading price (i. Pretail − Pexport *SRpeer i + Pexport
+
+e., Case 4), the SDR is depended on Eqs. (16) and (17) during non-peak ( ) ( )
+period, and depended on Eqs. (18) and (19) during peak period: Pbuy i = f DRpeer i = Pretail − Pexport *DRpeer i +Pexport (23)  
+
+( )
+Gsur grid = Ge,t − GRE to load − GRE to BESS *Tnonpeak (16)  where SRpeer i and DRpeer i refer to the surplus ratio and demand ratio of 
+
+a specific peer i, Gsur peer i is the surplus RE of peer i after self- 
+Qshor grid = (Qgrid − GRE to load)*Tnonpeak (17)  consumption, Qshor peer i is the electrical load shortage of peer i after 
+
+self-consumption (kWh), and Qpeer i is the electrical load demand for 
+where GRE to load is the RE consumed for meeting the electrical load in peer i (kWh). Specifically, under the ToU tariff system with individual 
+the microgrid (kW), GRE to BESS is the RE used for BESS charging after P2P trading price (i.e., Case 5), the SR and DR depend on Eqs. (24) and 
+self-consumption (kW), Qgrid is the electrical load demand of the (25) during non-peak period, and Eqs. (26) and (27) during peak period, 
+microgrid (kW). Tnonpeak refers to the non-peak time slots (Hour). respectively: 
+G ( )
+
+sur grid = (GRE to BESS − GBESS to load)*Tpeak (18)  Gsur peer i = Ge,t − GRE i load − GRE i BESS − GRE i load j *Tnonpeak (24)  
+
+Qshor grid = (Qgrid − GBESS to load)*Tpeak (19)  Qshor peer i = (Qpeer i − GRE i load)*Tnonpeak (25)  
+
+where GBESS to load is the BESS discharging for satisfying the electrical where GRE i load is the RE consumed by peer i to satisfy its own electrical 
+load in the microgrid (kW), and Tpeak refers to the peak time slots (hour). load (kW), GRE i BESS is the RE used for BESS charging by peer i after self- 
+
+consumption (kW), and GRE i load j is the surplus RE traded from peer i to 
+3.2.2. Individual P2P trading pricing model peer j to satisfy the load shortage of peer j (kW). 
+
+An individual P2P trading price is determined based on the SR and ( )
+DR of each prosumer in the microgrid. In other words, P2P selling and Gsur peer i = GRE i BESS − GBESS i load − GBESS i load j *Tpeak (26)  
+buying prices are established independently for P1 and P2, respectively. 
+As illustrated in Fig. 6, the P2P selling price is found inversely propor Qshor peer i = (Qpeer i − GBESS i load − GBESS i load j)*Tpeak (27)  
+tional to a particular peer’s SR, while the P2P buying price is considered 
+proportional to a particular peer’s DR. It is worth mentioning that since Where GBESS i load is the BESS discharging by peer i to satisfy its own 
+SR and DR is impossible to be positive simultaneously, the P2P selling electrical load (kW), and GBESS i load j is the BESS discharging traded 
+
+9
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 7. P2P trading dispatch rules.  
+
+from peer i to peer j to satisfy the load shortage of peer j (kW). (ii) Two buyers and one seller: Under this scenario, the buyer with a 
+higher total electricity purchasing cost (Tc) owns the trading 
+
+3.3. P2P trading dispatch rule priority in order to reduce the overall electricity purchasing cost 
+within the microgrid. The total electricity purchasing cost (Tc) 
+
+3.3.1. Uniform pricing model dispatch rule includes the cost of P2P trading as well as the electricity pur
+P2P trading dispatch rule is proposed in Fig. 7 to simulate the P2P chasing from the grid for fulfilling the remaining electrical load 
+
+trading flow within the proposed microgrid. As shown in Fig. 7, the shortage, and can be calculated by Eq. (28): 
+simulation begins during the non-peak period (daytime) where RE is Tc = QP2P,t*Psell +Qgrid,t*Pretail (28)  
+generated by P1 and P2 for self-consumption and BESS charging. Next, 
+whether surplus RE is available by P1 and P2 will be examined sepa where QP2P,t is the amount of electricity traded through P2P 
+rately, which results in different RE allocation and trading branches. (kWh) while Qgrid,t is the amount of electricity traded through the 
+Then, the peer(s) who has an electrical load shortage will investigate the grid (kWh). Pretail refers to the electricity retail price (US¢/kWh).  
+total electricity trading cost of purchasing P2P electricity from other (iii) All buyers: Under this scenario, all peers will buy electricity from 
+peer(s) considering its surplus amount of RE, as well as purchasing the grid. 
+electricity from the grid to satisfy the remaining load shortage. At this 
+point, three possible scenarios will emerge:  During peak period (night-time), BESS begins to discharge to meet 
+
+P2′s load shortage first, and two scenarios will emerge at the allocation 
+(i) One buyer and two sellers: Under this scenario, between P1 and and trading process:  
+
+P2, whichever has more surplus RE owns the trading priority due 
+to P2P trading convenience. If C1′s electrical load demand is not (i) Two buyers and one seller: Under this scenario, the buyer with a 
+satisfied by the first round of P2P trading, then C1 will continue higher total electricity purchasing cost (Tc) owns the trading 
+buying electricity from another seller in the second round of P2P 
+trading.  
+
+10
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 7. (continued). 
+
+priority to reduce the overall electricity purchasing cost within 
+the microgrid.  Table 4 
+
+(ii) All buyers: Under this scenario, all peers will buy electricity from Determination of P2P trading priority.  
+
+the grid. Classification Uniform pricing Individual pricing 
+model model 
+
+3.3.2. Individual pricing model dispatch rule Non- One buyer (i.e., C1) Selling priority Selling priority goes to 
+Under the individual pricing model, individual P2P buying and peak and two sellers (i.e., goes to a peer with a peer with a lower 
+
+selling price are allocated to each peer, which results in different period P1 and P2) a higher surplus RE P2P selling price 
+Two buyers (i.e., C1 Buying priority Buying priority goes to 
+
+dispatch rules as follows. The P2P allocating and trading process during and either P1 or P2) goes to a peer with a peer with a higher 
+non-peak period (daytime) will be strategized differently according to and one seller (i.e., P1 a higher Tc P2P buying price 
+three scenarios below:  or P2) 
+
+All buyers (i.e., C1, No P2P trading, all peers buy electricity from 
+P1, and P2) the grid 
+
+(i) One buyer and two sellers: Under this scenario, P1 and P2 will Peak Two buyers (i.e., C1 Buying priority Buying priority goes to 
+offer their P2P selling price individually, and whichever with a period and P1) and one seller goes to a peer with a peer with a higher 
+lower selling price owns the trading priority.  (i.e., P2) a higher Tc P2P buying price 
+
+(ii) Two buyers and one seller: Under this scenario, the buyer with a All buyers (i.e., C1, No P2P trading, all peers buy electricity from 
+
+higher buying price owns the trading priority.  P1, and P2) the grid  
+
+(iii) All buyers: Under this scenario, all peers will buy electricity from 
+the grid. Ultimately, the P2P trading price is the minimum value between the 
+
+selling price of the seller and the buying price of the buyer, and the 
+During peak period (night-time), BESS begins to discharge to meet purpose is to facilitate the internal electricity trading and sharing within 
+
+P2′s load shortage first, and two scenarios will emerge at the allocation the microgrid. The determination of P2P trading priority under uniform 
+and trading process:  and individual pricing models are summarized in Table 4. See Table 5.. 
+
+(i) Two buyers and one seller: Under this scenario, the buyers with a 
+higher buying price owns the trading priority.  
+
+(ii) All buyers: Under this scenario, all peers will buy electricity from 
+the grid. 
+
+11
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Table 5 
+Cost specifications of PV and BESS systems.  ECFi = CP2P,t + Cgrid,t − BP2P,t − Bgrid,t (31)  
+
+Classification Cost specifications where ECF refers to the net electricity cash flow in month i (US$), 
+PV system Installed capacity 6.4 kW CP2P,tandCgrid,t are the cost of purchasing electricity through P2P or P2G 
+
+Service time 20 years trading if there is a necessity of electricity demand after self- 
+CAPEX 3,500 US$/kW [23] 
+OPEX Operation and maintenance 1 % of CAPEX consumption (US$). BP2P,tandBgrid,t are the benefit from selling surplus 
+
+Inverter replacement cost 9.5 % of CAPEX at 10th year electricity generated from PV system or stored in the BESS through P2P 
+BESS Battery capacity 100 Ah / 12 V [53] or P2G trading (US$).  
+
+CAPEX 150 US$/kWh [53] 
+Battery service life 5 years 
+
+• Lifetime net present value (NPV) is calculated to assess the lifetime 
+Others Discount rate 3 % [57] 
+
+Electricity retail price annual 1.4 % [23]  expenditure of three peers in the microgrid under five cases, which is 
+increasing rate calculated by Eq. (32): 
+
+∑t=T OPEX ∑t=T ECF(1 + λ t− 1
+)
+
+3.4. Assessment indicators of renewable energy system NPV = CAPEX + t + (3  
+t 1 + i (1 t 2) 
+=1 ( ) t=1 + i)
+
+3.4.1. Technical performance  where CAPEX refers to the capital expenditure of the PV and PV-BESS 
+systems (US$), OPEX refers to the operation expenditure including 
+
+• Self-consumption ratio (SCR) is adopted to examine the on-site annual operation and maintenance cost (US$) as well as the inverter 
+application efficiency of RE for electrical load and storage in the replacement cost at the middle of the PV system’s lifespan (US$). The 
+microgrid. SCR is the percentage of PV-generated RE directly service time of the PV system and BESS is considered as 20 years and 5 
+consumed by the loads, and can be formulated by Eq. (29). years, respectively, which means that P2 needs to replace new BESS 
+
+∑ ∑ ∑
+G every five years. i is the discount rate which is considered 3 % [57], and λ 
+
+SCR RE i load + GRE i BESS + GRE i load j
+= ∑ (29)    
+
+G is the electricity retail price annual increasing rate, which is considered 
+e,t as 1.4 % [23]. The cost specifications of the PV and BESS systems are 
+
+summarized in Table 7. 
+• Self-sufficiency ratio (SSR) is formulated to investigate the on-site 
+
+microgrid load coverage by RE systems. SSR is the percentage of 3.4.3. Environmental performance 
+PV-generated RE consumed and discharged to fill the load demand, Environmental performance of the proposed P2P trading compared 
+and can be calculated by Eq. (30). with P2G trading is examined by the monthly equivalent carbon emis
+
+∑ ∑ ∑
+G sions (CEeq) as expressed by Eq. (33), and the results will provide in
+
+SSR RE i load + GRE i BESS + GRE i load j
+= ∑ (30)  
+
+Q sights for policymakers towards the execution of Hong Kong’s Climate 
+peer i Change Action Plan 2030+ [58], which is implemented to address 
+
+climate change challenges. 
+3.4.2. Economic performance  
+
+(∑ ∑ )
+CEeq = Gimport − Gexport *CEFeq (33)  
+
+• Net electricity cash flow is introduced to measure the net economic 
+efficiency, which indicates the final cost or revenue of three peers as where G
+well as the entire microgrid as expressed by Eq. (31), and it is import and Gexport represent the imported electricity from the grid 
+
+and the exported electricity from RE to the grid (kWh), respectively. 
+measured on a monthly-basis. CEFeq refers to the equivalent CO2 emissions of the grid and is equal to 
+
+Fig. 8. SoC of PV-BESS.  
+
+12
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 9. P2P electricity trading price under the progressive tariff system.  
+
+0.572 kg/kWh. fluctuation is different between winter and summer owing to the fact 
+that in winter, the SoC never meets its maximum limit, which indicates 
+
+4. Results and discussions that all RE can be charged into the BESS after self-consumption during 
+non-peak period. 
+
+4.1. P2P electricity trading price If the ToU tariff system (Cases 4 and 5) is adopted in the microgrid 
+(Fig. 10), the uniform selling price of P2P trading in summer (Fig. 10 (a)) 
+
+The model development and simulation of PV-BESS for P2 in the and winter (Fig. 10 (b)) are found to be consistent with each other 
+microgrid is conducted by MATLAB, and the results of SoC in summer similar to Cases 2 and 3, where the selling price from 1:00 to 7:00 and 
+and winter are demonstrated in Fig. 8. 21:00 to 24:00 equals to the electricity retail price while the selling price 
+
+The results of optimal P2P electricity trading price within the from 8:00 to 20:00 equals to the electricity export price. As for the re
+microgrid are illustrated in Figs. 10 and 11 under progressive tariff sults of individual P2P selling price, the pattern is regarded consistent 
+system and ToU tariff system, respectively. It can be seen that if the with Cases 2 and 3 as well, where the individual P2P selling price for P1 
+progressive tariff system (Cases 2 and 3) is implemented in the microgrid fluctuates during 8:00 to 17:00 in summer and winter, whereas the in
+(Fig. 9), the uniform selling price of P2P trading in summer (Fig. 9 (a)) dividual P2P selling price for P2 fluctuates during 16:00 to 20:00 in 
+and winter (Fig. 9 (b)) are consistent with each other, where the selling summer and 18:00 to 21:00 in winter. 
+price from 1:00 to 7:00 and 21:00 to 24:00 equals to the electricity retail 
+price since the SDR is zero during these time slots, while the selling price 4.2. P2P electricity trading strategy 
+from 8:00 to 20:00 equals to the electricity export price since the SDR 
+exceeds one during these time slots. As for the results of individual P2P Following the flowchart and decision-making rules illustrated in 
+selling price, it is found that in summer, the individual selling price for Fig. 7, the results of P2P electricity trading strategy are demonstrated in 
+P1 varies from 8:00 to 17:00, and the individual selling price for P2 Figs. 11 to 13. For C1 in summer (Fig. 11 (a)), P2P electricity buying 
+varies from 16:00 to 20:00. As for in winter, the individual selling price from P1 occurs during 8:00 to 16:00 and P2P electricity buying from P2 
+for P1 is found also varies from 8:00 to 17:00, whereas the individual occurs during 17:00 to 20:00, and P1 will buy electricity at other time 
+selling price for P2 varies from 18:00 to 21:00. The time period of price slots from the grid. It should be noted that as mentioned above, C1 will 
+
+13
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 10. P2P electricity trading price under the ToU tariff system.  
+
+choose the prioritized peer based on cost minimization principle at 4.3. Technical performance 
+16:00 and 17:00, and according to our calculation, purchasing elec
+tricity from P1 at 16:00 while from P2 at 17:00 will be the most cost- The results of SCR and SSR under P2G and P2P trading within the 
+effective solution. As for the trading strategy for C1 in winter (Fig. 11 whole microgrid in summer and winter, respectively, are summarized in 
+(b)), purchasing electricity from P1 during non-peak daytime (8:00 to Table 6. Under P2G trading (i.e., Case 1), the SCR and SSR are both zero 
+17:00) and from P2 during most of the peak night-time (18:00 to 21:00) since all PV-generated electricity are sold to the utility company under 
+is considered the most economically effective. FiT scheme, no surplus electricity is allowed to be self-consumed or to 
+
+In terms of P1 in summer and winter (Fig. 12 (a) and (b)), it can be cover electrical load demand. Nonetheless, under P2P trading (i.e., 
+seen that during 7:00 to 17:00, the PV system-generated electricity is Cases 2 to 5), the SCR and SSR are found significant when measuring the 
+first self-consumed by P1, and surplus electricity is sold to C1. Eventu efficiency of the RE systems within the microgrid. In terms of summer, 
+ally, all residual electricity is sold to grid. When peak period starts (i.e., the SCR of RE systems is as high as 60.54 %, representing the efficiency 
+18:00), P1 will buy electricity from P2 as long as it is sufficient to cover of PV-generated electricity that has been supplied for self-consumption 
+the load demand. Finally, the utility company will feed the unsatisfied or battery storage. Furthermore, a 35.96 % of SSR in summer indicates 
+load of P1. the value of coverage of the peer load demand that has been fulfilled by 
+
+Regarding P2 in summer and winter (Fig. 13 (a) and (b)), the PV the PV-generated electricity. Besides, the SCR and SSR are found 
+system-generated electricity is directly self-consumed by P2 during 7:00 improved effectively in winter, respectively, which are caused by the 
+to 17:00, and surplus electricity will be stored in the BESS until seasonal difference in PV-generated electricity, electrical load change 
+maximum SoC is achieved. During peak period, BESS will discharge to and the change of load demand from peers. 
+satisfy P2′s load demand first, and then it will continue discharge to meet In addition, the SCR and SSR of standalone PV and PV-BESS are 
+other peers’ load demand until minimum SoC is reached. As mentioned illustrated in Fig. 14. It is revealed that in winter, the SCR of PV-BESS 
+above, maximum SoC will be reached at daytime in summer, therefore, reaches 100 %, which means that all PV-generated electricity has been 
+grid export occurs only at 16:00 and 17:00 for P2. However, in winter, it fully utilised within the microgrid. Even in summer, the SCR of PV-BESS 
+is found that all the PV system-generated electricity is self-consumed or is as high as 91.98 %, which indicates that only 8.02 % of PV-generated 
+traded within the grid, and no grid export occurs for P2. electricity is not utilised for self-consumption or battery storage, and 
+
+14
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 11. P2P electricity trading strategy for C1.  
+
+sold to the grid instead. Moreover, the SSR of PV-BESS in winter and will be increased to 295.09 US$, which is believed reasonable as it is 
+summer are also significant with the value of 42.22 % and 25.99 %, consistent with [23]’s study who explained that the increase of elec
+respectively. Furthermore, the SCR and SSR of the PV-BESS are found tricity bill takes the grid flexibility management into account. None
+generally higher than those of the standalone PV. This indicates that the theless, the electricity bill saving under Cases 4 and 5 against Case 1 
+PV-BESS has more flexibility in managing the P2P trading strategy than (ToU) is still significant. 19.3 % of electricity bill saving is found under 
+the standalone PV, and it is more efficient in electricity dispatching and Case 4 considering uniform P2P pricing model, and when individual P2P 
+trading within the microgrid. trading pricing model is applied, the electricity bill saving will be the 
+
+highest (i.e., 31.33 %). In terms of winter, the monthly electricity bill in 
+4.4. Economic performance the entire microgrid is approximately 121.58 US$ and 149.40 US$ under 
+
+Case 1 (progressive) and Case 1 (ToU), respectively. However, since the 
+4.4.1. Electricity bill saving SCR and SSR in winter are higher than those in summer, the electricity 
+
+The monthly electricity bill under Cases 1 to 5 in the entire microgrid bill saving is found considerably significant. 
+is summarized in Fig. 15. To provide a more straightforward conclusion 
+on the electricity bill saving under Cases 2 to 5 against Case 1, the results 4.4.2. Monthly net cashflow 
+from Fig. 15 is further summarized in Table 7. It is worth noticing that The detailed breakdown of monthly cashflow involved in electricity 
+considering different retail tariff system, Cases 2 and 3 are compared to trading regarding C1, P1 and P2 are illustrated in Fig. 16. In this figure, 
+Case 1 under the progressive tariff system while Cases 4 and 5 are the final net cashflow consists of the estimated electricity bill, peer 
+compared to Case 1 under the ToU tariff system. Fig. 16 reveals that in trading profit and grid export profit. The positive value indicates cash 
+summer, the monthly electricity bill within the entire microgrid under outflow while the negative value indicates cash inflow. For C1, the final 
+Case 1 (Progressive) is about 215.18 US$, and it is reduced by 21.51 % net cashflow equals to the estimated electricity bill since C1 is not a PV 
+and 20.93 % in Cases 2 and 3, respectively, in terms of uniform and installer who can sell electricity to other peers or back to the grid. As a 
+individual P2P pricing models. If the ToU tariff system is introduced (i. result, in summer (Fig. 16 (a)), the final net cashflow for C1 is calculated 
+e., Case 1 (ToU)), the monthly electricity bill within the entire microgrid as 75.95 US$ under Case 1 (progressive) and 107.82 US$ under Case 1 
+
+15
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 12. P2P electricity trading strategy for P1.  
+
+(ToU), and it can be reduced by 11.81 %, 10.74 %, 5.25 %, and 23.60 %, Surprisingly, it is found that the NPV of the entire microgrid under Cases 
+respectively, under Cases 2 to 5. 2 and 3, and Cases 4 and 5 are the same despite the fact that the lifetime 
+
+Regarding P1, the final net cashflow considers the profit from selling NPV of each peer varies across all cases. This finding indicates that if the 
+PV-generated electricity to the grid in addition to the estimated elec entire microgrid is considered, the lifetime NPV will not be affected in 
+tricity bill. As a result, in summer (Fig. 17 (a)), if the final net cashflow is spite of uniform or individual P2P trading pricing models, and it will 
+regarded as the net electricity bill, and is compared to the original only be affected by the retail tariff system (i.e., progressive or ToU tariff 
+estimated electricity bill (i.e., excluding the profits from selling PV- systems). Under this circumstance, compared to Case 1 (progressive), 
+generated electricity), then 65.01 % (Case 1(Progressive)), 49.49 % the lifetime NPV is reduced by 3.9 % under Cases 2 and 3. In addition, 
+(Case 1 (ToU)), 71.27 % (Case 2), 71.05 % (Case 3), 46.67 % (Case 4) compared to Case 1 (ToU), the lifetime NPV is reduced by 7.67 % under 
+and 57.92 % (Case 5) reduction are found as electricity bill saving in Cases 4 and 5. If each peer is considered independently, the lifetime NPV 
+Cases 1 to 5, respectively. of C1 and P1 are the lowest under Case 3, whereas the lifetime NPV of C1 
+
+In terms of P2, the final net cashflow considers the profit from selling and P1 are the lowest under Case 4. 
+PV-generated electricity to the grid and the peers in addition to the 
+estimated electricity bill. As a result, in summer (Fig. 17 (a)), P2 is found 4.5. Environmental performance 
+already capable of making profit of 15.57 US$ under Case 4, and the 
+final net cashflow compared to the original estimated electricity bill (i. The monthly carbon emission of P2G and P2P trading within the 
+e., excluding the profits from selling PV-generated electricity) is also microgrid is demonstrated in Fig. 18. It is revealed that 946.80 kg CO2- 
+considerably reduced in other cases. Specifically, 79.82 %, 57.69 %, eq and 534.96 kg CO2-eq carbon emission are examined in P2G trading, 
+66.77 %, 68.95 %, 128.65 %, and 63.16 % reduction of final net cash and they are alleviated by 62.98 % and 92.56 %, respectively in P2P 
+flow are investigated in Cases 1 to 5, respectively. trading. This is because in the proposed peer trading strategy, self- 
+
+consumption and peer load coverage by PV-generated electricity and 
+4.4.3. Lifetime NPV battery discharging are prioritized than grid electricity supply, hence
+
+The results of lifetime NPV under five cases are illustrated in Fig. 17. forth, the carbon emission issue is effectively addressed within the 
+
+16
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 13. P2P electricity trading strategy for P2.  
+
+Table 6 Table 7 
+SCR and SSR under P2G and P2P trading.  Electricity bill saving under Cases 2 to 5 against Case 1.  
+
+Classification Self-consumption ratio Self-sufficiency ratio Classification Case 2 Case 3 Case 4 Case 5 
+(SCR) (SSR) 
+
+Summer C1  11.81 %  10.74 %  5.25 %  23.60 % 
+Summer P2G trading (Case 0 0 P1  30.33 %  29.76 %  19.01 %  34.60 % 
+
+1) P2  22.48 %  22.48 %  37.16 %  37.16 % 
+P2P trading (Cases 60.54 % 35.96 % Microgrid  21.51 %  20.93 %  19.30 %  31.33 % 
+2 to 5) Winter C1  12.64 %  20.04 %  37.45 %  36.74 % 
+
+Winter P2G trading (Case 0 0 P1  44.44 %  50.92 %  55.30 %  54.94 % 
+1) P2  31.20 %  31.20 %  35.41 %  35.41 % 
+P2P trading (Cases 67.43 % 59.80 %  Microgrid  29.43 %  34.30 %  43.02 %  42.62 %  
+2 to 5) 
+
+P2P), retail tariff systems (i.e., progressive and ToU tariff systems) as 
+microgrid. This finding emphasizes on the necessity of electricity trading well as market-driven P2P trading pricing models (i.e., uniform and 
+model reform from P2G to P2P from the environmental perspective. individual pricing models). This study is attributed to filling the research 
+
+gaps in terms of peer diversity and superiority of applying the individual 
+5. Conclusion pricing model into the ToU tariff system. As a result, the P2P electricity 
+
+trading price and strategy are investigated, and the technical perfor
+This study has proposed P2P electricity trading prices and strategies mance, economic performance as well as environmental performance 
+
+with dispatch rules based on market-driven methods for a residential are analysed. The major findings are summarized below: 
+prosumers and consumers in a microgrid. To this end, five cases are 
+established regarding different electricity market types (i.e., P2G and 
+
+17
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 14. SCR and SSR of a standalone PV and PV-BESS.  
+
+Fig. 15. Monthly electricity bill in the microgrid.  
+
+(i) The introduction of individual pricing model has led to the dy no self-consumption or P2P trading is allowed within the 
+namics of P2P electricity trading price compared to the uniform microgrid. However, SCR and SSR have been significantly 
+P2P trading pricing model during both summer and winter. The enhanced in Cases 2 to 5. Besides, SCR and SSR are found higher 
+fluctuating duration of individual P2P selling price for P1 and P2 in winter than in summer, which are attributed to the seasonal 
+differs due to different functions of P1 and P2 serving in the difference in PV-generated electricity, electrical load change and 
+microgrid. Since P1 installs a standalone PV system only, the the change of load demand from peers. Meanwhile, SCR and SSR 
+generated electricity will be self-consumed and traded instanta of the PV-BESS tended to be higher than that of the standalone 
+neously at each time slot, which leads to trading surplus elec PV. This indicates that the PV-BESS has more flexibility in man
+tricity only during daytime when the PV system can produce aging the P2P trading strategy than the standalone PV and is 
+electricity. Meanwhile, P2 can trade PV system-generated elec more efficient in electricity dispatching and trading within the 
+tricity at night-time since it installs PV-BESS, which allows the microgrid.  
+battery to store as much electricity as possible during the non- (iii) Economic performance of P2P trading is observed significantly 
+peak period and trade it within the microgrid during the peak efficient under ToU tariff system and with the support of BESS, 
+period.  which is in line with the major conclusions drawn by [25,26,59]. 
+
+(ii) Technical performance is effectively improved in P2P trading It is found that the electricity bill can be significantly reduced 
+compared to P2G trading, and is proven to be more efficient in under the implementation of the ToU tariff system. In summer, 
+winter than in summer. In Case 1, SCR and SSR are all zero since Case 5 shows the highest electricity bill saving in terms of each 
+
+18
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 16. Monthly cashflow in electricity trading by all peers.  
+
+peer and the entire microgrid, while Case 4 does in winter. This (iv) In terms of environmental performance, the monthly carbon 
+finding implies that P2P electricity trading can be more emission is significantly addressed in P2P electricity trading in 
+economically efficient under the ToU tariff system. Moreover, both summer and winter. 
+results of the monthly net cashflow shows that in winter, it is 
+economically profitable under all cases for P2, which means that In light of above findings, policy implications and recommendations 
+the electricity bill can be fully reimbursed by P2P trading. This are drawn in terms of the following aspects:  
+finding highlights the critical role of BESS in P2P trading. 
+Furthermore, in terms of the lifetime NPV, it is observed that the (i) The successful illustration of applying uniform and individual 
+lifetime NPV will not be affected regardless of uniform or indi pricing models in determining the P2P electricity trading price 
+vidual P2P trading pricing models if the entire microgrid is has implied that although the RE market is still under develop
+considered, and it will only be affected by the retail tariff system ment with the support of FiT policy in the form of P2G trading in 
+(i.e., progressive or ToU tariff system).  Hong Kong, it is promising to transit the P2G trading market into 
+
+a P2P trading market in a post-FiT policy era. The case study in 
+this research has not only explicitly proven the feasibility of 
+
+19
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+Fig. 17. NPV of peers in the microgrid.  
+
+Fig. 18. Monthly carbon emission under P2G and P2P trading.  
+
+altering the RE market type from P2G to P2P within a microgrid of RE trading. Nonetheless, the current RE market in Hong Kong 
+consisting of typical residential village houses in Hong Kong, but is still policy-driven since the fast development of residential PV 
+also serves as a preliminary model of which the developed algo is attributed to high reimbursement guaranteed from the utility 
+rithms in P2P trading could be appropriately utilized by policy companies. Therefore, it is recommended that the policymakers 
+makers in a broader application; for example, the proposed promote the development of BESS following the path of PV 
+algorithms, models, and strategies are believed to be applied to developmental trajectory, and ensure the financial profitability of 
+all districts with low-rise village houses in Hong Kong involved in BESS installation for householders. 
+RE trading; or facilitating more energy system configurations in 
+various building types; for example, integrating electricity vehi The novelty and contribution of this study are summarized as fol
+cles and wind turbines into the proposed system considering lows. First, this study develops a P2P trading strategy model for diverse 
+commercial and industrial buildings.  peers with scenario analysis considering a conventional RE trading 
+
+(ii) The economic profitability (e.g., electricity bill saving, P2P mechanism (i.e., baseline model), an improved RE trading mechanism 
+trading profit, NPV) and system performance superiority (e.g., (i.e., advanced models), and ultimately a more flexible RE trading 
+SCR and SSR) of installing BESS affiliated to PV system have been mechanism (i.e., superior models). The models, strategies and algo
+comprehensively evaluated in this study, which have shed light rithms proposed in this study are believed to effectively demonstrate the 
+on the critical role of BESS in enhancing the managerial flexibility feasibility of electricity market transition and RE trading reform to 
+
+20
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+policymakers as this study establishes the database based on empirical [9] X. Jin, Q. Wu, H. Jia, Local flexibility markets: literature review on concepts, 
+data and reliable source of materials. This approach is novel since it models and clearing methods, Appl. Energy 261 (2020), 114387, https://doi.org/ 
+
+10.1016/J.APENERGY.2019.114387. 
+addresses the evolving nature of renewable energy trading and provides [10] M.A. Mohamed, T. Jin, W. Su, Multi-agent energy management of smart islands 
+a comprehensive framework that can adapt to changing market condi using primal-dual method of multipliers, Energy 208 (2020), 118306, https://doi. 
+tions. Second, this study conducts a comprehensive assessment on the org/10.1016/J.ENERGY.2020.118306. 
+
+[11] Y. Zhou, J. Wu, C. Long, Evaluation of peer-to-peer energy sharing mechanisms 
+technical, economic, and environmental performance for each case, based on a multiagent simulation framework, Appl. Energy 222 (2018) 993–1022, 
+which provides straightforward insights from the perspectives of diverse https://doi.org/10.1016/J.APENERGY.2018.02.089. 
+peers with or without the DERs and BESS. The results are believed to [12] M.I. Azim, W. Tushar, T.K. Saha, C. Yuen, D. Smith, Peer-to-peer kilowatt and 
+
+affect the householders’ awareness and behaviour on installing DERs negawatt trading: A review of challenges and recent advances in distribution 
+networks, Renew. Sustain. Energy Rev. 169 (2022), 112908, https://doi.org/ 
+
+systems in a long run. Third, this study uses actual electrical load data in 10.1016/J.RSER.2022.112908. 
+Hong Kong as a case study, which is regarded as the pilot investigation of [13] J. Guerrero, D. Gebbran, S. Mhanna, A.C. Chapman, G. Verbič, Towards a 
+P2P trading market in residential microgrids in Hong Kong. The devel transactive energy system for integration of distributed energy resources: Home 
+
+energy management, distributed optimal power flow, and peer-to-peer energy 
+oped database and methods could be expanded to broader scopes (i.e., trading, Renew. Sustain. Energy Rev. 132 (2020), 110000, https://doi.org/ 
+different-sized microgrid) which consist of more diverse peers or con 10.1016/J.RSER.2020.110000. 
+figurations of DG, and can be widely applied under an unlimited-context [14] J. An, T. Hong, M. Lee, Determining the optimal trading price of electricity for 
+
+energy consumers and prosumers, Renewable Sustainable Energy Rev. 154 (2022), 
+(i.e., outside of Hong Kong). 111851, https://doi.org/10.1016/J.RSER.2021.111851. 
+
+Despite its contribution, limitation of this study also exists. Although [15] D. Neves, I. Scott, C.A. Silva, Peer-to-peer energy trading potential: An assessment 
+different electrical load profiles are established for different peers, the for the residential sector under different technology and tariff availabilities, Energy 
+
+205 (2020), 118023, https://doi.org/10.1016/J.ENERGY.2020.118023. 
+capacity of PV system and BESS is taken fixed data. However, it is [16] E. Mengelkamp, J. Gärttner, K. Rock, S. Kessler, L. Orsini, C. Weinhardt, Designing 
+believed that through the algorithm and proper iteration proposed by microgrid energy markets, Appl. Energy 210 (2018) 870–880, https://doi.org/ 
+this study, future work is capable to optimize the sizing of BESS or PV 10.1016/j.apenergy.2017.06.054. 
+
+[17] R.C. Johnson, M. Mayfield, The economic and environmental implications of post 
+capacity from different stakeholders’ perspectives, and further extend feed-in tariff PV on constrained low voltage networks, Appl. Energy 279 (2020), 
+the research scope and aim in a broader way. 115666, https://doi.org/10.1016/J.APENERGY.2020.115666. 
+
+[18] K.G.H. Kong, et al., Fuzzy optimization for peer-to-peer (P2P) multi-period 
+
+Declaration of Competing Interest renewable energy trading planning, J. Clean. Prod. 368 (2022), 133122, https:// 
+doi.org/10.1016/J.JCLEPRO.2022.133122. 
+
+[19] Y. Chen, X. Lei, J. Yang, H. Zhong, T. Huang, Decentralized P2P power trading 
+The authors declare that they have no known competing financial mechanism for dynamic multi-energy microgrid groups based on priority 
+
+interests or personal relationships that could have appeared to influence matching, Energy Rep. 8 (2022) 388–397, https://doi.org/10.1016/J. 
+EGYR.2022.08.109. 
+
+the work reported in this paper. [20] A. Yaldız, T. Gökçek, İ. Şengör, O. Erdinç, “Optimal sizing and economic analysis of 
+Photovoltaic distributed generation with battery energy storage system considering 
+
+Data availability peer-to-peer energy trading”, Sustainable Energy Grids Networks 28 (2021) 
+https://doi.org/10.1016/j.segan.2021.100540. 
+
+[21] S. Nguyen, W. Peng, P. Sokolowski, D. Alahakoon, X. Yu, Optimizing rooftop 
+Data will be made available on request. photovoltaic distributed generation with battery storage for peer-to-peer energy 
+
+trading, Appl. Energy 228 (2018) 2567–2580, https://doi.org/10.1016/j. 
+apenergy.2018.07.042. 
+
+Acknowledgements [22] H. Yang, Z. Gong, Y. Ma, L. Wang, B. Dong, Optimal two-stage dispatch method of 
+household PV-BESS integrated generation system under time-of-use electricity 
+
+This work was supported by the Postdoctoral Matching Fund from price, Int. J. Electr. Power Energy Syst. 123 (2020), https://doi.org/10.1016/j. 
+ijepes.2020.106244. 
+
+the Department of Building and Real Estate at the Hong Kong Poly [23] J. Liu, H. Yang, Y. Zhou, Peer-to-peer energy trading of net-zero energy 
+technic University, a grant from the Research Grants Council of the Hong communities with renewable energy systems integrating hydrogen vehicle storage, 
+Kong Special Administrative Region, China (PolyU25206822), and a Appl. Energy 298 (2021), 117206, https://doi.org/10.1016/J. 
+
+grant from the School of Artificial Intelligence and Automation, Huaz APENERGY.2021.117206. 
+[24] B. Yu, et al., Provincial renewable energy dispatch optimization in line with 
+
+hong University of Science and Technology. renewable portfolio standard policy in China, Renew. Energy 174 (2021) 236–252, 
+https://doi.org/10.1016/J.RENENE.2021.04.055. 
+
+References [25] S. Xu, Y. Zhao, Y. Li, Y. Zhou, An iterative uniform-price auction mechanism for 
+peer-to-peer energy trading in a community microgrid, Appl. Energy 298 (2021), 
+117088, https://doi.org/10.1016/J.APENERGY.2021.117088. 
+
+[1] REN21, “Renewables, Global status report”, 2022, Accessed: Jan. 05, 2023. [26] X. Xiong, G. Qing, H. Li, Blockchain-based P2P power trading mechanism for PV 
+[Online]. Available: https://www.ren21. prosumer, Energy Rep. 8 (2022) 300–310, https://doi.org/10.1016/J. 
+net/gsr-2022/pages/keymessages/keymessages/#key-power, 2022. EGYR.2022.02.130. 
+
+[2] International Energy Agency, “Perspectives for the Clean Energy Transition 2019,” [27] CLP Power Hong Kong Limited, “CLP launches Smart Energy Programme to help 
+2019. turn Hong Kong into a Smart City,” 2017. Accessed: Nov. 02, 2022. [Online]. 
+
+[3] E.A. Soto, L.B. Bosman, E. Wollega, W.D. Leon-Salas, Peer-to-peer energy trading: A Available: https://www.clpgroup.com/content/dam/clp-group/channels/media/d 
+review of the literature, Appl. Energy 283 (2021), 116268, https://doi.org/ ocument/2017/20170615_en.pdf.coredownload.pdf. 
+10.1016/J.APENERGY.2020.116268. [28] Census and Statistics Department, “2021 Population Census: Summary Results,” 
+
+[4] A.M.Z. Gao, C. te Fan, J.S. Chen, A critical review of the world’s first renewable 2022. [Online]. Available: www.censtatd.gov.hk. 
+portfolio standard (RPS) for large electricity users in Taiwan: the return of the RPS? [29] K.S.Y. Wan, F.H.W. Yik, Representative building design and internal load patterns 
+Energ. Strat. Rev. 32 (2020), 100585 https://doi.org/10.1016/J. for modelling energy use in residential buildings in Hong Kong, Appl. Energy 77 
+ESR.2020.100585. (1) (2004) 69–85, https://doi.org/10.1016/S0306-2619(03)00104-1. 
+
+[5] P. Dato, T. Durmaz, A. Pommeret, Feed-in tariff policy in Hong Kong: Is it efficient? [30] D. Kanakadhurga, N. Prabaharan, Demand response-based peer-to-peer energy 
+City Environ. Interactions 10 (2021) https://doi.org/10.1016/j. trading among the prosumers and consumers, Energy Rep. 7 (Nov. 2021) 
+cacint.2021.100056. 7825–7834, https://doi.org/10.1016/J.EGYR.2021.09.074. 
+
+[6] J. Moon, T.Y. Jung, A critical review of Korea’s long-term contract for renewable [31] HK ELectric, “Estimated Electricity Cost of Common Appliances,” 2022, Accessed: 
+energy auctions: the relationship between the import price of liquefied natural gas Oct. 28, 2022. [Online]. Available: https://www.hkelectric.com/en/customer-ser 
+and system marginal price, Util. Policy 67 (2020), 101132, https://doi.org/ vices/billing-payment-electricity-tariffs/know-more-about-electricity-consumption 
+10.1016/J.JUP.2020.101132. /estimated-electricity-cost-of-common-appliances. 
+
+[7] E.M. Gui, I. MacGill, Typology of future clean energy communities: An exploratory [32] EMSD, “香港能源最終用途數據 Hong Kong Energy End-use Data 2022,” 2022. 
+structure, opportunities, and challenges, Energy Res. Soc. Sci. 35 (2018) 94–107, [33] G.K.F. Tso, K.K.W. Yau, A study of domestic energy usage patterns in Hong Kong, 
+https://doi.org/10.1016/J.ERSS.2017.10.019. Energy 28 (15) (2003) 1671–1682, https://doi.org/10.1016/S0360-5442(03) 
+
+[8] C.L. Gunarathna, R.J. Yang, S. Jayasuriya, K. Wang, Reviewing global peer-to-peer 00153-1. 
+distributed renewable energy trading projects, Energy Res. Soc. Sci. 89 (2022), [34] R. Wang, Z. Ye, S.C. Hsu, J.H. Chen, Photovoltaic rooftop’s contribution to improve 
+102655, https://doi.org/10.1016/J.ERSS.2022.102655. building-level energy resilience during COVID-19 work-from-home arrangement, 
+
+Energy Sustain. Dev. 68 (2022) 182–191, https://doi.org/10.1016/J. 
+ESD.2022.03.009. 
+
+21
+
+
+
+R. Zhang et al.                                                                                                                                                                                                        E  n  e r  g y   &   B  u  i l d  i n g  s 300 (2023) 113645
+
+[35] M. Nunez Munoz, E.E.F. Ballantyne, D.A. Stone, Development and evaluation of [48] F. Xia, F. Song, Evaluating the economic impact of wind power development on 
+empirical models for the estimation of hourly horizontal diffuse solar irradiance in local economies in China, Energy Policy 110 (2017) 263–270, https://doi.org/ 
+the United Kingdom, Energy 241 (2022), 122820, https://doi.org/10.1016/J. 10.1016/J.ENPOL.2017.08.030. 
+ENERGY.2021.122820. [49] K.D. Swift, A comparison of the cost and financial returns for solar photovoltaic 
+
+[36] R. Kittler, S. Darula, Determination of time and sun position system, Sol. Energy 93 systems installed by businesses in different locations across the United States, 
+(2013) 72–79, https://doi.org/10.1016/J.SOLENER.2013.03.021. Renew. Energy 57 (2013) 137–143, https://doi.org/10.1016/j. 
+
+[37] Hong Kong Observatory, “Daily Total Bright Sunshine All Year - King’s Park.” renene.2013.01.011. 
+Accessed: May 24, 2022. [Online]. Available: https://data.gov.hk/en-data/dataset [50] J. An, T. Hong, and M. Lee, “Determining the optimal trading price of electricity for 
+/hk-hko-rss-daily-total-bright-sunshine/resource/370820d6-6e4a-42f energy consumers and prosumers,” Renewable and Sustainable Energy Reviews, vol. 
+0-9121-9ddeff2b4608. 154. Elsevier Ltd, Feb. 01, 2022. doi: 10.1016/j.rser.2021.111851. 
+
+[38] Hong Kong Observatory, Information of Weather Station [Online]. Available: [51] EMSD, “User Guide for The Hong Kong Solar Irradiation Map April 2022 User 
+Accessed (May 24, 2022.) https://www.hko.gov.hk/en/cis/stn.htm. Guide for the Hong Kong Solar Irradiation Map Content,” 2021. 
+
+[39] K. Roberts, K. Evija, and F. Davis, “Photovoltaic Collector Simulation,” 2019. [52] H. Huang, S. Nie, J. Lin, Y. Wang, and J. Dong, “Optimization of peer-to-peer 
+[40] D. Deb, N.L. Brahmbhatt, Review of yield increase of solar panels through soiling power trading in a microgrid with distributed PV and battery energy storage 
+
+prevention, and a proposed water-free automated cleaning solution, Renew. systems,” Sustainability (Switzerland), vol. 12, no. 3, Feb. 2020, doi: 10.3390/ 
+Sustain. Energy Rev. 82 (2018) 3306–3313, https://doi.org/10.1016/J. su12030923. 
+RSER.2017.10.014. [53] J. Liu, X. Chen, H. Yang, Y. Li, Energy storage and management system design 
+
+[41] S. Vakili, A. Schönborn, A.I. Ölçer, Techno-economic feasibility of photovoltaic, optimization for a photovoltaic integrated low-energy building, Energy 190 
+wind and hybrid electrification systems for stand-alone and grid-connected (2020), 116424, https://doi.org/10.1016/J.ENERGY.2019.116424. 
+shipyard electrification in Italy, J. Clean. Prod. 366 (2022), 132945, https://doi. [54] Accessed: Feb. 09 (2023) [Online]. Available: https://atb.nrel.gov/electricity/202 
+org/10.1016/J.JCLEPRO.2022.132945. 1/residential_battery_storage. 
+
+[42] Buildings Department, Green and Amenity Facilities in NTEH [Online]. Available: [55] J. Cai, H. Zhang, X. Jin, Aging-aware predictive control of PV-battery assets in 
+Accessed (May 24, 2022.) https://www.bd.gov.hk/en/safety-inspection/ubw/ buildings, Appl. Energy 236 (2019) 478–488, https://doi.org/10.1016/J. 
+UBW-in-new-territories-exempted-houses/index_ubw_nteh_green.html. APENERGY.2018.12.003. 
+
+[43] Ltd. Focus Technology Co., “320W Polycrystalline Solar Module 320wp Poly Solar [56] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, J. Lei, Energy-sharing model with price-based 
+Panel for Solar Energy Systems.”. demand response for microgrids of peer-to-peer prosumers, IEEE Trans. Power 
+
+[44] P. Software, Calculate the annual solar energy output of a photovoltaic system Syst. 32 (5) (Sep. 2017) 3569–3583, https://doi.org/10.1109/ 
+[Online]. Available: Accessed (2022) https://photovoltaic-software.com/princip TPWRS.2017.2649558. 
+le-ressources/how-calculate-solar-energy-power-pv-systems. [57] The World Bank, Real interest rate (%) [Online]. Available: Accessed (2022) 
+
+[45] Research Office, “Feed-in tariff for solar power in selected places,” 2018. https://data.worldbank.org/indicator/FR.INR.RINR?locations=HK. 
+[46] J. An, M. Lee, S. Yeom, T. Hong, Determining the Peer-to-Peer electricity trading [58] Environment Bureau, “Hong Kong’s Climate Change Action Plan 2030+,” 2017. 
+
+price and strategy for energy prosumers and consumers within a microgrid, Appl. Accessed: May 24, 2022. [Online]. Available: https://www.enb.gov.hk/sites/defa 
+Energy 261 (2020), 114335, https://doi.org/10.1016/J.APENERGY.2019.114335. ult/files/pdf/ClimateActionPlanEng.pdf. 
+
+[47] X. Ouyang, B. Lin, Levelized cost of electricity (LCOE) of renewable energies and [59] M. Moazzami, D. Fadaei, H. Shahinzadeh, and S. H. Fathi, “Optimal Sizing and 
+required subsidies in China, Energy Policy 70 (2014) 64–73, https://doi.org/ Technical Analysis of Rural Electrification Alternatives in Kerman Province,” Smart 
+10.1016/j.enpol.2014.03.030. Grid Conference (SGC), 2017. 
+
+22

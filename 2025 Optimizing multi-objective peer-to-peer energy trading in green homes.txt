@@ -1,0 +1,1284 @@
+﻿Energy & Buildings 348 (2025) 116435 
+
+Contents lists available at ScienceDirect
+
+Energy & Buildings
+journal homepage: www.elsevier.com/locate/enbuild
+
+Optimizing multi-objective peer-to-peer energy trading in green homes: 
+Robust strategies to address non-probabilistic uncertainty using IGDT with 
+integrated demand response 
+
+Hassan Gharibi a, Reza Gharibi a, Reza Khalili b,∗, Rahman Dashti a, Mousa Marzband c,d, 
+Muhyaddin Rawa c,e
+
+a Clinical-Laboratory Center of Power System & Protection, Faculty of Intelligent Systems Engineering & Data Science, Persian Gulf University, 7516913817, Bushehr, 
+Iran
+bDept. of Electrical and Computer Engineering, Stony Brook University, Stony Brook, NY, USA
+cDepartment of Electrical and Computer Engineering, Faculty of Engineering, King Abdulaziz University, 21589, Jeddah, Saudi Arabia
+d Center of Research Excellence in Renewable Energy and Power Systems, Department of Electrical and Computer Engineering, King Abdulaziz University, 21589, 
+Jeddah, Saudi Arabia
+e Smart Grids Research Group, Center of Research Excellence in Renewable Energy and Power Systems, King Abdulaziz University, 21589, Jeddah, Saudi Arabia
+
+a r t i c l e  i n f o  a b s t r a c t
+
+Keywords: Residential renewable energy systems, including Photovoltaic (PV), Energy Storage Systems (ESS), and hydro-
+Peer-to-peer gen storage, are increasingly widespread, fostering a shift towards sustainable energy consumption. Peer-to-peer 
+Uncertainty (P2P) energy trading emerges as a promising avenue for consumers to exchange self-generated renewable en-
+Information gap decision theory ergy, promoting community resilience and green energy adoption. This study investigates the implications of 
+Demand response program
+Multi-objective P2P energy trading within microgrids, where homes are equipped with renewable sources and energy storage 
+Microgrid systems. Leveraging Information Gap Decision Theory (IGDT), we address uncertainties inherent in consumer 
+
+demand and renewable energy generation, enhancing the robustness of microgrid operations. Through Sequen-
+tial Linear Goal Programming (SLGP), we analyze case studies with and without P2P energy exchange, revealing 
+diverse outcomes. P2P energy trading leads to a significant 17% reduction in residential energy costs, stimu-
+lating the uptake of renewables and fostering local energy autonomy. Furthermore, strategic optimization of 
+energy exchange pathways within the green homes yields a notable 20.5% decrease in losses, enhancing overall 
+system efficiency. Integrating demand response program (DRP) proves pivotal in reshaping energy consumption 
+patterns, bolstering microgrid resilience, and mitigating residential expenses. These findings underscore the effi-
+cacy of DR in microgrid management, empowering communities with enhanced adaptability, load management 
+capabilities, and energy reliability.
+
+1.  Introduction mains critically important, even though the supporting infrastructure 
+is still underdeveloped in many regions worldwide. These modern resi-
+
+1.1.  Motivation dences, equipped with Photovoltaic (PV) modules, various energy stor-
+age systems (ESS), and electric vehicles, form what is known as home 
+
+The growth of smart homes, with a 14.5% increase in recent years, Microgrids. These home Microgrids (called homes afterwards), compris-
+has significantly contributed to the demand for energy within these ing individual smart homes, can be managed independently, presenting 
+energy sectors, making them a pivotal part of the energy market [1]. opportunities for peer-to-peer (P2P) energy exchange among the homes. 
+According to market forecasts [2], the global smart home market is This capability allows homeowners to share and receive energy, effec-
+expected to grow significantly from $121 billion in 2024 to $633 bil- tively reducing their energy costs while promoting sustainability and en-
+lion in 2032, representing a compound annual growth rate (CAGR) of vironmental benefits [4,5]. The proliferation of smart homes and the ex-
+23%. Additionally, ElectroIQ [3] predicts that global smart home adop- pansion of renewable energy sources, such as PV systems, have reshaped 
+tion will increase from 18.9% in 2024 to 33.2% in 2028. Given this energy markets. However, challenges persist, particularly in integrat-
+substantial growth trajectory, researching smart home technologies re- ing residual demand participation in energy markets and predicting
+
+∗ Corresponding author.
+ E-mail address: reza.khalili@stonybrook.edu (R. Khalili).
+https://doi.org/10.1016/j.enbuild.2025.116435
+Received 20 February 2025; Received in revised form 6 September 2025; Accepted 9 September 2025
+Available online 16 September 2025 
+0378-7788/© 2025 Elsevier B.V. All rights are reserved, including those for text and data mining, AI training, and similar technologies. 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+surrounding consumers’ electrical load behavior add complexity to the 
+Nomenclature operation of these systems [6]. Therefore, there is a pressing need for 
+
+efficient methods to evaluate uncertainty comprehensively, considering 
+Acronyms the interconnected nature of different components within homes. Smart 
+P2P Peer-to-peer homes encompass various components, including PVs, ESS, and hydro-
+IGDT Information-gap decision theory gen storage, distributed unevenly among residences [8]. The diverse 
+DRP Demand Response Program distribution of these components poses challenges in operation man-
+DER Distributed Energy Resources agement and decision-making, requiring precise coordination to achieve 
+ESS Energy Storage Systems optimal economic and environmental outcomes [9], which has been an 
+PV Photovoltaic important research topic [10]. Moreover, the interconnectivity of smart 
+SLGP Sequential Linear Goal Programming homes introduces challenges related to power losses and energy sharing, 
+Indices necessitating optimization strategies that consider inherent constraints 
+
+and requirements [11]. Addressing multiple objectives in home opti-
+𝑡 Time interval mization adds further complexity, potentially leading to computation-
+ℎ, 𝑘 Set of homes ally intensive decision-making processes and the exploration of diverse 
+Parameters solution pathways. Therefore, selecting the most efficient problem mod-
+𝐼𝑟 eling approach is crucial to prioritize objectives and identify optimal 
+
+𝑡 Solar radiation intensity (kW/m2)
+𝐴ℎ Surface area (m2) solutions aligned with the system’s requirements.
+𝜂 Efficiency of PV (%) On the other hand, in MG optimization problems, two strategies 
+SD Internal discharge coefficient (%/hour) exist: (1) planning and (2) scheduling. Planning requires investment 
+𝜂 and long-term strategies with extensive data and economic calcula-
+ch ESS charging efficiency (%)
+𝜂dch ESS discharging efficiency (%) tions. Short-term scheduling enables optimal performance of existing 
+MaxC infrastructure without additional investment. Multiple management and 
+
+ℎ Maximum ESS capacity (kWh)
+MinCℎ Minimum ESS storage level (kWh) scheduling levels can be beneficial following planning decisions. Plan-
+SP Maximum ESS charging/discharging power ning problems, including energy storage and PV array sizing, focus on 
+
+(kW) minimizing long-term costs including investment, operation, and main-
+𝜂 tenance. One example of sizing problem for designing a microgrid is 
+we Electrolyzer efficiency (%)
+𝜂fc Fuel cell efficiency (%) [12]. Day-by-day microgrid scheduling focuses on optimal performance 
+cf of existing components to reduce losses, costs, and manage short-term 
+
+ℎ Conversion factor of H2 to electricity (kW/Kg)
+GP𝑡 Real-time price (cent/kW) uncertainty. These strategies should be applied after planning. Table 1 
+GFP𝑡 Feed-in Tariff (cent/kW) shows the scope of these approaches [13–18]. Furthermore, To encom-
+Pnwe Electrolyzer capacity (kW) pass stability, reliability, and less-considered economic factors, design-
+Pnfc Fuel cell capacity (kW) ing new objectives for P2P energy trading is important. A distance-
+Snht Hydrogen storage capacity (kWh) based loss function is beneficial since proximity affects voltage drop, 
+
+which is critical in low-voltage grids [19]. This impacts appliance per-
+Variables formance and necessitates additional infrastructure investments for ca-
+SEℎ,𝑡 Stored energy for home ℎ at time 𝑡 (kWh) bles [20], voltage regulators, and compensation components. Addition-
+𝑠1ℎ,𝑡, 𝑠2ℎ,𝑡 Battery charging/discharging mode ally, maintaining localized energy trading supports real-time trading
+BCHℎ,𝑡 Energy sent to ESS (kW) platforms.
+BEℎ,𝑡 Energy used from ESS (kW)
+GHℎ,𝑡 Hydrogen produced by electrolyzer (Kg) 1.2.  Literature review
+Pweℎ,𝑡 Power consumed by electrolyzer (kW)
+Pfcℎ,𝑡 Power produced by fuel cell (kW) The expansion of homes and the proliferation of distributed produc-
+DEℎ,𝑡 Electric energy demand (kW) tion resources have transformed homes within the grid into both pro-
+CHℎ,𝑡 Hydrogen consumed in fuel cell (Kg) ducers and consumers of energy. Extensive studies have proven the in-
+PVEℎ,𝑡 Energy produced by PV (kW) crease of accessibility of energy because of distributed energy systems 
+h1ℎ,𝑡 Fuel cell operating mode expansions [21,22]. Numerous studies have investigated P2P trading 
+h2ℎ,𝑡 Electrolyzer operating mode for energy exchange among these entities, each offering unique insights 
+HSℎ,𝑡 Hydrogen in storage (Kg) into market dynamics and optimization strategies. In [23], researchers 
+P̂VE(ℎ, 𝑡) PV energy under uncertainty (kW) focused on optimizing the home quantity of flexible resources based 
+D̂E(ℎ, 𝑡) Demand under uncertainty (kW) on model predictive control and proposed an automated learning pric-
+𝛼 Deviation from projected values ing strategy. Introducing a model based on decentralized game theo-
+GP𝑡 Grid energy purchase price (cent/kWh) ric mechanisms, [24] aimed to enhance the management of P2P en-
+GE𝑡 Grid energy purchase (kWh) ergy trading, while incorporating transmission power losses. Address-
+GFP𝑡 Selling price of energy to grid (cent/kWh) ing energy trading in an auction-based market, [25] sought to secure 
+MGP Max grid energy exchange (kW) additional revenue while assessing its impact on feeder voltage, em-
+MFEℎ,𝑘,𝑡 Energy sold/purchased in home (kW) phasizing the importance of market dynamics on grid stability. Lever-
+MMGP Max energy exchange in microgrid (kW) aging the concept of homes, [26] strategically enhanced social satis-
+MP𝑡 Price of electricity in microgrid (cent/kWh) faction and increased profits for participants in P2P market, empha-
+𝐼buy,G sizing community-driven approaches to energy exchange. Meanwhile, 
+ℎ,𝑡 , 𝐼 sell,Gℎ,𝑡 Binary grid trading state
+
+[27] surveyed a blockchain-based energy trading network guaranteeing 
+𝐼buy,P2Pℎ,𝑘,𝑡 , 𝐼 sell,P2Pℎ,𝑘,𝑡 Binary P2P trading state
+𝑁1, 𝑁 ′ participants’ payoffs, and they used a novel decentralized swarm intel-
+
+1 , 𝑁2, 𝑁 ′
+2 Auxiliary vars in SLGP ligence technique to solve the game. However, these studies primarily 
+
+evaluated the performance of P2P trading in homes without considering 
+renewable resource behavior, which is heavily influenced by environ- the overall cost of supplying consumer load as an objective function in 
+mental factors and weather conditions [6,7]. Additionally, uncertainties management problems. Additionally, the utilization and impact of ESS 
+
+2 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Table 1 
+Planning and scheduling differences.
+ Concept  Planning  Scheduling
+ Time Frame  Long-term (months or years)  Short-term (hourly or daily)
+ Main Purpose  Sizing, placement, etc for minimizing investments and life span  Daily operation management for cost and loss reduction etc.
+ Decision Variables  Size and location  Timing and operation of components with fixed sizes and places
+ Investment  Yes  No (focusing on operation management)
+ Application  Microgrid design  Scheduling of existing structure in any location
+
+devices on P2P commerce were overlooked, highlighting the need for transmission losses among diverse units within the grid, alongside opti-
+comprehensive analyses that incorporate storage solutions into energy mizing the cost of supplying consumer load and managing energy pro-
+trading frameworks. duction. Thus, there remains a crucial gap in addressing these critical 
+
+The integration of ESS significantly enhances the effectiveness of P2P aspects for comprehensive optimization of P2P energy trading systems.
+trading, as evidenced by various studies in the field. Also it is proven In the realm of microgrid optimization, uncertainties are inherent 
+that they could enhance the social equity and welfare [28]. For instance, [44], and the P2P energy trading domain is no exception. Many studies, 
+[29] demonstrated the application of P2P concepts by integrating plug- from different disciplines, have been focused on modeling the energy 
+in hybrid electric vehicles, thereby expanding market potential and im- output of RESs to showcase the importance of an accurate modeling 
+proving performance through demand response incentives. In a similar [45–47], still the uncertainty is an inseparable part of the modeling. 
+vein, [30] emphasized the positive effects of ESSs on community-based Recognizing and addressing the impact of uncertainty on P2P interac-
+PV production, leading to increased social satisfaction within the com- tions is crucial for achieving comprehensive optimization. However, the 
+munity. While [31] focused on maximizing social welfare using game prevailing uncertainties governing these systems have often been over-
+theoretic approaches, none of these studies explicitly addressed the costs looked in the literature. To bridge this gap, [48] introduces a model that 
+associated with load generation and supply or the behavior of home addresses real-time uncertainties associated with base load and renew-
+components. To address this gap, [32] optimized energy management able energy generation, with the goal of minimizing costs for a collec-
+during consumer load variations, effectively reducing costs and explor- tive of consumers engaged in P2P interactions. Similarly, [49] empha-
+ing the impacts of P2P transactions on transformer lifetime. Similarly, sizes the importance of P2P transactions while employing a two-stage 
+[33] presented a cost-oriented model, evaluating both environmental stochastic approach to consider uncertainties related to renewable re-
+and economic consequences of distributed energy resources (DERs) in sources. Notably, the impact of the DRP was absent from their analysis. 
+P2P trading frameworks. Furthermore, [34] proposed a predictive opti- On the other hand, [34,50] delve into the effect of the DRP on P2P 
+mization model with a primary emphasis on cost considerations, while transactions, exploring uncertainties in PV production and load. How-
+[35] examined various market structures with a specific focus on the ever, these studies overlook considerations for the impact of hydrogen 
+integration of ESSs. Additionally, [36] introduced an energy market storage. In the realm of research objective, [51,52] integrate uncertain-
+framework considering different energy classes and cost objectives. Al- ties associated with renewable energy resources and optimize for cost 
+though ESS predominated in these studies, [37] expanded the scope by reduction. However, these studies tend to overlook uncertainties asso-
+exploring the integration of hydrogen electric vehicles within a cost- ciated with the consumer’s electrical load. It is important to note that 
+oriented P2P trading framework. Finally, [38] investigated the impact the investigated uncertainties predominantly use probabilistic methods, 
+of both battery and hydrogen vehicles on P2P trading dynamics, propos- which, while insightful, may pose challenges in scenarios where req-
+ing an improved management strategy to optimize system performance. uisite historical data is unavailable and may require extensive data and 
+These studies collectively underscore the pivotal role of storage inte- calculations. Addressing these uncertainties comprehensively is vital for 
+gration in enhancing the efficiency and cost-effectiveness of P2P energy ensuring the robustness and effectiveness of P2P energy trading systems 
+trading systems. A detailed comparison with related works is presented in real-world applications.
+in Table 2. Based on the above-mentioned studies, P2P trading in homes 
+
+In the realm of P2P energy trading, simultaneous consideration of emerges as a valuable mechanism for energy exchange. However, this 
+multiple objective functions can significantly enhance optimization ac- model faces several challenges that warrant further exploration. While 
+curacy and bring solutions closer to real-world applicability, especially some researchers have delved into ESS and green hydrogen technolo-
+considering previous studies that predominantly focused on single- gies, particularly in the context of hydrogen vehicles, crucial aspects 
+objective goals. To address the challenge of optimizing multiple ob- such as the utilization of green hydrogen for home energy storage, its 
+jectives, researchers in [39] introduced a pioneering P2P energy trad- conversion to electricity via fuel cells, and its potential role in P2P trad-
+ing model for a virtual power plant, leveraging smart contracts on ing remain largely unexplored in the literature. Moreover, homes and 
+the blockchain. This model maintained a cost objective function while their connection to upstream grid present distinct market structures that 
+also prioritizing the preservation of contractors’ privacy, thereby ensur- facilitate energy exchanges through buying and selling. To conduct a 
+ing comprehensive optimization. Furthermore, home planning, as elu- more accurate evaluation, it becomes imperative to investigate P2P trad-
+cidated in [40], was approached through the lens of cost objectives and ing performance not only within the microgrid but also extending to the 
+network reliability, employing Nash equilibrium principles for multi- upstream market. Exploring optimization strategies in the presence of 
+objective planning. Similarly, Nash equilibrium strategies were applied upstream network connectivity is an aspect that has received less at-
+in [41] to address pricing considerations and determine optimal storage tention but is essential for a comprehensive understanding of P2P trad-
+capacity within the microgrid infrastructure. Additionally, [42] delved ing dynamics. Furthermore, load response programs, aimed at reducing 
+into the complexities of cost management, fair income distribution, and operating costs and load demand, require careful consideration in opti-
+optimization by utilizing the weighted entropy method to handle multi- mizing home components. Analyzing consumer and producer behavior 
+objective functions effectively. Exploring payment mechanisms and op- during the implementation of DRP, particularly the impact on consumer 
+timal energy exchange, [43] introduced the coefficient alternating di- behavior, is an area that demands further investigation to fully grasp its 
+rection method, while [15] investigated cost management and equitable implications on P2P trading dynamics and overall home performance.
+distribution using the Pareto method. Despite the extensive exploration Furthermore, for effective P2P trading in the grid, attention must be 
+of dual-objective functions in P2P trading scenarios, none of the afore- given to the energy exchange infrastructure between individual homes. 
+mentioned studies directly tackled the challenge of minimizing energy Power transmission lines, despite their vital role, face challenges such 
+
+3 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Table 2 
+A summary literature review.
+ Paper Objective Multi-objective Solution Uncertainty Parameter Uncertainty Model  DRP  Hydrogen Storage  Battery
+
+Method
+
+ [40] Cost-Reliability Game theory technique $ $  $  $  "
+(use PSO)
+
+ [32] Cost $ $ "  $  $  "
+ [33] Cost $ $ $  $  $  "
+ [52] Cost $ Renewable energy Cardinality-constrained  $  $  "
+
+generation and demand robust optimization
+ [50] Cost $ Load-PV Stochastic Optimization  "  $  "
+ [42] Cost & power fluctuation Entropy-weight $ $  $  $  "
+
+& revenue distribution technique for order 
+preference (TOPSIS) 
+method
+
+ [24] Welfare $ $ $  $  $  $
+ [34] Cost $ $ $  $  $  "
+ [27] Social welfare $ $ $  $  $  $
+ [35] Cost $ $ $  $  $  "
+ [23] Cost $ PV energy production incorporating cost of  $  $  $
+
+uncertainty based on 
+PDF
+
+ [34] PV revenue $ PV generation Obtaining expected  "  $  "
+forecasting error
+
+ [15] total cost and each Pareto optimality $ $  $  $  "
+houshold’s cost constraints
+
+ [49] Consumption $ Wind and PV generation stochastic Optimization  $  $  "
+ [36] Cost $ $ $  $  $  "
+ [29] Social welfare $ $ $  $  $  "
+ [39] Cost $ $ $  $  $  "
+ [25] Additional revenue $ demand curve Scenario-based  "  $  $
+ [48] Cost $ $ $  "  $  "
+ [37] Cost $ $ $  "  $  $
+ [30] Social welfare $ $ $  $  $  "
+ [38] Comprehensive system Non-dominated sorting $ $  "  "  "
+
+management genetic algorithm II
+ [51] Each MG’s Costs Nash Equilibrium Wind power generation Robust optimization  $  $  "
+ [31] Social welfare Cooperative game theory $ $  $  $  "
+
+and Nash equilibrium
+ [41] Sellers’ profit& buyers’ Two stage Game theory $ $  $  $  "
+
+cost & storage capacity
+ [26] Social welfare $ $ $  $  $  $
+ This study Minimize costs and Goal programming Load and PV IGDT  "  "  "
+
+losses using SLGP method generation
+
+as energy transmission losses leading to increased costs and technical • RG3: Not utilizing and studying the behavior of residential hydrogen 
+limitations. Many optimization studies and commercial efforts focus on storage devices and electricity production in P2P exchanges.
+cost reduction, but the challenge of energy transmission loss in homes • RG4: Neglecting to assess and incorporate the DRP in managing and 
+is often neglected in the literature. A comprehensive solution is needed optimizing consumer load supply during P2P trade.
+to not only reduce total load provisioning costs but also prioritize P2P • RG5: Inadequate attention has been paid to successfully controlling 
+exchange between neighboring homes to minimize power losses. Ad- and optimizing multiple homes while interfacing with the upstream 
+ditionally, the home system contends with inherent uncertainties that market in the context of P2P exchange.
+significantly impact precise performance. Uncertainties, such as vari-
+ations in renewable resource production, particularly PVs, pose chal- 1.3.  Research contributions
+lenges that need a comprehensive investigation. While many studies 
+treat home loads as constants, ignoring uncertainties can introduce in- To address the identified RGs, this article proposes a dual-purpose 
+accuracies. Addressing uncertainty through non-probabilistic methods, approach aimed at cost reduction and minimizing power losses. Ini-
+with a focus on reducing computational complexity and leveraging fast tially, we optimize multiple homes to decrease the cost of supplying 
+calculation methods, offers a promising avenue for understanding home consumer loads. Subsequently, utilizing the innovative SLGP method, 
+behavior comprehensively. Finally, to the best of our knowledge, some we prioritize exchanges between units based on their locational prox-
+of the major criteria that were overlooked in the preceding investiga- imity. This approach not only streamlines exchanges but also minimizes 
+tions, representing research gaps (RGs), are listed below: energy losses, fostering a more efficient energy utilization framework. 
+
+Recognizing the inherent uncertainties in P2P energy exchange and the 
+• RG1: Failing to consider a distinct objective aimed at minimizing challenge of insufficient historical data, this article employs the Infor-
+electrical energy transmission losses among homes in P2P exchange, mation Gap Decision Theory (IGDT) method. IGDT, a non-probabilistic 
+alongside optimizing energy supply for consumers and cost reduc- approach, proves invaluable in dealing with the volume of calculations 
+tion. and data unavailability. This method doesn’t rely on historical data, ef-
+
+• RG2: Overlooking non-probabilistic methods to handle uncertainty fectively incorporating uncertainties related to PV and consumer load 
+in home optimization and P2P exchanges, especially when facing a into the optimization process. The application of this non-probabilistic 
+high computational workload due to extensive historical data or in approach enhances the robustness and reliability of P2P exchange
+the absence of such data. system.
+
+4 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+This study meticulously investigates the integration of multiple energy to retailers or P2P markets. This study presents an optimization 
+home, harmonizing various components, including renewable energy model for P2P energy trading within a multiple homes equipped with 
+resources, to align with burgeoning clean energy initiatives. Moreover, distributed energy technologies. The objective function aims to mini-
+the incorporation of ESS is explored to optimize the efficiency of res- mize total energy costs by determining optimal business and operational 
+idential homes, responding to emerging opportunities within the elec- decisions concerning PV and ESSs for each home in the local commu-
+tricity market. The home is strategically linked to the upstream grid nity. The subsequent section outlines the MILP model for P2P energy 
+to facilitate seamless P2P trading, thereby increasing interactions in the trading, depicted in Fig. 1, which illustrates the system under investiga-
+electricity market. Within this framework, hydrogen storage devices are tion in this research.
+employed as a clean energy solution in residential homes, with fuel cells 
+ensuring on-demand electrical power generation. This innovative ap- 3.  Problem formulation
+proach empowers these homes to efficiently store excess energy during 
+favorable periods, subsequently injecting it into the grid. The study also To minimize costs for the group of consumers within the home by ef-
+rigorously examines their impact on P2P transactions. Additionally, an ficiently planning energy production from available sources, the energy 
+in-depth analysis is conducted on the role and influence of DRP on P2P management problem in the home is modeled as an MILP problem. The 
+transactions and consumer load supply. This adaptability significantly following is an explanation of the home component modeling.
+diminishes dependency on the upstream grid, especially during periods 
+of heightened demand. The research contributions (RCs) of this research 3.1.  Assumptions
+can be summarized as follows:
+
+The P2P trading concept is designed to address existing challenges in 
+• RC1: Using the SLGP method, addressing the problem with dual ob- the energy sector. There have been implementations in some countries 
+jective functions to minimize operating costs and power losses by as pilot projects that helps with he study of outcomes of applying these 
+prioritizing power exchange among nearby homes (to address RG1). systems in real-world under controlled conditions [53]. The following 
+
+• RC2: Employing the non-probabilistic IGDT method to investigate assumptions are considered in this study:
+home performance and P2P trading behavior under the influence of • Component sizes and structure:  Management techniques are ap-
+electric load and PV generation uncertainty (to address RG2). plied to existing infrastructure with specified energy storage tech-
+
+• RC3: Examining the utilization of hydrogen storage devices to lever- nologies of predetermined sizes. Photovoltaic system production po-
+age clean energy in homes while providing demand from these ESS, tential is specified using existing data.
+and investigating their effect on P2P exchanges (to address RG3). • Regulatory framework for P2P transactions: The deployment of 
+
+• RC4: Investigating the impact of DRP on P2P exchanges and supply- P2P exchange mechanisms requires a regulatory system capable of 
+ing loads to home customers (to address RG4 and RG5). authorizing transactions, monitoring price dynamics, and managing 
+
+transaction volumes. This is critical to prevent technical disruptions 
+1.4.  Paper organization in the existing distribution network [54]. This paper assumes such a 
+
+supervisory framework exists.
+The remainder of this paper is organized as follows: Section 2 out- • Adaptation of existing regulations: A key challenge in implement-
+
+lines the problem investigated in this study. The mathematical modeling ing P2P exchange lies in modifying current regulations, which were 
+of the problem is detailed in Section 3. In addition, Section 4 presents designed for centralized systems, to accommodate its decentralized 
+the case studies and the parameters utilized in this research. Finally, nature [55]. This study assumes that the regulatory structure is 
+Section 5 offers the conclusion. adaptable and acknowledges the unique requirements of P2P trans-
+
+actions.
+2.  Problem description • Prosumer data sharing and security: The viability of P2P exchange 
+
+depends on prosumers sharing certain datasets, which needs specific 
+The structure of local energy markets enables active consumers to data security principles [56]. This analysis assumes that appropriate 
+
+reduce their electric energy bills through participation. P2P energy ex- data protection mechanisms and regulatory provisions are in place.
+change within a home represents a decentralized and localized energy • Technological infrastructure: The practical implementation of P2P 
+marketplace. The primary objective is twofold: to mitigate losses in the exchange relies on advanced smart metering and IoT capabilities 
+home and to minimize the cost of electric energy bills. The modeling is [57]. This paper assumes that these technologies are sufficiently de-
+conducted in two stages utilizing the Goal Programming (GP) method, ployed and accessible to participants.
+which is resolved using Sequential Linear Goal Programming (SLGP) cri-
+teria. SLGP is an iterative optimization technique that addresses multi- 3.2.  Load modeling and PV
+objective problems by solving them sequentially based on predefined 
+priorities. Instead of optimizing all objectives simultaneously, it first P2P electric energy sharing among homes 𝐻 in a community is con-
+determines the optimal solution for the highest-priority goal and then sidered in the general case without any losses. Throughout the day, PV 
+integrates this result as a constraint while solving for lower-priority ob- generate varying amounts of electrical energy. Additionally, the energy 
+jectives. Accordingly, the approach first optimizes the highest-priority consumption patterns of users vary. 
+objective and then incorporates its outcome as a constraint while ad- DEℎ,𝑡 = {DEℎ,1,DEℎ,2,… ,DEℎ,𝑇 } (1)
+dressing the remaining objectives. In this case, the Goal Programming 
+method prioritizes minimizing energy bill costs in Stage 1, ensuring an where 𝑡 is the specific time in the planning period (one day), 𝑇  is the 
+optimal financial outcome before proceeding to Stage 2, where power total number of time periods, and DEℎ,𝑡 is the electric energy demand. 
+transmission distance is decresed to further reduce energy losses within Eq.  (2) represents how much electrical energy is generated by PV for 
+the community. Planning is strategized to minimize losses by transfer- each home over the planning horizon. 
+ring energy within the home over the shortest distances, prioritizing PVEℎ,𝑡 = {PVEℎ,1,PVEℎ,2,… ,PVEℎ,𝑇 } (2)
+P2P energy exchange among homes in close proximity. Consumers are where the amount of energy produced by PV is PVEℎ,𝑡. According to Eq. classified into three categories: (a) those without PV and ESS, (b) those 
+with PV and ESS, and (c) those with PV and hydrogen storage as shown (3), the PV output is a function of the radiation received in the desired 
+
+area, the size and effectiveness of PV arrays, and other factors [58]. 
+in Fig. 1. In these scenarios, consumers can import energy from either 
+a retailer or a P2P marketplace, and likewise, they can export excess PVEℎ,𝑡 = 𝐴ℎ ⋅ 𝜂 ⋅ 𝐼𝑟𝑡 (3)
+
+5 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 1. The studied network.
+
+where 𝐴ℎ is the surface area (m2) of PV for each home, 𝐼𝑟𝑡 is the sun lationship between hydrogen consumption and fuel cell output in terms 
+radiation’s intensity (kW/m2), and 𝜂 is the efficiency of PV. of power. The electrolyzer and fuel cell’s maximum power output and 
+
+consumption are shown in Eqs.  (13) and (14). Production and consump-
+3.3.  ESS Modeling tion of hydrogen are not carried out simultaneously, based on Eq.  (15). 
+
+The amount of hydrogen in the hydrogen storage during the first hour is 
+According to Eq.  (4), the stored energy in the first time step depends shown in Eq.  (16). The quantity of hydrogen stored in the ensuing hours 
+
+on the initial storage energy, the storage efficiency, and the discharge is also determined by Eq.  (17). The maximum level of hydrogen storage 
+rate. Eq.  (5) describes how the quantity of energy stored at later times is determined by Eq.  (18) and Eq.  (19) indicates that the amount of 
+is influenced by the energy stored in the previous time step, the stor- hydrogen stored at the final hour of the analyzed time should be equal 
+age efficiency, and the discharge rate. Eq.  (6) ensures that the stored to the value of the initial storage [59].
+energy remains within the maximum storage capacity and the mini-
+mum energy level. In addition to limiting the maximum charge and 𝑃
+
+GHℎ,𝑡 =
+𝑤𝑒,ℎ,𝑡 ⋅ 𝜂𝑤𝑒 (11)
+
+discharge of the storage system, constraints in Eqs.  (7)–(9) prevent 𝑐𝑓ℎ
+their simultaneous operation. According to Eq.  (10), the ESS’s energy 𝑃
+
+CH 𝑓𝑐,ℎ
+level should be equal at the end of the simulation time as it was at the ℎ,𝑡 =
+
+,𝑡 (12)
+𝑐𝑓ℎ ⋅ 𝜂fc
+
+beginning. 𝑃𝑤𝑒,ℎ,𝑡 ≤ ℎ1ℎ,𝑡 ⋅ 𝑃𝑛𝑤𝑒 (13)
+BE
+
+SE(ℎ,1) = SE(ℎ,0) ⋅ SDℎ + BCH(ℎ,1) ⋅ 𝜂 − (ℎ,1)
+ch (4) 𝑃𝑓𝑐,ℎ,𝑡 ≤ ℎ2ℎ,𝑡 ⋅ 𝑃𝑛𝑓𝑐 (14)
+
+ℎ 𝜂dchℎ ℎ1ℎ,𝑡 + ℎ2ℎ,𝑡 ≤ 1 (15)
+BE
+
+SE )
+(ℎ,𝑡) = SE(ℎ,𝑡−1) ⋅ SDℎ + BCH
+
+(ℎ,𝑡
+(ℎ,𝑡) ⋅ 𝜂ch − (5) HSℎ,1 = HSℎ,0 + GHℎ,1 − CHℎ,1 (16)
+
+ℎ 𝜂dchℎ HSℎ,𝑡 = HSℎ,𝑡−1 + GHℎ,𝑡 − CHℎ,𝑡 (17)
+MinCℎ ≤ SE(ℎ,𝑡) ≤ MaxCℎ (6)
+
+HSℎ,𝑡 ≤ 𝑆𝑛ℎ (18)
+BCH(ℎ,𝑡) ≤ 𝑠1(ℎ,𝑡) ⋅ SPℎ (7)
+
+HSℎ,24 = HSℎ,0 (19)
+BE(ℎ,𝑡) ≤ 𝑠2(ℎ,𝑡) ⋅ SPℎ (8)
+𝑠1(ℎ,𝑡) + 𝑠2(ℎ,𝑡) ≤ 1 (9) where GHℎ,𝑡 is the amount of the hydrogen produced (Kg), 𝑃𝑤𝑒,ℎ,𝑡 the 
+SE(ℎ,24) = SE(ℎ,0) (10) quantity of energy used (kW), and 𝜂𝑤𝑒 the electrolyzer’s efficiency. CHℎ,𝑡
+
+is the amount of hydrogen consumed (Kg), 𝑃𝑓𝑐,ℎ,𝑡 the fuel cell’s out-
+where SE(ℎ,1) represents the amount of energy stored during the first put power (kW). 𝑐𝑓ℎ indicates the hydrogen energy conversion factor 
+hour, SE(ℎ,0) the initial level of the storage, SDℎ the internal discharge co- (Kw/Kg), 𝜂fc represents the fuel cell efficiency, 𝑃𝑛𝑤𝑒 is the electrolyzer 
+efficient, BE(ℎ,𝑡) and BCH(ℎ,1) are battery discharged and charged energy, capacity, 𝑃𝑛𝑓𝑐 indicates the fuel cell capacity, and ℎ1ℎ,𝑡 and ℎ2ℎ,𝑡 repre-
+𝜂ch  and 𝜂dch  the efficiency of charging and discharging the storage, re-
+
+ℎ ℎ sent the states of the electrolyzer and fuel cell, respectively. The amount 
+spectively, MaxCℎ the maximum storage capacity, MinCℎ the minimum of hydrogen stored is indicated by HSℎ,𝑡, the starting amount of hydro-
+energy level, 𝑠1(ℎ,𝑡) and 𝑠2(ℎ,𝑡) the charging and discharging mode of the gen in the storage is represented by HSℎ,0, and the amount of hydrogen 
+storage, which can take the values of 0 or 1, and SPℎ the maximum utilized is denoted by CHℎ,𝑡.
+charging and discharging power of the storage.
+3.4.  Model of fuel cell, electrolyzer, and hydrogen storage 3.5.  Energy balance constraints
+
+According to Eq.  (11), the amount of hydrogen generated corre- In the presence of P2P energy exchange, each home may provide the 
+sponds to the energy used in the electrolyzer. Eq.  (12) expresses the re- energy it requires using its own resources, the grid, and its neighbors. 
+
+6 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Eq.  (20) represents the constraint of the energy balance. Eq.  (29) implies that only a specific percentage of the load is sub-
+∑ ject to change in a specific hour. This relationship also implies that the 
+
+DEℎ,𝑡 + GFEℎ,𝑡 + MFEℎ,𝑘,𝑡 + BCHℎ,𝑡 + Pweℎ,𝑡 shifted is proportional to the actual demand. Notably, the total demand 
+𝑘
+
+∑ (20) transferred from peak to off-peak hours remains constant. Therefore, Eq. 
+= GEℎ,𝑡 + MEℎ,𝑘,𝑡 + BEℎ,𝑡 + PVEℎ,𝑡 + Pfcℎ,𝑡 (30) is employed to ensure compliance with this constraint [61].
+
+𝑘
+
+where GEℎ,𝑡 represents the grid’s energy purchases, GFEℎ,𝑡 is the amount 3.9.  Objective function
+of energy sold to the grid, MEℎ,𝑘,𝑡 is the energy purchased, and MFEℎ,𝑘,𝑡 is 
+the energy sold in the home between homes ℎ and 𝑘. Eq.  (21) indicates The two objective functions (OF) (including OF1 and OF2) for the 
+that in the presence of P2P energy exchange, home ℎ serves as the buyer given problem are set up so that OF1 in Eq.  (31) minimizes the cost 
+and receives the energy offered by home 𝑘. of energy in the home. The OF2 in Eq.  (32) organizes the power flow 
+ME between homes by considering the home’s least cost and the shortest 
+
+ℎ,𝑘,𝑡 = MFE𝑘,ℎ,𝑡 (21)
+possible distance for energy exchange [62]. As a result, the home mini-
+
+3.6.  Constraints on purchasing and selling to and from the grid and home mizes energy losses while simultaneously reducing the cost of power.
+∑ ∑∑
+
+𝐶ℎ = (GP𝑡 ⋅ GEℎ,𝑡 − GFP𝑡 ⋅ GFEℎ,𝑡) + MP𝑡
+The maximum amount of energy purchased and sold from or to the 𝑡 𝑡 𝑘
+
+grid is determined by Eqs.  (22)–(24). In the grid, Eq.  (24) prevents con- ⋅ (MEℎ,𝑘,𝑡 −MFEℎ,𝑘,𝑡) (31)
+current buying and selling [60]. Eqs.  (25)–(27) represent the constraints ∑
+
+on energy exchange in the home, which are similar to the constraints Total cost: min 𝐶ℎ (32)
+ℎ
+
+on energy exchange in the grid [60]. ∑∑∑
+
+Distance: min 𝐷ℎ,𝑘 ⋅MEℎ,𝑘,𝑡 (33)
+0 ≤ GEℎ,𝑡 ≤ 𝐼buy,G 𝑡 𝑘 ℎ
+
+ℎ,𝑡 ⋅MGP (22)
+
+0 ≤ GFE where MEℎ,𝑡 is the quantity of energy purchased, 𝐶ℎ is the cost for power 
+ℎ,𝑡 ≤ 𝐼 sell,Gℎ,𝑡 ⋅MGP (23)
+
+for each home, MP𝑡 is the cost of energy in the home, and MFEℎ,𝑘,𝑡 is the 
+𝐼buy,Gℎ,𝑡 + 𝐼 sell,Gℎ,𝑡 = 1 (24) amount of energy sold in the home. 𝐷ℎ,𝑘 is also the DISTANCE between 
+
+homes.
+0 ≤ MEℎ,𝑘,𝑡 ≤ 𝐼buy,P2Pℎ,𝑘,𝑡 ⋅MMGP (25)
+
+0 ≤ MFEℎ,𝑘,𝑡 ≤ 𝐼 sell,P2Pℎ,𝑘,𝑡 ⋅MMGP (26) 3.10.  Two objective functions using the SLGP method
+𝐼buy,P2Pℎ,𝑘,𝑡 + 𝐼 sell,P2Pℎ,𝑘,𝑡 = 1 (27) The simulation algorithm of the multi-objective model is depicted 
+
+in Fig. 2. The SLGP method was employed to solve this multi-objective 
+where the binary variables 𝐼buy,Gℎ,𝑡  and 𝐼buy,P2Pℎ,𝑘,𝑡  respectively represent the problem. With this method, the ideal objective functions of the problem 
+states of purchasing energy from the grid and home, 𝐼 sell,Gℎ,𝑡  and 𝐼 sell,P2Pℎ,𝑘,𝑡 are transformed into a set of constraints, and new objective functions 
+respectively represent the states of selling energy to the grid and home. are introduced. The following equations substitute the OF1 in Eq.  (31). 
+It is worth mentioning that MGP and MMGP are considered as upper Since the objective of the problem is minimization, 𝑁 ′
+
+1 must have the 
+bounds in this formulation to release the upper limits caused by binary lowest value to minimize the cost of the home, thereby approaching the 
+variables using big M theory. desired goal:
+
+∑
+
+𝐶ℎ +𝑁1 −𝑁 ′
+1 = Goal (34)
+
+3.7.  Price of electric energy in the home ℎ
+
+New Objective Function 1 (OF1): min 𝑁 ′
+1 (35)
+
+The following equation can be utilized to calculate the price of elec-
+tric energy in the home, which is equivalent to the average price of where Goals is the ideal problem’s objective and 𝑁1 and 𝑁 ′
+
+1 are auxiliary 
+obtaining energy from and supplying it to the grid [60]. variables used in the SLGP method. For the minimum distance, Eqs.  (36) 
+
+GP
+MP 𝑡 + GFP
+
+and (37) are used to minimize the transmission distance. The solution 
+𝑡 =
+
+𝑡 (28)
+2 process follows a sequential approach: first, OF1 is optimized. Then, 
+
+OF2 is solved while considering all constraints, including the minimum 
+where GP𝑡 is the price of buying energy from the grid, GFP𝑡 is the price 
+of selling energy to the grid, and MP𝑡 is the price of exchanging energy 
+
+cost constraint in Eq.  (38). This constraint ensures that the energy cost 
+does not exceed the minimum cost obtained from OF1. As a result, the 
+
+in the home. optimal minimum distance for power transmission between homes is 
+determined.
+
+3.8.  RTP DRP model
+∑∑∑
+
+𝐷 ′
+ℎ,𝑘 ⋅MEℎ,𝑘,𝑡 +𝑁2 −𝑁2 = Goal (36)
+
+The cost of energy consumed by the residential sector could be sig- 𝑡 𝑘 ℎ
+
+nificantly affected by the price implied by the electricity market. In this New OF2: min 𝑁 ′
+2 (37)
+
+regard, consumers’ demand will change under the influence of price Total cost ≤ Total cost ′ (38)
+variations. They could either shift their load to a period with lower en-
+ergy prices or reduce their consumption in specific hours to save more In the second step of the optimization process, the primary focus is on 
+money. Transferring the real market prices to consumers can encourage optimal energy exchange among homes while maintaining minimum 
+them to decide to participate in DRP programs. It is noteworthy that physical distance for energy transmission. The transmission loss is as-
+only a portion of consumers’ demand is affected in this program, which sumed to be proportional to transmission distance; therefore, energy 
+is proportional to their actual demand in that specific hour. This concept exchange among homes with shorter distances results in lower trans-
+represents real-time price-based DRP, which is formulated as follows: mission losses. It is important to note that the objective function in this 
+
+step is inherently distance-based rather than representing actual power 
+|DRL𝑡| ≤ 𝐶 ⋅ DE𝑡 (29) loss. This objective function approximates transmission loss reduction 
+𝑇 by minimizing the distance for energy exchange. Consequently, the op-
+∑
+
+𝐷𝑅𝐿𝑡 = 0 (30) timization results emphasize optimal energy exchange among closer en-
+𝑡=1 tities to reduce both transmission losses and associated costs.
+
+7 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 2. Simulation process.
+
+3.11.  Uncertainty modeling (1 − 𝛼) ⋅ D̂E(ℎ, 𝑡) ≤ DE(ℎ, 𝑡) ≤ (1 + 𝛼) ⋅ D̂E(ℎ, 𝑡) (44)
+0 ≤ 𝛽 ≤ 1 (45)
+
+The IGDT method offers a non-probabilistic approach for decision-
+making in uncertain scenarios. This method establishes the range of po- where 𝛽 is the risk coefficient value determined for the maximum cost 
+tential deviations for various variables, enabling decisions to be made of uncertainty.
+about uncertain values even with limited information, as it does not 
+rely on probability density functions or historical data. However, it does 4.  Numerical results
+not account for conditions that are deemed unlikely due to its non-
+probabilistic nature. The IGDT approach employs two method: robust- The modeling performance structure is illustrated in Fig. 3, with the 
+ness and opportunism. initial step involving the definition of input data followed by the simu-
+
+In the robustness method, an uncertainty interval 𝛼 is calculated to lation process. Fig. 4 depicts the demand for residential loads. The dis-
+determine the maximum deviation from projected values for achieving tances among houses are clarified in Fig. 1. Data from the National Solar 
+either maximum cost (robustness) or minimal desired cost (opportu- Radiation Database (NSRDB) for the city of Ottawa is utilized to deter-
+nity). In this problem, the robustness method is employed. Given that mine the solar energy production levels [64]. The Suntech STP200S-
+cost and distance are the objective functions, the robustness strategy 18/UB-1 PV module is selected, with specifications provided in Table 3 
+aims to maximize cost while maintaining a predetermined distance. The [63]. The PV array configuration comprises three strings paralleled and 
+robustness method function is defined as follows: eight modules arranged in series on each string. Fig. 5 illustrates the PV 
+
+production levels, with the power of the PV module under standard test 
+𝑓 (𝑞,𝑍𝑤) = max{𝛼 ∶ max𝑍(𝑞, 𝑢) ≤ 𝑍𝑤}, 𝛼 ≥ 0 (39) conditions (STC) set at 200W. Table 4 [63] presents the specifications 
+where 𝑞 are the decision variables and 𝑢 are the variables with uncer- of ESS, a 19.2 kWh Tesla Powerwall. The hourly electricity price from 
+tainty, 𝑍(𝑞, 𝑢) is the objective function derived in the problem without IESO historical reports is represented as the RTP in Fig. 6. Each home is 
+uncertainty, and 𝑍𝑤 is the maximum cost determined in the uncertainty limited to exchanging a maximum of 100 kWh of power with the grid. 
+problem. An electrolyzer with a capacity of 6 kW and an efficiency of 80% is uti-
+
+The objective function equations are converted into Eq.  (40) and the lized to convert electrical energy into hydrogen [65]. Additionally, a fuel 
+constraints in Eqs.  (41) to (45) are added to the problem, taking into cell with a capacity of 4 kW and a 40% electrical efficiency is employed 
+account the uncertainty in the amount of PV output and the load demand to convert stored hydrogen into electrical energy [66]. It is assumed 
+of homes. Also, in Eq.  (20), P̂VE(ℎ, 𝑡) and D̂E(ℎ, 𝑡) replace PVE(ℎ, 𝑡) and that hydrogen has a storage capacity of 2 kg, with 1 kg capable of being 
+DE(ℎ, 𝑡) [63]. converted into 40 kWh of electrical energy [59]. The characteristics of 
+
+the fuel cell, hydrogen storage, and electrolyzer are summarized in Ta-
+max 𝛼 (40) ble 5. Parameters and variables are denoted in kWh, kW, and cents/kWh 
+𝑍 to represent energy, power, and the price of electrical energy,
+
+𝑤 = (1 + 𝛽) ⋅𝑍 (41)
+respectively.
+
+𝑍 ≤ 𝑍𝑤 (42) The numerical investigation comprises two case studies (CS), each 
+(1 − 𝛼) ⋅ P̂VE(ℎ, 𝑡) ≤ PVE(ℎ, 𝑡) ≤ (1 + 𝛼) ⋅ P̂VE(ℎ, 𝑡) (43) of which includes four sub-case studies (CSa-CSd)).
+
+8 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 3. Modeling performance structure.
+
+Fig. 4. Demand of the homes and total demand.
+
+Table 4 
+Table 3 Battery energy storage specifications.
+Solar module specifications.
+  Description  Specifications
+Description  Specifications
+ PV  Storage capacity (kWh)  19.2
+
+module name and model  Suntech STP200S-18/UB-1
+  Minimum charging power (kW)  3.3
+Maximum power in STC conditions (W)  200
+ The tilt  Maximum discharge power (kW)  3.3
+
+angle of the arrays (degrees)  45.42
+  Charge and discharge efficiency (%)  95
+Number of parallel strings  3
+  Internal losses (%/day)  1
+Number of serial modules in each string  8
+ Length of each  SOCmin (kWh)  3.84
+
+module (mm)  1482
+  SOCmax (kWh)  15.36
+Width of each module (mm)  992
+  Initial storage energy level (kWh)  3.84
+Module efficiency (%)  13.6
+
+Table 5 
+Fuel cell, hydrogen storage and electrolyzer specifications.
+ Description  Specifications
+ Fuel cell capacity (kW)  4
+ Electrolyzer capacity (kW)  6
+ Hydrogen storage capacity (Kg)  2
+ Primary hydrogen in the storage (Kg)  0.5
+ Conversion factor of hydrogen into electrical energy (kWh/Kg)  40
+ Fuel cell electrical efficiency (%)  40
+ Electrolyzer efficiency (%)  80
+
+4.1.  Case study 1 (CS1): without uncertainty
+•
+
+Fig. 5. The produced power by solar cells. CS1a: This case study analyzes the energy exchange process with the 
+grid without uncertainty.
+
+9 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 6. The price of energy exchange within the grid.
+
+– CS1a1: Energy exchange process with the grid in the absence of • CS2b: This case study analyzes the energy exchange in the home 
+P2P energy exchange. while considering uncertainty.
+
+– CS1a2: Energy exchange process with the grid, considering P2P – CS2b1: Energy exchange analysis in the home in Stage 1 in the 
+energy exchange in the home in Stage 1 (Fig. 2). absence of P2P energy exchange (MEℎ,𝑘,𝑡 = MFEℎ,𝑘,𝑡 = 0).
+
+– CS1a3: Energy exchange process with the grid, considering P2P – CS2b2: Energy exchange analysis in the home in Stage 1.
+energy exchange in the home and applying Stage 2 (Fig. 2) of – CS2b3: Energy exchange analysis in the home in Stage 2.
+optimization. The objective of optimization is to reduce the dis- • CS2c: This case study analyzes ESS and hydrogen storage perfor-
+tances for energy transmission to minimize power loss. However, mance while considering uncertainty.
+it is important to ensure that the resulting cost does not surpass – CS2c1: ESS and hydrogen storage performance in the absence of 
+that of CS1a2. P2P energy exchange.
+
+• CS1b: This case study analyzes the energy exchange in the home – CS2c2: ESS and hydrogen storage performance in Stage 1.
+without uncertainty. – CS2c3: ESS and hydrogen storage performance in Stage 2.
+– CS1b1: Energy exchange analysis in the home in Stage 1 in the • CS2d: This case study analyzes the effect of DRP on the performance 
+absence of P2P energy exchange (MEℎ,𝑘,𝑡 = MFEℎ,𝑘,𝑡 = 0). of home components while considering P2P energy trading and mini-
+
+– CS1b2: Energy exchange analysis in the home considering P2P mum distance for energy transmission between neighborhoods, with 
+energy exchange in Stage 1. considering uncertainty.
+
+– CS1b3: Energy exchange analysis in the home in Stage 2.
+• CS1c: This case study analyzes ESS and hydrogen storage perfor- Moreover, the final structure of the case studies of this paper is illus-
+mance without uncertainty. trated in Fig. 7 to better understand the aim and scope of this research.
+– CS1c1: ESS and hydrogen storage performance in the absence of The outcomes from the proposed optimization model are presented 
+P2P energy exchange. below, illustrating the optimal decisions made by the model over a 24-
+
+– CS1c2: ESS and hydrogen storage performance in Stage 1. hour period. A comparison of different simulation scenarios’ approaches 
+– CS1c3: ESS and hydrogen storage performance in Stage 2. to energy cost savings follows.
+
+• CS1d: This case study analyzes the effect of DRP on the performance 
+of home components while considering P2P energy trading and mini- 4.3.  CS1 (Analysis without uncertainty)
+mum distance for energy transmission between neighborhoods, with-
+out uncertainty. CS1 examines the home’s performance under conditions where un-
+
+certainty is not considered. The analysis sub-case studies encompass 
+4.2.  Case study 2 (CS2): with uncertainty the energy exchange process with the grid, energy exchange within the 
+
+home, ESS performance, hydrogen storage, and the influence of DRP on 
+Case Study 2 incorporates uncertainty related to PV production and home performance and peak energy usage reduction.
+
+residential load. CS1a: The energy exchange dynamics between the grid and the home 
+are shown in Fig. 8. In CS1a1, where there is no energy exchange within 
+
+• CS2a: This case study analyzes the energy exchange process with the the home, homes within the neighborhood system draw their required 
+grid while considering uncertainty. energy from the grid, while also supplying surplus energy back to the 
+– CS2a1: Energy exchange process with the grid in the absence of grid. While there is no P2P energy exchange, CS1a1 shows that there 
+P2P energy exchange. is some energy exchange with the grid throughout the middle of the 
+
+– CS2a2: Energy exchange process with the grid, considering P2P day. This amount of purchase from the grid is related to units that do 
+energy exchange in the home in Stage 1 (Fig. 2). not produce their own energy and can only supply their energy through 
+
+– CS2a3: Considering P2P energy exchange in the home and apply- purchasing from the grid. In CS1a2 and CS1a3, P2P energy exchange 
+ing Stage 2 (Fig. 2) of optimization. The objective of optimization occurs within the home. Here, the energy price within the home falls 
+is to reduce the distances for energy transmission to minimize between the tariff for selling energy to the grid and the price for pur-
+power loss. However, it is important to ensure that the resulting chasing energy from the grid. Consequently, homes strive to maximize 
+cost does not surpass that of CS1a2. the sale of surplus energy to their neighbors, while homes with energy 
+
+10 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 7. Overview of all case studies considered in this research.
+
+Fig. 8. Energy exchange in different case studies with the network.
+
+Table 6 CS1b3 where there is P2P energy exchange with the electric energy bill 
+The cost of electric energy bills of homes in the micro-grid. in CS1b1 where there is no P2P energy exchange. As shown, P2P energy 
+
+ Electricity Bill (Cent/day)  Improvement (%) exchange has reduced energy use by 17% compared to CS1b1 in which 
+Peers ID
+
+ there was no P2P energy exchange. It is also clear that, aside from the re-
+CS1b3  CS1b2  CS1b1  CS1b3 vs. CS1b1  CS1b2 vs. CS1b1
+
+duction of the overall electric energy bill, each participant’s bill has im-
+ H1  74.4  73.7  80.3  7.2  8.1
+ proved in CS1b2 and CS1b3, with the exception of two instances where 
+H2  32.4  31.2  32.4  0.0  3.7
+ H3  134.0  134.0  158.5  15.4  15.4 the energy exchange had to be rescheduled for this scenario. CS1b2 and 
+ H4  18.6  20.9  49.0  61.8  57.3 CS1b3 have the same cost. In CS1b3, OF2 is to minimize the energy 
+ H5  36.4  36.1  36.4  0.0  0.7 transmission path to reduce lost power. This is done in a way that en-
+ Total  296.1  296.1  356.8  17.0  17.0 sures the cost does not surpass that of CS1b2.
+
+The energy exchange between neighbors is rescheduled in CS1b3 
+deficits obtain their required energy from nearby homes. As a result, in to reduce the physical distance of power transmission. It has been at-
+CS1a2 and CS1a3, no surplus energy is sold to the grid, and there is a re- tempted to exchange power as much as possible between homes that 
+duced reliance on grid-supplied energy, leading to decreased residential are close to one another in order to reduce losses in the home because 
+electricity costs. it is assumed in this case study that grid losses are directly correlated 
+
+with the physical distance and the amount of transmission power. The 
+4.3.1.  CS1b (Energy exchange inside the home) value of OF2 of the problem is 12,092 in CS1b3 and 15,207 in CS1b2. 
+
+Based on the demand profile and the quantity of energy exchanged As can be observed, CS1b3 involves moving the electric power over a 
+with the grid and peers, the electric energy bill for each home is com- shorter distance than CS1b2, which causes the objective function to drop 
+puted. The RTP and the feed-in tariff to the grid serve as the basis for by 20.5%. Losses in the network are decreased by transferring power 
+the energy exchange between homes and the grid, while the price es- closer to the receiver. The energy exchange of home 5 with its neigh-
+tablished in the home, which is a value between the purchase price bors has been investigated to determine the efficacy of the solution. 
+and the feed-in tariff to the grid, serves as the basis for the exchange Fig. 9 shows the energy exchange when the goal of the cost reduction 
+of energy between homes. Table 6 compares the studies of CS1b2 and problem is achieved and the distance-based losses are not taken into
+
+11 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 9. Energy exchange of H5 in CS1a2.
+
+account. However, Fig. 10 illustrates the least power exchange distance picted in different states in Figs. 13 and 14, respectively. In each of 
+between home 5 and its neighbors while taking into account the low- the three case studies, the storage units are charged in the middle of 
+est cost and in an effort to reduce the power exchange distance. As has the day, when the solar cells are generating energy, and discharged in 
+been observed, in the reprogramming of energy exchange, the amount the late hours of the day. When the home demand exceeds the PV pro-
+of power transmitted and received is the same in both conditions, but duction during some midday hours in CS1c1, where there is no P2P 
+the form of power exchange has changed, and home 5 tries to exchange energy exchange within the home, the storage devices are discharged 
+as much energy as it can with home 4, which is the nearest to it. This to make up the gap in demand. However, when P2P energy exchange 
+reduces the value of the objective function. happens, homes fill this gap through their neighbors, and the stor-
+
+The P2P energy exchange inside the home for CS1b2 and CS1b3 is age capacity is utilized for the last hours of the day. Homes equipped 
+depicted in Figs. 11 and 12. The results indicate that each home ex- with storage have the ability to obtain energy from other homes that 
+changes almost the same amount of energy per hour for both cases, with have excess energy and fulfill the energy requirements of themselves 
+CS1b3 giving priority to energy exchange with the closest home when and other homes during the final hours of the day when solar power 
+the minimum distance for transporting energy is taken into account. generation is not active. As mentioned, the price for selling energy 
+
+to the grid is a fixed value for all hours, which is called grid-feeding 
+4.3.2.  CS1c (ESS and hydrogen storage system performance) tariff. When using the P2P energy exchange, the price is the average 
+
+The charge (negative values) and discharge (positive values) of the of this fixed price (grid-feeding tariff) and the hourly prices from the 
+battery storage in home 5 and the hydrogen storage in home 1 are de- grid. This implies that consumers pay less price for local energy than
+
+Fig. 10. Energy exchange of H5 in CS1a3.
+12 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 11. Energy exchange inside the micro-grid in CS1b2.
+
+Fig. 12. Energy exchange inside the micro-grid in CS1b3.
+
+buying from the upper grid, which will reduce their costs at the end of obtain their energy from their neighbors at a cheaper cost than the grid. 
+the day. Thus, DRP and P2P shift peak-hour load to midday when PV produc-
+
+tion and storage capacity are available. Shifting the load to the middle 
+4.3.3.  CS1d (DRP performance) of the day, when there is a surplus of PV production, not only reduces 
+
+In this case study, incorporates the demand response program to peak load consumption in the home and the purchase of energy from the 
+evaluate the home’s behavior. Fig. 15 illustrates the distribution of res- grid, but it also reduces storage losses. This functionality effectively de-
+idential loads based on the home demand response program. The foun- creases the home’s peak demand, subsequently reducing overall energy 
+dation of DRP lies in transitioning energy consumption from periods of costs.
+high demand (peak prices and loads) to periods of low demand. If P2P Table 7 displays the values of the objective function, considering 
+is not implemented, the load will shift from peak hours to hours with different percentages of load response participation within the home. It 
+lower energy purchase prices from the network. Nevertheless, the mid- is evident that as the participation in load response increases, there is 
+day hours are not considered viable choices because of their high prices. a notable decrease in energy costs attributed to load shifting from peak 
+Fig. 15 demonstrates that when DRP is combined with P2P exchange, to off-peak hours and a reduction in the distance over which energy is 
+as the participation rate of DRP rises, the load regularly shifts to the transferred between residences.
+midday period, despite the peak network prices. This is because PV and Fig. 16 shows a comparison between home5′s battery performance 
+energy storage systems exist. According to Fig. 8, when there is a P2P ex- when the home contributes 15% to load response and when it does not. 
+change, during the midday when the PV are generating electricity, there Home 5 moves some of its load from peak price hours to off-peak price 
+is no need to buy electricity from the grid. Instead, residences choose to hours by taking part in load response, and the battery’s operation could 
+
+13 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 13. The amount of charge and discharge of battery in H5 in different cases.
+
+Fig. 14. The amount of charge and discharge of hydrogen storage in H1 in different case studies.
+
+Table 7 graph shows that altering the load profile directly influences the perfor-
+Amount of the objective function in CS1d. mance of hydrogen storage. Shifting the energy demand of home 1 from 
+ DRP Participation (%)  Total Cost (Cent)  Distance-Power variable (kW*m) a high-priced hour, like 7:00 PM, to hours with lower prices reveals that 
+ hydrogen storage is unnecessary during that period. Instead, the stored 
+0  296.1  12,092
+ 5  288.6  11,883 energy in hydrogen, such as at 9:00 PM, is discharged, supplying bene-
+ 10  281.5  11,208 ficial energy for the home.
+ 15  274.1  9795
+ 20  266.8  8970
+
+4.4.  CS2 (Analysis considering uncertainty)
+
+change as a result of this function. At 4:00 PM, during peak hours, a por- CS2 involves analyzing the home under conditions of uncertainty. 
+tion of the home’s detachable energy demand is shifted to other times, Home energy demand and renewable energy outputs, like solar cell gen-
+eliminating the need for a battery to supply power. Moreover, during eration, are subject to variability due to weather conditions. To capture 
+this period, the battery undergoes some charging. Consequently, opti- this uncertainty realistically, the non-probabilistic IGDT method is ap-
+mizing the battery’s performance involves adjusting the home’s energy plied, considering uncertainties in both home loads and PV generation. 
+consumption pattern, ensuring the battery operates at its best capacity. This section investigates the behavior of homes and the dynamics of 
+
+Fig. 17 illustrates the efficiency of hydrogen storage for home 1, con- peer-to-peer energy exchange within the home in the presence of uncer-
+sidering the presence and absence of a home during load response. The tainties. The value of 𝛽 in the problem is set to 30%.
+
+14 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 15. Demand curves considering sensitivity analysis on participation percentage of the consumers.
+
+Fig. 16. The amount of charge and discharge of ESS in H5 considering 15% of participation in DRP.
+
+4.4.1.  CS2a (Energy exchange with upstream grid) Table 8 
+In CS2a, depicted in Fig. 18, the energy exchange between the home Electricity bill of the homes considering the impact of uncertainty on the home 
+
+and the grid is examined under conditions of uncertainty. When the performance.
+robustness strategy of the IGDT uncertainty method is applied to account  Electricity Bill (Cent)  Improvement (%)
+for uncertainty in both load and PV generation, there is an increase in Peers ID
+home load and a  CS2b3  CS2b2  CS2b1  CS2b3 vs. CS2b1  CS2b2 vs. CS2b1
+
+decrease in PV generation. Consequently, the amount 
+of energy purchased from the grid is expected to increase, as illustrated  H1  93.9  93.9  107.5  12.6  12.6
+by the comparison between Figs. 8 and 18. However, the behavior of  H2  43.4  43.4  48.1  9.6  9.6
+
+ H3  150.7  150.7  178.2  15.3  15.3
+the homes remains largely similar to that observed in the previous case  H4  36.2  36.2  68.6  47.2  47.2
+study.  H5  60.6  60.6  61.3  1.1  1.1
+
+ Total  385.0  385.0  463.8  17  17
+4.4.2.  CS2b (Energy exchange inside the home)
+
+In CS2b, the cost of electric energy for homes within the home is 
+examined under conditions of uncertainty. Table 8 presents the cost of egy implemented in the IGDT model. However, it is noteworthy that 
+energy for homes, taking uncertainty into account. A comparison be- despite the uncertainty, the cost of energy is reduced when P2P energy 
+tween Tables 6 and 8 reveals that when uncertainty is considered, the exchange is taken into consideration.
+cost of home bills increases. This increase is attributed to the rise in Despite the uncertainty, the objective function in CS2b2 and CS2b3 
+load and decrease in PV production, in line with the robustness strat- has values of 11,440 and 13050. This reduction of 12.3% indicates that 
+
+15 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 17. The amount of charge and discharge of hydrogen storage in H1 considering 15% of participation in DRP.
+
+Fig. 18. Power exchange between homes and the grid considering the uncertainty.
+
+if the distance of energy transmission is reduced in CS2b3, energy will apparent as a result of the hydrogen storage’s poorer efficiency. In the 
+be moved at closer distances and losses in the home will be reduced. presence of P2P energy exchange, excess solar energy generated by PV 
+
+Figs. 19 and 20 depict the energy quantity that home 5 exchanges systems is primarily shared with other homes, reducing the need for hy-
+within the home, taking into consideration both P2P energy exchange drogen storage. This helps lower the energy costs of the complex, which 
+and the shortest distance for energy exchange between homes under the is the main objective.
+current conditions of uncertainty. The amount of energy exchanged is 
+reduced compared to Figs. 9 and 10 from CS1 since the load increased 
+and the PV 4.4.4.  CS2d (DRP performance)
+
+production decreased. It is further noted in this case study 
+that the power transfer distance between home 5 and other homes is Fig. 23 illustrates home loads under uncertainty conditions, as well 
+
+as the percentage contributions to the load response in Stage 2. In this 
+minimized by using the distance reduction method. diagram, “DE” represents the home load without uncertainty considera-
+
+tions, while “UC_DR” depicts the load of homes, factoring in uncertainty 
+4.4.3.  CS2c (ESS and hydrogen storage performance) and various participation percentages in the load response. Due to the 
+
+Figs. 21 and 22 depict how ESS and hydrogen storage operate during robustness strategy applied in the IGDT method, the load during un-
+this case study; the behavior is similar to that of case study 1. However, certain conditions is higher than in certain states. According to Fig. 18 
+the quantity of charge in the storage devices decreased due to a reduc- and Stage 2, the home is not required to purchase electricity from the 
+tion in PV generation. The decline in energy storage inside units is more electrical network during hours when prices are at their highest. In this 
+
+16 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 19. Energy exchange of H5 in the home in CS2b2 despite uncertainty.
+
+Fig. 20. Energy exchange of H5 in the home in CS2b3 considering uncertainty.
+
+situation, the purpose of DRP is to shift the load from high-demand hours specified increase (𝛽) in cost compared to the certain state. Hence, the 
+to times when there is a surplus of PV production. This is done to min- energy cost within the home remains constant across various contribu-
+imize storage losses, decrease peak load consumption in the home, and tions to load response. However, the power transfer mechanism within 
+reduce the need to purchase electricity from the network. As depicted the home varies based on variations in load and PV production. As the 
+in Fig. 23, the extent of load displacement depends on the level of par- percentage of participation in load response rises, the 𝛼 value also in-
+ticipation in the load response, with a higher percentage of involvement creases, attributed to the redistribution of load from peak to non-peak 
+leading to a greater amount of load displacement. hours. The augmentation of 𝛼 signifies an enhanced capacity to elevate 
+
+Table 9 displays the objective function values, considering various the load and simultaneously reduce PV generation, all within a fixed-
+levels of participation in load response within the home under condi- cost framework for the home.
+tions of uncertainty. The uncertainty associated with load and PV pro- Fig. 24 illustrates the performance of the battery in H5 under con-
+duction leads to an increase in load and a decrease in PV production. ditions of uncertainty, taking into account load response with a 15% 
+Consequently, compared to the deterministic state, there is an elevation contribution. The presence of uncertainty in the home, leading to an 
+in the values of the objective functions. When uncertainty is consid- increase in load and a decrease in PV production, alters the battery’s 
+ered, the objective functions aim to maximize 𝛼 and minimize losses performance. This change results in a reduction in the amount of 
+in the home. The robustness strategy within IGDT involves calculating stored energy and, consequently, a decrease in the energy discharged 
+the maximum level of uncertainty in load and PV generation, given a by the battery. A comparison between Figs. 24 and 13 highlights 
+
+17 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 21. The battery performance of H5 considering uncertainty.
+
+Fig. 22. The hydrogen storage performance of H1 considering uncertainty.
+
+Table 9 
+Amount of the objective function in CS2.
+ DRP Participation (%) 𝛼  Total Cost (Cent)  Distance-Power variable (kW*m)
+ 0  0.120  385.01  11181.3
+ 5  0.127  385.01  11339.0
+ 10  0.132  385.01  10743.3
+ 15  0.137  385.01  10554.3
+ 20  0.141  385.01  11121.1
+
+the variation in battery performance in the presence and absence of the performance of the hydrogen storage, leading to a reduction in its 
+uncertainty. utilization.
+
+Fig. 25 depicts the performance of the hydrogen storage system in 
+H1 amid uncertainty, taking into account load response with a 15% 4.4.5.  Transmitted distances
+participation rate. A comparison between Figs. 25 and 14 reveals that To compare the impact of the proposed method, especially the 
+incorporating the uncertainty of load and PV production also influences second stage of the optimization problem in SLGP, Table 10 is
+
+18 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 23. The result of sensitivity analysis on percentage of participation DRP considering uncertainty.
+
+Fig. 24. The battery performance of H5 considering uncertainty and DRP.
+
+Table 10 
+Transmitted distances comparison.
+ Case Study  t6  t7  t8  t9  t10  t11  t12  t13  t14  t15  t16  t17  t18  t19  t21  Total
+ CS1a2  80  140  140  140  40  100  140  80  140  80  80  160  160  80  60  1620 (base)
+ CS1a3  60  60  60  60  40  100  140  80  140  80  80  160  160  40  60  1320 (18.5% ↓)
+ CS2a2  60  160  80  140  100  140  60  60  60  160  100  80  160  0  0  1360 (16% ↓)
+ CS2a3  100  60  80  80  100  140  60  60  60  160  100  80  160  0  0  1240 (23.5% ↓)
+
+provided. The table shows that total distance transmitted by power tainty’s impact on P2P energy trading. In some hours, energy trans-
+decreased across case studies. In CS1a3, which considers stage 2 mission distance decreased significantly to overcome risks from un-
+of the optimization problem, the effect of this method is evident certain data. In CS2a3, the second management layer imposed by 
+through a 18.5% reduction in energy trading proximity. Note that the second objective function from SLGP reduces distance further, 
+costs remain the same for CS1a2 and CS1a3. Additionally, consid- demonstrating the proposed method’s further impact when considering
+ering uncertainty decreases energy trading proximity due to uncer- uncertainty.
+
+19 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Fig. 25. The hydrogen storage performance of H1 considering uncertainty and DRP.
+
+5.  Conclusion and future work home losses, underscoring the importance of strategic planning in 
+energy management.
+
+This scholarly article delved into the intricate dynamics of P2P en- • Addressing uncertainty: Employed the IGDT method and robust-
+ergy exchange within a home, examining its impact on minimizing en- ness strategy to tackle uncertainty within the home, ensuring re-
+ergy expenses in a complex residential setting equipped with energy silient performance even in challenging conditions of load fluctu-
+generation and storage facilities. Through comprehensive modeling and ations and PV generation variability.
+strategic planning, the study investigated scenarios both with and with- • Effectiveness of demand response programs: Highlighted the ef-
+out P2P energy exchange, aiming to optimize energy exchange routes fectiveness of DRP in enhancing home performance and reducing 
+for reduced losses within the home. Employing a multi-objective ap- energy costs, emphasizing its role in mitigating peak demand and 
+proach via goal programming, the study prioritized minimizing en- optimizing energy utilization.
+ergy exchange distances between homes to concurrently diminish losses • Strategic planning for resilience: Emphasized the importance of 
+within the home. As a result, the reduction in distance corresponded to proactive planning for worst-case scenarios to ensure resilience and 
+a proportional decrease in home losses. In the context of P2P energy ex- cost-effectiveness in home operations, providing insights into effec-
+change, the energy price was determined as the average cost of purchas- tive management strategies in uncertain environments.
+ing and injecting energy into/from the network, incentivizing residences 
+to engage in mutually beneficial energy exchange with their neighbors. For future research, a technological comparison could be conducted 
+The research findings highlighted a significant 17% reduction in over- to evaluate which technologies would be most beneficial in P2P energy 
+all energy costs for the complex when P2P energy exchange was inte- exchange structures. Additionally, the next phase should include long-
+grated compared to scenarios without such exchanges among homes. term planning and evaluation of ESS lifespan to provide a more com-
+Additionally, considering OF2 in the modeling results revealed a no- prehensive analysis.
+table 20.5% reduction in home losses. To address uncertainty within the 
+home, the study employed the Information Gap Decision Theory (IGDT) 
+method and the robustness strategy, anticipating worst-case scenarios CRediT authorship contribution statement
+with maximum increases in load and decreases in PV generation. Fur-
+thermore, the incorporation of Demand Response Programs (DRP) was Hassan Gharibi: Writing – original draft, Software, Investigation;
+found to enhance home performance and reduce energy costs for homes. Reza Gharibi: Writing – original draft, Software, Investigation; Reza 
+In instances of certainty, DRP implementation led to a 7% reduction Khalili: Writing – original draft, Software; Rahman Dashti: Writing 
+in energy costs, while in uncertain conditions, where costs were calcu- – review & editing, Validation; Mousa Marzband: Writing – review & 
+lated based on worst-case scenarios, the application of DRP maintained editing; Muhyaddin Rawa: Writing – review & editing.
+costs constant. Nevertheless, the increase in 𝛼 with greater participa-
+tion in DRP indicated that the home, even under adverse conditions of 
+higher load and less PV generation, could maintain its cost-effectiveness Data availability
+through strategic demand response strategies.
+
+These conclusions highlight the significant findings and contribu- Data will be made available on request.
+tions of the research:
+
+Acknowledgments
+• Impact of P2P energy exchange: Demonstrated a notable reduction 
+in energy costs and home losses through P2P energy exchange, show- This project was funded by the Deanship of Scientific Research (DSR) 
+casing its potential for enhancing efficiency and cost-effectiveness. at King Abdulaziz University, Jaddah, Saudi Arabia under grant no. (IPP: 
+
+• Multi-objective optimization: Utilized goal programming to opti- 732-135-2025). The authors, therefore, acknowledge with thanks DSR 
+mize energy exchange distances, leading to substantial reductions in for technical and financial support.
+
+20 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+Declaration of competing interest [27] C. Edussuriya, U. Marikkar, S. Wickramasinghe, U. Jayasinghe, J. Alawatugoda, 
+Peer-to-peer energy trading through swarm intelligent stackelberg game, Energies 
+
+The authors declare that they have no known competing financial 16 (5) (2023) 2434.
+[28] N. Talebpour, H. Behrooz, M. Ilbeigi, Optimizing hybrid power networks to facilitate 
+
+interests or personal relationships that could have appeared to influence equitable access to electricity, Sustain. Cities Soc. (2025) 106413.
+the work reported in this paper. [29] A.M. Saatloo, M. Mirzaei, B. Mohammadi-ivatloo, A robust decentralized peer-to-
+
+peer energy trading in community of flexible microgrids, IEEE Syst. J. 17 (2023) 
+640–651. https://doi.org/10.1109/JSYST.2022.3197412
+
+[30] T. Perger, L. Wachter, A. Fleischhacker, H. Auer, PV sharing in local communities: 
+peer-to-peer trading under consideration of the prosumers’ willingness-to-pay, Sus-
+
+References tain. Cities Soc. 66 (2021) 102634.
+[31] S. Malik, M. Duffy, S. Thakur, B. Hayes, J. Breslin, A priority-based approach for 
+
+[1] M. Marzband, M.H. Fouladfar, M.F. Akorede, G. Lightbody, E. Pouresmaeil, Frame- peer-to-peer energy trading using cooperative game theory in local energy commu-
+work for smart transactive energy in home-microgrids considering coalition forma- nity, Int. J. Electr. Power Energy Syst. 137 (2022) 107865.
+tion and demand side management, Sustain. Cities Soc. 40 (2018) 136–154. [32] S. Hussain, M.I. Azim, C. Lai, U. Eicker, New coordination framework for smart 
+
+[2] Smart Home Market Size, Share & COVID-19 Impact Analysis, 2023, https://www. home peer-to-peer trading to reduce impact on distribution transformer, Energy 284 
+fortunebusinessinsights.com/industry-reports/smart-home-market-101900. (2023) 129297.
+
+[3] Smart Home Statistics, 2023, https://electroiq.com/stats/smart-home-statistics/. [33] H. Sahebi, M. Khodoomi, M. Seif, M. Pishvaee, T. Hanne, The benefits of peer-to-
+[4] M. Marzband, F. Azarinejadian, M. Savaghebi, E. Pouresmaeil, J.M. Guerrero, G. peer renewable energy trading and battery storage backup for local grid, J. Energy 
+
+Lightbody, Smart transactive energy framework in grid-connected multiple home Storage 63 (2023) 106970.
+microgrids under independent and coalition operations, Renew. Energy 126 (2018) [34] Z. Zhang, R. Li, F. Li, A novel peer-to-peer local electricity market for joint trading 
+95–106. of energy and uncertainty, IEEE Trans. Smart Grid 11 (2) (2020) 1205–1215. https:
+
+[5] H. Niaei, A. Masoumi, A.R. Jafari, M. Marzband, S.H. Hosseini, A. Mahmoudi, Smart //doi.org/10.1109/TSG.2019.2933574
+peer-to-peer and transactive energy sharing architecture considering incentive- [35] A. Lüth, J.M. Zepter, P.C. Del Granado, R. Egging, Local electricity market designs 
+based demand response programming under joint uncertainty and line outage con- for peer-to-peer trading: the role of battery flexibility, Appl. Energy 229 (2018) 
+tingency, J. Clean Prod. 363 (2022) 132403. 1233–1243.
+
+[6] M. Marzband, M. Javadi, S.A. Pourmousavi, G. Lightbody, An advanced retail elec- [36] T. Morstyn, M.D. McCulloch, Multiclass energy management for peer-to-peer en-
+tricity market for active distribution systems and home microgrid interoperability ergy trading driven by prosumer preferences, IEEE Trans. Power Syst. 34 (5) (2019) 
+based on game theory, Electr. Power Syst. Res. 157 (2018) 187–199. 4005–4014. https://doi.org/10.1109/TPWRS.2018.2834472
+
+[7] M.A. Mirzaei, M. Hemmati, K. Zare, M. Abapour, B. Mohammadi-Ivatloo, M. [37] Y. Li, C. Yu, Y. Liu, Z. Ni, L. Ge, X. Li, Collaborative operation between power 
+Marzband, A. Anvari-Moghaddam, A novel hybrid two-stage framework for flexible network and hydrogen fueling stations with peer-to-peer energy trading, IEEE 
+bidding strategy of reconfigurable micro-grid in day-ahead and real-time markets, Trans. Transp. Electrif. 9 (1) (2023) 1521–1540. https://doi.org/10.1109/TTE.
+Int. J. Electr. Power Energy Syst. 123 (2020) 106293. 2022.3165804
+
+[8] Q. Zhao, A. Basem, H.O. Shami, K. Mausam, M. Alsehli, A.I. Hameed, A. Alsham- [38] J. Liu, H. Yang, Y. Zhou, Peer-to-peer trading optimizations on net-zero energy com-
+rani, H. Rajab, M. Ahmed, A.S. El-Shafay, Conceptual design and optimization of munities with energy storage of hydrogen and battery vehicles, Appl. Energy 302 
+integrating renewable energy sources with hydrogen energy storage capabilities, (2021) 117578.
+Int. J. Hydrogen Energy 79 (2024) 1313–1330. [39] S. Seven, G. Yao, A. Soran, A. Onen, S.M. Muyeen, Peer-to-peer energy trading 
+
+[9] Y.B. Elias, M.Y. Yousef, A. Mohamed, A.A. Ali, M.A. Mosa, Energy management and in virtual power plant based on blockchain smart contracts, IEEE Access 8 (2020) 
+demand side management framework for nano-grid under various utility strategies 175713–175726. https://doi.org/10.1109/ACCESS.2020.3026180
+and consumer’s preference, Sci. Rep. 14 (1) (2024) 25757. [40] L. Ali, S.M. Muyeen, H. Bizhani, M.G. Simoes, Economic planning and comparative 
+
+[10] N. Talebpour, M. Ilbeigi, Modeling and forecasting uncertainties in power exchange analysis of market-driven multi-microgrid system for peer-to-peer energy trading, 
+between distributed energy systems and urban grid networks, Available at SSRN IEEE Trans Ind Appl 58 (3) (2022) 4025–4036. https://doi.org/10.1109/TIA.2022.
+5342892 5 (2025) 1–13. 3152140
+
+[11] A. Izanlo, A. Sheikholeslami, S.A. Gholamian, M. verij Kazemi, S.N. Hosseini, A New [41] B. Zheng, W. Wei, Y. Chen, Q. Wu, S. Mei, A peer-to-peer energy trading market 
+Model for Matching Asks and Bids in P2P Energy Trading: Game Theory Method, embedded with residential shared energy storage units, Appl. Energy 308 (2022) 
+Taylor & Francis, 2024, pp. 1–13. 118400.
+
+[12] A.F. Nematollahi, H. Shahinzadeh, H. Nafisi, B. Vahidi, Y. Amirat, M. Benbouzid, [42] F. Zhao, Z. Li, D. Wang, T. Ma, Peer-to-peer energy sharing with demand-side man-
+Sizing and sitting of DERs in active distribution networks incorporating load agement for fair revenue distribution and stable grid interaction in the photovoltaic 
+prevailing uncertainties using probabilistic approaches, Appl. Sci. 11 (9) (2021) community, J. Clean Prod. 383 (2023) 135271.
+4156. [43] J. Guerrero, D. Gebbran, S. Mhanna, A.C. Chapman, G. Verbič, Towards a trans-
+
+[13] H. Sandhu, M. Kumar, Sizing and analysis of renewable energy and battery systems active energy system for integration of distributed energy resources: home energy 
+in residential microgrids, IEEE Trans. Smart Grid 3061 (2017) (1949) 7. management, distributed optimal power flow, and peer-to-peer energy trading, Re-
+
+[14] M.A. Pardo, F.J. Navarro-Gonzalez, Sizing and scheduling optimisation method new. Sustain. Energy Rev. 132 (2020) 110000.
+for off-grid battery photovoltaic irrigation networks, Renew. Energy 221 (2024) [44] N. Talebpour, M. Ilbeigi, Modeling and predicting uncertainty in tidal turbine power 
+119822. output: a data-driven time-series approach, IEEE Access 13 (2025) 82986–82994.
+
+[15] M.R. Alam, M. St-Hilaire, T. Kunz, Peer-to-peer energy trading among smart homes, [45] M. Gholami Anjiraki, M.M. Aksen, J. Craig, H. Seyedzadeh, A. Khosronejad, Large 
+Appl. Energy 238 (2019) 1434–1443. eddy simulation of a utility-scale vertical-axis marine hydrokinetic turbine under 
+
+[16] M. Mathew, M.S. Hossain, S. Saha, S. Mondal, M.E. Haque, Sizing approaches for so- live-bed conditions, Phys. Fluids 37 (5) (2025).
+lar photovoltaic-based microgrids: a comprehensive review, IET Energy Syst. Integr. [46] M.M. Aksen, H. Seyedzadeh, M.G. Anjiraki, J. Craig, K. Flora, C. Santoni, F. 
+4 (1) (2022) 1–27. Sotiropoulos, A. Khosronejad, Large eddy simulation of a utility-scale horizontal axis 
+
+[17] M.A. Ali, A.H. Besheer, H.M. Emara, A. Bahgat, Optimal micro-grid battery schedul- turbine with woody debris accumulation under live bed conditions, Renew. Energy 
+ing within a comprehensive smart pricing scheme, Sci. Rep. 15 (1) (2025) 20098. 239 (2025) 122110.
+
+[18] C. Wang, X. Li, Optimization scheduling of microgrid comprehensive demand re- [47] M.M. Aksen, K. Flora, H. Seyedzadeh, M.G. Anjiraki, A. Khosronejad, On 
+sponse load considering user satisfaction, Sci. Rep. 14 (1) (2024) 16034. the impact of debris accumulation on power production of marine hydroki-
+
+[19] J. Guerrero, B. Sok, A.C. Chapman, G. Verbič, Electrical-distance driven peer-to-peer netic turbines: insights gained via LES, Theor. Appl. Mech. Lett. 14 (6)
+energy trading in a low-voltage network, Appl. Energy 287 (2021) 116598. (2024) 100524.
+
+[20] N. Tubteang, P. Wirasanti, Peer-to-peer electrical energy trading considering match- [48] S. Cui, Y.-W. Wang, J.-W. Xiao, Peer-to-peer energy sharing among smart en-
+ing distance and available capacity of distribution line, Energies 16 (6) (2023) 2520. ergy buildings by distributed transaction, IEEE Trans. Smart Grid 10 (6) (2019) 
+
+[21] N. Talebpour, M. Ilbeigi, G. Korfiatis, M. Powell, Distributed energy systems: a poten- 6491–6501. https://doi.org/10.1109/TSG.2019.2906059
+tial solution for equitable electricity access, Urban Resilience Sustain. 2 (3) (2024) [49] J.M. Zepter, A. Lüth, P.C. Del Granado, R. Egging, Prosumer integration in wholesale 
+289–306. electricity markets: synergies of peer-to-peer trade and residential storage, Energy 
+
+[22] N. Talebpour, M. Ilbeigi, Citizens’ socioeconomic background and energy accessi- Build. 184 (2019) 163–176.
+bility during extreme events in: Construction Research Congress (2024) 31–37. [50] F. Alfaverh, M. Denai, Y. Sun, A dynamic peer-to-peer electricity market model for 
+
+[23] W. Zhou, W. Dang, F. Peng, R. Mahesuti, L. Zhang, K. Sun, A decentralized peer-to- a community microgrid with price-based demand response, IEEE Trans. Smart Grid 
+peer energy trading strategy considering flexible resource involvement and renew- 14 (5) (2023) 3976–3991. https://doi.org/10.1109/TSG.2023.3246083
+able energy uncertainty, Int. J. Electr. Power Energy Syst. 152 (2023) 109275. [51] C. Wei, Z. Shen, D. Xiao, L. Wang, X. Bai, H. Chen, An optimal scheduling strategy for 
+
+[24] B. Varghese, D.N. Gaonkar, Strategic power flow-stackelberg dynamics for min- peer-to-peer trading in interconnected microgrids based on RO and nash bargaining, 
+imizing transmission losses in peer-to-peer trading, IEEE Access 12 (2024) Appl. Energy 295 (2021) 117024.
+168091–168105. [52] M. Khodoomi, H. Sahebi, Robust optimization and pricing of peer-to-peer energy 
+
+[25] L. Herenčić, P. Ilak, I. Rajšl, Peer-to-peer electricity trading in distribution grid: ef- trading considering battery storage, Comput. Indus. Eng. 179 (2023) 109210.
+fects of prosumer’s elasticities on voltage levels, in: 2020 6th IEEE International [53] C.L. Gunarathna, R.J. Yang, S. Jayasuriya, K. Wang, Reviewing global peer-to-peer 
+Energy Conference (ENERGYCon), 2020, pp. 724–729. https://doi.org/10.1109/ distributed renewable energy trading projects, Energy Res. Social Sci. 89 (2022) 
+ENERGYCon48941.2020.9236564 102655.
+
+[26] C. Zhang, T. Yang, Y. Wang, Peer-to-peer energy trading in a microgrid based on [54] B.H. Rao, S.L. Arun, M.P. Selvan, Framework of locality electricity trading system for 
+iterative double auction and blockchain, Sustain. Energy Grids Netw. 27 (2021) profitable peer-to-peer power transaction in locality electricity market, IET Smart 
+100524. Grid 3 (3) (2020) 318–330.
+
+21 
+
+
+
+H. Gharibi et al. Energy & Buildings 348 (2025) 116435 
+
+[55] W. Tushar, T.K. Saha, C. Yuen, D. Smith, H.V. Poor, Peer-to-peer trading in electricity [62] R.-J. Meinke, S. Hongjian, J. Jiang, Optimising demand and bid matching in a peer-
+networks: an overview, IEEE Trans. Smart Grid 11 (4) (2020) 3185–3200. to-peer energy trading model, in: ICC 2020-2020 IEEE International Conference on 
+
+[56] A. Chiarini, L. Compagnucci, Blockchain, data protection and p2p energy trading: a Communications (ICC), IEEE, 2020, pp. 1–6.
+review on legal and economic challenges, Sustainability 14 (23) (2022) 16305. [63] R. Gharibi, R. Khalili, B. Vahidi, A.F. Nematollahi, R. Dashti, M. Marzband, En-
+
+[57] O. Jogunola, A.S. Ajagun, W. Tushar, F.O. Olatunji, C. Yuen, C. Morley, B. Adebisi, hancing energy hub performance: a comprehensive model for efficient integration 
+T. Shongwe, Peer-to-peer local energy market: opportunities, barriers, security and of hydrogen energy and renewable sources with advanced uncertainty management 
+implementation options, IEEE Access 12 (2024) 37873–37890. strategies, J. Energy Storage 107 (2025) 114948.
+
+[58] D.L. Rodrigues, X. Ye, X. Xia, B. Zhu, Battery energy storage sizing optimisation for [64] NSRDB, 2023, https://globalsolaratlas.info/.
+different ownership structures in a peer-to-peer energy sharing community, Appl. [65] M. Nasir, A. Rezaee Jordehi, M. Tostado-Véliz, S.A. Mansouri, E.R. Sanseverino, 
+Energy 262 (2020) 114498. M. Marzband, Two-stage stochastic-based scheduling of multi-energy microgrids 
+
+[59] H. Mehrjerdi, Peer-to-peer home energy management incorporating hydrogen stor- with electric and hydrogen vehicles charging stations, considering transactions 
+age system and solar generating units, Renew. Energy 156 (2020) 183–192. through pool market and bilateral contracts, Int. J. Hydrogen Energy 48 (61) (2023) 
+
+[60] S. Dorahaki, M. Rashidinejad, S.F.F. Ardestani, A. Abdollahi, M.R. Salehizadeh, A 23459–23497.
+peer-to-peer energy trading market model based on time-driven prospect theory in [66] N. Gholizadeh, M. Abedi, H. Nafisi, M. Marzband, A. Loni, G.A. Putrus, Fair-optimal 
+a smart and sustainable energy community, Sustain. Energy Grids Netw. 28 (2021) bilevel transactive energy management for community of microgrids, IEEE Syst. J. 
+100542. 16 (2) (2022) 2125–2135.
+
+[61] A. Razmjoo, L. Gakenia Kaigutha, M.A. Vaziri Rad, M. Marzband, A. Davarpanah, 
+M. Denai, A technical analysis investigating energy sustainability utilizing reliable 
+renewable energy sources to reduce CO2 emissions in a high potential area, Renew. 
+Energy 164 (2021) 46–57.
+
+22

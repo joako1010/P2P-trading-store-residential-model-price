@@ -1,0 +1,1894 @@
+﻿Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+A
+2
+
+Contents lists available at ScienceDirect
+
+Sustainable Energy, Grids and Networks
+journal homepage: www.elsevier.com/locate/segan
+
+Enhancing network-constrained P2P energy sharing through virtual
+communities
+Monika Mishra ∗, Amit Singh, Rakesh Kumar Misra, Devender Singh
+Department of Electrical Engineering, Indian Institute of Technology (BHU), Varanasi, 221005, Uttar Pradesh, India
+
+A R T I C L E I N F O A B S T R A C T
+Keywords: Peer-to-peer (P2P) exchanges provide opportunities for prosumers to meet their energy needs cost-effectively
+Peer-to-peer energy sharing with the effective utilization of renewable energy sources (RES). Along with the benefits, P2P energy trading
+Demand response also raises issues in distribution network operations. The proposed framework has the potential to handle
+Nash bargaining transactions in regard to network constraints by leveraging the benefits of dynamic utilization-based charges
+Battery energy storage system
+Decentralized optimization for network usages and power pricing structures. This work proposes a novel P2P energy trading framework
+
+comprising virtual communities (VCs) made by grouping buildings located on a particular bus. A cooperative
+game is formulated for inter- and intra- bus energy trading. A battery energy storage system (BESS) is present
+in each VC, and a stochastic model is used for coping with the uncertainties related to RESs. In this work, each
+player’s individual problem is decoupled to achieve equilibrium in a decentralized manner to avoid security
+and privacy issues. This research focuses on the significant reduction in the net energy cost of the buildings
+in the presence of uncertain renewable energy generations by taking advantage of the load variability of
+buildings present on the same and different buses without violating any network constraints and raising any
+privacy concerns. The proposed framework reduces the building cost by 21.87%.
+1. Introduction exchange (P2P). A three-layer strategy is used in [6] for load scheduling
+in an active distribution network. The first layer deals with the demand
+
+Nowadays, diverse resources, such as battery energy storage systems response program, the second deals with the load scheduling of smart
+(BESS), renewable energy sources(RESs), and demand response play buildings and Electric vehicles, and the third deals with the microgrid
+vital roles in energy management. RESs are usually equipped with a problem. In this work, the energy exchange within peers is limited to
+BESS to increase usage and lessen the intermittent impact. The BESS microgrids only who are sharing energy among themselves using game
+can be used for individual or group buildings [1]. The load flexibility theoretical strategies. Further, smart buildings can also be involved in
+can be used for cost savings by shifting load from a higher tariff P2P sharing.
+period to a lower one. This is referred to as demand-side management. The concept of the energy community and its manager for peer-
+Another way to reduce net electricity costs is to share the excess to-peer energy trading was used in the framework proposed in [7].
+renewable energy among neighboring buildings rather than sell it to the Two different types of local trading centers (LTCs) for managing the
+utility. This is popularly known as peer-to-peer (P2P) energy sharing or P2P market have been studied in Ref. [8]. These two LTCs are profit
+transactive energy sharing. and non-profit oriented. But using such centralized or middle agents
+
+Mitigating the challenges associated with the fluctuating character can raise privacy concerns for prosumers. Enhanced Benders decom-
+of renewable energy sources includes increasing the flexible capacity
+of networks, enabling a more sophisticated response to fluctuations in position is used for a decentralized P2P sharing that preserves the
+energy production [2]. The IOT-enabled load is used in [3] for main- privacy of prosumers [9]. A cooperative game theory-based two-stage
+taining the network constraints during high-demand periods by shifting optimization model is proposed for a small community in [10]. The
+the load. Instead of using discomfort cost, [4] uses the satisfaction index decision of participation and calculation of power profiles in case of
+for the modeling of flexible load in such a way that this index should participation is made in the first stage, and the second stage deals
+be greater than a certain limit. Ref. [5] focuses on the technical and with the determination of payment for P2P sharing. The efficacy of
+economic indicators of the network. Apart from this, the dependence Game theory for designing and managing P2P energy-sharing frame-
+on the grid can be further reduced by increasing the local energy works has been proved [11]. But the implementation of game theory
+
+∗ Corresponding author.
+E-mail address: monikamishra.rs.eee21@iitbhu.ac.in (M. Mishra).
+https://doi.org/10.1016/j.segan.2024.101276
+Received 19 July 2023; Received in revised form 23 November 2023; Accepted 8 J
+vailable online 9 January 2024
+352-4677/© 2024 Elsevier Ltd. All rights reserved.
+anuary 2024
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+Nomenclature
+𝜖𝐶𝐸 Charges due to carbon emission
+𝜖𝐿𝐶 Load curtailment factor
+𝜖𝑅 Ratio of the price of import and export
+𝜂𝑐ℎ𝑛 , 𝜂𝑑𝑖𝑠𝑛 Charging/discharging efficiency of the bat-
+
+tery of VC 𝑛
+𝜂𝑙𝑜𝑠𝑠𝑛 Self-discharge related parameter of the
+
+battery of VC 𝑛
+𝜅, 𝜈 Given constants
+𝛬𝑈𝑇𝐼 Battery utilization cost
+𝛬𝑑,𝑃
+ℎ , 𝛬𝑑,𝑄
+
+ℎ Price of import of active/reactive power
+from DG
+
+𝛬𝑑𝑖𝑠𝑐
+ℎ Weighted coefficient for discomfort due to
+
+load shifting
+𝛬𝐺𝑃
+ℎ , 𝛬𝐺𝑄
+
+ℎ Price of active/reactive power import from
+main grid
+
+𝛬𝑖𝑚
+𝑛,ℎ, 𝛬𝑒𝑥
+
+𝑛,ℎ Price of power import/export from/to util-
+ity for VCs
+
+𝛬𝑁𝑈𝐶
+𝑛,𝑚,ℎ Price for network utilization in C2C energy
+
+trading
+𝜎, 𝜔, 𝛿 Auxiliary variables, dual multipliers,
+
+penalty parameters respectively
+𝑖, 𝑗, 𝑛, 𝑚, 𝑘, 𝑙, 𝑑, ℎ Indices ∈ N
+𝐿𝑚𝑎𝑥
+𝑛,𝑖,ℎ, 𝐿𝑚𝑖𝑛
+
+𝑛,𝑖,ℎ Maximum/minimum limit for load shifting
+𝑁𝐵 Number of Buses
+𝑁𝑏
+
+𝑛 Number of buildings in the VC 𝑛
+𝑁𝐶 Number of VCs
+𝑁𝐷𝐺 Number of DGs
+𝑃𝐺
+ℎ , 𝑄𝐺
+
+ℎ Active and reactive power exchange with
+grid
+
+𝑃 𝑏2𝑏
+𝑛,𝑖,𝑗,ℎ, 𝜋𝑏2𝑏
+
+𝑛,𝑖,𝑗 Power imported by building 𝑖 from building
+𝑗 and the respective incentive
+
+𝑃 𝑏2𝑐
+𝑛,𝑖,ℎ, 𝜋𝑏2𝑐
+
+𝑛,𝑖 Power imported by building 𝑖 from its VC 𝑛
+and the respective incentive
+
+𝑃 𝑐2𝑐
+𝑛,𝑚,ℎ, 𝜋𝑐2𝑐
+
+𝑛,𝑚 Power imported by VC 𝑛 from VC 𝑚 and the
+respective incentive
+
+𝑃 𝑑
+𝑑,ℎ, 𝑄𝑑
+
+𝑑,ℎ Active and reactive power exchange with
+DG
+
+𝑃 𝑙𝑠
+𝑛,𝑖,ℎ, 𝐿𝐴
+
+𝑛,𝑖,ℎ Shifted load and Actual load respectively
+𝑃 𝑐ℎ
+𝑛,ℎ, 𝑃 𝑑𝑖𝑠
+
+𝑛,ℎ Charging/discharging power of battery
+𝑃 𝑐ℎ𝑚𝑎𝑥
+𝑛 , 𝑃 𝑐ℎ𝑚𝑖𝑛
+
+𝑛 Maximum/minimum limit for charging
+power of the battery of VC 𝑛
+
+𝑃 𝑑𝑖𝑠𝑚𝑎𝑥
+𝑛 , 𝑃 𝑑𝑖𝑠𝑚𝑖𝑛
+
+𝑛 Maximum/minimum limit for discharging
+power of the battery of VC 𝑛
+
+𝑅𝑛,𝑖,ℎ Total renewable generation by building 𝑖 of
+VC 𝑛 at hour ℎ
+
+𝐻 Total time period
+𝑆𝑂𝐶𝑚𝑎𝑥
+
+𝑛 , 𝑆𝑂𝐶𝑚𝑖𝑛
+𝑛 Maximum/minimum limit for SOC of the
+
+battery of VC 𝑛
+𝑆𝑂𝐶𝑛,ℎ State of charge of the battery of the VC 𝑛 at
+
+hour ℎ
+𝜆𝑃 ,𝜆𝐷 Primal and dual residuals
+
+for P2P energy sharing on a large scale, i.e. for a large number of
+participants, results in increases in the computational complexity of the
+system along with an increase in the need for a robust infrastructure
+for communication and privacy concerns for each participant. Also,
+in these works, the presumption is that the buildings are in close
+geographical proximity. In practice, the buildings can be located at
+2
+
+a distance away from each other, leading to additional power loss.
+An equivalent amount of fee can be charged [12]. Furthermore, if the
+participants are geographically distant then it is necessary to consider
+the distribution network constraint for a viable P2P sharing.
+
+A transactive energy-sharing framework has been developed in [13],
+in which the many roles of prosumers, such as buyer, seller, and
+neither, are analyzed. A two-level energy market is proposed in [14],
+where one level pertains to trade within the community, and the other
+pertains to trade between the utility and the community controller.
+However, no energy storage such as BESS is taken into account in [14].
+In [15], a game theoretic model is proposed consisting of a non-
+cooperative game and an evolutionary game. Sellers play the former
+game for the price, and buyers play the latter to select the seller. For
+each time slot, the buyers and sellers are pre-defined in the model
+proposed in [16] and use the social welfare of buyers and sellers as
+the objective for optimization. In [17], a Stackelberg game is proposed
+with sellers at the upper level for the pricing problem and buyers at the
+lower level for purchasing problem. A pair-matching algorithm is used
+in [18] for matching the respective buyer and seller. In [17], energy
+storage systems and demand response are not considered, which does
+not represent a practical scenario. Based on the available excess energy,
+these works [13–18], at the beginning itself, categorize the participants
+as a seller or a buyer. However, the BESS, flexible load shifting, and
+the strategies of other participants may encourage the participants
+to switch roles. Thus, the participants should have the autonomy in
+selecting their roles of either a buyer or seller or both or none.
+
+The network parameters, like voltages, power flow, power loss, etc.,
+get affected by P2P energy trading. Bus voltage and line loading may vi-
+olate their limit if the network constraints are not considered. This will
+result in increased power loss and reduced power quality. This is one
+of the important challenges faced in peer-to-peer energy trading [19].
+For local resilience, load balancing, and facilitating P2P trading, the
+distribution system operator (DSO) has to work out certain arrange-
+ments [20]. In [21], DSO ensures the feasibility of P2P energy trading
+by changing the network switch’s state and maintaining the network
+parameters within limits. Along with buyers and sellers, a profit-based
+DSO equipped with Volt-Var control resources also participates as a
+player in the energy market [22]. In [22], the cooperative game-
+based optimization model includes network parameters and related
+constraints in an unfeasible approach because DSOs have refrained
+from sharing this information due to security concerns. This issue is
+resolved by using network usage charges in P2P problems [23,24],
+instead of using network constraints directly. But these charges are
+considered as a pre-fixed parameter in these works that give inadequate
+control to DSO over the violation level. However, dynamic network us-
+age charges would give DSO proper control to fine-tune the transactions
+occurring through the network.
+
+The sensitivity analysis can also be used to prevent the violation
+of network constraints [25]. An iterative algorithm to maintain the
+network parameter in limits under P2P energy sharing has been pro-
+posed in [26]. Any voltage or current limit violation is penalized by
+a certain fee, which is considered for re-scheduling P2P sharing. This
+process continues till the network parameter falls under the limits.
+However, in [25,26], the network usage charges are not considered. For
+the market operation, through the optimal power flow (OPF), the DSO
+in [27] calculates the locational marginal price (LMP) that accounts
+for voltage regulation and power loss. But privacy implications arise
+when employing a centralized approach in [27]. Also, [27] does not
+consider the energy storage system. For investigating the power bal-
+ancing and pricing mechanisms in P2P energy exchange, [28] proposes
+a linear LinDistFlow model. In such optimum scheduling, incorporating
+renewable power sources may result in some uncertainties that are
+neglected in [28]. These uncertainties create a mismatch between local
+supply and demand, leading to system unreliability and instability [29].
+In [30], the proposed framework enables trading within the community
+
+and neighboring areas, facilitated by a community manager that is
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+g
+𝐶
+
+H
+i
+s
+𝐿
+
+T
+t
+T
+r
+
+maintaining the network constraints also. The main drawback of this
+work is the use of a community manager i.e. a middle agent.
+
+The P2P energy sharing involves the incentive/price distribution
+also that encourages the participants to engage in such internal trading.
+Based on the supply and demand ratio (SDR), [31] proposes a dynamic
+tariff framework for P2P trading that is limited by the feed-in tariffs.
+In [32], the SDR method is modified using a compensating factor.
+Ref. [33,34] propose methods for incentive distribution based on the
+mid-market rate. For these methods, the participants need to share their
+energy profiles raising privacy concerns. Also, they also do not ensure
+suitable economic satisfaction for each of the participants without
+compromising their privacy. The authors [35] have examined hourly
+pricing mechanisms and incentive mechanisms and found that both
+mechanisms produce almost identical results. The main difference is
+in the execution time of both mechanisms. The incentive mechanism is
+comparatively faster.
+
+The review of aforementioned works on P2P energy trading has
+highlighted specific areas where further research is needed. Technically
+infeasible P2P energy transactions may result if network constraints are
+ignored. In the existing literature, these constraints have not been ex-
+tensively explored; instead, other approaches have been adopted. These
+approaches include using pre-fixed network usage charges that have
+the problem of inadequate control on energy transactions in regard to
+network constraints [23,24]; or including these constraints explicitly
+in the problem formulation [22] that will lead to security issues as it
+needed DSO to share data with the participants; or involving a third-
+party agent [30] that can lead to privacy issues. Also, in the existing
+work [13–17], participants are classified into the roles of buyers and
+sellers at the beginning itself, but they should have the autonomy to
+switch their roles as seller or buyer depending on the market scenario
+and other participants strategies. These research gaps related to the
+feasibility of network constraints and participants’ privacy participants
+privacy are addressed in this work.
+
+The proposed decentralized P2P framework fine-tunes the trans-
+actions regarding the technical constraints, leveraging the benefits of
+dynamic network usage charges and electricity tariffs. At its core,
+this framework’s dedicated commitment is to prevent inadvertent data
+exposure across the complex communications web between participants
+and distribution system operators (DSOs). To ensure security, cloud
+computing infrastructures are strategically utilized to enable efficient
+communication with the DSO, specifically in the context of net power
+supply or absorption at specified bus locations. It is paramount to
+recognize the important role of cloud computing in orchestrating peer-
+to-peer (P2P) energy sharing, extending its impact to intra-bus and
+inter-bus domains. This forward-thinking approach leverages the con-
+cept of virtual communities to manage and optimize the complicated
+dynamics of energy sharing efficiently. In the proposed P2P energy-
+sharing framework, the intrinsic responsibilities and dynamics of the
+prosumers are determined through an endogenous process, effectively
+removing the need for prior knowledge concerning their deficit or
+surplus energy status.
+
+Furthermore, this study considers the uncertainties in renewable
+energy generation, thus reinforcing its commitment to realism and
+practical applicability. In the face of a progressively expanding envi-
+ronment, the burden carried by the communication infrastructure is
+undeniably enhanced, resulting in a simultaneous increase in compu-
+tational complexities [36]. Also, for communication with DSO, either
+each building does it directly or an aggregator at each bus is present for
+this communication in the existing literature. The diverse challenges
+explored in this work are methodically resolved by harnessing the
+capabilities of virtual communities (VCs), which are the hypothetical
+gathering of all the buildings of each bus. This methodical framework
+effectively diminishes the burden of transactions without compromis-
+ing the integrity of peer-to-peer (P2P) energy sharing, thereby giving
+rise to a scalable P2P energy-sharing infrastructure. The conventional
+
+practice of distributing Battery Energy Storage Systems (BESS) within l
+
+3
+
+individual building units is replaced by a more coordinated approach,
+whereby a designated group of buildings shares BESS. The concept of
+virtual communities facilitates the orchestration of this collaborative
+configuration.
+
+The article is structured in the following manner. Sections 2 and 3
+present the problem formulation and methodologies, respectively. To
+demonstrate the effectiveness of the proposed approach, simulation re-
+sults are presented in Section 4. Finally, Section 5 contains conclusions
+of this work.
+
+2. Problem formulation
+
+2.1. System model
+
+In this work, all the neighboring buildings and BESS on a single bus
+(Fig. 1) are grouped to form virtual communities (VCs). Here, VC is
+nothing but a hypothetical gathering of shareable BESS and buildings
+interconnected through a computing cloud. Smart metering and a
+robust communication system are assumed to be present to facilitate
+the buildings equipped with demand-responsive loads and RESs. For
+cloud computing and limited information sharing, a separate and secure
+platform is present for each internal energy trading (i.e. building-
+to-building (B2B), building-to-community (B2C), and community-to-
+community (C2C)). In each VC, cloud computing is used to handle the
+coupling decisions of buildings and BESS that are required for B2B and
+B2C trading, charging/discharging of BESS, and trading with other VCs
+and the utility. The VC considered here is a non-profit based for its
+buildings and profit based with respect to other VCs for C2C trading.
+This concept takes advantage of P2P sharing among buildings while
+minimizing the need for extensive communication and computational
+resources. It aims to enhance the overall benefits of the buildings.
+In the process of this internal P2P trading, the network parameters
+may violate the network constraints. An independent operator, DSO,
+ensures that all the network parameters are regulated within acceptable
+thresholds with the help of a dynamic network utilization cost (NUC).
+
+2.2. Building level
+
+Each building incorporates load shifting as demand-side manage-
+ment to reduce its cost. However, the objective function of buildings
+incorporates the cost associated with discomfort caused by load shift-
+ing. Additionally, all buildings actively engage trading including both
+B2B and B2C transactions. The cost function 𝐶𝑏
+
+𝑛,𝑖 captures the cost of
+the 𝑖th building within the 𝑛th virtual community (VC) and can be
+mathematically defined as,
+
+𝐻
+∑
+
+𝐶𝑏
+𝑛,𝑖 = 𝐶 𝑙𝑠 𝑏2𝑏
+
+𝑛,𝑖,ℎ + 𝐶𝑛,𝑖 + 𝐶𝑏2𝑐
+𝑛,𝑖 . (1)
+
+ℎ=1
+
+2.2.1. Load shifting
+The consumer discomfort cost, 𝐶 𝑙𝑠
+
+𝑛,𝑖,ℎ, due to load-shifting can be
+iven by
+𝑙𝑠
+𝑛,𝑖,ℎ = 𝛬𝑑𝑖𝑠𝑐
+
+ℎ (𝑃 𝑙𝑠
+𝑛,𝑖,ℎ − 𝐿𝐴
+
+𝑛,𝑖,ℎ)
+2. (2)
+
+ere, 𝛬𝑑𝑖𝑠𝑐
+ℎ is the weighted coefficient for discomfort due to shift-
+
+ng from actual load 𝐿𝐴
+𝑛,𝑖,ℎ to load pattern 𝑃 𝑙𝑠
+
+𝑛,𝑖,ℎ. The load shifting is
+ubjected to the following constraints.
+𝑚𝑖𝑛
+𝑛,𝑖,ℎ ≤ 𝑃 𝑙𝑠
+
+𝑛,𝑖,ℎ ≤ 𝐿𝑚𝑎𝑥
+𝑛,𝑖,ℎ, (3)
+
+𝐻 𝐻
+∑ ∑
+
+𝑃 𝑙𝑠 𝐴
+𝑛,𝑖,ℎ ≥ 𝜖𝐿𝐶 𝐿𝑛,𝑖,ℎ. (4)
+
+ℎ=1 ℎ=1
+
+he Eq. (3) limits the demand after load shifting. At a time instant,
+he load cannot be increased or decreased beyond a particular limit.
+he maximum allowable load curtailment is constrained by (4). 𝜖𝐿𝐶
+epresents the fraction of load supplied. 𝜖𝐿𝐶 equals 1 represents the no
+
+oad curtailment.
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+Fig. 1. Peer-to-peer energy sharing framework.
+2.2.2. B2B and B2C energy exchange
+Buildings share energy with other buildings (𝑃 𝑏2𝑏
+
+𝑛,𝑖,𝑗,ℎ) and the VC
+(𝑃 𝑏2𝑐
+
+𝑛,𝑖,ℎ). Both have positive values in the case of imports and negative for
+exports. To motivate the prosumers for these internal energy trading,
+incentives 𝜋𝑏2𝑏
+
+𝑛,𝑖,𝑗 and 𝜋𝑏2𝑐
+𝑛,𝑖 are provided for B2B and B2C energy trading,
+
+such that,
+𝐶𝑏0 − 𝐶𝑏 ≥ 0. (5)
+Here, 𝐶𝑏0 is the cost of the buildings in the absence of B2B and B2C
+energy trading. The incentive 𝜋 is positive in case the building is
+paying, and else it is negative. The cost of B2B trading, 𝐶𝑏2𝑏
+
+𝑛,𝑖 and B2C
+trading, 𝐶𝑏2𝑐
+
+𝑛,𝑖 can be defined as,
+𝑁𝑏
+
+𝑛
+∑
+
+𝐶𝑏2𝑏
+𝑛,𝑖 = 𝜋𝑏2𝑏
+
+𝑛,𝑖,𝑗 , and 𝐶𝑏2𝑐
+𝑛,𝑖 = 𝜋𝑏2𝑐
+
+𝑛,𝑖 .
+𝑗=1, 𝑗≠𝑖
+
+Here 𝑁𝑏
+𝑛 is the total buildings in 𝑛th VC. The power and incentive
+
+balance for a B2B transaction between 𝑖th and 𝑗th building in 𝑛th VC
+can be written as
+𝑃 𝑏2𝑏
+𝑛,𝑖,𝑗,ℎ + 𝑃 𝑏2𝑏
+
+𝑛,𝑗,𝑖,ℎ = 0, (6)
+
+𝜋𝑏2𝑏
+𝑛,𝑖,𝑗 + 𝜋𝑏2𝑏
+
+𝑛,𝑗,𝑖 = 0. (7)
+The constraints (6) and (7) involve the coupling aspect between 𝑖th and
+𝑗th building in 𝑛th VC because they contain the decision variables of
+both the buildings. Based on RES generation, 𝑅𝑛,𝑖,ℎ, the load balancing
+the equation for a building can be defined as,
+
+𝑁𝑏
+𝑛
+
+∑
+
+− 𝑃 𝑏2𝑏
+𝑛,𝑖,𝑗,ℎ − 𝑃 𝑏2𝑐
+
+𝑛,𝑖,ℎ = 𝑅𝑛,𝑖,ℎ − 𝑃 𝑙𝑠
+𝑛,𝑖,ℎ, (8)
+
+𝑗=1
+𝑗≠𝑖
+
+2.3. Virtual community level
+
+By considering the power exchange request of all the buildings in
+its premises, the decision to trade energy with the utility and other
+VCs and the decision of charging/discharging of BESS is taken in the
+computing cloud of the VC. The cost function of a VC includes the
+energy exchange cost with the utility 𝐶𝑈 , the energy exchange cost
+𝑛,ℎ
+
+4
+
+with other VCs 𝐶𝑐2𝑐
+𝑛 , and the cost of BESS utilization 𝐶𝐵𝐸𝑆𝑆
+
+𝑛,ℎ , and can
+be written as,
+
+𝐻
+∑
+
+𝐶𝑐
+𝑛 = (𝐶𝑈 𝐵𝐸𝑆𝑆
+
+𝑛,ℎ + 𝐶𝑛,ℎ ) + 𝐶𝑐2𝑐
+𝑛 . (9)
+
+ℎ=1
+
+In this work, the virtual community is act as a non-profit based entity
+with respect to its buildings but act as a profit-based entity in inter-
+community sharing. Therefore the B2C exchange cost is not considered
+in the objective function, 𝐶𝑐
+
+𝑛 and the cost of the VC is shared by the
+buildings of that VC as follows.
+
+𝑁𝑏
+𝑛
+
+∑
+
+𝐶𝑐
+𝑛 = 𝜋𝑏2𝑐
+
+𝑛,𝑖 . (10)
+𝑖=1
+
+2.3.1. Exchange with the utility
+The cost of energy exchange with the utility can be defined as,
+
+𝐶𝑈
+𝑛,ℎ = (𝛬𝑖𝑚
+
+𝑛,ℎ + 𝜖𝐶𝐸 )𝑃 𝑏
+𝑛,ℎ − 𝛬𝑒𝑥
+
+𝑛,ℎ𝑃
+𝑠
+𝑛,ℎ, (11)
+
+Where 𝑃 𝑏
+𝑛,ℎ represents the power import from the utility and 𝑃 𝑠
+
+𝑛,ℎ
+represents the power export to the utility. The 𝜖𝐶𝐸 is charges due to
+carbon emission. The power import price for a VC, 𝛬𝑖𝑚
+
+𝑛,ℎ, relies on LMP
+of 𝑘th bus containing that VC, such as 𝛬𝑖𝑚
+
+𝑛,ℎ = 𝑎𝜆𝐿𝑀𝑃
+ℎ,𝑘 . The term 𝑎 is
+
+a scale factor decided by the utility. The power export price, 𝛬𝑒𝑥
+𝑛,ℎ is
+
+considered as 𝛬𝑒𝑥
+ℎ = 𝛬𝑖𝑚
+
+ℎ ∕𝜖𝑅.
+
+2.3.2. Battery Energy Storage System (BESS)
+The repetitive charging/discharging will degrade the quality of
+
+BESS. The BESS utilization cost in terms of BESS utilization coefficient,
+𝛬𝑈𝑇𝐼 , and charging/discharging power can be written as
+
+𝐶𝐵𝐸𝑆𝑆
+𝑛,ℎ = 𝛬𝑈𝑇𝐼 (𝑃 𝑐ℎ
+
+𝑛,ℎ + 𝑃 𝑑𝑖𝑠
+𝑛,ℎ ). (12)
+
+The charging power, 𝑃 𝑐ℎ
+𝑛,ℎ, and discharging power, (𝑃 𝑑𝑖𝑠
+
+𝑛,ℎ ), of the BESS
+are constrained as follows.
+
+𝑃 𝑐ℎ𝑚𝑖𝑛
+𝑛 ≤ 𝑃 𝑐ℎ
+
+𝑛,ℎ ≤ 𝑃 𝑐ℎ𝑚𝑎𝑥
+𝑛 , (13)
+
+𝑃 𝑑𝑖𝑠𝑚𝑖𝑛 ≤ 𝑃 𝑑𝑖𝑠 ≤ 𝑃 𝑑𝑖𝑠𝑚𝑎𝑥 . (14)
+𝑛 𝑛,ℎ 𝑛
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+𝜂
+a 𝑉
+
+2
+
+t
+o 𝑃
+n
+i 𝑄
+𝜋
+u 𝑃
+a
+𝐶 𝑄
+
+T
+F b
+
+T
+a
+
+𝑃
+
+𝑃
+
+H
+c
+t
+e
+V
+b
+l
+(
+g
+(
+i
+r
+t
+a
+f
+L
+𝜆
+
+T
+p
+
+3
+
+e
+o
+m
+b
+m
+o
+v
+
+E
+
+The next stage state of charge (SoC) level, 𝑆𝑜𝐶𝑛,ℎ, of BESS depends on
+the present SoC level and charging/discharging power status, and this
+can be defined as
+𝑆𝑜𝐶𝑛,ℎ = (1 − 𝜂𝑙𝑜𝑠𝑠𝑛 )𝑆𝑜𝐶𝑛,ℎ−1 + 𝜂𝑐ℎ𝑛 𝑃 𝑐ℎ
+
+𝑛,ℎ − 𝜂𝑑𝑖𝑠𝑛 𝑃 𝑑𝑖𝑠
+𝑛,ℎ , (15)
+
+𝑆𝑜𝐶𝑚𝑖𝑛
+𝑛 ≤ 𝑆𝑜𝐶𝑛,ℎ ≤ 𝑆𝑜𝐶𝑚𝑎𝑥
+
+𝑛 , (16)
+𝑐ℎ
+𝑛 /𝜂𝑑𝑖𝑠𝑛 and 𝜂𝑙𝑜𝑠𝑠𝑛 are the charging/discharging efficiency and parameter
+ssociated with the self-discharging of the battery.
+
+.3.3. C2C trading
+Inter-community power exchange, 𝑃 𝑐2𝑐
+
+𝑛,𝑚,ℎ, provides an opportunity
+o reduce the electricity cost further and increase the value of the use
+f RES. In the case of import of VC 𝑛 from VC 𝑚, 𝑃 𝑐2𝑐
+
+𝑛,𝑚,ℎ is positive else
+egative. Corresponding to this power exchange, the VC will get/give
+ncentives 𝜋𝑐2𝑐
+
+𝑛,𝑚 from/to other VCs. If 𝑛 VC has to pay 𝜋𝑐2𝑐
+𝑛,𝑚 to 𝑚 VC, then
+
+𝑐2𝑐
+𝑛,𝑚 is positive, else it will be negative. The VC has to pay a network
+tilization cost (NUC) for C2C power exchange. The NUC can be written
+s
+𝑁𝑈𝐶
+𝑛,𝑚,ℎ = 𝛬𝑁𝑈𝐶
+
+𝑛,𝑚,ℎ 𝑃
+𝑐2𝑐
+𝑛,𝑚,ℎ. (17)
+
+or power import, the price for network utilization, 𝛬𝑁𝑈𝐶
+𝑛,𝑚,ℎ , in C2C
+
+energy trading is 50% of the variance in LMPs of buses that includes the
+VCs 𝑛 and 𝑚. In case this difference is negative, then 𝛬𝑁𝑈𝐶
+
+𝑛,𝑚,ℎ = 0. But for
+power export, 𝛬𝑁𝑈𝐶
+
+𝑛,𝑚,ℎ is 50% of the variance in LMPs of buses consisting
+the VCs 𝑚 and 𝑛. In case this difference is negative, then 𝛬𝑁𝑈𝐶
+
+𝑛,𝑚,ℎ = 0. The
+constraints related to the C2C energy exchange are as follows.
+
+𝑃 𝑐2𝑐
+𝑛,𝑚,ℎ + 𝑃 𝑐2𝑐
+
+𝑚,𝑛,ℎ = 0, (18)
+
+𝜋𝑐2𝑐
+𝑛,𝑚 + 𝜋𝑐2𝑐
+
+𝑚,𝑛 = 0, (19)
+
+𝐶𝑐0 − 𝐶𝑐 ≥ 0. (20)
+Here, 𝐶𝑐0 is the cost of the VC in the absence of C2C energy trading.
+The incentives are decided based on (20). Thus, the total C2C cost is
+given by,
+
+𝑁𝐶 𝐻
+∑ ∑
+
+𝐶𝑐2𝑐
+𝑛 = ( 𝐶𝑁𝑈𝐶
+
+𝑛,𝑚,ℎ + 𝜋𝑛,𝑚). (21)
+𝑚=1 ℎ=1
+𝑚≠𝑛
+
+Here, 𝑁𝐶 is the number of VCs. The load balancing equation concern-
+ing the VC can be given as,
+
+𝑁𝐶 𝑁𝑏
+𝑛
+
+∑ ∑
+
+𝑃 𝑏
+𝑛,ℎ − 𝑃 𝑠
+
+𝑛,ℎ + 𝑃 𝑑𝑖𝑠
+𝑛,ℎ − 𝑃 𝑐ℎ
+
+𝑛,ℎ + 𝑃 𝑐2𝑐 𝑏2𝑐
+𝑛,𝑚,ℎ = 𝑃𝑛,𝑖,ℎ. (22)
+
+𝑚=1 𝑖=1
+𝑚≠𝑛
+
+2.4. DSO level
+
+The DSO bears the responsibility of maintaining network con-
+straints. It does so by determining the LMPs based on optimal power
+flow. The objective function of DSO can be defined as,
+
+𝐻 𝑁𝐷𝐺
+∑ ∑
+
+𝐶𝐷𝑆𝑂 = [𝛬𝐺,𝑃
+ℎ 𝑃𝐺 |
+
+ℎ + 𝛬𝐺,𝑄 𝐺
+ℎ |𝑄 |
+
+ℎ | + (𝛬𝑑,𝑃
+ℎ 𝑃 𝑑 |
+
+ℎ + 𝛬𝑑,𝑄 𝑑
+ℎ |𝑄 |
+
+ℎ|)]. (23)
+| | | |
+
+ℎ=1 𝑑=1
+
+Here, 𝑃𝐺
+ℎ and 𝑄𝐺
+
+ℎ are active and reactive power exchange with grid and
+𝛬𝐺𝑃
+ℎ and 𝛬𝐺𝑄
+
+ℎ are corresponding prices. 𝑃𝐷𝐺
+𝑑,ℎ and 𝑄𝐷𝐺
+
+𝑑,ℎ are the active and
+reactive supplied by DG and their respective prices are 𝛬𝑑,𝑃
+
+ℎ and 𝛬𝑑,𝑄
+ℎ .
+
+The network constraints for the distribution system can be defined as
+follows.
+𝑁𝑏𝑢𝑠 𝑁𝑏𝑢𝑠
+∑ ∑
+
+𝑃𝐺
+𝑘,ℎ − 𝑃𝐷
+
+𝑘,ℎ = 0 ∶ 𝜆1ℎ (24)
+
+𝑘=1 𝑘=1
+
+5
+
+𝑁𝑏𝑢𝑠 𝑁𝑏𝑢𝑠 𝑁𝑏𝑢𝑠
+∑ ∑ ∑
+
+𝑄𝐺
+𝑘,ℎ − 𝑄𝐷
+
+𝑘,ℎ = − 𝑏𝑘′𝑘′ ∶ 𝜆2ℎ (25)
+𝑘=1 𝑘=1 𝑘′=1
+
+𝑁𝑏𝑢𝑠 𝑁𝑏𝑢𝑠
+∑ ∑
+
+−𝑃 𝑚𝑎𝑥 −𝑃 𝐺
+𝑙 ≤ 𝑓𝑃
+
+𝑙−𝑘 (𝑃𝐺
+𝑘,ℎ−𝑃
+
+𝐷
+𝑘,ℎ)+ 𝑓𝑃−𝑄
+
+𝑙−𝑘 (𝑄𝑘,ℎ−𝑄
+𝐷
+𝑘,ℎ) ≤ 𝑃 𝑚𝑎𝑥
+
+𝑙 ∶ 𝜇1
+𝑙,ℎ, 𝜇
+
+2
+𝑙,ℎ ∀𝑙 (26)
+
+𝑘=1 𝑘=1
+
+𝑁𝑏𝑢𝑠 𝑁𝑏𝑢𝑠
+∑ ∑
+
+𝑚𝑖𝑛 ≤ 𝑋𝑁𝑏𝑢𝑠+𝑘′ ,𝑘(𝑃
+𝐺
+𝑘,ℎ − 𝑃𝐷
+
+𝑘,ℎ) + 𝑋𝑁𝑏𝑢𝑠+𝑘′ ,𝑁𝑏𝑢𝑠+𝑘
+𝑘=1 𝑘=1
+
+(𝑄𝐺
+𝑘,ℎ −𝑄𝐷
+
+𝑘,ℎ) ≤ 𝑉 𝑚𝑎𝑥 ∶ 𝜇3
+𝑘′ ,ℎ, 𝜇
+
+4
+𝑘′ ,ℎ ∀𝑘′ (27)
+
+𝐺
+𝑚𝑖𝑛 ≤ 𝑃𝐺
+
+ℎ ≤ 𝑃𝐺
+𝑚𝑎𝑥 ∶ 𝜇5
+
+ℎ, 𝜇
+6
+ℎ (28)
+
+𝐺
+𝑚𝑖𝑛 ≤ 𝑄𝐺
+
+ℎ ≤ 𝑄𝐺
+𝑚𝑎𝑥 ∶ 𝜇7
+
+ℎ, 𝜇
+8
+ℎ (29)
+
+𝑑
+𝑚𝑖𝑛 ≤ 𝑃 𝑑
+
+ℎ ≤ 𝑃 𝑑
+𝑚𝑎𝑥 ∶ 𝜇9
+
+ℎ,𝑑 , 𝜇
+10
+ℎ,𝑑 ∀𝑑 (30)
+
+𝑑
+𝑚𝑖𝑛 ≤ 𝑄𝑑
+
+ℎ ≤ 𝑄𝑑
+𝑚𝑎𝑥 ∶ 𝜇11
+
+ℎ,𝑑 , 𝜇
+12
+ℎ,𝑑 ∀𝑑 (31)
+
+he constraints (24) and (25) denote the active and reactive power
+alance for each time interval and here 𝑁𝑏𝑢𝑠 is the number of buses.
+he total active power produced and consumed at bus 𝑘 can be defined
+s
+
+𝑁𝐷𝐺
+∑
+
+𝐺
+𝑘,ℎ = 𝑥𝑃𝐶𝐶
+
+𝑘 𝑃𝐺
+ℎ + 𝑥𝑑𝑘𝑃
+
+𝑑
+ℎ , (32)
+
+𝑑=1
+𝑁𝐶
+∑
+
+𝐷
+𝑘,ℎ = 𝑃 𝐹𝐷
+
+𝑘,ℎ + 𝑥𝑛𝑘𝑃
+𝑛𝑒𝑡,𝑛
+ℎ . (33)
+
+𝑛=1
+
+ere, 𝑥𝑃𝐶𝐶
+𝑘 , 𝑥𝑑𝑘 , and 𝑥𝑛𝑘 are the binary parameters to indicate the
+
+onnection of point of common coupling, DG, and VC at 𝑘th bus. The
+erm 𝑃 𝑛𝑒𝑡,𝑛
+
+ℎ represents the net injection of 𝑛th VC, which includes the
+xchange of power with the utility and exchange of power with other
+Cs. In a similar way, the reactive power produced and consumed can
+e defined for all buses. The Eq. (26) constrains the line flow within
+imits. Parameters 𝑓𝑃−𝑃
+
+𝑙−𝑘 and 𝑓𝑃−𝑄
+𝑙−𝑘 are the generation shift distribution
+
+GSD) factors for 𝑙th line. The detailed derivations of GSD factors are
+iven in [37]. The voltage magnitude at each bus is constrained by
+27). The term 𝑋𝑘,𝑘′ depends on the network topology as described
+n [37]. The constraints (28) and (29) are used to limit active and
+eactive power demand at PCC, while constraints (30) and (31) are used
+o limits active and reactive generation of DGs. The active power LMP
+t 𝑘th can be determined using a partial derivation of the Lagrangian
+unction with respect to the power demand of 𝑘th bus. The active power
+MP for 𝑘th bus can be written as
+
+∑ ∑
+
+𝐿𝑀𝑃
+ℎ,𝑘 = 𝜆1ℎ + (−𝜇1 2
+
+𝑙,ℎ + 𝜇𝑙,ℎ)𝑓
+𝑃−𝑃 3
+𝑙−𝑘 + (−𝜇𝑘′ ,ℎ + 𝜇4
+
+𝑘′ ,ℎ)𝑋𝑁𝑏𝑢𝑠+𝑘′ ,𝑘. (34)
+𝑙 𝑘′
+
+he reactive power LMP is not considered in this work as the reactive
+ower demands of VCs are considered zero.
+
+. Methodology
+
+The uncertainties due to RESs are dealt with Hong’s 2 m point
+stimate method (PEM) [38]. This method considers the uncertainties
+f RESs and gives the expected value of energy scheduling. The first
+oment of random variables will give the expected strategies of all the
+
+uildings. These strategies will then be used to form a cooperative game
+odeled for energy trading as discussed in [39]. The 𝑗th raw moments
+
+f the output random variables are determined by the output random
+ariables 𝑍𝑘,𝑖 as
+
+𝑚 2
+∑∑
+
+(𝑍𝑗 ) = 𝜔 𝑗
+𝑘,𝑖𝑍𝑘,𝑖. (35)
+𝑘=1 𝑖=1
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+T
+i
+
+𝛾
+
+ℱ
+
++
+
++
+
+V
+
+ℱ
+
++
+
+F
+
+ℱ
+
+Where, 𝜔𝑘,𝜄 is the weight coefficient and 𝑚 is the number of random
+input parameters. In this work, the building-level variables, used to
+ascertain the resulting buildings’ cost, are considered as a vector of
+output random variables. This is the reason behind the use of expected
+cost instead of only cost and is denoted as E(𝐶𝑏). The first moments of
+the random variables are taken in this energy trading as the expected
+strategies for all the participants. Instead of all variables, E(.) is used for
+denoting the cost function in the subsequent sections for simplicity. The
+alternating direction method of multipliers (ADMM) is used to solve the
+cooperative game based problem formulation (described in Section 3.1)
+in a decentralized way.
+
+3.1. Nash bargaining game formulation
+
+A Nash Bargaining game for the problem described in Section 2 can
+be formed as
+
+• Players: Here, the players of game are all the buildings and the
+VCs.
+
+• Strategies: The strategies for the buildings is given by 𝑋𝑏
+𝑛,𝑖,ℎ∶=(𝑃 𝑙𝑠
+
+𝑛,𝑖,ℎ,
+𝑃 𝑏2𝑏
+𝑛,𝑖,𝑗,ℎ, 𝑃 𝑏2𝑐
+
+𝑛,𝑖,ℎ, 𝜋𝑏2𝑏
+𝑛,𝑖,𝑗 , 𝜋
+
+𝑏2𝑐
+𝑛,𝑖 ). And for the VCs, it is given by 𝑋𝑐
+
+𝑛,ℎ ∶=
+(𝑃 𝑏
+
+𝑛,ℎ, 𝑃
+𝑠
+𝑛,ℎ, 𝑃
+
+𝑐ℎ
+𝑛,ℎ, 𝑃
+
+𝑑𝑖𝑠
+𝑛,ℎ , 𝑃
+
+𝑐2𝑐
+𝑛,𝑚,ℎ, 𝜋
+
+𝑐2𝑐
+𝑛,𝑚).
+
+• Payoff : The payoff of each player is the expected savings due to
+participation in P2P trading.
+
+A nash bargaining problem (NBP) is formulated to find the nash equi-
+librium of this cooperative game such that the expected cost saving is
+distributed fairly among the participants. Thus, the required NBP is
+
+𝑁𝐶 𝑁𝑏
+𝑛
+
+∏ ∏
+
+ℱ1 ∶ 𝑚𝑎𝑥[ { (E(𝐶𝑏0
+𝑛,𝑖) − E(𝐶𝑏
+
+𝑛,𝑖))(E(𝐶
+𝑐0
+𝑛 ) − E(𝐶𝑐
+
+𝑛 ))}]. (36)
+𝑛=1 𝑖=1
+
+The aforementioned maximization problem can be transformed into a
+minimization problem as,
+
+𝑁𝐶 𝑁𝑏
+𝑛
+
+∑ ∑
+
+ℱ2 ∶ 𝑚𝑖𝑛[− { 𝑙𝑜𝑔(1+E(𝐶𝑏0
+𝑛,𝑖)−E(𝐶
+
+𝑏
+𝑛,𝑖))+𝑙𝑜𝑔(1+E(𝐶
+
+𝑐0
+𝑛 )−E(𝐶𝑐
+
+𝑛 ))}]. (37)
+𝑛=1 𝑖=1
+
+The above problem can be solved in a decentralized manner us-
+ing ADMM [40] by decoupling the coupling constraints: (6), (7),
+(18), (19), (22), and (10). For decoupling, the auxiliary variables
+(𝜎𝑃𝑏2𝑏𝑛,𝑖,𝑗,ℎ, 𝜎
+
+𝜋𝑏2𝑏
+𝑛,𝑖,𝑗 , 𝜎
+
+𝑃𝑐2𝑐
+𝑛,𝑚,ℎ, 𝜎
+
+𝜋𝑐2𝑐
+𝑛,𝑚 , 𝜎𝑃𝑏2𝑐𝑛,𝑖,ℎ , and 𝜎𝜋𝑏2𝑐𝑛,𝑖 ) are employed for 𝑃 𝑏2𝑏
+
+𝑛,𝑖,𝑗,ℎ, 𝜋𝑏2𝑏
+𝑛,𝑖,𝑗 ,
+
+𝑃 𝑐2𝑐
+𝑛,𝑚,ℎ, 𝜋𝑐2𝑐
+
+𝑛,𝑚 , 𝑃 𝑏2𝑐
+𝑛,𝑖,ℎ, and 𝜋𝑏2𝑐
+
+𝑛,𝑖 , respectively.
+Now the coupling constraints can be reformulated as follows:
+
+𝜎𝑃𝑏2𝑏𝑛,𝑖,𝑗,ℎ + 𝜎𝑃𝑏2𝑏𝑛,𝑗,𝑖,ℎ = 0, (38)
+
+𝜎𝜋𝑏2𝑏𝑛,𝑖,𝑗 + 𝜎𝜋𝑏2𝑏𝑛,𝑗,𝑖 = 0, (39)
+
+𝜎𝑃𝑐2𝑐𝑛,𝑚,ℎ + 𝜎𝑃𝑐2𝑐𝑚,𝑛,ℎ = 0, (40)
+
+𝜎𝜋𝑐2𝑐𝑛,𝑚 + 𝜎𝜋𝑐2𝑐𝑚,𝑛 = 0, (41)
+
+𝑁𝐶 𝑁𝑏
+𝑛
+
+∑ ∑
+
+𝑃 𝑏
+𝑛,ℎ − 𝑃 𝑠
+
+𝑛,ℎ + 𝑃 𝑑𝑖𝑠
+𝑛,ℎ − 𝑃 𝑐ℎ
+
+𝑛,ℎ + 𝑃 𝑐2𝑐
+𝑛,𝑚,ℎ = 𝜎𝑃𝑏2𝑐𝑛,𝑖,ℎ , (42)
+
+𝑚=1 𝑖=1
+𝑚≠𝑛
+
+𝑁𝑏
+𝑛
+
+∑
+
+𝐶𝑐
+𝑛 = 𝜎𝜋𝑏2𝑐𝑛,𝑖 . (43)
+
+𝑖=1
+
+The Eq. (37) can be re-formulated depending upon coupling constraints
+reformulation as follows.
+
+𝑁𝐶 𝑁𝑏
+𝑛
+
+∑ ∑
+
+ℱ3 ∶ 𝑚𝑖𝑛[− { 𝑙𝑜𝑔(1 + E(𝐶𝑏0
+𝑛,𝑖) − E(𝐶𝑏
+
+𝑛,𝑖)) + 𝑙𝑜𝑔(1 + E(𝐶𝑐0
+𝑛 ) − E(𝐶𝑐
+
+𝑛 ))}]
+𝑛=1 𝑖=1
+
+𝑁𝐶 𝑁𝑏
+𝑛 𝑁𝑏
+
+𝑛 𝐻 𝜔𝑃𝑏2𝑏
+∑∑∑ ∑ 𝛿 𝜔𝜋𝑏2𝑏
+
++ [ 1 (𝑃 𝑏2𝑏
+𝑛,𝑖,𝑗,ℎ − 𝜎𝑃𝑏2𝑏 𝑛,𝑖,𝑗,ℎ )2
+
+𝛿
+𝑛,𝑖,𝑗,ℎ + + 2 (𝜋𝑏2𝑏 − 𝜋𝑏2𝑏
+
+2 𝑛,𝑖,𝑗 𝜎 𝑛,𝑖,𝑗
+𝑛,𝑖,𝑗 + )2]
+
+𝑛=1 𝑖=1 𝑗=1 ℎ=1 2 𝛿1 𝛿2
+
+𝑗≠𝑖
+
+6
+
+𝑁𝐶 𝑁𝑏
+𝑛 𝐻 𝑏2𝑐 𝜋𝑏2𝑐
+
+∑∑ ∑ 𝛿 𝜔𝑃
+
++ [ 3 (𝑃 𝑏2𝑐 − 𝑃𝑏2𝑐 𝑛,𝑖,ℎ 𝛿4 𝜔
+𝑐 − 𝜎𝜋𝑏2𝑐 𝑛,𝑖
+
+2 𝑛,𝑖,ℎ 𝜎𝑛,𝑖,ℎ + )2 + (𝜋𝑏2
+𝑛,𝑖 + )2]
+
+𝑛=1 𝑖=1 ℎ=1 𝛿 𝑛,𝑖
+3 2 𝛿4
+
+𝑁𝐶 𝑁𝐶 𝐻
+∑∑ ∑ 𝛿 𝜔𝑃𝑐2𝑐 𝜔𝜋𝑐2𝑐
+
++ [ 5 (𝑃 𝑐2𝑐 𝑐2𝑐 𝑛,𝑚,ℎ 𝛿
+𝑛,𝑚,ℎ − 𝜎𝑃
+
+𝑛,𝑚,ℎ + )2 + 6 (𝜋𝑐2𝑐 44)
+𝑛=1 𝑚=1 ℎ=1 2 𝛿 𝑛,𝑚 − 𝜎𝜋𝑐2𝑐
+
+𝑛,𝑚 + 𝑛,𝑚 )2]. (
+5 2 𝛿6
+
+𝑚≠𝑛
+
+he variables for above problem are 𝑋𝑏, 𝑋𝑐 , 𝜎, 𝜔, and 𝛿. This problem
+s constrained by: 𝛾𝑏, 𝛾𝑐 , 𝛾1, and 𝛾2. Here, 𝛾𝑏 ∶=[ (3) to (5), (8)], 𝛾𝑐 ∶=
+
+[𝑃 𝑠 ≥ 0, 𝑃 𝑏 ≥ 0, (13) to (16), (20), (42),(43)], 𝛾1 ∶=[ (38), (39)], and
+2 ∶=[ (40), (41)]. In VC 𝑛 for building 𝑖, (44) can be re-written as:
+
+4 ∶ 𝑚𝑖𝑛 − 𝑙𝑜𝑔(1 + E(𝐶𝑏0
+𝑛,𝑖) − E(𝐶𝑏
+
+𝑛,𝑖))
+𝑁𝑏
+
+𝑛 𝐻
+∑ ∑ 𝛿 𝛿
+
+[ 1 (𝑃 𝑏2𝑏 𝑃 𝜔𝑃𝑏2𝑏
+𝑏2𝑏 𝑛,𝑖,𝑗,ℎ
+
+𝑛,𝑖,𝑗,ℎ − 𝜎𝑛,𝑖,𝑗,ℎ + )2 + 2 (𝜋𝑏2𝑏 𝜋 𝜔𝜋𝑏2𝑏
+𝑏2𝑏 𝑛,𝑖,𝑗 )2]
+
+𝑗=1 ℎ=1 2 𝛿1 2 𝑛,𝑖,𝑗 − 𝜎𝑛,𝑖,𝑗 +
+𝛿2
+
+𝑗≠𝑖
+
+𝐻 𝜔𝑃𝑏2𝑐
+∑ 𝛿3 𝜔𝜋𝑏2𝑐
+
+(𝑃 𝑏2𝑐 𝑐 𝑛,𝑖,ℎ 𝑏2𝑐 𝑛,𝑖
+𝑛,𝑖,ℎ + )2
+
+𝛿
++ 4 (𝜋𝑏2𝑐
+
+ℎ=1 2 𝑛,𝑖,ℎ − 𝜎𝑃𝑏2
+𝛿 𝑖 − 𝜎𝜋𝑛,𝑖 + )2. (45)
+3 2 𝑛, 𝛿4
+
+Eq. (44) can be re-written to update the B2B auxiliary variables 𝑛th of
+C as follows.
+
+𝑁𝑏
+𝑛 𝑁𝑏
+
+𝑛 𝐻 𝜔𝑃𝑏2𝑏
+∑∑ ∑ 𝛿 𝑛,𝑖,𝑗,ℎ 𝛿 𝜔𝜋𝑏2𝑏
+
+5 ∶ 𝑚𝑖𝑛 [ 1 (𝑃 𝑏2𝑏 𝑏2𝑏 )2 + 2 (𝜋𝑏2𝑏 𝑏2𝑏 𝑛,𝑖,𝑗
+
+𝑖=1 𝑗=1 ℎ=1 2 𝑛,𝑖,𝑗,ℎ − 𝜎𝑃
+𝑛,𝑖,𝑗,ℎ + 𝛿 𝑛,𝑖,𝑗 − 𝜎𝜋
+
+𝑛,𝑖,𝑗 + )2].
+1 2 𝛿2
+
+𝑗≠𝑖
+
+(46)
+
+At VC 𝑛 level, (44) can be described as,
+
+ℱ6 ∶ 𝑚𝑖𝑛 − 𝑙𝑜𝑔(1 + E(𝐶𝑐0
+𝑛 ) − E(𝐶𝑐
+
+𝑛 ))
+𝑁𝑏
+
+𝑛 𝐻 𝜋
+∑ ∑ 𝛿 𝜔𝑃𝑏2𝑐 𝑏2𝑐
+
+[ 3 (𝑃 𝑏2𝑐 𝑛,𝑖,ℎ 𝜔𝑛,𝑖
+𝑛,𝑖,ℎ − 𝜎𝑃𝑏2𝑐𝑛,𝑖,ℎ + )2
+
+𝛿
++ 4 (𝜋𝑏2𝑐 𝑏2𝑐 )2]
+
+𝑖=1 ℎ=1 2 𝛿 𝑛,𝑖 − 𝜎𝜋𝑛,𝑖 +
+3 2 𝛿4
+
+𝑁𝐶 𝐻 𝜔𝑃𝑐2𝑐
+∑ ∑ 𝛿 𝛿 𝜔𝜋𝑐2𝑐
+
++ [ 5 (𝑃 𝑐2𝑐 𝑐2𝑐 𝑛,𝑚,ℎ
+𝑛,𝑚,ℎ − 𝜎𝑃𝑛,𝑚,ℎ + )2 + 6 (𝜋𝑐2𝑐 𝑚
+
+𝑛,𝑚 − 𝜎𝜋𝑐2𝑐𝑛,𝑚 + 𝑛, )2]. (47)
+𝑚=1 ℎ=1 2 𝛿5 2 𝛿6
+𝑚≠𝑛
+
+or C2C auxiliary variables update, (44) can be re-formulated as
+
+𝑁𝐶 𝑁𝐶 𝐻 𝜔𝑃𝑐2𝑐
+∑ ∑ ∑ 𝛿 𝑐2𝑐 𝑛,𝑚,ℎ 𝛿
+
+7 ∶ 𝑚𝑖𝑛 [ 5 (𝑃𝑛,𝑚,ℎ−𝜎
+𝑃𝑐2𝑐
+𝑛,𝑚,ℎ+ )2+ 6 (𝜋𝑐2𝑐 𝜋 𝜔𝜋𝑐2𝑐
+
+𝑐2𝑐 𝑛,𝑚 )2].
+𝑛=1 𝑚=1 ℎ=1 2 𝛿5 2 𝑛,𝑚−𝜎𝑛,𝑚 +
+
+𝛿6
+𝑚≠𝑛
+
+(48)
+
+The complete steps of energy scheduling are presented in the
+flowchart shown in Fig. 2. The 𝜆𝑃 and 𝜆𝐷 refer to Primal and dual resid-
+uals, and (𝜅, 𝜈) are given constants. After initialization, each player at
+the building level will simultaneously optimize its strategies, and then
+inside each VC, the auxiliary variables will be optimized for B2B energy
+trade. After this, we reach to VC level for the optimization of auxiliary
+variables for B2C energy trade and the objective of VCs. In the end,
+the auxiliary variables for C2C are optimized. After each optimization
+of auxiliary variables (𝜎), the dual multipliers (𝜔) are updated. Based
+on the primal and dual residuals (𝜆𝑃&𝜆𝐷), the penalty parameters (𝛿)
+are updated. This whole process is repeated until the tolerance for
+dual multipliers (𝜔) has been reached. After the calculation of all these
+power profiles, net power injection is communicated to DSO and the
+LMPs (34) are calculated using the DSO level problem 2.4. The new
+LMPs are broadcast, based on which the VCs reschedule their power
+profiles. This process of updating LMPs and power profiles is repeated
+until the convergence, i.e., the difference between the LMPs of two
+consecutive iterations becomes less than a tolerance threshold. Apart
+from the flowchart shown in Fig. 2, a schematic view of the proposed
+model is also present in Fig. 3. This diagram depicts the various inputs
+this model needs to get the various outputs as shown in it. The ultimate
+output is economic savings for all without violating network constraints
+and maintaining the privacy of each participant.
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+Fig. 2. Process chart illustrating the P2P trading framework with DSO’s involvement in managing network parameters.
+4. Simulation results
+
+In this work, IEEE 33 bus system with three VCs (VC1, VC2, and
+VC3), each having three buildings (B1, B2, and B3) are considered.
+These buildings differ in load pattern and renewable generations as
+shown in Figs. 4(a) and 4(b). These VCs are placed on buses 21, 24, and
+18, respectively. The two DGs are placed on buses 6 and 13 having 𝛬𝑑
+
+ℎ =
+0.32 $∕kW. The data for solar generation (SG) and wind generation
+(WG) of a rated capacity of 125 kW and 100 kW, respectively is given
+in Fig. 4(b). All buildings in VC1, and B2 and B3 in VC2 have 100 kW
+of WG, and 125 kW of SG installed capacity. In all other buildings, the
+capacities of installed WG and SG are 50 kW and 100 kW. The shared
+BESS used by the VC is 200 kW, whose SoC level is to be limited in
+the range [20%,90%]. For all the BESSs, the discharging and charging
+power is limited to 50 kW. 𝜂𝑐ℎ, 𝜂𝑑𝑖𝑠, 𝜂𝑙𝑜𝑠𝑠, and charges associated with
+the utilization of BESS are equal to 96%, 106%, 0.5% and 0.06$/kW,
+respectively. The carbon emission fee is assumed to be 0.05$/kW. The
+load can be shifted up to ±10% with discomfort coefficient being equal
+to 0.03 $∕kW2. As it is assumed that there is no load curtailment, the
+load curtailment factor is 1. The time frame, 𝐻 used for simulation is
+24 h. Other parameters are 𝜖𝑅 = 4, 𝜎 = 0.2, 𝜅 = 0.01, and 𝜈 = 1.5. The
+code is implemented on a laptop with a Core 𝑖3 1.20 GHz processor
+with 4 GB RAM. GAMS/CONOPT4 solver is used for optimization.
+7
+
+Three different cases are considered to show the effectiveness of the
+proposed P2P framework:
+
+Case I (Base case): All the buildings act independently and meet their
+load demand by shifting their load and exchanging energy only with
+the utility.
+
+Case II : B2B and B2C sharing are considered in this case. A shareable
+BESS is present in each VC.
+
+Case III : This case consists of an additional C2C transaction along with
+all the transactions considered in the second case. Also, the network
+utilization charge is added with every C2C energy exchange.
+
+Table 1 presents a concise comparative analysis of costs for all three
+cases.𝐶𝑎𝑠𝑒 𝐼 exhibits the highest costs of buildings, 𝐶𝑏, in comparison
+to 𝐶𝑎𝑠𝑒 𝐼𝐼 as well as 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 . The total operating expenses of
+buildings are 339.36 $, 151.13 $, and 528.25 $ for VC1, VC2 and VC3,
+respectively in 𝐶𝑎𝑠𝑒 𝐼 . In this case, all buildings exclusively engage
+in energy exchange only with the utility. Based on their respective
+power exchange price (LMP) and available RES generation, buildings
+shift their loads to lessen the cost. In 𝐶𝑎𝑠𝑒 𝐼𝐼 and 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 , buildings
+can exchange power among themselves and utilize BESS to manage RES
+effectively. Therefore, as shown in Fig. 5, the power exchange with
+the utility decreases in 𝐶𝑎𝑠𝑒 𝐼𝐼 and 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 . For instance, the power
+
+export in VC3 decreases from 1:00 to 3:00 h because this excess power
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+Fig. 3. Schematic view showing the various inputs and outputs of the proposed model.
+Fig. 4. (a) Load pattern and (b) Renewable power generation.
+Table 1
+Comparative analysis of costs ($).
+
+VC1 VC2 VC3
+B1 B2 B3 Sum B1 B2 B3 Sum B1 B2 B3 Sum
+
+𝐶𝑎𝑠𝑒 𝐼 𝐶𝑏 121.11 102.57 115.68 339.36 116.58 25.28 9.26 151.13 66.95 280.23 181.07 528.25
+𝐶 𝑙𝑠 18.16 18.14 17.21 53.51 21.80 26.41 18.83 67.04 9.51 13.65 10.72 33.87
+𝐶𝑏2𝑏 4.79 −6.33 1.54 0.00 36.81 −15.45 −21.36 0.00 −65.48 62.49 2.99 0.00
+
+𝐶𝑎𝑠𝑒 𝐼𝐼
+𝐶𝑏2𝑐 94.50 87.10 93.28 274.88 42.25 −1.04 −3.74 37.47 115.87 197.19 160.35 473.40
+𝐶𝑏 117.46 98.91 112.02 328.39 100.86 9.92 −6.27 104.51 59.90 273.32 174.06 507.27
+
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼−𝐶𝑎𝑠𝑒 𝐼𝐼 3.65 3.66 3.66 10.97 15.72 15.36 15.53 46.62 7.05 6.91 7.01 20.98
+
+𝐶 𝑙𝑠 2.38 2.32 2.24 6.93 2.20 2.44 2.12 6.76 2.31 2.33 2.32 6.96
+𝐶𝑏2𝑏 4.61 −6.34 1.73 0.00 39.67 −15.24 −24.43 0.00 −62.40 57.11 5.29 0.00
+
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼
+𝐶𝑏2𝑐 93.41 85.89 91.04 270.34 41.86 5.47 −1.02 46.31 106.10 199.98 152.55 458.64
+𝐶𝑏 100.40 81.87 95.01 277.27 83.73 −7.33 −23.32 53.07 46.01 259.42 160.16 465.60
+
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼−𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 20.71 20.7 20.67 62.09 32.85 32.61 32.58 98.06 20.94 20.81 20.91 62.65
+is used to charge the BESS and to exchange in B2B transactions within
+the VC. The charging-discharging profile of BESS is shown in Fig. 6(a).
+The BESS profile of VC3 in 𝐶𝑎𝑠𝑒 𝐼𝐼 depicts that the stored energy from
+1:00 h to 6:00 h is used in subsequent hours of the day to satisfy the
+load demand. Similarly, the BESSs in other VCs are charged during
+8
+
+the mid-day period and discharged between 17:00 to 24:00 h. The
+charging/discharging of BESS depends on the excess RES generation.
+The B2B power exchange is shown in Fig. 7. In VC1, B1 imports power
+from other buildings of its VC from 7:00 to 17:00 h, whereas it exports
+power to other buildings during the rest of the period. Similarly, B1
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+i
+t
+t
+b
+
+Fig. 5. VCs’ Power trading with utility for three cases (a) 𝐶𝑎𝑠𝑒 𝐼 , (b) 𝐶𝑎𝑠𝑒 𝐼𝐼 , (c) 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 .
+Fig. 6. (a) BESS charging and discharging pattern (b) Fractional load-shift with respect to their actual load.
+Fig. 7. B2B Power Exchange (a) VC1, (b) VC2, (c) VC3.
+Fig. 8. B2C Power Exchange (a) VC1, (b) VC2, (c) VC3.
+n VC2 and B2 in VC3 import power from other building most of
+he time on this day. Therefore, the B2B costs, 𝐶𝑏2𝑏, are positive for
+hese buildings. The B2B power exchange depends on the individual
+uilding surplus/deficit power status, and the B2B cost depends on this
+9
+
+B2B power exchange. But this B2B power exchange benefits all peers
+because buyers can buy power at a lower cost, and sellers can sell power
+at a higher cost compared to power exchange with utility.
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+a
+f
+c
+r
+F
+c
+
+t
+s
+s
+
+Fig. 9. (a) Net Power Exchange in C2C transaction, (b) LMPs for VCs.
+Fig. 10. Five random scenarios for (a) PV and (b) wind generation respectively.
+i
+e
+
+An additional option, C2C power exchange, is available in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 .
+This option offers the opportunity to harness the benefits of the load
+diversity of other VCs’ buildings. Due to this C2C power exchange, the
+power export to the utility further decreases compared to 𝐶𝑎𝑠𝑒 𝐼𝐼 .
+Fig. 5(c) depicts that the power exported to the utility is nearly neg-
+ligible in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 . However, at certain time instants, such as 18:00
+nd 22:00 h, the power import from the utility increases to compensate
+or user discomfort. The C2C energy transaction in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 gives a
+heaper alternative to load-shifting. As shown in Fig. 6(b), the buildings
+educe load shifting in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 when compared with 𝐶𝑎𝑠𝑒 𝐼𝐼 . In
+ig. 6(b), the deviation from 1 shows the fraction of load shifting. The
+ost due to load shifting, 𝐶 𝑙𝑠, is shown in Table 1. The 𝐶 𝑙𝑠 is much
+
+lower in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 in relative to 𝐶𝑎𝑠𝑒 𝐼𝐼 for buildings. The total cost
+of the building decreases by 15.57%, 49.22%, and 8.21% for VC1, VC2
+and VC3 when analyzing 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 relative to 𝐶𝑎𝑠𝑒 𝐼𝐼 .
+
+As depicted in Fig. 6(b), at most of the time instants, the increment
+in load demand occurs from 1:00 to 16:00 h for all VCs, and the
+decrement in load demand occurs after 16:00 h in 𝐶𝑎𝑠𝑒 𝐼𝐼 due to
+surplus RES and low tariff period. In this case, the only option for VCs
+is to consume excess RES generation locally or export it to the utility.
+But, in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 , they prefer inter-VC power exchange rather than load-
+shifting. Therefore as shown in Fig. 8, the B2C power import/export
+decreases/increases during 1:00–16:00 h in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 , whereas power
+import increases during 16:00–24:00 h. As shown in Fig. 6(a), most
+BESS charging occurs from 11:00 to 15:00 h in 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 due to
+he cumulatively surplus energy state. Fig. 5(b) shows that VC2 has
+urplus energy during 1:00–3:00 h even after battery charging. This
+urplus energy and energy saving due to the shifting of BESS charging
+10
+s utilized to export to the other VCs. Fig. 9(a) shows the inter-VC
+nergy exchange. The VC2 only imports power from other VCs during
+
+12:00–16:00 h, which is used to charge the BESS. The total incentives
+for C2C energy trading in 𝑐𝑎𝑠𝑒 𝐼𝐼𝐼 for VC1, VC2, and VC3 are 5.76$,
+−46.67$, and 40.91$ respectively. As shown in Fig. 9(a), apart from
+the mid-time interval, VC2 always exports to the other VCs. Therefore,
+the total C2C incentive for VC2 is appreciably negative compared to
+other VCs. It means that the VC2 gets incentives from other VCs. The
+proposed framework considers the power exchange profile of VCs to
+calculate the LMPs. The LMPs for three VCs are depicted in Fig. 9(b)
+for 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 . The LMP of VC3 is highest because it is connected at 18th
+bus. The voltage level at 18th bus is the lowest and closer to voltage
+limit violation.
+
+For robustness analysis of the proposed model, five different fore-
+casted scenarios have been used for solar generation (SG) and wind
+generation (SG). Fig. 10 shows the scenarios for 125 kW rated capacity
+WG and 100 kW rated SG. Table 2 shows that there is little deviation
+in the net savings of all buildings across different scenarios and the
+proposed framework ensures economic benefits to all buildings in all
+scenarios.
+
+5. Conclusion
+
+For VCs having several buildings and a shareable BESS, a cost-
+saving P2P energy management scheme is proposed. The number of
+transactions is reduced by the aggregation of buildings in VCs, which
+enhances the system’s scalability. The numerical results establish the
+
+efficacy of the proposed energy trading framework in realizing the
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+
+t
+a
+p
+t
+
+C
+
+s
+s
+D
+S
+e
+i
+S
+
+D
+
+c
+i
+
+D
+
+R
+
+Table 2
+Net saving ($) in five different scenarios.
+
+Virtual community VC1 VC2 VC3
+Building B1 B2 B3 B1 B2 B3 B1 B2 B3
+
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼 115.34 95.83 108.24 112.33 18.28 9.28 60.55 276.17 174.80
+
+Scenario 1 𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 97.78 78.27 90.69 87.97 −6.37 −15.08 39.69 255.37 153.97
+Net saving 17.56 17.56 17.55 24.36 24.64 24.36 20.87 20.80 20.84
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼 107.06 88.68 102.30 108.08 12.67 −0.49 59.76 272.24 173.41
+
+Scenario 2 𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 91.89 73.51 87.17 80.11 −15.23 −28.38 41.74 254.25 155.40
+Net saving 15.17 15.17 15.12 27.96 27.90 27.89 18.03 17.99 18.02
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼 114.08 94.97 108.58 110.71 15.89 5.28 62.28 274.82 175.54
+
+Scenario 3 𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 96.65 77.54 91.15 85.22 −9.60 −20.17 42.86 255.50 156.17
+Net saving 17.43 17.43 17.43 25.49 25.49 25.45 19.42 19.33 19.38
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼 114.70 99.81 111.98 116.79 18.50 7.69 64.11 280.25 179.27
+
+Scenario 4 𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 98.48 83.58 95.76 93.72 −4.60 −15.39 43.31 259.55 158.53
+Net saving 16.23 16.23 16.22 23.07 23.10 23.07 20.80 20.70 20.75
+𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼 108.13 89.06 102.00 108.18 11.53 0.88 57.34 272.81 172.90
+
+Scenario 5 𝐶𝑏
+𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 88.62 69.55 82.49 80.39 −16.26 −26.90 36.54 252.03 152.11
+Net saving 19.51 19.51 19.51 27.79 27.79 27.78 20.79 20.78 20.79
+benefits of P2P sharing. Adopting the proposed LMP-based P2P sharing
+framework yields a significant reduction in the cost of all buildings
+without breaching network constraints. The proposed P2P sharing in-
+creases the value of RESs usage and reduces the power exchange
+with utility as it provides a favorable circumstance to take benefit of
+the diverse load patterns of all buildings. Also, uncertainty associated
+with RESs generation is handled effectively. In 𝐶𝑎𝑠𝑒 𝐼𝐼𝐼 compared
+o 𝐶𝑎𝑠𝑒 𝐼 , the net cost of all the three communities is decreased by
+percentage of 18.3%, 64.9%, and 11.9% respectively. To make the
+
+roposed framework more practical, upcoming studies seek to integrate
+he irrational behaviors of participants.
+
+RediT authorship contribution statement
+
+Monika Mishra: Conceptualization, Data curation, Formal analy-
+is, Investigation, Methodology, Resources, Software, Validation, Vi-
+ualization, Writing – original draft. Amit Singh: Conceptualization,
+ata curation, Formal analysis, Investigation, Methodology, Resources,
+oftware, Supervision, Validation, Visualization, Writing – review &
+diting. Rakesh Kumar Misra: Formal analysis, Supervision, Visual-
+zation, Writing – review & editing. Devender Singh: Formal analysis,
+upervision, Visualization, Writing – review & editing.
+
+eclaration of competing interest
+
+The authors declare that they have no known competing finan-
+ial interests or personal relationships that could have appeared to
+nfluence the work reported in this paper.
+
+ata availability
+
+No data was used for the research described in the article.
+
+eferences
+
+[1] A. Lüth, J.M. Zepter, P.C. del Granado, R. Egging, Local electricity market designs
+for peer-to-peer trading: The role of battery flexibility, Appl. Energy 229 (2018)
+1233–1243.
+
+[2] S.A. Mansouri, E. Nematbakhsh, A.R. Jordehi, M. Marzband, M. Tostado-Véliz, F.
+Jurado, An interval-based nested optimization framework for deriving flexibility
+from smart buildings and electric vehicle fleets in the TSO-DSO coordination,
+Appl. Energy 341 (2023) 121062.
+
+[3] S. Fatemi, A. Ketabi, S.A. Mansouri, A multi-level multi-objective strategy for
+eco-environmental management of electricity market among micro-grids under
+high penetration of smart homes, plug-in electric vehicles and energy storage
+devices, J. Energy Storage 67 (2023) 107632.
+11
+[4] X. Zhou, S.A. Mansouri, A.R. Jordehi, M. Tostado-Véliz, F. Jurado, A three-
+stage mechanism for flexibility-oriented energy management of renewable-based
+community microgrids with high penetration of smart homes and electric
+vehicles, Sustainable Cities Soc. 99 (2023) 104946.
+
+[5] S. Fatemi, A. Ketabi, S.A. Mansouri, A four-stage stochastic framework for man-
+aging electricity market by participating smart buildings and electric vehicles:
+Towards smart cities with active end-users, Sustainable Cities Soc. 93 (2023)
+104535.
+
+[6] S.A. Mansouri, Á. Paredes, J.M. González, J.A. Aguado, A three-layer game
+theoretic-based strategy for optimal scheduling of microgrids by leveraging a
+dynamic demand response program designer to unlock the potential of smart
+buildings and electric vehicle fleets, Appl. Energy 347 (2023) 121440.
+
+[7] P.A. Gbadega, Y. Sun, Centralized peer-to-peer transactive energy market ap-
+proach in a prosumer-centric residential smart grid environment, Energy Rep. 8
+(2022) 105–116.
+
+[8] Y. Wu, X. Tan, L. Qian, D.H. Tsang, W.-Z. Song, L. Yu, Optimal pricing and
+energy scheduling for hybrid energy trading market in future smart grid, IEEE
+Trans. Ind. Inform. 11 (6) (2015) 1585–1596.
+
+[9] Y. Xia, Q. Xu, S. Tao, P. Du, Y. Ding, J. Fang, Preserving operation privacy
+of peer-to-peer energy transaction based on enhanced benders decomposition
+considering uncertainty of renewable energy generations, Energy 250 (2022)
+123567.
+
+[10] A. Jiang, H. Yuan, D. Li, A two-stage optimization approach on the decisions
+for prosumers and consumers within a community in the peer-to-peer energy
+sharing trading, Int. J. Electr. Power Energy Syst. 125 (2021) 106527.
+
+[11] W. Tushar, C. Yuen, H. Mohsenian-Rad, T. Saha, H.V. Poor, K.L. Wood,
+Transforming energy networks via peer-to-peer energy trading: The potential of
+game-theoretic approaches, IEEE Signal Process. Mag. 35 (4) (2018) 90–111.
+
+[12] M. Khorasany, A. Paudel, R. Razzaghi, P. Siano, A new method for peer matching
+and negotiation of prosumers in peer-to-peer energy markets, IEEE Trans. Smart
+Grid 12 (3) (2020) 2472–2483.
+
+[13] F. Si, J. Wang, Y. Han, Q. Zhao, P. Han, Y. Li, Cost-efficient multi-energy
+management with flexible complementarity strategy for energy internet, Appl.
+Energy 231 (2018) 803–815.
+
+[14] A. Anees, T. Dillon, Y.-P.P. Chen, A novel decision strategy for a bilateral energy
+contract, Appl. Energy 253 (2019) 113571.
+
+[15] A. Paudel, K. Chaudhari, C. Long, H.B. Gooi, Peer-to-peer energy trading in a
+prosumer-based community microgrid: A game-theoretic model, IEEE Trans. Ind.
+Electron. 66 (8) (2018) 6087–6097.
+
+[16] M. Khorasany, Y. Mishra, G. Ledwich, A decentralized bilateral energy trading
+system for peer-to-peer electricity markets, IEEE Trans. Ind. Electron. 67 (6)
+(2019) 4646–4657.
+
+[17] Y. Jiang, K. Zhou, X. Lu, S. Yang, Electricity trading pricing among prosumers
+with game theory-based model in energy blockchain environment, Appl. Energy
+271 (2020) 115239.
+
+[18] A. Krayem, A. Ahmad, S. Najem, A game-theoretic approach to assess peer-to-
+peer rooftop solar PV electricity trading under constrained power supply, Energy
+Syst. (2021) 1–21.
+
+[19] R. Das, S.S. Ray, G. Mohapatra, S.K. Kar, A review of challenges and solution
+in peer-to-peer energy trading of renewable sources, in: Biologically Inspired
+Techniques in Many Criteria Decision Making: Proceedings of BITMDM 2021,
+Springer, 2022, pp. 307–314.
+
+
+
+M. Mishra et al. Sustainable Energy, Grids and Networks 38 (2024) 101276
+[20] A. Anisie, F. Boshell, E. Ocenic, Future Role of Distribution System Operators: In-
+novation Landscape Brief, The International Renewable Energy Agency (IRENA),
+Abu Dhabi, United Arab Emirates, 2019.
+
+[21] L. Chen, N. Liu, C. Li, S. Zhang, X. Yan, Peer-to-peer energy sharing with dynamic
+network structures, Appl. Energy 291 (2021) 116831.
+
+[22] W. Zhong, S. Xie, K. Xie, Q. Yang, L. Xie, Cooperative P2P energy trading
+in active distribution networks: An MILP-based Nash bargaining solution, IEEE
+Trans. Smart Grid 12 (2) (2020) 1264–1276.
+
+[23] T. Baroche, P. Pinson, R.L.G. Latimier, H.B. Ahmed, Exogenous cost allocation
+in peer-to-peer electricity markets, IEEE Trans. Power Syst. 34 (4) (2019)
+2553–2564.
+
+[24] A. Paudel, L. Sampath, J. Yang, H.B. Gooi, Peer-to-peer energy trading in smart
+grid considering power losses and network fees, IEEE Trans. Smart Grid 11 (6)
+(2020) 4727–4737.
+
+[25] J. Guerrero, A.C. Chapman, G. Verbič, Decentralized P2P energy trading under
+network constraints in a low-voltage network, IEEE Trans. Smart Grid 10 (5)
+(2018) 5163–5173.
+
+[26] D. Botelho, L. de Oliveira, B. Dias, T. Soares, C. Moraes, Integrated prosumers–
+DSO approach applied in peer-to-peer energy and reserve tradings considering
+network constraints, Appl. Energy 317 (2022) 119125.
+
+[27] H. Haggi, W. Sun, Multi-round double auction-enabled peer-to-peer energy
+exchange in active distribution networks, IEEE Trans. Smart Grid 12 (5) (2021)
+4403–4414.
+
+[28] M.H. Ullah, J.-D. Park, Peer-to-peer energy trading in transactive markets
+considering physical network constraints, IEEE Trans. Smart Grid 12 (4) (2021)
+3390–3403.
+
+[29] A. Shrestha, R. Bishwokarma, A. Chapagain, S. Banjara, S. Aryal, B. Mali, R.
+Thapa, D. Bista, B.P. Hayes, A. Papadakis, et al., Peer-to-peer energy trading
+in micro/mini-grids for local energy communities: A review and case study of
+nepal, IEEE Access 7 (2019) 131911–131928.
+
+[30] M. Khorasany, Y. Mishra, G. Ledwich, Hybrid trading scheme for peer-to-peer
+energy trading in transactive energy markets, IET Gener. Transm. Distrib. 14 (2)
+(2020) 245–253.
+12
+[31] N. Liu, X. Yu, C. Wang, C. Li, L. Ma, J. Lei, Energy-sharing model with price-
+based demand response for microgrids of peer-to-peer prosumers, IEEE Trans.
+Power Syst. 32 (5) (2017) 15.
+
+[32] S. Zheng, X. Jin, G. Huang, A.C. Lai, Coordination of commercial prosumers with
+distributed demand-side flexibility in energy sharing and management system,
+Energy 248 (2022) 123634.
+
+[33] N. Hadiya, F. Teotia, R. Bhakar, P. Mathuria, A. Datta, A comparative analysis
+of pricing mechanisms to enable P2P energy sharing of rooftop solar energy, in:
+2020 IEEE International Conference on Power Systems Technology, POWERCON,
+2020, pp. 1–6.
+
+[34] W. Tushar, T.K. Saha, C. Yuen, T. Morstyn, M.D. McCulloch, H.V. Poor, K.L.
+Wood, A motivational game-theoretic approach for peer-to-peer energy trading
+in the smart grid, Appl. Energy 243 (2019) 10–20.
+
+[35] M. Mishra, A. Singh, R.K. Misra, D. Singh, Stochastic peer-to-peer energy trading
+with price and incentive mechanism, in: 2022 22nd National Power Systems
+Conference, NPSC, IEEE, 2022, pp. 761–766.
+
+[36] L. Han, T. Morstyn, M. McCulloch, Incentivizing prosumer coalitions with energy
+management using cooperative game theory, IEEE Trans. Power Syst. 34 (1)
+(2018) 303–313.
+
+[37] Q. Hou, N. Zhang, J. Yang, C. Kang, Q. Xia, M. Miao, Linearized model for active
+and reactive LMP considering bus voltage constraints, in: 2018 IEEE Power &
+Energy Society General Meeting, PESGM, IEEE, 2018, pp. 1–5.
+
+[38] H. Hong, An efficient point estimate method for probabilistic analysis, Reliab.
+Eng. Syst. Saf. 59 (3) (1998) 261–267.
+
+[39] M. Mishra, A. Singh, R.K. Misra, D. Singh, Stochastic peer-to-peer energy trading
+with price and incentive mechanism, in: 2022 22nd National Power Systems
+Conference, NPSC, 2022, pp. 761–766.
+
+[40] S. Boyd, N. Parikh, E. Chu, B. Peleato, J. Eckstein, et al., Distributed optimization
+and statistical learning via the alternating direction method of multipliers, Found.
+Trends Mach. Learn. 3 (1) (2011) 1–122.

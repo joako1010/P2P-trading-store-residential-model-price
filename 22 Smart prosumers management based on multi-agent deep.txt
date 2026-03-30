@@ -1,0 +1,1424 @@
+﻿Applied Energy 412 (2026) 127650 
+
+Contents lists available at ScienceDirect
+
+Applied Energy
+journal homepage: www.elsevier.com/locate/apenergy
+
+Smart prosumers management based on multi-agent deep reinforcement 
+learning to participate in decentralized peer-to-peer market
+Behzad Motallebi Azar a, Rasool Kazemzadeh a,*, Morteza Zare Oskouei a,  
+Behnam Mohammadi-Ivatloo b
+
+a Faculty of Electrical Engineering, Sahand University of Technology, Tabriz, Iran
+b School of Energy Systems, LUT University, Lappeenranta, Finland
+
+H I G H L I G H T S
+
+• Implementing MATD3 as a concept for independent smart prosumers' management.
+• Determining dynamic demand load and ESS operation to eliminate uncertain situations.
+• Determining bid/ask prices of prosumers based on MMR pricing schema and MATD3.
+• Developing a decentralized P2P market comprising ACDA mechanism.
+
+A R T I C L E  I N F O A B S T R A C T
+
+Keywords: The integration of prosumers as sustainable and decentralized units has become a fundamental aspect of smart 
+Continuous double auction market energy systems. It is therefore crucial to implement a market-oriented scheduling framework that guarantees the 
+Independent multi-energy system autonomous operation of prosumers while safeguarding their privacy, enhancing operational autonomy, and 
+Multi-agent deep reinforcement learning promoting competitiveness in electricity markets. In this regard, this paper puts forth a prosumer-centered 
+Peer-to-peer trading
+Smart prosumer approach to smart prosumer operations management, with the objective of enabling their participation in 
+
+decentralized peer-to-peer (P2P) energy markets. To address this challenge, a multi-agent twin delayed deep 
+deterministic policy gradient (MATD3) algorithm with a decentralized training and execution (DTDE) strategy is 
+implemented, enabling prosumers to independently manage their demand, energy storage systems (ESS), and 
+bidding/asking prices. This approach determines the demand of prosumers and the quantities of energy to be 
+charged/discharged by their ESS in a dynamic manner, with the objective of making robust decisions regarding 
+uncertainties arising from consumption and generation. Furthermore, a novel pricing mechanism comprising the 
+mid-market rate (MMR) and MATD3 is proposed for decentralized P2P transactions within an adaptive 
+continuous double auction (ACDA) market. Finally, a case study of 20 residential prosumers is presented, 
+collectively engaged in P2P transactions to illustrate the efficacy of the proposed framework by achieving 9.8% 
+and 13.2% scheduling errors, 5.2% P2P participation, and 10% revenue increment.
+
+Abbreviation: Expression, Definition; P2P, Peer-to-peer; DRL, Deep reinforcement learning; DER, Distributed energy resources; ESS, Energy storage systems; TD3, 
+Twin delayed deep deterministic policy gradient; DTDE, Decentralized training and execution; MMR, Mid-market rate; ACDA, Adaptive continuous double auction; 
+FOMDP, Fully observable Markov decision process; MAAC, Multi-actor-attention-critic; PER, Prioritized experience replay; DDPG, Deep deterministic policy gradient; 
+CTDE, Centralized training and decentralized execution; CTCE, Centralized training and centralized execution; SDR, Supply-demand ratio; A3C3, Asynchronous 
+advantage actor-centralized-critic with communication.
+
+* Corresponding author.
+E-mail address: r.kazemzadeh@sut.ac.ir (R. Kazemzadeh). 
+
+https://doi.org/10.1016/j.apenergy.2026.127650
+Received 3 January 2025; Received in revised form 31 January 2026; Accepted 3 March 2026  
+Available online 11 March 2026 
+0306-2619/© 2026 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies. 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+1. Introduction prosumers. The MADRL contains mean-field approximation and 
+parameter sharing frameworks for enhancing scalability and establish
+
+1.1. Background and motivation ing semi-privacy-preserving by learning from shared policy and fast 
+convergence, respectively. The authors of [11] presented a multi-agent 
+
+The transition toward more sustainable and decentralized energy deep deterministic policy gradient (MADDPG) method to address the 
+systems has gained momentum in recent years [1]. Furthermore, the scalable coordinated management of P2P interactions among numerous 
+growing adoption of distributed energy resources (DER) at the house heterogeneous prosumers within a community-based P2P energy mar
+hold level, including rooftop photovoltaic (PV) panels and ESSs, has ket. In that study, the P2P trading platform empowered by the MMR 
+fundamentally transformed the nature of the household sector, giving pricing mechanism acts as a third party, providing collective trading 
+rise to the concept of the prosumer [2]. In this context, prosumers information to agents by parameter sharing extension, to mitigate non- 
+possess the potential to serve as a crucial driving force in the realization stationarity in the multi-agent environment, and establish semi-privacy- 
+of smart energy communities and the advancement of smart grid ap preserving either. Similarly, a MADDPG framework for P2P energy 
+plications [3]. trading among prosumers within a distribution network was presented 
+
+Conversely, the imperative for intelligent facility management rep in [12]. In this framework, the prosumer agents learn optimal trading 
+resents a further significant challenge. In particular, the independent policies through the centralized training and decentralized execution 
+and simultaneous operation of optimal demand/supply scheduling and (CTDE) strategy and participate in supply-demand ratio (SDR) based 
+optimal management of facilities represents sophisticated issues that P2P exchanges to minimize their individual costs and satisfy network 
+require appropriate approaches [4]. Traditional system-centric ap constraints by leveraging the management of their DERs.
+proaches may not be well-suited for managing such complex in In [13], the authors proposed an MAAC approach for scalable and 
+teractions and processes involved in prosumer management issues. non-stationary coordinated energy management and P2P transactive 
+Consequently, significant attention has been devoted to the field of energy trading in a large-scale energy community consisting of 
+prosumer operation studies by both academic and industrial sectors, numerous residential prosumers with diverse DERs. The proposed 
+given the potential benefits these entities offer for energy communities approach leveraged the CTDE paradigm to enable joint learning by 
+and smart grids. One of the principal applications of the smart grid that sharing learnable parameters among agents. This work also employed 
+can fully leverage the capabilities of prosumers is the establishment of the P2P platform to incentivize prosumers' participation through MMR 
+P2P energy trading markets. In addition to direct energy exchanges, P2P pricing mechanisms. Another study in [14] developed a blockchain- 
+markets provide an opportunity for prosumers to capitalize on their based management and control framework driven by the DDPG algo
+generation, consumption, and storage capabilities, thereby enabling rithm to effectively integrate a large number of prosumers to provide 
+their participation in decentralized energy management [5]. By grid services. The main objective of this study is to maximize prosumers' 
+participating in P2P markets, prosumers can not only manage their profits by encouraging them to adjust their time-varying generation/ 
+energy utilization and costs but also contribute to the overall flexibility consumption via owned DERs. In [15], the authors proposed an 
+and efficiency of the smart grid [6,7]. improved DDPG algorithm to optimize the operation strategy of pro
+
+Nevertheless, the successful implementation of P2P energy trading sumers to participate in the P2P market. This study applied the cyclic 
+markets is contingent upon the capacity to effectively manage the learning rate and the priority sampling mechanism to enhance the 
+intricate interactions and decision-making processes inherent to pro agents' learning quality alongside the wave-attention network to 
+sumer communities. In this context, the application of advanced artifi simplify the prosumers' interactions in a P2P manner. The authors of 
+cial intelligence techniques, such as deep reinforcement learning (DRL), [16] developed a dynamic pricing schema for the P2P market in a 
+has emerged as a promising solution to address the intricate interactions community-based microgrid. This study extended the MARL algorithm 
+and decision-making processes of smart and autonomous prosumers [8]. as an open-source economic to conduct the P2P exchanges considering 
+The DRL algorithm relies on the trial-and-error mechanism in its in prosumers' DER management. Similarly, in [17], the authors put forth a 
+teractions with the environment to predict the agent's actions [9]. In this model-based MADRL approach, designated as asynchronous advantage 
+regard, prosumers are regarded as independent agents in multi-agent actor-centralized-critic with communication (A3C3), to predict the 
+DRL (MADRL) programming, capable of learning optimal policies trading prices and quantities of prosumers engaged in daily P2P trans
+through interactions with their environment. By employing the MADRL, actions. This algorithm aims to address the complexities inherent in 
+prosumers can adapt their energy management strategies in a dynamic multi-agent decision-making and the diverse behaviors exhibited by 
+manner. This encompasses demand load scheduling, ESS operational prosumers in the context of a dynamic P2P double auction market.
+planning, and the determination of bidding and asking prices in P2P The authors of [18] developed a MATD3 method for optimizing P2P 
+markets. The strategies are informed by local observations and an un exchange and energy conversion policies for interconnected microgrids 
+derstanding of market evolution conditions. in contexts of uncertain demand and generation. To address this chal
+
+lenge, a two-stage process was devised, comprising an external stage 
+1.2. Literature review dedicated to P2P transactions and an internal stage focused on energy 
+
+conversion. During the external stage, microgrids engage in energy 
+A wide range of research papers surrounding prosumer-centered trading through the P2P framework. This is followed by an internal stage 
+
+problems have been published in recent years. The main priority of where the traded energy is converted based on the objectives established 
+these studies relies on energy management and P2P energy trading in the external stage. The two stages operate in a coordinated manner. 
+criteria, which is a projection of developing smart energy buildings. For Moreover, the authors of [19] proposed a novel mean-field TD3 
+instance, in [10], the authors developed an innovative prosumer-centric (MFTD3) approach to learn the management of their DERs in stochastic 
+MADRL framework for coordinated local P2P electricity trading and and uncertain scenarios, with the objective of maximizing their profit in 
+flexibility services provision. This framework, so-called MAAC-PER, is a CDA-based P2P transactions. In this study, prosumer agents employed 
+combination of the multi-actor-attention-critic (MAAC) and prioritized the shared policy technique within the parameter sharing framework to 
+experience replay (PER) approaches, which allows agents to access the accelerate training and address the non-stationarity, scalability, and 
+information of other agents during training, thereby facilitating privacy issues that arise from the multi-agent setting by utilizing mean- 
+enhanced coordination and accelerating learning through the replay of field approximation.
+successful experiences with greater frequency. Another study in [8] To sum up, a summary of the reviewed literature is tabulated in 
+proposed a MADRL method for P2P transactions in a continuous double Table 1 for more clarity and comparison with the presented approach.
+auction (CDA) market involving a significant number of multi-energy Furthermore, the proposed MADRL approach for this study is the 
+
+2 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Table 1 • Implementing the MATD3 algorithm with the DTDE strategy as an 
+Summary of the reviewed literature. initial concept for DRL-based smart prosumers with fully indepen
+
+Refs System info MADRL Agents' P2P dent operation in the context of the smart buildings concept.
+strategy privacy level mechanism • Determining demand load and ESS charge/discharge quantities of 
+
+Model-free, each prosumer dynamically based on the proposed MATD3 algo
+Parameter 
+
+[8,19] Prosumer- Semi-private CDA rithm to eliminate uncertain consumption and generation situations 
+centric sharing in the optimal scheduling problem.
+Model-free, • Determining bid/ask prices of each prosumer based on a novel 
+
+[10,13] Prosumer- CTDE Semi-private MMR
+centric approach considering the MMR pricing schema and the proposed 
+Model-free, MATD3 algorithm for participating in the decentralized P2P market 
+
+Parameter 
+[11] Prosumer- sharing Semi-private MMR comprising the ACDA mechanism.
+
+centric
+Model-free, 
+
+[12,15] Prosumer- CTDE Semi-private SDR 1.4. Paper organization
+centric
+Model-free, The remainder of this paper is organized as follows. Section 2 pro
+
+[14] System- BC-CTCE Fully-private Wholesale vides the proposed system model and structure details. Section 3 pre
+centric
+Model-free, pares the correlation of the MADRL algorithm implementation with 
+
+Dynamic 
+[16,17] Prosumer- – Semi-private different parts of the proposed system. The case study and numerical 
+
+centric auctions
+results are presented in Section 4. Finally, Section 5 provides the 
+
+Model-free, conclusion of the presented study.
+[18] System- CTDE Semi-private Wholesale
+
+centric
+
+This Model-free, 2. System model and structure
+paper Prosumer- DTDE Fully-private ACDA
+
+centric As illustrated in Fig. 1, the entire proposed system model and 
+structure can be characterized into three correlated layers. The com
+munity of prosumers layer and the P2P market layer are considered the 
+
+MATD3 algorithm combined with the DTDE strategy, which offers physical layers, in which the consumed load, ESS operation, and bid/ask 
+several advantages over existing MADRL frameworks. MATD3 helps price determination of each prosumer are managed by the MADRL vir
+mitigate the overestimation bias typically found in other MADRL ap tual layer. Each one of these layers is described separately in subsections 
+proaches (e.g., DDPG), leading to more conservative and realistic value for more clarification.
+estimates. Moreover, MATD3 incorporates advanced techniques such as 
+twin delayed policy updates, target network updates, and noise-based 2.1. Prosumer model
+exploration, which enhance stability, convergence, and exploration- 
+exploitation trade-offs [18]. Additionally, the decentralized nature of The proposed community of prosumers in this study comprises 20 
+the learning and execution strategy improves resilience, robustness, and residential prosumers, each of which is equipped with PV panels and 
+adaptability to dynamic environments. ESS. The PV generation profile Gp,t and scheduled demand load Dp,t for 
+
+Collectively, these features enable the proposed framework to the prosumerpin the time horizon Tcan be defined as follows: 
+outperform existing MADRL frameworks in terms of policy optimization, { }
+convergence speed, and adaptability to uncertainties in prosumer en Gp,t = Gp,1,Gp,2,…,Gp,T , ∀p ∈ Р (1) 
+ergy systems. { }
+
+Dp,t = Dp,1,Dp,2,…,Dp,T ,∀p ∈ Р (2) 
+1.3. Research gap and contribution The charge level of ESS EESS
+
+p,t for prosumerpin time slot t is comprised 
+
+In light of the aforementioned peer reviews and the prepared sum of charge power CESS
+p,t and discharge powerGESS
+
+p,t , which can formulated as 
+mary in Table 1, several key challenges remain to be addressed. One of follows: 
+these challenges is dependent on the coordinated operation of pro /
+
+sumers with centralized training or parameter-sharing techniques, EESS
+p,t = EESS
+
+p,t− 1 + ηESSCESS
+p,t Δt +GESS
+
+p,t Δt ηESS (3) 
+which may potentially compromise privacy and scalability. The imple
+mentation of these types of systems may present challenges in large- 0 ≤ CESS
+
+p,t ≤ Pch/dch
+Max (4) 
+
+scale communities or real-world projects due to the limitations of scal
+ability and dimensionality that arise from the accumulation of input − Pch/dch
+
+Max ≤ GESS
+p,t ≤ 0 (5) 
+
+data. Furthermore, the dynamic determination of demand load and the 
+operation of ESSs in uncertain situations remains an open challenge. On EESS
+
+Min ≤ EESS
+p,t ≤ EESS
+
+Max (6) 
+the other hand, the characteristics of P2P trading markets depend on the 
+competitive presence of prosumers. Therefore, there is a need to extend where ηESS represents the charge/discharge efficiency coefficient. In 
+adaptive pricing mechanisms to activate the competition potential of ordinary programming, to avoid simultaneous charge/discharge in each 
+P2P transactions. time step, a binary variable is defined as bESS
+
+t ∈ [0,1] and utilized to find 
+To address these shortcomings, this study intends to develop the [ ]
+
+concept of smart prosumers as entities with fully independent opera the ESS charge power EESS
+p,t (e.g.,EESS
+
+p,t = EESS
+p,t− 1 + bESS
+
+t ηESSCESS
+p,t +
+
+[( ) ]
+tional capabilities, enabling them to manage their operational aspects as 1 − bESS ESS S
+
+t G E S
+p,t /η ) in each period. However, in the DRL formula
+
+well as participate in the competitive P2P market through the utilization 
+of MADRL algorithms. The main contributions of this research are as tion, this procedure can be managed by each agent's single action 
+follows: determination process with a bound definition action ∈ [ − 1, 1] ([− 1,0] 
+
+for discharging and [0,1] for charging). Eqs. (4)–(6) represent system 
+constraints that limit charge power, discharge power, and the charge 
+level of ESS between minimum and maximum bounds, respectively.
+
+3 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Fig. 1. Proposed system model.
+
+Moreover, the net electricity load constraint for each prosumer can 
+be calculated as follows, which represents the margin between con Edev en
+
+t = Econ
+t +Eg
+
+t (8) 
+sumption and generation. ⎧
+
+⎨(
+λmid n Retail ev)/
+
+ENet MMR |Ege con
+
+p λbuy t t |+λt Ed
+t Et , if Edev
+
+t > 0
+,t = Dp,t − Gp,t +CESS
+
+p,t +GESS
+p,t (7) t = (9) 
+
+⎩ λmid dev
+t , if Et ≤ 0
+
+{
+2.2. Market structure mid
+
+λsellMMR λ , if Edev
+( t > 0
+
+t = t (10) 
+λmid on ev )/
+
+t Ec
+t + λFIT
+
+t |Ed
+t | ∣Egen
+
+t ∣, if Edev
+t ≤ 0
+
+The presented market structure in this study is a decentralized P2P 
+market that runs transactions via an auction-based mechanism. There {
+
+fore, it is necessary to adopt appropriate trading and pricing mecha where Egen ∑ Net n ∑
+t = p∈Pg Ep,t and Eco
+
+t = p∈Pc ENet
+p,t , with Pg = p ∈ P : ENet
+
+p,t ≤
+} { }
+
+nisms. In this regard, proposed approaches for trading and pricing 0 and Pc = p ∈ P : ENet
+p,t > 0 are representative of the aggregated 
+
+schemas are investigated in the following subsections. collaborative quantities for all asks and bids, respectively.
+
+2.2.1. Trading mechanism
+To perform P2P exchanges within the context of the proposed 2.3. Operating structure of MADRL model
+
+decentralized auction-based market, this study proposes the use of the 
+ACDA mechanism. 2.3.1. MADRL structure
+
+To enhance the adaptivity among buyers and sellers, the proposed The MADRL system is modeled as a fully observable Markov decision 
+ACDA mechanism is formed by combining two standard clearing algo process (FOMDP), which is a mathematical method used to model 
+rithms: the matching algorithm and the clearing price algorithm. The sequential decision-making problems with discrete time steps. This 
+matching algorithm is employed to align bids and asks in accordance FOMDP aims to learn an optimal policy π*(s) that maximizes the ex
+with the price priority factor. In the context of this study, higher bid pected cumulative reward over time, which includes P agents indexed by 
+prices or lower ask prices are accorded priority over lower bid prices or the number of prosumers (i.e., P = {p
+higher ask prices. In the event of identical prices, the number of pro 1,…, pP}). This process can be 
+
+formulated with a set of states {S
+sumers is considered a priority. This algorithm guarantees that the 1:P} that the agent can encounter in the 
+
+environment, a set of actions {A
+trading price reflects the most competitive bids and asks in the market. 1:P} that the agent can take in a given 
+
+observation space, the reward functions {ℜ
+Subsequently, the clearing price algorithm is employed to calculate the 1:P} received by the agent for 
+P2P trading price based on the intersection of bid and ask prices. taking action a in the state s, and the state transition function τ(s, a→ś ), 
+
+This hybrid algorithm can improve efficiency and fairness in iden which defines the probability of transitioning from state s to state ś  after 
+tifying potential matches, promote flexibility in determining the trans taking action a. At each time step t, each prosumer agent takes action 
+action price and quantity, and represent a realistic essence of market ap,tbased on its own current state sp,t and learned policy, and then ex
+transaction dynamics. tracts an immediate reward rn,t. Then, the environment moves to the 
+
+( ⃒
+next state st+1via the transition function st ⃒
+
++1 = τ st , a1:P,t ,ωt) and the 
+2.2.2. Pricing mechanism environment stochasticity ωt [20]. The aim of each agent p is to learn the 
+
+In this study, the advantages of the MMR pricing mechanism are policy πp,t that can maximize its own total expected cumulative dis
+utilized to catch bid/ask prices. The MMR pricing schema is an accu counted reward over time as brought in Eq. (11): 
+mulative approach to generate P2P market prices (one for buyers and [ ]
+
+∑ ( )
+one for sellers) considering the average value of the feed-in-tariff (FIT) ℜp = Es∼τ,a1∼π1 ,…,ap∼πp γtrp,t st , ap,1,…, ap,t (11) 
+price λFIT etail t∈T
+
+t and retail price λRetail ( FIT )
+t (λmid
+
+t = λt + λR
+t /2) along with all 
+
+prosumers' demand/supply deviation Edev
+t at the same time period as a where γ ∈ [0,1) is the discounted factor. To solve the proposed FOMDP 
+
+weighted coefficient. In this regard, the MMR buy price λbuyMMR
+t and the considering the MADRL algorithm, the Twin Delayed Deep Determin
+
+MMR sell price λsellMMR
+t can be formulated as follows [10]: istic Policy Gradient (TD3) algorithm is employed, which is a model-free 
+
+4 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+and off-policy algorithm. This algorithm is a variant of the DDPG states, actions, and rewards of all other agents. This allows agents to 
+method designed explicitly for continuous action spaces [21]. In the leverage additional information to learn or update a joint policy. 
+MATD3 algorithm developed for this study, the agent's decision-making However, during the execution phase, agents act independently 
+process is governed by two neural networks: the actor and the critic. The based solely on their local observations. Consequently, each agent 
+actor network takes the current state as input and extracts a single implements only its local observation to make decisions during 
+continuous action value, representing the agent's action in the envi execution. Finally, agents execute their learned policies indepen
+ronment. In contrast, the critic network is responsible for estimating the dently, without communicating with other agents. The CTDE 
+value function (Q-value) for a given state-action pair. This involves approach is a valuable tool in contexts where agents must collaborate 
+evaluating the quality of the chosen action by estimating the expected during execution but are unable to exchange information due to 
+future reward. In addition, TD3 employs two separate critic networks, communication limitations or other practical considerations. 
+referred to as the “Twin Critics”. The minimum of these two critic out Furthermore, CTDE continues to face challenges related to dimen
+puts is then employed as the target for updating the other critic network, sionality and scalability, particularly in contexts where agent 
+thereby ensuring a more conservative and realistic value estimation and numbers are increasing and privacy concerns are not adequately 
+mitigating the overestimation bias inherent in traditional Q-learning addressed. In light of these limitations, this paradigm offers a 
+methods. Moreover, TD3 incorporates delayed policy updates, whereby compelling approach in multi-agent energy transaction systems 
+the critic networks are updated more frequently than the actor network. where agents' information is not proprietary and a third party is 
+TD3 also incorporates target network updates, whereby separate target available to collect or aggregate it. This is particularly relevant in 
+networks are utilized for computing the target values and updated MADRL-based systems where the objective is to develop a unified 
+slowly by a soft update rule. These mechanisms facilitate enhanced policy for all agents.
+stability and convergence. c) Parameter sharing: In the parameter sharing paradigm, all agents 
+
+During the training phase, the agents interact with the environment, have the capacity to leverage the experiences of other agents during 
+collect the relevant transitions (i.e., state, action, reward, next state, and training by sharing a subset of their neural network parameters, 
+done), and store them in the replay buffer. Subsequently, random min thereby enhancing the learning performance. Additionally, each 
+ibatches of transitions are sampled from the replay buffer for the pur agent retains its own copy of the policy/value network, with select 
+pose of updating the actor and critic networks. The actor network is layers being shared across agents. This shared component is 
+updated by maximizing the output of the critic network, taking into responsible for learning a generalized representation based on the 
+account the actions generated by the actor network. In turn, the critic collective experience of all agents. The primary benefit of parameter 
+networks are updated by sampled transitions and target values sharing is the acceleration of training through the sharing of expe
+computed from the target actor and critic networks. Subsequently, a soft riences while maintaining decentralized execution. However, this 
+update of the target actor and critic networks is performed using the approach is still subject to the dimensionality issues that arise from 
+main actor and critic networks. The replay buffer facilitates experience the incorporation of observations and actions from all agents in order 
+replay, a technique that enhances data efficiency and de-correlates the to estimate the Q-value function. Furthermore, this strategy may also 
+samples, thereby promoting more stable learning. violate the privacy of agents. In light of these considerations, this 
+
+In the developed TD3, the exploration process is modified through strategy can be advantageous in multi-agent energy trading systems 
+the introduction of Gaussian noise into the action space. The noise level where coordination between agents is necessary or where there is a 
+is initially set to a high value and subsequently decays over time, thereby need for coordinated operation, similar to the approach taken in the 
+promoting exploration during the initial stages of the learning process CTDE approach.
+and exploitation during the subsequent stages. d) Decentralized training with decentralized execution (DTDE): In the 
+
+DTDE approach, both the training and execution phases are con
+2.3.2. Strategies of MADRL algorithm ducted by each agent in an independent manner. This implies that 
+
+In addition to the structural algorithm of MATD3, selecting an each agent monitors its own state and executes actions based on its 
+appropriate strategy for multi-agent system learning is a crucial aspect unique experience (learned policy), without exchanging information 
+that warrants particular attention. Regarding this matter, there are four with other agents. The DTDE approach is advantageous for systems 
+strategies for MADRL algorithms, classified according to their training with fully independent operations where coordination or commu
+and execution [22], which are as follows: nication between agents is not a consideration and the primary 
+
+objective is to preserve privacy. Furthermore, this paradigm facili
+a) Centralized training and centralized execution (CTCE): This paradigm tates heterogeneous policy learning, which is advantageous in cases 
+
+involves both training and execution in a centralized manner. In where agents have disparate reward structures or seek to satisfy 
+CTCE, the aim is to train a joint model containing all agents' obser disparate personal preferences. In light of these considerations, this 
+vations (states) and actions with a centralized trainer. This central approach represents the optimal strategy for fully decentralized 
+ized trainer learns a centralized policy (or value function) and takes multi-agent energy transaction systems, wherein each agent operates 
+actions for all agents simultaneously. The CTCE paradigm is appli independently, assuming responsibility for its own training and 
+cable when agents are capable of communicating and sharing in execution based on individual datasets.
+formation during the execution phase, and the issue of agent privacy 
+is not a concern. In particular, this procedure requires significant In alignment with the aforementioned strategies, this paper is 
+scalability and dimensionality due to the exponential growth in the intended to utilize the DTDE approach as a convenient decentralized and 
+observation and action spaces with the increase in agent numbers. independent paradigm for the proposed system. In this approach, pri
+Given these considerations, this strategy is not well-suited for use in vacy is inherently preserved through the use of training and execution in 
+real-world and decentralized multi-agent systems where information decentralized manners. Under DTDE, each prosumer agent operates 
+security is of paramount importance and agents require rapid independently by processing its own data and learning its optimal policy 
+responses. in a local manner without sharing raw data with other agents. This local 
+
+b) Centralized training with decentralized execution (CTDE): The CTDE processing and learning ensure that sensitive information does not leave 
+approach represents an additional strategy for the MADRL frame the individual prosumer's environment, thus eliminating the risks 
+work, wherein agents are trained in a centralized manner but execute associated with centralized data aggregation, including data breaches 
+their policies in a decentralized way. During the training phase, and unauthorized access.
+agents have access to the full range of information, including the Moreover, the proposed MATD3 algorithm with the DTDE strategy 
+
+5 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+exhibits scalability advantages compared to centralized training ap determination stage, where the action space defines the bid and ask 
+proaches and parameter-sharing techniques. As each prosumer agent prices for P2P transactions. Accordingly, the action vector in each stage 
+operates independently, the computational complexity scales linearly directly corresponds to the control variables of that environment, 
+with the number of agents, rather than exponentially. This advantage ensuring each environment has its own TD3 agent that maps actions 
+becomes increasingly significant as the number of prosumers grows. It directly to feasible operational decisions. Comprehensive explanations 
+meant that the agents could operate autonomously without relying on a regarding the details of these procedures are provided in the upcoming 
+centralized coordinator or shared parameters, making the approach section.
+reliable and flexible to changes in the number of prosumers.
+
+Also, in order to be more concrete regarding the provided explana 3. Agents training and P2P market implementation
+tions of the proposed MATD3 algorithm structure and strategy, Algo
+rithm 1 is set up for more clarification.  This section is dedicated to the supplementary details (illustrated in 
+
+Fig. 1) of the proposed system objectives based on the proposed MATD3 
+
+learning mechanism. Given that each prosumer is regarded as an 
+Note: In the proposed MATD3 training process, convergence is autonomous entity with DTDE, this study aims to employ FOMDP in 
+
+assessed in practice by monitoring the stability of the average episodic conjunction with rule-based training environments to model the oper
+reward. Training proceeds until the predefined maximum number of ational behavior of smart prosumers in uncertain scenarios, enabling 
+episodes (M) is reached, at which point the moving average of rewards their participation in the P2P market. The subsequent subsections are 
+has stabilized and no longer exhibits significant upward or downward presented to elucidate the intricacies of the modeling process in greater 
+trends. This behavior indicates that policy updates have diminished and detail.
+the learned policy has effectively converged to a stable solution.
+
+Furthermore, it must be noted that Algorithm 1 represents the 3.1. Demand and ESS scheduling
+generic TD3 training loop. In the proposed framework, this algorithm is 
+applied separately in two distinct environments: (i) demand and ESS As the first step in the agent training process, each prosumer agent is 
+scheduling stage, where the action space covers demand load scheduling responsible for learning its own demand load and ESS charge/discharge 
+and ESS charging/discharging operations, and (ii) bid/ask price operation based on FOMDP as a dual action problem. The specific 
+
+6 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+components of each prosumer that must be learned to achieve this are sD,ESS
+p,t+1 , which is influenced by the current state sD,ESS
+
+p,t , actions aD,ESS
+1:P,t , and 
+
+outlined as follows: environment randomness ωD,ESS
+p,t factors.
+
+3.1.1. Observation In the proposed framework, the employed state transition method is 
+The observation (state) space of demand and ESS scheduling at the based on the random selection process to extract transition functions for 
+
+{ } demand load and ESS charge/discharge from historical data. The 
+time step t sD,ESS
+
+1,t , sD.ESS
+2,t ,…, sD,ESS
+
+P,t for all prosumer agents P can be random selection of the subsequent state ensures that the learning 
+defined as follows: process is not deterministic but stochastic, and is not contingent on 
+
+{ } precise probability distributions for disparate uncertainties [8]. In other 
+sD,ESS
+p,t = t,PCon
+
+p,t ,E
+PV
+p,t , λ
+
+Net
+t ,ℝESS
+
+p,t ,ℂ
+SOC
+p,t ∈ SP (12) words, the “random selection process” means that at each training 
+
+episode, the state variables (e.g., demand load, PV generation) are 
+where PCon
+
+p,t is consumption data, EPV
+p,t is prosumers' PV generation data, drawn from the historical dataset using random sampling with 
+
+λNet replacement. Each historical record (demand, PV generation, and asso
+t is the net price (which consists of both FIT price λFIT
+
+t and retail price 
+λRetail
+
+t ), ℝESS
+t is operational rules for ESS to confront uncertain situations, ciated variables at a specific timestamp) is sampled as a complete unit, 
+
+ensuring that the natural correlation between demand and PV is fully 
+and ℂSOC
+
+p,t is the ESS charge level condition in the previous time step. preserved. Sampling is not restricted to any specific hour range, season, 
+In the proposed model, ℝESS
+
+t is not a physical control variable but a or type of day; instead, every historical observation has an equal prob
+discrete auxiliary feature added to the state space. This feature is ability of being selected at every time step. This method preserves the 
+generated through rule-based logic that evaluates the electricity price empirical distribution of the real data while avoiding deterministic 
+and the current charge state, producing a categorical value repetition, thereby ensuring variability and robustness in the agent's 
+ℝESS
+
+t ∈ [ − 1, 0,1], where − 1 denotes a discharge-favorable condition, learning process. This process enables agents to learn robust policies in 
+0 represents a neutral or idle condition, and + 1 indicates a charge- stochastic scenarios and account for uncertainties in consumption and 
+favorable condition. This encoded rule provides the agent with a heu generation patterns.
+ristic indication of desirable ESS behavior under uncertain conditions. 
+Furthermore, ℂSOC
+
+p,t conveys the charge state of ESS at time t-1 within the 3.1.4. Reward
+[− 1,1] interval as a normalized indicator. This variable is also included In this stage, each agentptakes action aD,ESS
+
+p,t at the state sD,ESS
+p,t and 
+
+in the state space to allow the agent to retain short-term memory of receives its immediate reward rD,ESS
+p,t ∈ ℜ at the end of the time step t. In 
+
+recent ESS conditions. Accordingly, both ℝESS
+t and ℂSOC
+
+p,t are informa the proposed model, the immediate reward for demand and ESS 
+tional state variables rather than continuous decision variables and scheduling contains three minimization functions as follows: 
+therefore do not require continuous operating bounds. ( )2
+
+rD
+p,t = − Dp,t − PCon Net
+
+p,t × λt (16) 
+3.1.2. Action
+
+The action aD,ESS
+p,t for the prosumer agent p at the time step t consists of rESS )/
+
+p,t = − Ech,dch ( Net Net
+p,t × λt − λ Net
+
+Avr λAvr (17) 
+employed scheduling decisions for managing each prosumer demand 
+load and ESS charge/discharge that can be written as follows: ⃒ ⃒
+
+rDeg ⃒
+p,t = − ⃒Ech,dch⃒ Deg
+
+[ ] p,t ⃒× λ (18) 
+aD,ESS
+
+p,t = aD
+p,t , a
+
+ESS
+p,t ∈ AP (13) 
+
+where in (16), rD
+p,t is the demand load scheduling reward and PCon
+
+p,t is the 
+In (14), Dmax represents the maximum allowable demand load which test case consumption. The subtraction between learned demand and 
+
+is determined based on each prosumer's historical consumption data and test case consumption in the reward function leads to minimal demand 
+serves as an upper bound (i.e., peak consumption value) in the action 
+space aD
+
+p,t ∈ [0,1] for scheduling demand load Dp,t. Moreover, aESS load fluctuations during the training phase. In other words, the squared 
+p,t ∈ [ − deviation term penalises divergence between the scheduled and histor
+
+1, 1] is the secondary action quantity that indicates the rate of charging ical demand, ensuring that learned load adjustments remain realistic. 
+(positive) and discharging (negative) power of ESS by (15) besides Moreover, the coefficient λNet
+
+t serves as a weighting factor that reflects 
+avoiding simultaneous charge and discharge. the net electricity price ($/kWh), thereby assigning an economic inter
+Dp,t = aD
+
+p,t ×Dmax (14) pretation to this penalty. Including this multiplier standardises the 
+formulation with other reward components (e.g., ESS operation) and 
+
+( ) ( ) /
+Ech,dch
+
+p,t = max 0, aESS ESS ch,dch
+p,t × η PMax +min aESS ch,dch
+
+p,t ,0 ×P ESS
+Max η (15) ensures comparability of magnitudes across decision variables. In (17), 
+
+rESS
+p,t is the ESS scheduling reward which is directly affected by the net 
+
+It should be noted that the ESS actions are applied only after electricity price.λNet ∑
+Avr = t∈TλNet
+
+t /T is the average net electricity price of 
+checking their feasibility with respect to the ESS energy limits defined in the whole test day. Furthermore, another reward function is introduced 
+(4)–(6). If the ESS's previous energy level EESS
+
+p,t− 1 is close toEESS
+Max, only the in (18) as the ESS degradation penalty rDeg
+
+p,t to avoid any redundant charge 
+remaining capacity is allowed to be charged, and the applied charging and discharge.λDegis also the penalty cost for each kWh charge/discharge 
+power is automatically reduced to avoid exceeding the limit. If EESS
+
+p,t− 1 is power. Thus, the total reward function of demand and ESS scheduling 
+equal to EESS
+
+Max, any charging request is rejected and the ESS can only for each prosumer agent p at the time step t can be implied as follows: 
+remain idle. Conversely, when EESS
+
+p,t− 1 is close to EESS
+Min, only the feasible 
+
+rD,ESS
+p,t = rD
+
+p,t + rESS
+p,t + rDeg
+
+p,t ,∀p ∈ P, ∀t ∈ T (19) 
+portion of the discharge request is applied. Subsequently, if EESS
+
+p,t− 1 = EESS
+Min, 
+
+all discharge requests are rejected and the ESS can only stay idle. This It must be noted that this reward function is designed to capture the 
+mechanism guarantees that the updated charge level Ech,dch objectives of demand load scheduling and ESS operation as a cost- 
+
+p,t remains 
+strictly within its physical bounds and prevents any over-charging or minimization function. The demand load scheduling reward encour
+over-discharging during the learning process. ages the agent to minimize deviations from the desired optimal con
+
+sumption profile, while the ESS scheduling reward incentivizes the 
+3.1.3. State transition agent to charge the ESS in low electricity price periods and discharge it 
+
+The state transition indicates the probability of moving from sD,ESS
+p,t to in high electricity price periods due to the signals received from 
+
+7 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+inequality expression of the electricity price. Besides, the ESS degrada tendency relative to the community. Specifically, the rule leverages the 
+tion penalty discourages excessive charging and discharging to prolong prosumer's net balance (its surplus or deficit) compared to the mean 
+the ESS lifespan. community balance at that hour, as well as the overall system surplus/ 
+
+To have a better understanding of the demand and ESS scheduling, deficit (denoted by Edev
+t ). On this basis, the indicator takes values in the 
+
+the whole procedure is described in algorithmic form, as Algorithm 2. interval ℝprice
+p,t ∈ [ − 1, 1], where values in the range [− 1,0] correspond to 
+
+3.2. Bid/ask Price determination seller-oriented conditions, values in [0,1] correspond to buyer-oriented 
+conditions, and intermediate values near 0 represent neutral or marginal 
+
+The second stage of the agent training process concerns the deter participants.
+mination of bid/ask prices based on the proposed FOMDP as a single The embedded economic logic is as follows. Small sellers (i.e., pro
+action problem. As in the preceding subsection, the components of each sumers with limited surplus compared to others) are encouraged to offer 
+prosumer that determine the bid/ask prices are described as follows: at slightly lower ask prices to increase their feasibility of primitive 
+
+clearing in the ACDA process. Conversely, large buyers (i.e., prosumers 
+3.2.1. Observation with substantial deficits) are encouraged to bid at slightly higher prices 
+
+To improve and simplify the training process, the observation space to improve their chances of securing energy. Small random perturba
+of the second step is rewritten as follows: tions within narrow bounds are added to each rule-based value to avoid 
+
+{ } deterministic behavior and promote exploration while maintaining 
+sBid,Ask
+p,t = t,ENet
+
+p,t , λbuyMMR
+t , λsellMMR
+
+t , λNet
+t ,ℝprice
+
+p,t ∈ SP (20) economic rationality. This rule-based state, therefore, provides the agent 
+with a structured and interpretable price-preference signal while still 
+
+where ENet
+p,t is the electricity net load value (bid/ask quantity) of each allowing the MATD3 policy to learn optimal pricing strategies through 
+
+prosumer (positive values are bid mode and negative values denote ask experience.
+mode), and is utilized to decrease the state space rather than bringing 
+generation and consumption elements. λbuyMMR
+
+t and λsellMMR
+t are obtained 3.2.2. Action
+
+buy and sell MMR prices calculated by (9)–(10), respectively. MMR data In this step, the agent takes action aBid,Ask
+p,t ∈ AP based on the current 
+
+is set on the net price historical data λNet
+t . ℝprice
+
+p,t is also operational rules state sBid,Ask
+p,t , which aBid,Ask
+
+p,t ∈ [ − 1,1] represents the bid price (positive) 
+for bid/ask price determination to guarantee competitiveness in P2P and ask price(negative) values of each prosumer p at the time step t. In 
+participation. This rule-based indicator is also incorporated to embed this regard, the bid/ask price PrBid,Ask
+
+p,t can be determined as follows: 
+fundamental market behavior directly into the agent's state represen
+tation. This indicator reflects each prosumer's local supply/demand 
+
+8 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Table 2 Table 3 
+Hyperparameters of each prosumer agent training. Parametric information of facilities.
+
+Hyperparameter Value Hyperparameter Value Parameter Value Parameter Value
+
+Episodes number 50,000 Time steps number 24 EESS
+Cap 2 kWh Pch/dch
+
+Max 0.45 kW
+Actor learning rate 0.003 Critic learning rate 0.001 EESS
+Discount factor 0.99 Batch size 512 Max 1.8 kWh ηESS 0.98
+
+EESS
+Min 0.3 kWh PPV
+
+t (capacity per panel) 120 W
+Buffer size 20,000 Soft update rate (τ) 0.005
+Num. hidden layers 2*128 nodes Optimizer Adam
+Action noise Gaussian noise Policy MLP-Policy
+
+mization (or revenue maximization) function comprising two distinct 
+equations, one for bid price, i.e., (23) and the other for ask price, i.e., 
+
+[ ( ) ( / ) ]
+PrBid,Ask i ,
+
+p,t = max 0, aB d Ask buyMMR
+p,t × λ Net
+
+t E Ne
+r E t (24). The function is expressed as follows: 
+
+p,Av p,t
+[ ( ) ( / )]
+
++ min aBid,Ask
+p,t , 0 × λsellMMR Net
+
+t E ENet rBid,Ask
+p,t p,Avr (21) p,t = rBid
+
+p,t + rAsk
+p,t ,∀p ∈ P, ∀t ∈ T,ENet
+
+p,t ∕= 0 (22) 
+
+( )2
+where ENet ∑ Net
+
+p,Avr = t∈TEp,t /T is the average net electricity load for each rBid
+p,t = − PrBid,Ask
+
+p,t − λbuyMMR
+t ×ENet
+
+p,t ,∀ENet
+p,t > 0 (23) 
+
+prosumer in the whole test day. In (21), the first term calculates the bid 
+price and the second term calculates the ask price. Additionally, the ( )2
+
+rAsk
+rationale behind the coefficients ENet
+
+p,Avr/ENet
+p,t and ENet
+
+p,t /ENet
+p,Avr in calculating p,t = − PrBid,Ask
+
+p,t + λsellMMR
+t × ENet
+
+p,t ,∀ENet
+p,t < 0 (24) 
+
+bid and ask prices is based on the premise that smaller buyers are subject The bid price determination process is influenced by two key factors, 
+to higher prices than larger buyers, and conversely, smaller sellers are as elucidated in (23). These factors are bid quantities and buy MMR 
+subject to lower prices than larger sellers. prices, which are highly correlated. Consequently, an increase in bid 
+
+quantities results in a decrease in bid prices, while a decrease in bid 
+3.2.3. State transition quantities leads to an increase in bid prices. It is imperative to note that 
+
+Similar to the previous subsection (i.e., 3.1.3), the state transition in the determined bid price should not exceed the buy MMR price limit to 
+bid/ask prices determination contains the probability of moving from ensure that peers engage in competitive participation. A similar ratio
+sBid,Ask
+p,t to sBid,Ask
+
+p,t+1 by considering factors that have been explained earlier nale underlies the analysis in (24), where the optimal ask price is 
+regarding the random selection process. In this stage, transition func determined by considering these two factors. This indicates that ask 
+tions of bid/ask prices are extracted from predefined datasets for MMR prices should not be set below the sell MMR prices, and ask quantities 
+prices and net loads. also influence the determination of ask prices.
+
+To gain a clear understanding of the bid/ask price determination 
+3.2.4. Reward manner, this process is described in Algorithm 3.
+
+The reward for bid/ask price determination rBid,Ask
+p,t is a cost mini
+
+9 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+3.3. Market transactions configuration preserves realism while ensuring a consistent comparison 
+framework for evaluating the proposed MATD3-based scheduling and 
+
+This section is intended to provide a detailed account of the P2P P2P trading strategy. Moreover, the selected test case sample for this 
+market implementation, based on the proposed structure outlined in study constitutes 10% of the datasets, with the remaining datasets 
+Section 2.2. As previously stated, this market is a decentralized P2P employed for the training process.
+market that employs an innovative ACDA mechanism. In order to The MATD3 algorithm used for training the actor and critic networks 
+facilitate the execution of P2P transactions, the market maker initially employed several hyperparameters, including the learning rate, dis
+collates the data pertaining to the participation of all prosumers. Sub count factor, batch size, replay buffer size, exploration noise parameters, 
+sequently, the data is sorted into bids and asks based on the matching and the soft update rate (τ), all of which are listed in Table 2. The se
+algorithm and the bid/ask price priority mechanism, whereby the lection of these hyperparameters follows common empirical practices 
+highest price bids are matched with the lowest price asks. Afterward, widely adopted in actor–critic-based frameworks. For instance, the soft 
+P2P exchanges are conducted between any buyer and seller pair based update rate (τ) was set to 0.005. This choice aligns with standard TD3/ 
+on the sorted list. The P2P exchange price is then calculated through the MATD3 literature [21], where small values (typically 0.001–0.01) 
+clearing algorithm by the intersection of bid and ask prices. In the event ensure stable target network updates without causing oscillations. In 
+that any buyer or seller remains unsatisfied after P2P transactions, a preliminary tests, τ = 0.005 provided a competent balance between 
+centralized retail market is considered to clear them with retail market stability and responsiveness, enabling smooth convergence of both actor 
+prices. The aforementioned procedure of market transactions is pre and critic networks. All other selected hyperparameters also follow 
+sented in Algorithm 4 for further clarification. standard practices in several TD3/MATD3-based studies, and empirical 
+
+testing confirmed that small deviations from these values do not mate
+
+4. Case study and numerical results rially affect convergence behavior or final performance.
+In addition, the parametric data for PV panels and ESSs are presented 
+
+4.1. Hyperparameters in Table 3. The MATD3 method has been programmed in Python using 
+PyTorch [26], and the entire process has been executed on a PC with a 
+
+The input hyperparameters utilized by intelligent prosumers are 4.20 GHz Intel(R) Core (TM) i7-7700K CPU and 16 GB of RAM. Addi
+derived from authentic real-world datasets, which encompass one year's tionally, it must be noted that the whole MATD3 training process took 
+worth of data from 20 residential buildings. The datasets comprise approximately 38–42 min for each prosumer agent in step 1 and 23–25 
+profiles of electricity consumption [23] and PV generation between min for each prosumer agent in step 2, altogether approximately 13 h for 
+January 1 and December 31, 2015 [24]. Also, a modified version of the step 1 and 8 h for step 2. Furthermore, the execution time taken for all 
+net prices profile [25] is considered, which is regulated in accordance prosumer agents is around 0.8–2.1 s.
+with the employed consumption load pattern. All prosumers used in this 
+case study are taken from real residential consumption datasets from 
+California, which represent typical household demand patterns with 4.2. Agents training performance analysis
+natural variability in daily load magnitudes and profiles. PV generation 
+data were also obtained from real measurements, and each prosumer's This subsection presents a convergence and performance analysis of 
+PV capacity is assigned by scaling the number of panels in proportion to the proposed MATD3 algorithm for the training of prosumer agents. 
+its demand level, reflecting practical household installation behavior. A Fig. 2 depicts the cumulative episodic rewards (of the community of 
+uniform ESS capacity of 2 kWh was assumed for all prosumers, consis prosumers) over 50,000 episodes. The red and blue lines represent the 
+tent with the lower range of commercially available residential batteries episode rewards and mean-episode rewards (every 100 episodes), 
+(2–4 kWh) and widely used in household-scale studies. This respectively. Moreover, the convergence values of all prosumers 
+
+extracted from the DTDE strategy in both steps (i.e., Sections 3.1 and 
+
+10 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+smooth and stationary. This behavior indicates that reward variance 
+does not increase over training and confirms the stability of the learned 
+policies in both training stages. The rationale for training agents over 
+50,000 episodes is that DTDE-based MATD3 requires more training 
+space due to its high variance in learning and the necessity for policy 
+adjustments on an individual basis. However, this strategy also results in 
+more robust policy learning.
+
+To ensure the robustness and consistency of the proposed MATD3- 
+based framework, multiple independent runs (containing 10 runs) 
+with different random seeds are performed and key statistical metrics 
+are computed. These key statistical metrics include mean absolute per
+centage error (MAPE), mean standard deviation (MSD), variance, and 
+95% confidence intervals (CI95). MAPE is usually utilized to quantify 
+the average scheduling accuracy and indicate whether learned sched
+uling closely follows the historical consumption trends. Standard devi
+ation measures the dispersion or spread of the scheduled values across 
+different runs and is valuable for understanding the variability and 
+consistency of scheduled quantities. On this basis, MSD is the average 
+performance across multiple training runs. Variance is the square of the 
+standard deviation and represents the overall variability and fluctuation 
+of the scheduled values.CI95 offers insights into the uncertainty asso
+ciated with the estimated mean scheduling and aids in assessing the 
+statistical significance of the results. These statistical analysis results are 
+tabulated in Table 5.
+
+The statistical measures of Stage 1 indicate a relatively low MAPE of 
+9.8%, with an APE range between 8.3% to 12.1%. The main reason 
+behind the +10% APEs originates from the massive variation in the 
+yearly consumption pattern of some prosumers' datasets. This issue 
+causes the agents to look for more robust responses to eliminate the 
+uncertain factors that lead to higher APE. The SD of errors varies be
+
+Fig. 2. Cumulative episodic rewards of prosumer 1. tween 11% and 27%, and the MSD is 17.4%. A variance of 3.07% and a 
+narrow CI95 from 0.496 to 0.662 pu suggest that the model achieves 
+consistent and robust performance in the stage 1 scheduling task. 
+
+Table 4 Finally, these results demonstrate that the proposed MATD3-based 
+Convergence information of trained agents. framework can reliably schedule electrical demand and ESS operation 
+
+Prosumer Converged Reward Prosumer Converged Reward with minimal deviation from the historical consumption data.
+Num Values Num Values In Stage 2, the MAPE is at 13.2%, with an APE range from 11.8% to 
+
+Step 1 Step 2 Step 1 Step 2 15.1%. These elevated metrics, when contrasted with those observed in 
+Stage 1, emanate from the intricacies inherent in accurately ascertaining 
+
+P1 0.0055 − 0.0008 P11 0.0065 − 0.008
+P2 0.0071 − 0.0019 P12 0.0076 − 0.0017 bid/ask prices, compounded by the presence of non-homogeneous ele
+P3 0.0059 − 0.0006 P13 0.0067 − 0.0014 ments such as prosumers' net load and MMR prices. Subsequently, the 
+P4 0.007 − 0.0009 P14 0.0073 − 0.0007 SD range (14%–30%), MSD of 20.3%, and variance of 3.91% indicate 
+P5 0.0071 − 0.0008 P15 0.0052 − 0.0022 slightly greater variability in the model's performance when deter
+P6 0.0056 − 0.0011 P16 0.0068 − 0.0021 mining bid/ask prices. However, the confidence interval ranging from 
+P7 0.0051 − 0.0012 P17 0.0051 − 0.0012
+P8 0.0069 − 0.0008 P18 0.0063 − 0.0016 0.403 to 0.512 pu reflects a narrow interval, thereby substantiating the 
+P9 0.0077 − 0.0013 P19 0.0062 − 0.0007 robustness of these stage results. Consequently, it can be concluded that 
+P10 0.0075 − 0.0006 P20 0.0072 − 0.0008 the outcomes are commensurate with acceptable limits, given the 
+
+intrinsic volatility inherent to bid/ask price determination.
+
+3.2) are presented in Table 4. In this table, Step 1 values refer to the final 
+converged cumulative reward obtained by each prosumer in the first- 4.3. Test case performance analysis and market results
+stage environment (i.e., demand load scheduling and ESS operation), 
+while Step 2 values denote the final converged cumulative reward To validate the performance analysis of the MATD3 method, the 
+achieved in the second-stage environment (i.e., bid/ask price determi obtained results were investigated on the test day. Fig. 3 illustrates the 
+nation). As illustrated in Fig. 2 and Table 4, both cases exhibit minimal net load of the community of prosumers trained by the proposed algo
+values during the initial learning stages. The primary cause of this rithm. These outputs are determined based on the learned demand and 
+phenomenon can be attributed to the definition of the initial random ESS scheduling of individual prosumers and then cumulated as the 
+steps, which have been set to 1000 episodes. During this process, the 
+agents engage in exhaustive exploration of the action space by taking Table 5 
+random actions. Although these initial random steps result in consid Statistical analysis results of the proposed framework.
+erable inconsistency in the agents' gained rewards at the outset of the Stage APE range MAPE SD MSD Variance CI95 (pu)
+training process, they facilitate effective policy learning and prevent range
+early overfitting to initial policies. As the agents gain more experience, Stage 8.3%– 9.8% 11%– 
+the values increase and then converge to specific quantities. After 17.4% 3.07% 0.496–0.662
+
+1 12.1% 27%
+convergence, the episodic rewards exhibit bounded oscillations around Stage 11.8%- 13.2% 14%– 20.3% 3.91% 0.403–0.512
+a steady mean value, while the moving-average reward curves remain 2 15.1% 30%
+
+11 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Fig. 3. Community of prosumers' net load on the test day.
+
+Fig. 4. Generated MMR price on the test day.
+
+Fig. 5. Determined ask prices of prosumers 2 and 8 on the test day.
+
+12 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+community of prosumers' demand/supply deviation (illustrated by the seller, resulting in multiple transactions within the same time interval. 
+blue-colored curve). As illustrated in Fig. 3, positive values are associ Subsequently, the same process happens for the seller with surplus 
+ated with the consumption side, while negative values pertain to the generation. In this case, P1 still has unmet demand after the first match. 
+generation side. In light of the aforementioned considerations, it can be So, ACDA proceeds to match P1 with the next available seller (i.e., P6), 
+posited that hours 7–10 and 13–17 may be considered active periods for thereby producing multiple bilateral trades within the same hour. 
+P2P exchanges, given the presence of prosumers with both generation Moreover, the P2P clearing price for each match is determined accord
+and consumption capabilities. During the first three hours, the con ing to the ACDA pricing rule, based on the intersection of the buyer's bid 
+sumption side was subjected to a considerable consumption rate due to price and the seller's ask price (expressed in $/kWh).
+the operation of the ESS. The primary factors contributing to this sub Figs. 8 and 9 illustrate the cumulative P2P exchange costs and net 
+stantial consumption are the daily price and the level of ESS charge. clearing costs of each prosumer over the course of the test day, respec
+During hours 10–14, the PV panels are operating at their maximum tively. Accordingly, the most active participants in the ACDA market as 
+generation capacity, allowing the community to act as a local supplier. sellers are identified as prosumers 2, 8, and 15. Conversely, on the test 
+After hour 16, the consumption rate of prosumers undergoes a notable day, prosumers 1, 4, 5, and 10 were the largest purchasers in the ACDA. 
+increase, which can be attributed to the absence of PV production and Moreover, the net purchasing quantities are the greatest for prosumers 3 
+the depletion of ESS charge levels. This data is then employed in the and 10, while the net sold quantities are the greatest for prosumers 9, 13, 
+determination of MMR prices, as illustrated in Fig. 4. As previously and 16. In light of the aforementioned findings, it can be concluded that 
+discussed, net FIT/retail prices and demand/supply deviations represent the community of prosumers in question requires a total of 207.8 kW of 
+the primary factors in MMR calculations. electricity on the test day. A total of 10.75 kW was fulfilled by P2P 
+
+The MMR prices serve as the basis for the determination of the bid/ transactions, representing 5.2% of the daily electricity requirements. 
+ask price. For purposes of clarification, Figs. 5 and 6 are presented as While this share may appear modest, it is well justified by the archi
+illustrative examples of active prosumers, demonstrating the bid/ask tecture of the modeled system. The primary reasons behind this partic
+prices learned through the MATD3 approach. The figures illustrate the ipation level are aligned with two factors:
+details of the ask prices (Fig. 5) of prosumers 2 and 8, who are the most First, all of the prosumers are households equipped with identical 
+active sellers, and the bid prices (Fig. 6) of prosumers 4 and 5, who are ESS capacity and PV panels sized in proportion to their consumption. 
+the most active purchasers, in the P2P ACDA market. Additionally, the This design results in similar generation and consumption patterns 
+periods during which each prosumer sold or purchased are indicated by across the community. Such homogeneity restricts the occurrence of 
+bolded dots. complementary supply/demand pairs, thereby narrowing the temporal 
+
+In the P2P transaction phase, the highest rate of P2P trades in the overlap for effective P2P transactions. Second, the MATD3 learning 
+proposed ACDA market is observed in hours 8, 10, 14, and 16, as process drives agents to adopt rational, risk-sensitive behaviors, further 
+illustrated in Fig. 7. To gain a more precise understanding of the spe disincentivizing speculative or marginal trades. These conditions natu
+cifics of these P2P transactions, Table 6 is prepared for hours 8 and 14. rally constrain the volume of bilateral energy exchanges.
+The information presented in this table includes the sequence of buyers It is important to emphasize that this result does not indicate a 
+and sellers, the cleared P2P prices, and the quantities exchanged on the limitation of the proposed model but rather reflects the underlying 
+P2P transactions. symmetry in system design. It means that implementing more diverse 
+
+For more clarity, it is important to emphasize that the ACDA mech DER configurations (e.g., CHP units or heterogeneous ESS capacities) 
+anism allows each buyer and seller to participate in multiple bilateral among prosumers, or even considering the combination of prosumers/ 
+transactions within the same time period. This behavior results from consumers that overlaps the surplus generation with requirements, 
+ACDA's iterative allocation rule: once a buyer matches with the lowest- could broaden the scope for asymmetric energy behavior and thus 
+price available seller, the buyer's remaining unmet demand (if any) al enable a greater share of P2P trading. For instance, prosumers with 
+lows further matches with the next seller in the merit order. A similar larger PV arrays (or containing additional generation units like CHP) 
+process applies to sellers with remaining available energy. would benefit from surplus generation at times when others still face 
+
+For instance, at Time 8, buyer P1 initially matches with seller P19 deficits, while prosumers with larger ESS capacities have this capability 
+(due to its lower ask price than P6) until either P1's demand or P19's to shift more energy availability across periods in ways that differ from 
+available surplus is fully allocated. If the buyer still has unmet demand smaller-storage peers.
+after the first match, the mechanism continues to match it with the next Additionally, the total injected electricity into the upstream network 
+
+Fig. 6. Determined bid prices of prosumers 4 and 5 on the test day.
+
+13 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Fig. 7. Electricity transactions in ACDA and retail markets.
+
+decentralized P2P ACDA market, the performance of this framework has 
+Table 6 been compared against two alternative transaction models: MMR-based 
+Details of P2P exchanges at time periods 8 and 14. distributed transactions and retailer-based centralized transactions.
+
+Time P2P P2P P2P Cleaing Price P2P Quantity The cumulative costs of distributed and centralized transactions are 
+Buyer Seller ($/kWh) (kWh) illustrated in Fig. 10 and Fig. 11, respectively. In Fig. 10, the curve in
+
+P6 0.5 0.012
+P1 dicates a relatively smooth and controlled cost accumulation for each 
+
+P19 0.46 0.205 prosumer, suggesting the adaptive nature of distributed transactions. In 
+P3 P6 0.5 0.22
+
+P8 0.54 0.28 contrast, Fig. 11 implies that the centralized approach offers limited 
+P9 P6 0.49 0.05 responsiveness to market fluctuations, resulting in higher operational 
+
+P2 0.544 0.26 costs.
+P10 P8 0.539 0.038 To address the economic benefits and drawbacks, three key eco
+
+8 P15 0.541 0.246 nomic implications including cost-saving and profit optimization, fair 
+P4 0.51 0.1
+
+P14
+P17 0.51 0.135 and efficient pricing, and sensitivity to market volatility are considered 
+P5 0.47 0.03 to prove the efficiency of the proposed framework.
+
+P16 P11 0.46 0.08 To this end, a comparative analysis including total costs and reve
+P17 0.46 0.005 nues arising from these three transaction mechanisms is provided in 
+P19 0.47 0.005
+
+P20 P17 0.48 0.005 Fig. 12. On this basis, the total cost of purchasing electricity for pro
+P6 0.49 0.05 sumers in proposed MATD3-based decentralized ACDA, MMR-based 
+
+P1 P20 0.50 0.234 distributed, and retailer-based centralized are estimated at $193.2, 
+P4 P2 0.565 0.337 $185.45, and $198.6 while the overall revenue generated from selling 
+
+P8 0.566 0.106 electricity is projected at $6.1, $5.46, and $3.42 respectively. These 
+14 P5 P8 0.553 0.146
+
+P16 0.554 0.3 values reveal that the P2P transactions executed via the MATD3-based 
+P18 P15 0.5 0.204 ACDA mechanism incur approximately 4% higher costs compared to 
+
+P12 0.534 0.224 the MMR-based transactions, which is an acceptable increase given the 
+P19 P15 0.534 0.204 transition from a semi-centralized to a fully decentralized approach. But 
+
+P16 0.533 0.09 in reverse, the revenue obtained from this approach is nearly 10% higher 
+than that from MMR-based transactions. This result demonstrates that, 
+
+(retail market) on the test day was 17.77 kW. Consequently, all pro despite the slightly higher costs, the proposed approach can yield 
+sumers incurred costs of 187.1$ for purchasing from the retail market, improved revenue performance. On the other hand, the proposed 
+6.1$ for P2P transactions (resulting in total costs of 193.2$), and earned MATD3-based ACDA transaction costs are faced with a 2.7% reduction 
+approximately 5.5$ for selling electricity to the retail market. in electricity purchasing compared to retailer-based centralized trans
+
+It should be emphasized that while the demand load scheduling, ESS actions, as well as leading to a 78.3% increase in revenue. Moreover, the 
+charge/discharge operation, and bid/ask price determination involve lower revenue trend indicates that prosumers participating in distrib
+stochastic learning under the proposed MATD3 algorithm, the subse uted and centralized schemes are less able to capitalize on transient 
+quent P2P trading is resolved through the ACDA auction-based mecha market opportunities compared to those using the ACDA method. These 
+nism, which is a deterministic process. For the given set of bid/ask improvements demonstrate the cost-saving and profit optimization of 
+quantities and prices, the ACDA always produces a unique set of out the MADT3-based bid/ask price determination approach instead of 
+comes. Therefore, statistical validations are not meaningful for reported relying on fixed or semi-centralized pricing mechanisms in real-world 
+market economic results (e.g., costs and revenues). energy market scenarios.
+
+Additionally, the proposed MATD3-based framework for deter
+mining bid/ask prices in conjunction with the ACDA mechanism en
+
+4.4. Economic implications analysis and validations hances market efficiency by dynamically adjusting prosumers' 
+participation based on real-time conditions, ensuring that trading occurs 
+
+To validate and assess the economic viability of the proposed at competitive prices. This procedure is realized by incorporating 
+MATD3-based bid/ask price determination framework in the operational rules as an additional state, as discussed in Subsection 3.2.1.
+
+14 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Fig. 8. Cumulative P2P exchange costs of prosumers on the test day.
+
+Fig. 9. Cumulative net clearing costs of prosumers on the test day.
+
+Therefore, unlike retailer-based centralized transactions, which rely through its adaptive, decentralized design. Specifically, the dynamic 
+on fixed tariff structures, and MMR-based distributed transactions, learning capabilities of MATD3 allow each prosumer agent to continu
+which apply static average rates, the MATD3-based approach actively ously update its pricing decisions in real-time, based on local observa
+optimizes bid/ask prices in response to individual prosumers' supply/ tions and evolving market conditions. This continuous adjustment 
+demand conditions and real-time market dynamics. This leads to more process enables the system to dampen the impact of abrupt market 
+competitive and balanced transactions, higher market liquidity, and changes and maintain competitive pricing even under volatile condi
+minimized price distortions. Ultimately, these competitive constraints tions. By doing so, the proposed framework not only mitigates the 
+embedded within the MATD3 learning framework reinforce fairness and adverse effects of volatility but also preserves the advantages of cost- 
+efficiency, making the ACDA P2P market a viable alternative to con saving, profit optimization, and fair pricing.
+ventional pricing models.
+
+In the context of energy markets, market volatility poses a substan 5. Conclusion
+tial challenge, manifesting as sudden fluctuations in energy prices or 
+prosumers' demand/supply. These fluctuations can give rise to unstable This study has proposed a novel MADRL framework for the man
+bid/ask prices and distort market outcomes. Conventional centralized agement of smart prosumers in decentralized P2P energy markets. The 
+pricing methodologies, predicated on retailer-based systems, or static primary contributions of this study are as follows: (1) The imple
+pricing techniques, such as MMR-based methods, are particularly sus mentation of the MATD3 algorithm with a DTDE strategy, which allows 
+ceptible to such price fluctuations. This often gives rise to pricing dis for fully independent prosumer operation. (2) The dynamic determina
+tortions and a concomitant diminution in economic efficiency. tion of demand load and energy storage operation. The proposed 
+
+The proposed MATD3-based framework addresses this drawback framework addresses the challenges of independent operation, privacy 
+
+15 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+Fig. 10. Cumulative costs of prosumers based on MMR transactions.
+
+Fig. 11. Cumulative costs of prosumers based on centralized transactions.
+
+Fig. 12. Costs/revenues comparison between ACDA, MMR, and centralized transactions.
+
+16 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A p p li e d  E n e r g y  412 (2026) 127650 
+
+preservation, scalability, and dynamic pricing in prosumer-centric en with varying trading mechanisms. In this context, smart prosumer 
+ergy management systems. The findings demonstrate that the proposed agents must identify the optimal market to engage with, considering the 
+trading approach exhibits satisfactory adaptability with an incremental pricing structures available.
+cost of approximately 4% compared to the distributed transactions and a 
+savings cost of 2.7% compared to centralized transactions. Furthermore, CRediT authorship contribution statement
+the efficacy of the proposed framework is evidenced by its ability to 
+foster competition in P2P transactions, resulting in a 10% and 78.3% Behzad Motallebi Azar: Writing – review & editing, Writing – 
+increase in revenue compared to distributed and centralized trading original draft, Visualization, Validation, Software, Resources, Method
+mechanisms, respectively. ology, Investigation, Formal analysis, Data curation, Conceptualization. 
+
+Further work could examine the integration of additional factors, Rasool Kazemzadeh: Writing – review & editing, Validation, Supervi
+such as network constraints, heterogeneous DER and equipment con sion, Project administration, Investigation, Conceptualization. Morteza 
+figurations, renewable energy forecasting, uncertainty arising from Zare Oskouei: Writing – review & editing, Validation, Supervision, 
+historical datasets, cyber-physical security, and blockchain-based en Project administration, Investigation, Conceptualization. Behnam 
+ergy trading, with a view to enhancing the framework's capabilities and Mohammadi-Ivatloo: Writing – review & editing, Validation, Super
+applicability in real-world scenarios. Evaluating the influence of such vision, Project administration, Investigation, Formal analysis, 
+factors on market liquidity, trading frequency, and system-level per Conceptualization.
+formance represents a promising direction for future studies. Investi
+gating strategic or tentative quotation behaviors by prosumers under Declaration of competing interest
+stochastic and partially informed P2P trading environments, and 
+assessing their potential impact on price dynamics and market stability, The authors declare that they have no known competing financial 
+is another future direction. Moreover, it may be feasible for P2P market interests or personal relationships that could have appeared to influence 
+participants to select their preferred market from a range of P2P markets the work reported in this paper.
+
+Appendix A. AppendixA
+
+The following table contains all symbols utilized in the text of the paper
+
+Nomenclatureٔ
+
+Symbol Definition
+p Index of prosumer
+t Index of time step (hourly)
+λ Index of price
+π Index of policy
+s Index of state
+a Index of action
+r Index of reward
+μπ Index of actor network
+Qφ Index of critic network
+Gp,t PV generation of prosumer p at time t
+Dp,t Scheduled demand of prosumer p at time t
+PPV
+
+t Generation capacity of each PV panel
+EESS
+
+p,t ESS charge level of prosumer p at time t
+EESS
+
+Cap Capacity of prosumers' ESSs
+EESS
+
+Min,EESS
+Max Min/Max allowable charge state of ESSs
+
+CESS
+p,t ,GESS
+
+p,t ESS Charge/discharge power of prosumer p at time t
+Pch/dch
+
+Max Maximum allowable charge/discharge power of ESS
+ENet
+
+p,t Net electricity load
+Edev
+
+t Prosumers demand/supply deviation at time t
+Econ
+
+t ,Egen
+t Aggregated bid/ask quantities
+
+ℜp Cumulative reward function of prosumer p
+γt Discount factor at time t
+sD,ESS
+p,t State of prosumer p at time t for demand and ESS scheduling
+
+PCon
+p,t Consumption data of prosumer p
+
+EPV
+p,t PV generation data of prosumer p
+
+ℝESS
+p,t Operational rules for ESS operation of prosumer p at time t
+
+ℂSOC
+p,t ESS charge level condition of prosumer p at time t-1
+
+aD,ESS
+p,t Action of prosumer p at time t for demand and ESS scheduling
+
+Dmax Maximum allowable demand load
+λNet
+
+t Net electricity price
+Ech,dch
+
+p,t ESS charge/discharge power obtained by TD3 agent
+rD,ESS
+p,t Reward function of prosumer p at time t for demand and ESS scheduling
+
+(continued on next page)
+
+17 
+
+
+
+B.M. Azar et al.                                                                                                                                                                                                            A  p  p  li e  d   E  n e  r g  y  412 (2026) 127650 
+
+(continued )
+
+rDeg
+p,t Penalty function for ESS degradation
+
+sBid,Ask
+p,t State of prosumer p at time t for bid/ask price determination
+
+ℝprice
+p,t Operational rules for bid/ask price determination of prosumer p at time t
+
+aBid,Ask
+p,t Action of prosumer p at time t for bid/ask price determination
+
+PrBid,Ask Bid/ask price obtained by TD3 agent
+p,t
+
+Data availability [13] Ye Y, Tang Y, Wang H, Zhang X-P, Strbac G. A scalable privacy-preserving multi- 
+agent deep reinforcement learning approach for large-scale peer-to-peer 
+Transactive energy trading. IEEE Trans Smart Grid 2021;12(6):5185–200. https:// 
+
+No data was used for the research described in the article. doi.org/10.1109/TSG.2021.3103917.
+[14] Ma R, Yi Z, Xiang Y, Shi D, Xu C, Wu H. A Blockchain-enabled demand 
+
+References management and control framework driven by deep reinforcement learning. IEEE 
+Trans Ind Electron 2023;70(1):430–40. https://doi.org/10.1109/ 
+TIE.2022.3146631.
+
+[1] Wang T, O'Neill D, Kamath H. Dynamic control and optimization of distributed [15] Xiao H, Pu X, Pei W, Ma L. Peer-to-peer energy transactions for prosumers based on 
+energy resources in a microgrid. IEEE Trans Smart Grid 2015;6(6):2884–94. improved deep deterministic policy gradient algorithm. IEEE Trans Smart Grid 
+https://doi.org/10.1109/TSG.2015.2430286. 2024;1:5910–22. https://doi.org/10.1109/TSG.2024.3419122.
+
+[2] Khorasany M, Najafi-Ghalelou A, Razzaghi R. A framework for joint scheduling and [16] May R, Huang P. A multi-agent reinforcement learning approach for investigating 
+power trading of prosumers in Transactive markets. IEEE Trans Sustain Energy and optimising peer-to-peer prosumer energy markets. Appl Energy 2023;334: 
+2021;12(2):955–65. https://doi.org/10.1109/TSTE.2020.3026611. 120705. https://doi.org/10.1016/j.apenergy.2023.120705.
+
+[3] Zamani R, Parsa Moghaddam M, Haghifam M-R. Evaluating the impact of [17] Sanayha M, Vateekul P. Model-based approach on multi-agent deep reinforcement 
+connectivity on Transactive energy in smart grid. IEEE Trans Smart Grid 2022;13 learning with multiple clusters for peer-to-peer energy trading. IEEE Access 2022; 
+(3):2491–4. https://doi.org/10.1109/TSG.2021.3136776. 10:127882–93. https://doi.org/10.1109/ACCESS.2022.3224460.
+
+[4] Tushar W, et al. Peer-to-peer energy systems for connected communities: a review [18] Chen T, Bu S, Liu X, Kang J, Yu FR, Han Z. Peer-to-peer energy trading and energy 
+of recent advances and emerging challenges. Appl Energy 2021;282:116131. conversion in interconnected multi-energy microgrids using multi-agent deep 
+https://doi.org/10.1016/j.apenergy.2020.116131. reinforcement learning. IEEE Trans Smart Grid 2022;13(1):715–27. https://doi. 
+
+[5] Zhou Y, Lund PD. Peer-to-peer energy sharing and trading of renewable energy in org/10.1109/TSG.2021.3124465.
+smart communities – trading pricing models, decision-making and agent-based [19] Zheng J, Liang Z-T, Li Y, Li Z, Wu Q-H. Multi-agent reinforcement learning with 
+collaboration. Renew Energy 2023;207:177–93. https://doi.org/10.1016/j. privacy preservation for continuous double auction-based P2P energy trading. IEEE 
+renene.2023.02.125. Trans Industr Inform 2024;20(4):6582–90. https://doi.org/10.1109/ 
+
+[6] Crespo-Vazquez JL, AlSkaif T, Gonzalez-Rueda AM, Gibescu M. A community- TII.2023.3348823.
+based energy market design using decentralized decision-making under [20] Lonza A. Reinforcement learning algorithms with Python: Learn, understand, and 
+uncertainty. IEEE Trans Smart Grid 2021;12(2):1782–93. https://doi.org/ develop smart algorithms for addressing AI challenges. Packt Publishing Ltd 2019.
+10.1109/TSG.2020.3036915. [21] Fujimoto S, van Hoof H, Meger D. Addressing function approximation error in 
+
+[7] Ying C, Zou Y, Xu Y. Decentralized energy management of a hybrid building cluster actor-critic methods. 2018.
+via peer-to-peer transactive energy trading. Appl Energy 2024;372:123803. [22] Nguyen TT, Nguyen ND, Nahavandi S. Deep reinforcement learning for multiagent 
+https://doi.org/10.1016/j.apenergy.2024.123803. systems: a review of challenges, solutions, and applications. IEEE Trans Cybern 
+
+[8] Qiu D, Wang J, Dong Z, Wang Y, Strbac G. Mean-field multi-agent reinforcement 2020;50(9):3826–39. https://doi.org/10.1109/TCYB.2020.2977374.
+learning for peer-to-peer multi-energy trading. IEEE Trans Power Syst 2023;38(5): [23] S. Ong and N. Clark, “Commercial and residential hourly load profiles for all TMY3 
+4853–66. https://doi.org/10.1109/TPWRS.2022.3217922. locations in the United States,” National Renewable Energy Laboratory Available: 
+
+[9] Azar BM, Mohammadian-Alirezachaei H, Kazemzadeh R. Transactive Energy and https://data.openei.org/submissions/153.
+Peer-to-Peer Trading Applications in Energy Systems: An Overview. 2023. [24] C. Deline, K. Perry, M. Deceglie, M. Muller, W. Sekulic, and D. Jordan, 
+p. 47–75. https://doi.org/10.1007/978-3-031-35233-1_3. “Photovoltaic data acquisition (PVDAQ) public datasets,” NREL. Available: https 
+
+[10] Ye Y, Papadaskalopoulos D, Yuan Q, Tang Y, Strbac G. Multi-agent deep ://data.openei.org/submissions/4568.
+reinforcement learning for coordinated energy trading and flexibility services [25] M. Kalia, “California independent system operator (CAISO) day-ahead electricity 
+provision in local electricity markets. IEEE Trans Smart Grid 2023;14(2):1541–54. prices dataset,” CAISO. Available: https://github.com/manukalia/CA_Electricty_Pr 
+https://doi.org/10.1109/TSG.2022.3149266. ice_Prediction_Neural_Net.
+
+[11] Qiu D, Ye Y, Papadaskalopoulos D, Strbac G. Scalable coordinated management of [26] Paszke A, et al. PyTorch: An imperative style, High-Performance Deep Learning 
+peer-to-peer energy trading: a multi-cluster deep reinforcement learning approach. Library. 2019.
+Appl Energy 2021;292:116940. https://doi.org/10.1016/j.apenergy.2021.116940.
+
+[12] Samende C, Cao J, Fan Z. Multi-agent deep deterministic policy gradient algorithm 
+for peer-to-peer energy trading considering distribution network constraints. Appl 
+Energy 2022;317:119123. https://doi.org/10.1016/j.apenergy.2022.119123.
+
+18
