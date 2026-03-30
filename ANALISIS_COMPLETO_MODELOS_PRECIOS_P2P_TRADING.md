@@ -1,22 +1,51 @@
-# ANALISIS COMPLETO DE MODELOS DE PRECIOS EN P2P TRADING
+# ANALISIS COMPLETO DE MODELOS DE PRECIOS P2P TRADING
 
-## 1. Revisión de literatura
-Comparación de los 4 artículos seleccionados.
+## SECTION I - Literature Review
 
-## 2. Análisis crítico de las categorizaciones de precios
-Propuesta nueva para mejorar las categorizaciones existentes.
+### Comparative Table of 4 Papers
+| Paper Title | Authors | Year | Key Findings |
+|-------------|---------|------|--------------|
+| Paper 1 | Author A | 2020 | Finding A1 |
+| Paper 2 | Author B | 2021 | Finding A2 |
+| Paper 3 | Author C | 2022 | Finding A3 |
+| Paper 4 | Author D | 2023 | Finding A4 |
 
-## 3. Crítica a los fundamentos económicos de modelos ad-hoc
-Discusión sobre las limitaciones de estos modelos.
+## SECTION II - Critical Analysis
 
-## 4. Conceptos de teoría de juegos
-Análisis de estrategias cooperativas vs no cooperativas.
+### 3D Categorization Framework
+- Categorization based on dimensions X, Y and Z.
+- Discussion of models applied in different scenarios.
 
-## 5. Análisis de evolución de precios en 24 horas
-Estudio de las fluctuaciones de precios en el mercado.
+## SECTION III - Endogenous Prices
 
-## 6. Modelos de equilibrio para mercados de 10 agentes
-Presentación de diferentes modelos y sus implicancias.
+### Comparison of Pricing Mechanisms
+- **Stackelberg vs Nash Bargaining vs Cournot vs SDR:**
+  - **Stackelberg:** Description of the model.
+  - **Nash Bargaining:** Description of the model.
+  - **Cournot:** Description of the model.
+  - **SDR Pricing:** Description of the model.
 
-## 7. Tablas visuales y resúmenes
-Inclusión de tablas y gráficos relevantes.
+## SECTION IV - Game Theory
+
+### Cooperative vs Non-Cooperative Games
+- Overview of concepts:
+  - Cooperative Games: Description and examples.
+  - Non-Cooperative Games: Description and examples.
+  - Equilibrium Concepts: Explanation of Nash equilibrium, etc.
+
+## SECTION V - 24-hour Price Evolution
+
+### Impact of Solar and Hypothesis Validation
+- Analysis of price data over 24 hours in relation to solar energy generation.
+- Hypothesis validation methods and outcomes.
+
+## SECTION VI - Equilibrium Models for 10-Agent Markets
+
+### Comparison of Approaches
+- **Stackelberg vs Cournot vs Cooperative:**
+  - Detailed comparison and analysis of outcomes.
+
+## SECTION VII - Visual Synthesis
+
+### Tables and Final Recommendations
+- Tables summarizing key findings and recommendations for Q1 paper based on analysis conducted.
