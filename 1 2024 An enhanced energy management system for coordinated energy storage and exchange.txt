@@ -1,0 +1,2519 @@
+Journal of Energy Storage 99 (2024) 113311
+
+Contents lists available at ScienceDirect
+
+Journal of Energy Storage
+journal homepage: www.elsevier.com/locate/est
+
+Research papers
+
+An enhanced energy management system for coordinated energy storage
+and exchange in grid-connected photovoltaic-based community microgrids
+Esam H. Abdelhameed a, * , Samah Abdelraheem b, c , Yehia Sayed Mohamed c ,
+Mohammed Abouheaf d , Samy A. Marey e , Ahmed A. Zaki Diab c
+a
+
+Faculty of Energy Engineering, Aswan University, P.O. Box 81528, Aswan, Egypt
+Modern University for Technology and Information, Cairo, Egypt
+Faculty of Engineering, Minia University, Minia, Egypt
+d
+School of Engineering, Bowling Green State University, Bowling Green, OH 43403, USA
+e
+Deanship of Scientific Research, King Saud University, P.O. Box 2460, Riyadh 11451, Saudi Arabia
+b
+c
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+Community energy management system
+Load scheduling
+Energy sharing
+Renewable energy resource
+Peer-to-peer energy trading
+Seagull optimization algorithm
+
+This paper introduces an enhanced coordinated community energy management system (CEMS) for a community
+microgrid. It is designed to optimize residential energy consumption and facilitate energy sharing among smart
+homes. The proposed solution integrates constrained mixed-integer programming (CMIP) approach along with
+advanced optimization technique and cooperative game theory-based pricing mechanism to address critical
+challenges in existing energy management strategies, including load scheduling and efficient peer-to-peer energy
+trading. The CEMS approach is adopted for grid-connected community power systems that incorporate local
+energy sources such as photovoltaic and battery storage systems. This solution is implemented under a time-ofuse dynamic pricing model for energy transfer from the main grid to the community peers, a modified midmarket pricing mechanism for the P2P energy exchange, and feed-in tariff for energy transfer from the community peers to the main grid. Besides, seagull optimization algorithm is applied to relax the CMIP problem to
+get the optimal rational solution of the scheduling problem which is subjected to a rounding process to obtain the
+best feasible solution. The obtained results indicate a substantial reduction in electricity costs, achieving daily
+savings of 72.21 % and reducing grid dependency by 41.95 %. Moreover, 82.2 % of the community's energy
+demand was met through locally generated resources with 18.39 % enhancement of the overall CMG selfconsumption ratio comparing to the reference operating scenario. Ultimately, the study demonstrates the
+effectiveness of the management system in improving load profiles, maximizing the use of local renewable energy sources, and reducing electricity expenses, thereby providing a sustainable and economically viable model
+for future smart grids.
+
+1. Introduction
+Energy transition refers to the shift of the energy sector towards
+renewable and low-carbon energy sources like solar and wind systems,
+accompanied by energy storage systems. Given the numerous challenges
+hindering the acceleration of this transition, it is imperative to address
+the effective integration of such diverse energy generation systems.
+Community Microgrids (CMGs), innovative small-scale local energy
+networks, hold promise as a solution for advancing the transition to
+clean energy. CMGs can operate independently or be connected to the
+main grid, enabling local communities, villages, towns, and cities, to
+
+effectively satisfy their energy needs locally by generating, storing, and
+distributing energy among themselves. These microgrids promote local
+energy sharing, supporting community resilience, sustainability, and
+self-reliance by harnessing local resources and embracing renewable
+energy. Furthermore, constructing CMGs offers a multitude of benefits,
+including energy independence, increased adoption of renewable energy, cost savings, enhanced energy efficiency, local economic development, community engagement and collaboration, as well as
+environmental and social benefits [1]. These advantages are attainable
+through the implementation of smart technologies and the integration of
+renewable energy sources (RESs) into CMGs. Moreover, these microgrids play a pivotal role in reducing dependency on the main grid,
+
+* Corresponding author.
+E-mail address: ehhameed@energy.aswu.edu.eg (E.H. Abdelhameed).
+https://doi.org/10.1016/j.est.2024.113311
+Received 26 April 2024; Received in revised form 18 July 2024; Accepted 9 August 2024
+Available online 19 August 2024
+2352-152X/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Nomenclature
+
+buy,G
+
+Eh,t
+
+Abbreviations and acronyms
+SHs
+Smart Homes
+PV
+Photovoltaic
+ToU
+Time-of-Use electricity pricing
+CMGs
+Community Microgrids
+CEMS
+Community Energy Management System
+HEMS
+Home Energy Management System
+SOA
+Seagull Optimization Algorithm
+RESs
+Renewable Energy Sources
+SOC
+State-of-Charge
+CMIP
+Constrained Mixed-Integer Problem
+LP
+Linear Programing
+BESS
+Energy Storage System
+EVs
+Electric Vehicles
+Symbols
+R TOU
+R FiT
+
+μ
+R P2P
+r
+S(t)
+J(vi )
+Nmax
+Δt
+Esg (t)
+Ed (t)
+Esc (t)
+ΔE(t)
+Esur (t)
+Edef (t)
+Spro
+Srec
+Ch (t)
+
+buy,P
+
+Eh,t
+
+Esell,G
+h,t
+Esell,P
+h,t
+R G2P
+h,t
+buy,P2P
+
+R h,t
+
+R P2G
+h,t
+R sell,P2P
+h,t
+
+Tariff rate offered by the main grid (buying price)
+Tariff rate offered by the main grid (selling price)
+A realistic trading mechanism factor
+The electricity price for P2P trading
+The supply–demand ratio
+ON-OFF state function of SH's loads
+The objective function of the scheduling problem
+The maximum number of delayed time periods
+The sampling period
+The total self-generated energy of each prosumer at time
+interval t
+The energy demand for each peer at time interval t
+The required energy form the self-generated energy of each
+prosumer to meet his demand
+The energy difference between his own generated energy
+and his load demand
+The surplus energy of each peer
+The peer's unmet demand at time interval t.
+The set of prosumers with excess energy
+The set of all consumers and prosumers with deficit energy
+The daily net cost of the energy even delivered or received
+by each household
+
+̅→
+Ps (n)
+A
+̅→
+Cs
+fc
+nmax
+̅→
+Pbs (n)
+→
+Ms
+B
+rm
+→
+Ds
+
+The total energy consumed by the household h from the
+grid at the time interval t
+
+The total energy consumed by the household h from the
+other households at the time interval t
+
+The total energy delivered by the household h to the grid at
+the time interval t
+
+The total energy delivered by the household h to the other
+households at the time interval t
+The price of the electricity bought by the household h from
+the grid
+The price of the electricity bought from by the household h
+other peers in the community
+The price of the electricity sold by the household h to the
+grid
+
+The price of the electricity sold by the household h to other
+peers in the community
+
+The current position of a search agent
+The movement behavior of the search agent in the specific
+search space
+The new position of a search agent
+The parameter used to control the movement behavior of
+search agent
+The maximum number of iterations
+The position of the best fit search agent.
+The updated position of the search agent
+The random variable administrates the balance between
+the exploration and exploitation actions
+The random number between 0 and 1.
+
+The distance between the search agent and the best fit
+search agent
+θ
+The attack angle which has a random value between 0 and
+2π
+rs
+The radius of each turn of the motion spiral
+c1 , and c2 two constants to describe the spiral shape
+
+improve energy resilience, and let the grid to be less susceptible to
+power outages [2]. On the other hand, energy sharing in CMGs embodies
+a collaborative and efficient approach to power the communities. In
+these innovative systems, households within a local area can directly
+exchange surplus energy among themselves [2–4]. Facilitated by
+advanced technologies and smart meters, excess solar, wind, or stored
+energy can be seamlessly shared, empowering participants to contribute
+to and benefit from a communal energy pool, known as Peer-to-Peer
+(P2P) energy trading. Peer-to-Peer energy trading is becoming necessary to an increasing extent and is attracting an important share of the
+centralized market for local transient energy trading [5]. Peers have the
+option to obtain energy via the P2P trading platform or from the main
+grid, and they can also offer surplus energy to other peers within the
+microgrid. This mechanism has the ability to lower energy prices for
+peers and optimize the sharing of energy between the main grid, CMG's
+peers, and battery energy storage system (BESS).
+Although solar power is a fast-growing source of renewable energy
+worldwide, its intermittent nature results in heavy demands on the
+utility grid. Furthermore, it limits the self-sufficiency of residential or
+commercial buildings with solar power systems. Thus, customers in
+these power networks are required to have backup electrical systems,
+most of which are currently fossil fuel-powered, contradicting the use of
+
+RESs [6]. Focusing on these important issues, this study introduces an
+innovative solution: the implementation of coordinated neighborhood
+power-sharing and optimal load scheduling. Besides, the neighborhood
+power-sharing model adopted in this study depends on storing surplus
+solar energy in a BESS, which can be shared later among residential
+consumers or exported to the utility grid.
+Commonly, installing a residential solar photovoltaic system along
+with a battery storage system is an effective action that allows community members to reduce their dependence on the grid and increase
+their savings. Grid dependence refers to the proportion of load demand
+supplied by the main grid, while self-consumption denotes the proportion of load demand met by one's solar system. By reducing grid
+dependence, the payment for electricity decreases; moreover, by
+increasing solar self-consumption, a significant portion of one's investment pays itself back through savings in a short period. Actions such as
+shifting residential loads to off-peak hours and installing a battery
+storage system can lead to a reduction in grid dependence, which, in
+turn, can increase self-consumption.
+Generally speaking, challenges faced during transition to renewable
+energy can be mainly classified into technical and economic challenges.
+The technical challenges mainly comprise RESs intermittency, grid
+reliability, and energy storage limitations. While the economic
+2
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+customer's comfort.
+On the other hand, many research works have been conducted in the
+literature on power sharing between households within local microgrids. A coordinated energy management strategy was introduced in
+[15] for community microgrids to reduce the electricity bill through
+enhancing consumption of the local RESs by deploying an incentivebased energy pricing scheme and considering renewable energy sources and battery storage. The management system was modeled utilizing
+multi-agent systems, whereas the load scheduling was done based on
+genetic algorithm and rolling-horizon approach. To solve the P2P energy
+trading instability that caused by the unpredictable and intermittent
+feature of the distributed energy resources composed on the local power
+network, the authors of [16] introduced a cooperative game theory
+based energy trading scheme based on cooperative game theory. The
+scheme provides different priorities at each time sample relying on
+specific parameters e.g. pricing rates, coordinates, peak load, and
+maximum production. Although employing the best suitable priority for
+each time sample is more effective than using single priority during the
+whole day, but that increasing the trading mechanism complexity A
+centralized CEMS with coordinated energy-sharing model for community SHs, incorporated with RESs and BESS, was suggested in [4] targeting the electricity bill reduction for all users. To encourage the more
+electricity exchange between the peers, the authors combined ToU tariff,
+FiT, and fixed incentive-based scheme for determining the electricity
+price. In [17], as utilization of community shared energy storage (CSES)
+is a solution to mitigate effect of RESs uncertainty on the power systems
+stability, the author presented a platform for CSES operators and community peers to set their optimal energy trading methodology based on
+social welfare enhancement. Moreover, to minimize the computation
+time, accelerate reaching the best solution, and improve the investment
+expandability, the alternating direction method of multipliers approach,
+which is an iterative method that divides the original management
+problem into sub-problems to be solved in same time, was applied to
+optimally solve the energy exchange problem. Moreover, to assess the
+economic, environmental, social, and technical parameters influencing
+electricity trade preferences, authors of [18] analyzed survey data from
+multiple customers. Features such as environmental pollution, social
+communication with electricity partners, sales price, self-sufficiency,
+and efficiency improvement were identified.
+Based on the aforementioned review one can conclude that, neighborhood coordination along with incentive-based energy trading and
+load management allows more usage of local renewable energy and
+accordingly reduces the cost of the consumed electricity.
+
+challenges represented in the investment and market dynamics [7]. The
+intermittent nature of RESs is one of the significant obstacles to the RESs
+adoption. This nature can disrupt the grid reliability and necessitates the
+need for efficient energy storage systems. These systems help in to balance the grid as enable the storage of electrical energy whenever it is
+available while release it later to meet the demand. In addition, old
+infrastructure of the grid faces a prominent challenge, as it needs not
+only technological upgrades, but also modifications to be suitable for
+higher RES penetration, integrating advanced management systems and
+energy storage technologies to ensure stability and reliability [7]. From
+the economic viewpoint, energy transition necessitates large investments, i.e. high initial capital investments, in advanced technologies
+and new infrastructure. Besides evolving market dynamics impacts the
+adoption of RESs and the financial strategies of investors in this field [8].
+1.1. Literature review
+Several studies have been reported in the literature on energy
+management systems, power sharing, and energy trading within community microgrids. Almost all of these researches targeting electricity
+cost reduction and fostering the consumption from the available renewables. In [9] the authors introduced a home energy management
+system (HEMS) for a SH incorporated with wind turbine, PV, and EVs,
+battery storage systems. The suggested HEMS was modeled using opportunity constraint programming taking into account the probability
+distribution of the random variables. A modified particle swarm technique was employed to optimally solve the scheduling problem. The
+designed HEMS enables the users to achieve a specific level of comfort at
+the expense of financial benefits. The authors of [10] introduced a HEMS
+by combining wind turbine, fuel cell vehicle and BESS. Charging/discharging of the battery system through optimal pattern and determination of its optimal capacity and rated power are the main objectives of
+this study. The authors expressed the HEMS as a mixed integer nonlinear
+programming (MINLP) and used a cultural optimization algorithm to
+solve it considering different operating conditions of the smart home
+while modeled the wind turbine output by Gaussian probability distribution function. Also in [11] HEMS was proposed by incorporating a
+solar PV system, and BESS in the smart home's powering system. However in this study, the HEMS is designed to charge the BESS during the
+off-peak periods whenever the energy is available while discharge during on-peak periods. The power produced by the solar system was
+considered as uncertainty and modeled by probability distribution
+function. Besides, different operating conditions of the home is taken
+into account i.e. purchasing energy from the grid, selling energy to the
+grid, and working on standalone mode. In order to show the impact of
+integrating BESS into smart home's grid-connected powering system, a
+scheme has been introduced in [12] to optimize the sizing of the PV
+system and manage the household's consumed energy using a teachinglearning-based optimization algorithm. The main objective of this
+scheme is increasing the self-consumption of PV system along with
+keeping the stability of the gird via employing frequency containment
+reserve service. The obtained results indicate that the battery system is a
+cost-effective technology for improving self-consumption of the PV energy. In order to decrease monetary cost of grid communities, that includes different RESs and battery storage system, and its dependency on
+the main grid, authors of [13] developed a home energy management
+scheme with a power-sharing approach that depends on priorities of
+loads' operating time. In [14] for reducing the electricity bills along with
+enhancing the user comfort, a model for scheduling the residential loads
+of the smart homes was implemented based on modified constraint
+mixed-integer programming (CMIP) optimization. Different metaheuristic techniques were applied to provide an optimal rational solution of the problem during the relaxation process of the CMIP technique.
+In addition, a stochastic rounding scheme was used to provide a goodenough feasible solution of the problem. The introduced management
+system successfully reduces the electricity bill with consideration of the
+
+1.2. Research gap and research contribution
+In reviewing the existing literature on load scheduling and energy
+sharing within community microgrids that composed of smart homes, it
+becomes obvious that while many researches have conducted on the
+energy management problem even of the distributed generation or the
+load side, still one can find a remarkable gap in providing such energy
+management systems that have the ability to minimize the electricity
+cost within the community, optimize utilization of available generated
+renewable energy, and reduce grid dependency. Addressing such problems is crucial for providing effective energy management systems that
+promote the energy transition towards sustainable energy systems, help
+mitigating the climate change, strengthen local economies, and enhance
+the comfort of the community members.
+In our study, the proposed coordinated Community Energy Management System (CEMS) in a neighborhood area has been designed to
+manage the produced energy and consumption collectively and smartly
+within the community, producing an advantageous situation for the
+community peers and the main grid as well. The designed CEMS is
+introduced to consume as much solar energy as possible on-site and to
+connect the local microgrid to main grid to import the required power
+when it's cheaper and more efficient to do so. In addition, reducing the
+3
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+needed by the loads is imported from the utility grid. The following subsections introduce a comprehensive review on the microgrid components: Peer, aggregator, Photovoltaic Residential System, BESS, residential EVs, and the classification of the typical residential loads utilized
+in the neighborhood community.
+
+electricity bills of the consumers is another objective of this study. Besides, the feasibility of optimal load scheduling and energy sharing via
+employing P2P trading to minimize costs of the consumed energy for the
+consumer and to increase financial incentives for the prosumers within
+the community microgrid has been tested. The main contributions of
+this study include the following:
+
+2.1. Energy peers in a community microgrid
+
+• For community microgrids (CMGs), this paper proposes a coordinated Community Energy Management System (CEMS) aiming at
+maximizing the economic benefits for the prosumers and the consumers both while targeting two goals:
+- Enhancement of the energy storage and exchange among the
+network peers.
+- Optimally scheduling the residential loads of the community.
+• Employing a doable practical Peer-to-Peer (P2P) energy trading
+approach which simultaneously confirms energy demand-based best
+priority and considers the PV systems, battery energy storage systems
+and EVs that are incorporated to the community microgrid.
+• Addressing the energy transactions among the neighborhood community peers under modified mid-market rate pricing scheme for
+P2P energy trading while those between the community peers and
+the utility grid are effectively addressed under dynamic pricing
+scheme that is predetermined by the utility grid.
+• The proposed energy management system can be used as a predicting
+tool that permits energy consumption to be analyzed, energy
+adjustment to be occurred and energy demand to be anticipated.
+• The results demonstrate an improvement in load profiles, enhancing
+in the local RESs usage, and reduction in the electricity bills due to
+energy sharing within the community grid that combined with
+optimal scheduling of the residential loads.
+• Simultaneously addressing all possible operating conditions for all
+smart homes i.e. purchasing energy from the utility grid, supplying
+energy to the utility grid, sharing energy under P2P trading.
+
+A peer can be described as a user within the community who has the
+ability to trade electrical energy directly with other users within the
+local power network. A peer may represent a consumer or prosumer in a
+community sharing system, i.e. the distribution local network; those
+users form the basis for energy sharing. The prosumers can manage their
+consumption, production and/or energy storage, while the consumers
+behave passively regarding the energy consumption. Based on the difference between the energy produced by the local resources and
+household load demand, a prosumer should first fulfill his needs from
+energy consumption then he can share the excess energy with other
+peers within the CMG. From the viewpoint of energy trading, in case of
+the network peers able to share a portion of their own generation with
+each other, the local power network may be referred as a P2P network
+[19].
+For the understudy CMG, the PV and BESSs may not be available for
+all community's SHs. For modeling the system, a small CMG architecture
+involving three SHs has been considered as depicted in Fig. 1, which
+represents a fundamental infrastructure for energy and information flow
+that CEMS utilizes to accomplish its objectives.
+In this model the 1st and 2nd SHs are equipped with rooftop solar
+PVs whereas the 2nd SH also includes a battery storage system. However, the 3rd SH lacks both a solar power system and a storage system.
+Accordingly the 1st and 2nd SHs are considered prosumers. A prosumer
+can utilize the energy generated from his resources, resources of other
+peers in the local network, or from the main grid to meet his own demand. Moreover, a prosumer can export his surplus generated energy to
+other members within the community or to the main grid i.e. the
+generated solar energy that is not used straight away by the community
+members or stored in a battery system is exported to the main grid. For
+that purpose, each prosumer should be enabled with a smart meter used
+for measuring and storing data of the power generated from his own
+resources, consumed energy, and the energy that is exported or imported from any other peers or from the main grid.
+
+1.3. Article organization
+This paper is organized as follows: Section 2 discusses the problem
+description and presents a small microgrid community and the system
+parameters. Section 3 illustrates PV sharing and peer-to-peer energy
+trading, Objective function, and the coordinated game theory-based
+model, and optimal energy sharing and load scheduling methodology.
+The obtained results and discussion are given in Section 4. Finally,
+Section 5 depicts the conclusion and suggests future research.
+
+2.2. Aggregator
+
+2. Community microgrid architecture
+
+Basically, demand response is a methodology used to balance the
+power networks via reducing or shifting the electricity consumption
+during the high demand or supply constraints hours. Implementation of
+conventional demand response process needs a lot of facilities and
+complex procedures to manage the energy usage. Whereas, leveraging
+advanced technologies allowed energy aggregators (coordinators)
+participate in demand response programs, leading to facilitate the demand response process significantly, reduce costs, and enhance grid
+stability. The CMG operates as a centralized energy market; accordingly,
+an energy aggregator should be utilized to communicate the peers or
+entities engaged in P2P energy trading. The aggregator collaborates
+with the community participants to manage their energy consumption
+collectively via managing peers' loads operating status. The aggregator
+has ability to access all households' information through secure
+advanced metering infrastructure networks. The smart meters and CEMS
+send end-users' information about their electricity usage and preferences
+to the aggregator. Depending on the information collected from the
+peers, the CEMS via the aggregator determines the amount of energy
+that is provided from or delivered to a peer in addition to the operating
+state of each residential load within the community. The aggregator
+supervises the management of the generated energy and the trading
+process [16,20]. In the understudy centralized framework, illustrated in
+
+In this study, the community microgrid has been proposed to allow
+residents in the neighborhood to generate and share renewable energy
+within the local grid while their surplus electricity can be contributed to
+the grid or sold to other neighbors in the local community, which
+fostering a localized energy marketplace and leading to promoting the
+renewable energy adoption, and reducing reliance on the main grid. In
+this neighborhood system model, a group of SHs are connected to the
+main grid to form what is called a community microgrid [9]. These
+homes are linked with an advanced metering and communication system, which are coordinated via an aggregator. Besides, the PV power
+system is designed to have parallel operation with the electric utility
+grid and interconnected with it. The power conditioning units included
+in the power network convert the DC power generated by the solar
+panels into AC power consistent with the voltage and power quality
+requirements of the main grid. In addition a bi-directional interface is
+used between AC output circuits of the PV system and the main power
+network. This allows the generated solar power to either supply on-site
+electrical loads, or to back feed the grid when output power of the solar
+system exceeds the on-site electrical loads. However, when the load
+demand is greater than the PV system output, the additional power
+4
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Fig. 1. Schematic of the neighborhood energy network shared architecture.
+
+Fig. 1, an aggregator has been utilized to manage the electricity usage of
+all SHs.
+
+falling within 7:00 pm and 7:00 am, designated in Fig. 2 by green shaded
+sectors. Whereas the specific times of the day when energy usage is at
+peak, i.e. the peak electricity (On-Peak) hours, are set within 11:00 am
+and 5:00 pm, designated in the figure by red shaded sectors. Besides, a
+transition period between peak and off-peak hours, i.e. the Mid-Peak
+hours, is considered. These hours are appointed between 7:00 am to
+11:00 am and 5:00 pm to 7:00 pm, indicated in the Fig. 2 as yellow
+shaded areas. The electricity demand during the Mid-Peak hours seems
+to be somewhat lower as compared to peak hours, and rates are
+moderately priced. Table 1 lists different pricing tariffs that are
+employed in the understudy problem for calculating the electricity bills
+of the community peers.
+
+2.3. Photovoltaic residential system
+Commonly, solar systems are employed to relieve the stress on the
+main grid particularly at high-demand peak hours (daytimes when
+electricity consumption is highest). A PV residential system of 20 kW has
+been installed in the understudy CMG where it is evenly distributed
+among the 1st and the 2nd SHs, while the 3rd SH includes no distributed
+solar generation. In this case, during 6:00 am: 6:00 pm, the associated
+energy sources are not able to meet the whole amount of the peer's load
+demand. Thus, a peer would first fulfill his own load demand; subsequently share the excess energy with other users within the local
+network. The estimated 24-h solar energy of the community microgrid
+during the summer is illustrated in Fig. 2. The figure shows that, the
+solar energy is produced during the peak and mid-peak periods of power
+consumption which are designated in Fig. 2 by red and yellow shaded
+sectors, respectively). The period of the day when the electricity demand
+is at its lowest level, i.e. the Off-Peak or low-demand peak hours, are
+
+2.4. Residential energy storage system
+In the SHs, energy storage systems play a key role in managing energy usage efficiently. Due to having high energy density, long lifespan,
+and capability to hold a charge for long periods, Lithium-ion (Li-ion)
+batteries are the most important among the modern energy storage
+systems [21]. It is used as an integral component of a SH to store surplus
+
+Fig. 2. Total daily demand and generation of the community microgrid.
+5
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+conducted when requested. Whereas the second EV type is Nissan Leaf
+Model 3, which accompanied with a 40.0 kWh Li-Ion battery pack, is
+that incorporated into the 2nd SH and charged from 50 % to 100 % SOC
+under a semi-fast charging mode i.e. nearly within 2.5 h. Nissan and
+Tesla EVs are addressed as uninterruptible residential loads. The
+charging rates of the incorporated EVs are illustrated in Fig. 3. The EVs'
+rate of charge and SOC are indicated in Fig. 3 in blue bars and red lines,
+respectively, (Charged Electric Vehicles Magazine, 2022). Daily, the
+Tesla EVs are assumed to arrive at the 1st and 3rd SHs at 5:00 pm while
+Nissan EV is assumed to arrive at the 2nd SH at 2:00 pm.
+
+Table 1
+Electricity pricing schemes for the understudy local network during summer
+days.
+Energy transfer
+
+Energy pricing scheme
+
+Hours applicable
+From
+
+From main grid
+to peers
+
+From peers to
+main grid
+Between peers of
+the
+community
+
+ToU pricing tariff
+
+FiT
+Incentive-based
+modified mid-market
+rate pricing scheme
+
+To
+
+7:00
+7:00
+pm
+am
+7:00
+11:00
+am
+am
+5:00
+7:00
+pm
+pm
+11:00
+5:00
+am
+pm
+Throughout the
+day
+Throughout the
+day
+
+Electricity
+price (¢/KWh)
+8.7
+12.2
+12.2
+18.2
+
+2.6. Residential electrical loads
+
+4.8
+
+This study targeting consumed energy management for each SH via
+adjusting the controllable loads in accordance with a smart scheduling
+programming included in the centralized CEMS of the whole peers in the
+community i.e. a demand side management is designed to schedule the
+operation of the CMG clients' electrical loads (ON-OFF connection to the
+supply). Basically, the load adjustment scheme allows the system
+capability to minimize the electricity consumption during high-demand
+peak periods by delaying loads to the off-peak and mid-peak periods
+which can be obtained via scheduling the load operating times [24].
+Commonly, households own various types of appliances and residential
+loads that basically can be divided into two categories: fixed and
+schedulable loads. The fixed loads are non-schedulable loads, as the
+fixed loads do not functioning with interruption or shifting i.e. their
+operative times and starting of operation times cannot be modified. To
+explain further, the On/Off operation of these loads is performed at the
+request of the household according to the as-needed basis. Nevertheless,
+the schedulable loads represent controllable loads as their on-times and
+off-times are adjustable. Based on the type of household electricity
+consumption, these loads can be classified as interruptible and uninterruptible loads. The former loads can be shifted or interrupted during
+the allowed operation periods as they have undefined but limited
+operative times which are specified by the scheduling technique. While,
+the later loads can be delayed or advanced but do not accept to be
+interrupted during their operation as their operating durations are
+specific. In the understudy microgrid, the appliances and residential
+loads equipped with each SH is shown in Table 2 [4], which describes
+what can be called the unscheduled operation, in which operation of
+each load is modeled using specific constraints such as preferable start
+and end operating times, as specified by the users.
+It is clear from Table 2 that, the understudy SHs have various consumption and generation patterns, even in quantity or in time allocation
+around the day. Specifically, the community has the following demand
+characteristics and on-site generation technologies for each SH: the 1st
+SH has an average demand of 71.05 kWh/day and 75.0 kWh capacity
+normal charging EV. The 2nd SH has an average demand of 156.74
+kWh/day, and includes a residential battery storage of 12.0 kWh, and a
+62.0 kWh capacity semi-fast charging EV. The 3rd SH has an average
+demand of 60.26 kWh/day and 75.0 kWh capacity normal charging EV,
+whereas it includes no battery storage system. The average daily demand of the whole community is 288.05 kWh.
+In general, the proposed coordinated CEMS for the understudy
+neighborhood area is designed to reduce load peaks (flatten out the
+demand curve) and ensure the supply and demand balance of the local
+power network, customers respond to the instructions of community
+microgrid dispatch during on-peak hours of power consumption and
+carry out short-time interruption of designated interruptible loads for a
+specified times and/or make limited deferring for particular uninterruptible loads. Thus, when the consumption peak is minimized by
+means of optimal scheduling and the locally generated energy is shared
+based on game-theory trading, accordingly less electricity bill can be
+paid.
+
+Dynamic price
+
+energy produced by renewable sources during the low energy demand
+times to be used later during on-peak hours or when there is a deficiency
+in renewable energy generation On the contrary, during batteries'
+discharge process the stored energy is released back into the SH's power
+system or to other homes within the local power network, leading to
+reduce reliance on the main grid and optimize energy consumption [22].
+For the under study system, Li-ion battery storage system is installed
+for the 2nd SH with 12.0 KWh capacity to support the microgrid with its
+discharged energy during the nighttime i.e. from 7:00 pm: 12:00 am,
+however it can charge during the daytime i.e. from 7:00 am: 6:00 pm.
+When the 2nd SH has a deficiency in energy generated from its own solar
+system, i.e. its own solar energy does not fulfill its own demand; the
+energy can be drawn from its own battery storage system through the
+discharging process. In addition, the excess stored energy in battery
+storage system can be exported to others peers within the community
+microgrid or to the main grid. As the PV generation is obtainable during
+the daytime while the battery generation is available during the nighttime, this scenario allows all prosumers collaborate in the energy supplying mode to share their excess energy with other members within the
+community.
+2.5. Electric vehicles as residential loads
+Electric vehicles are anticipated to be common loads in modern
+power grids. Due to the convenience and low charging cost, most of EVs
+charging is accomplished at home. This situation may increase residential energy demand leading to increasing the residential peak demand. Accordingly there is an urgent need to incorporate the residential
+EVs charging in smart home energy management system. Integrating
+EVs as a residential load to SH by means of home energy management
+system provides many features for the household and the main power
+grid, as smart EV charging reduces peak demand and flattens the profile
+of energy consumption [23].
+EVs incorporation into distribution local network can be improved
+when EVs charging is managed via coordinated (controlled) charging
+scheme, e.g. charging the EVs during off-peak hours. In contrary, in
+uncoordinated (uncontrolled) charging strategy, the EVs begins immediately upon arrival at home (usually during load peak periods), or after
+a fixed delay set by the user. In the proposed strategy, to avoid high
+electricity bills on one hand, and the coincident peak demand and hence
+overloading problem on the other hand, coordinated charging of EVs is
+adopted depending on optimization algorithm. The coordinated
+charging can be achieved utilizing the central aggregator that manages
+EVs on/off charging operation.
+In this research two types of EVs are incorporated to the SHs: the first
+EV type is a Long Range Tesla. Tesla is incorporated to the 1st and 3rd
+SHs and charged from 10 % to 90 % State-of-Charge (SOC) under a
+normal charging mode, i.e. within 6 h, and the charging process is
+6
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Fig. 3. Real-time charging rate for the understudy electrical vehicles: (a) Nissan, (b) Tesla.
+Table 2
+Residential load data of the community engaged peers.
+Appliances
+
+Smart home 1
+
+Smart home 2
+
+Smart home 3
+
+Rating(KW)
+
+Time usage
+
+Duration(h)
+
+Rating(KW)
+
+Time usage
+
+Duration(h)
+
+Rating(KW)
+
+Time usage
+
+Duration(h)
+
+0.1
+0.6
+0.4
+1
+1
+1.5
+
+7 pm–10 pm
+6 pm–12 am
+12 am–12 am
+7 am–9 am
+2 pm–4 pm
+6 pm–7 pm
+
+3
+6
+24
+2
+2
+1
+
+0.25
+0.2
+0.35
+1.18
+1.14
+1
+
+6 pm–10 pm
+7 pm–10 pm
+12 am–12 am
+7 am–8 am
+10 pm–12 am
+4 pm–5 pm
+
+4
+3
+24
+1
+2
+1
+
+0.16
+0.1
+0.13
+0.9
+1.5
+0.5
+
+7 pm–11 pm
+6 pm–10 pm
+12 am–12 am
+8 am–9 am
+12 pm–3 pm
+11 am–12 pm
+
+4
+4
+24
+1
+3
+1
+
+6 pm–6 am
+
+2
+
+2
+
+2
+
+2
+
+6 pm–6 am
+
+2
+
+7 am–6 am
+
+2
+
+7 am–10 am
+7 am–4 pm
+–
+
+1
+1
+–
+
+9 pm–6 am
+7 am–11 am
+6 am–12 pm
+
+1
+2
+6
+
+1st hour:1
+2nd hour: 0.8
+1st hour:0.5
+2nd hour: 0.4
+0.6
+1.1
+–
+
+1 pm–8 pm
+
+5 pm–10 am
+
+1st hour:1.5
+2nd hour: 1.2
+1st hour:1.3
+2nd hour: 1
+2
+1.2
+40.0 KWh
+
+8 pm–6 am
+
+Clothes dryer
+Vacuum cleaner
+Lithium-ion battery
+
+1st hour:1
+2nd hour: 0.6
+1st hour:1
+2nd hour: 0.8
+1
+0.8
+–
+
+6 pm–6 am
+2 pm–6 pm
+–
+
+2
+1
+–
+
+Uninterruptible
+Laptop
+EV
+Water pump
+
+0.5
+Fig. 3 (b).
+1.2
+
+12 am–6 am
+5 pm–10 pm
+5 pm–8 am
+
+6
+6
+7
+
+0.1
+Fig. 3 (a).
+1.5
+
+8 pm–7 am
+2 pm–4 pm
+12 am–12 am
+
+5
+3
+7
+
+0.075
+Fig. 3 (b).
+1.2
+
+12 pm–2 pm
+5 pm–10 pm
+9 am–5 pm
+
+2
+6
+8
+
+Non-schedulable
+TV
+Light
+Refrigerator
+Microwave
+AC
+Iron
+Interruptible
+Dishwasher
+Washing machine
+
+2.7. Electricity pricing mechanisms
+
+2.7.1. Electricity tariffs
+In the pricing mechanism, to bill home users, electricity costs have
+been managed based on Time-of-Use (ToU) rates and Feed-in Tariff (FiT)
+denoted as R TOU (t) and R F iT , respectively. These rates have been
+employed to promote RESs expansion and energy sharing between the
+neighborhood network peers and the main grid. The ToU is applied for
+consumption while the FiT schema is defined for selling excess power
+
+Pricing of energy trading in CMGs can be classified into two different
+categories: on one hand, pricing of energy sold to and purchased from
+the main grid and on the other hand, pricing of energy traded among
+network peers. The following sub-sections demonstrate the pricing
+mechanisms that are adopted in this study.
+7
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+generation to the utility grid.
+The ToU is a dynamic pricing scheme in which various rates are
+applied based on the time of the day. Thus, several hours are defined as
+off-peak, mid-peak and on-peak periods. The ToU offers high electricity
+rates at peak electricity consumption periods and low rates at the offpeak and intermediate peak electricity consumption periods. The basic
+objective of off-peak and mid-peak hours pricing is to incentivize customers to consume electricity when it is least in demand leading to
+significant shifting in electricity consumption away from the highdemand peak hours. Whereas the excess energy from any prosumer is
+rated according to the FiT principles, where a procumers is paid a fixed
+price for the electricity they export to the grid. This policy motivates the
+households to be small-scale producers of clean energy in the sake of
+getting financial gains.
+In this research, a summer day electricity rates is provided as ToU
+which is divided into three periods named on-peak, mid-peak, and offpeak periods which are given as 18.2 ¢/kWh, 12.2 ¢/kWh, and 8.7
+¢/kWh, respectively as given in Table 1 and Fig. 4, where the electricity
+rates are adapted from [25]. Furthermore, the FiT is assumed to be 4.8
+¢/kwh and is applied for all the daytime.
+
+supply–demand ratio) to generate what can be called incentive-based
+pricing mechanism. Meaning that μ has a low value when the surplus
+energy is low whereas its value increased with the increase of the surplus
+energy so that this factor acts as an incentive which encourages the
+household to minimize their load demand when excess energy is low. In
+the proposed pricing mechanism, μ has been taken as a function of the
+ratio r between the consumer required energy and prosumer surplus
+energy. In the classical formulation, the trading price R P2P has been
+calculated depending on a modified version of a mid-market rate price
+[16,27], using the following equation:
+
+2.7.2. Electricity pricing: an incentive-based pricing mechanism
+In this work, the self-consumption in the SHs and selling energy to
+neighbors within the local area have been taken into account to provide
+more financial gains than selling energy back to main grid which is done
+via a P2P electricity trading mechanism. One of the problems associated
+with P2P trade is that some households may increase the cost of the
+other peers to minimize their own cost. This issue has been addressed in
+this research by adopting a priority base concept for the P2P trade
+through which the energy trading within the CMG is encouraged. This
+paper discusses a modified mid-market rate pricing mechanisms for P2P
+energy trading. Comparing to other energy pricing mechanisms such as
+bilateral contract-based scheme, double auction approach, and
+discriminate pricing strategy using game theory, this scheme makes the
+electricity pricing process more simple, time-saving, and clear to users
+[26–28], as the P2P prices are set based on predefined formulas. The
+proposed pricing scheme calculates the price for each trading pair, i.e.
+consumer and prosumer pair, based on the pair data, such as the load
+demand required by the consumers and the surplus energy offered by the
+prosumers, in addition to electricity price offered by the main grid i.e.
+purchasing price R TOU and the sale price R FiT . All the peers are supposed to offer electricity price for P2P energy trading lower than the
+dynamic electricity pricing scheme offered by the main gird but higher
+than the feed-in tariff, i.e. R TOU > R P2P > R FiT . In this study, a realistic
+trading mechanism has been considered in which a factor μ has been
+defined as the ratio between the excess energy offered by the prosumer
+and the consumer's energy demand (which can be called the
+
+In this study, a function f(r) has been introduced to control the trading
+performance and determining how the financial incentive can be optimized for the prosumers within the community microgrid. If the excess
+energy exceeds the load demand at the time sample t, μ1 > μ > 1, μ can
+be selected based on the following equation:
+
+R P2P = μ •
+
+R TOU + R FiT
+2
+
+(1)
+
+As R TOU > R P2P > R FiT , then the incentive factor should be related
+to a specific range, i.e. μ1 > μ > μ2 , where
+
+μ1 =
+
+2 • R TOU
+R TOU + R FiT
+
+(2)
+
+μ2 =
+
+2 • R FiT
+R TOU + R FiT
+
+(3)
+
+μ = (μ1 − 1) • f(r) + 1
+
+(4)
+
+where, if the excess energy is lower than the load demand at the time
+sample t, 1 > μ > μ2 , μ can be selected based on the following equation:
+
+μ = (1 − μ2 ) • f(r) + μ2
+
+(5)
+
+The f(r) function may take different form like linear, nonlinear, or
+fuzzy function. In this work, the modified mid-market rate has been
+c r
+− c r
+performed utilizing a Hyperbolic function, i.e. (r) = tanch(r) = eec r −+ee− c r ,
+where c is a constant. The Hyperbolic function has been introduced to
+relieve the trading complexity as it is easy to implement. Besides, the
+performance of this function can be optimized to maximize the economic benefits for the prosumers and the consumers both based on the
+supply–demand ratio through optimizing the value of the parameter c,
+which has been taken in this study as c = 1. The proposed P2P trading
+mechanism helps consumers reduce their electricity bill and prosumers
+have financial gains, through a win-win trading scheme for both. It
+worth to note that the aggregator calculates different trading price for
+each transaction which allows the user attaining variable financial
+profits at each time sample t depending on his offered surplus energy
+and the energy required by the other users.
+3. Mathematical problem formulation
+This section discusses the research on providing a mathematical
+model of the optimal load scheduling methodology and energy sharing
+platform for energy trading among the peers of the local power network.
+3.1. Day-ahead scheduling: optimal load scheduling methodology
+Commonly, the profile of the total demand loads in CMGs is
+considered the crucial input for determining the required capacity of
+distributed energy resources (DER) that are need to be installed on site.
+So that the initial electricity demand assumptions shown in Table 2
+should be adjusted via applying an optimal load scheduling technique in
+which non-essential loads are powered off during peak demand periods
+and shifted to either the off-peak or mid-peak hours. Meaning that, the
+suggested coordinated CEMS has the ability to flatten the demand load
+profiles of the microgrid members and smooth out their load peaks
+
+Fig. 4. Dynamic grid tariff, feed-in tariff, and P2P electricity trading prices.
+8
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+which reduces the peak-to-average ratio which can be translated to the
+possibility for lower electricity rates and improvement of the CMG
+stability.
+On one hand, load scheduling can be described as Mixed-Integer
+Problem (MIP). On the other hand, designating decision variables to
+meet specific constraints is needed, thus load scheduling problem can be
+described also as Constraint Programming (CP) Problem. Based on the
+aforementioned above, the scheduling problem can be addressed as
+CMIP problem. Basically, combined MIP and CP optimization problems
+are non-convex problem. In such problems, the best feasible optimal
+solution can be achieved through designing an approximation technique
+such as the Relaxation and Rounding method [24,29]. As stated in [24],
+the adopted strategy for solving the MIP-CP load scheduling within the
+understudy CMG can be applied in four steps: The 1st step is developing
+a CMIP optimization problem to minimize a predefined objective function, J(vi ), where vi is the decision variable. At any time interval t, to
+express the fixed and interruptible loads operation status S(t), i.e. their
+ON or OFF operation, the decision variables that express S(t) have to be
+boolean. Whereas the variables that express the time shift of the uninterruptible loads have to be integer. S(t) can be defined by (6),
+{
+0 for turned OFF load
+S(t) =
+(6)
+1 for turned ON load
+
+site renewables and storage systems. Commonly, trading energy within
+CMG is a successful way to minimize electricity price [30]. In this study,
+sharing the on-site surplus generated electricity between the users has
+been addressed. It is supposed that households have their own energy
+demand information and anticipate the generated energy in advance (i.
+e. a day-ahead estimation). In addition, the energy trade and consumption is done in an open energy market. Also an energy trading
+mechanism has been suggested depending on game theory which is an
+effective solution for optimal real-time problems. It is employed as a
+decision-making scheme in which many game players search for the best
+energy transaction among the peers under different constraints. The
+players can attain the best trading either through cooperating with each
+other or in a competition-based non-cooperating process. However, in a
+cooperative game process, the players work in various feasible coalitions
+and cooperate with each other in such a way that best trading of all
+players is achieved at the same time [31,32]. In this work, the proposed
+architecture of the CMG consists of various distributed energy resources,
+including two solar photovoltaic rooftop systems and one Li-ion battery
+storage system distributed within the local grid, as depicted in Fig. 1, to
+meet the load demand of the community. In the implemented game
+model for each energy transaction, available energy from the distributed
+resources and battery storage systems and load demand of each consumer are considered players in the trading problem.
+The adopted priority rule in energy trading is based on maximum
+energy demand between all the peers and lowest price. At each time
+interval, the aggregator is in charge of establishing the priority and
+scheduling the loads, in addition, ensures that energy transactions are
+done in an organized way. Energy transactions are based on the priority
+rules and the available energy used to meet the demand. Accordingly, in
+each time interval, one energy transaction may be conducted among two
+or more peers. Meaning that, for setting up energy transactions, the
+following scenarios may occur: if the surplus energy of the prosumer
+with high priority is not sufficient to meet the demand of this consumer,
+other prosumers should compensate that deficiency and deliver this
+consumer with the required energy. The second scenario is that, if the
+demand of a consumer is lower than the excess energy offered by the
+prosumer with high priority, this prosumer may provide his surplus
+energy to multiple consumers. It is worth to know that the trading
+process has been conducted under the assumption that the power
+consumed by each peer in the community may be produced by its own
+PV system, locally by the PV system of other peers in the community,
+and/or imported from the main grid. In addition, all the prosumers are
+assumed to offer electricity price for P2P energy trading lower than that
+offered by the main gird via the dynamic electricity pricing scheme but
+higher than the FiT, [33].
+At each time interval of Nt -hours time duration, i.e. t ∈ τ =
+{1, 2, ………, Nt } where Nt is selected to be 24 meaning that the trading
+process is applied for 24-hours time duration with hourly sampling time,
+the following steps sum up the trading rules suggested in this work:
+
+The scheduling problem can be formulated by (7):
+minimizeJ(vi ), ∀vi ∈ V
+where
+V=
+
+(7)
+
+{
+}
+⃒
+Nd • Δt|l∈Lu ∪ S(t) ⃒l∈L , is the set of all decision variables.
+i
+
+Subject to
+vi ∈ {0, 1}
+Nd ∈ {1, 2, ….…, Nmax },
+where Lu and Li are two sets of all uninterruptable and interruptible
+loads, respectively, and Nd the expected delay which is represented in
+number of samples. Nmax is the maximum number of delayed time periods and specified by the user based on his preferences, thus the
+maximum allowed time shift for completing the load task can be
+expressed as Nmax • Δt, where Δt is the sampling period.
+The 2nd step is the linear programing (LP) relaxation in which an LP
+is formulated from the developed CMIP model via eliminating the integral constraints, meaning that for each vi ∈ V, the constraint vi ∈
+{0, 1} is relaxed to xi ≥ 0 and Nd ∈ {1, 2, ….…, Nmax } to the inequity
+0 ≤ Nd ≤ (Nmax + 1). The 3rd step is keeping on with minimizing the
+pre-specified objective function, but over a wider range of solutions, i.e.
+minimizeJ(vi ). Assuming a relaxed set Vr , where V ⊆ Vr , is existed. The
+vi ∈Vr
+
+4th step is searching for the best LP solution over the relaxed set Vr using
+optimization technique. The obtained solution in this stage can be noted
+as v*i . At this point, the following should be considered: If the value of v*i
+is integral, then it will be taken as the solution of the CMIP problem.
+Otherwise, if the relaxed optimal solution has nonintegral value,
+rounding process has to be implemented to obtain best feasible solution,
+i.e. non-fractional solution, through rounding the solution of the relaxed
+vi of the original
+problem v*i for getting an approximate solution ̃
+formulated CMIP problem.
+
+1. First of all, each prosumer of Np prosumers in the community should
+meet his load demand, as expressed by (8),
+(
+)
+Esc (t) = fmin Esg (t) , Ed (t)
+(8)
+
+where, for each sampling period t, Esc (t) is the required energy form the
+self-generated energy of each prosumer to meet his demand (selfconsumed energy), Esg (t) is the total self-generated energy of each prosumer, and Ed (t) is the energy demand for each peer
+
+3.2. Energy sharing via peer-to-peer trading
+As discussed before, delivering the surplus generated electricity by
+on-site RESs to the utility grid is not financially attractive because of the
+disparity between prices of the exported energy to the grid and that of
+the imported energy from the grid. Therefore, effective techniques are
+required to be introduced for energy management in CMGs that have on-
+
+2. The surplus or deficit energy of each peer is estimated via calculating
+the energy difference ΔE(t) between his own generated energy and
+his load demand which are is given as:
+
+9
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+ΔE(t) = Esg (t) − Ed (t)
+
+(9)
+
+Esur (t) = ΔE(t) if Esg (t) ≥ Ed (t)
+
+(10)
+
+Edef (t) = ΔE(t) if Esg (t) < Ed (t)
+
+(11)
+
+Table 3
+Pseudo-code of energy sharing within the community microgrid.
+1 : Game theoretic-based P2P energy trading
+2 : Procedure
+3 : Define system parameters
+4 : Collect loads and generation information
+5 : Initialize
+6 : the optimal main objective function
+=∞
+7 : for = 1: do
+for = 1:
+do
+8 :
+each prosumer should meet his demand using equation (8)
+9 :
+estimating the surplus or deficit energy of each peer using (9) to (11)
+10 :
+( )>0
+if
+11 :
+Assign the peer as a provider
+12 :
+else
+13 :
+Assign the peer as receiver
+14 :
+end if
+15 :
+end for
+16 :
+and
+save the information of the providers and the receivers in two sets
+17 :
+18 :
+prioritize the providers in
+list based on energy levels in ascending order
+19 :
+prioritize the receivers in
+list based on demand levels in descending order
+20 :
+while there are providers and receivers to trade do
+21 :
+select a receiver and prosumer with the highest priorities
+22 :
+calculate energy to be traded ∆ ( )
+23 :
+update energy levels for providers and receivers
+24 :
+record associations between receiver and provider
+25 :
+record power transferred from provider to receiver
+26 :
+remove receivers or providers with zero energy from the priority lists
+27 :
+if all consumers' demands are fulfilled
+28 :
+break from the loop
+29 :
+end if
+30 :
+end while
+31 :
+store final consumer and prosumer energy levels at the time interval
+32 :
+store power details for each consumer and prosumer at each time interval t
+33 : end for
+34 : end procedure
+
+where Esur (t) denotes the peer's surplus energy after fulfilling its own
+demand at time interval t, and Edef (t) is the peer's unmet demand at time
+interval t.
+3. The aggregator assigns the peers who have surplus as providers while
+those have deficit energy and all the consumers are assigned as receivers, then initiate two sets to include the prosumers and consumers each individually, called the providers set Spro (a set of
+prosumers with excess energy which including n peers) and receivers
+set Srec (a set of all consumers and prosumers with deficit energy
+which including m peers), respectively.
+4. The trading or priority sets Ppro and Prec are obtained by arranging the
+elements of Spro in an ascending order and the elements of Srec in
+descending order, respectively. These sets can be expressed as, Ppro =
+{p1 , p2 , …, pn } and Prec = {r1 , r2 , …, rm } where pi is the ith energy
+provider within Ppro where i ∈ [1 n] and rj is the jth energy receiver
+within Prec where j ∈ [1 m] and i and j are integer numbers.
+5. Once the system's priority lists are ready, i.e. high priority for each
+consumer and prosumer, the trading procedure is started.
+6. Assuming r1 is the first receiver in the Prec set and p1 is the first
+provider in the Ppro set. Then r1 and p1 become engaged in a trade and
+make a P2P energy trading pair.
+7. After completing the trade of energy trading pair, the model examines the remaining receivers' load demand that required to be
+covered and the available surplus energy from the providers.
+
+each sampling period. The general framework for energy storage and
+exchange among the local network peers is described in Algorithm 1 as a
+pseudo-code form, as shown in Table 3.
+
+• If the provider n still has surplus energy, after completing the trading
+with the receiver m, the algorithm allows the provider n to establish
+anther trading with the receiver with the next highest priority, i.e.
+m + 1.
+• If receiver m demand is not fulfilled by the provider n the algorithm
+allows m establishing anther trading with the provider with the next
+highest priority, i.e. n + 1.
+
+3.3. Combined approach for designing the proposed community energy
+management system
+This section describes the combined approach that has been utilized
+to design the proposed CEMS for optimal energy sharing and load
+scheduling within the understudy CMG. These two targets can be achieved through minimizing the electricity bill for all consumers and
+magnify the financial incentives for all procumers, this objectives can be
+expressed by the net energy cost of the households during the optimization time horizon (Nt -houres) i.e. the summation of the daily net cost
+of the energy even delivered or received by each household, Ch (t), as
+specified by (12) & (13):
+
+8. The previous step is repeated until all the receivers meet their demand or all the providers sell their surplus energy, whichever is less
+in number.
+As depicted in the schematic Fig. 1, the understudy microgrid has an
+integrated connection to the utility grid. This connection enables the
+microgrid to exchange power with the utility network. Accordingly,
+after completing the final step, the customer whose demand did not be
+met completely will import the unfulfilled energy from the grid however
+the consumer who is unable to sell all of his excess energy for the other
+peers within the local area will export the remaining electricity to the
+
+minimize
+
+Nh ∑
+Nt
+∑
+h=1 t=1
+
+buy,P
+buy,P2P
+sell,P
+sell,P2P
+G2P
+P2G
+Ch (t) = Ebuy,G
+.Δt − Esell,G
+.Δt
+h,t .R h,t .Δt + Eh,t .R h,t
+h,t .R h,t .Δt − Eh,t .R h,t
+
+grid. The advantages of employed aforementioned priority algorithm
+are that it provides prosumers financial gains via selling energy to
+consumers with the most demand, minimizing the number of trading
+transaction attained by a single provider at the same time, leading to
+minimize the number of deals between the receivers and the providers at
+
+Ch (t)
+
+(12)
+
+(13)
+
+where Nh represents the number of household within the community,
+buy,G
+
+Eh,t
+
+buy,P
+
+and Eh,t
+
+are the total energy consumed by the household h from
+
+the grid and the other households at the time interval t, respectively.
+
+10
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Esell,G
+and Esell,P
+are the total energy delivered by the household h to the
+h,t
+h,t
+
+grid and the other households at the time interval t, respectively. R G2P
+h,t ,
+buy,P2P
+
+R h,t
+
+sell,P2P
+, R P2G
+are the price of the electricity bought by the
+h,t and R h,t
+
+household h from the grid, bought from by the household h other peers
+in the community, sold by the household h to the grid, and sold by the
+household h to other peers in the community, respectively, at the time
+interval t. For a day-ahead estimated energy trading and load scheduling
+within the CMG.
+The energy balance constraints that have been taken into consideration during the optimization process of the energy sharing among the
+CMG peers can be described are as follows: the power drawn from the
+P2P energy trading for the household n at the time period t is denoted by
+buy,P
+
+En,t , which equals to the summation of the power consumed from PV1,
+PV2 and the battery system, as expressed by Eq. (14). To ensure the
+power balance within the CMG, the required power by all peers should
+equal the total power bought by all the households, as expressed by Eq.
+(15). Whereas the value of the total power bought by the household n at
+buy,T
+
+the time period t, En,t , equals the total power obtained from the P2P
+
+buy,P
+buy,G
+energy trading, En,t , and that supplied from the main grid, En,t , as
+
+given by Eq. (16).
+
+1
+2
+Ebuy,P
+= Ebuy,PV
++ Ebuy,PV
++ Ebuy,Battery
+n,t
+n,t
+n,t
+n,t
+
+(14)
+
+buy,T
+Eload
+n,t = En,t
+
+(15)
+
+Ebuy,T
+= Ebuy,G
++ Ebuy,P
+n,t
+n,t
+n,t
+
+(16)
+
+The proposed CEMS represented in two combined processes, i.e.
+optimal load scheduling and P2P energy trading, is explained by the
+flowchart shown in Fig. 5.
+4. Seagull optimization algorithm (SOA)
+Authors of [34] introduced a natural-inspired optimization approach
+based on imitating the migration and attacking behaviors of a seagull.
+The Seagull Optimization Algorithm (SOA) is utilized to solve optimization problems through imitating seagulls' action while looking for
+food in nature, specifically the seagull's migration and attacking behaviors. Due to its feature in solving high computational cost problems,
+SOA is applicable for solving large-scale real-world problems. During
+their migration, seagulls attack other birds above the sea. Seagulls'
+migration and attacking behaviors could be incorporated for optimization problem based on minimizing a specific objective function. The
+mathematical models of these behaviors are discussed in details in this
+section. The modeling is done in two phases, i.e. the migration and
+attacking phases which respectively represent the exploration and
+exploitation activities of the SOA used for exploring the search space and
+determine its searching efficacy. Through the former activity the search
+algorithm tries to reach wide range of the search space to avoid trapping
+in local-optima (i.e. global search ability), whereas the latter activity
+confirms searching of optimal solutions within the specific region (i.e.
+local search ability). For a given problem, obtaining the optimal solution
+needs a balance between these two activities, as excessive exploration
+may result in slow convergence and inefficiency of the search algorithm
+while excessive exploitation may result in a premature convergence to a
+suboptimal solution [34–37].
+
+Fig. 5. Flowchart of the proposed community energy management system.
+
+→
+→
+position of a search agent (i.e. a seagull) is Ps , its new position Cs that
+grantee collision avoidance with other search agents (i.e. neighboring
+seagulls in the hunting group) can be modeled by utilizing a variable A
+as formulated by (17).
+→
+→
+Cs = A × Ps (i)
+
+4.1. Modeling of seagull migration behavior: Exploration phase
+
+(17)
+
+where i is the present iteration, and A expresses the movement manner
+of the search agent in the specific search space and can be given by (18)
+
+Through this phase SOA simulates how a seagull group moves from a
+position to another. During this phase, three conditions should be fulfilled by each seagull in the hunting group i.e. avoiding the collision
+with other seagulls in the group, moving towards the best neighbor's
+direction, and keeping close to the best search agent. If the current
+
+A = fc (1 − i/nmax )
+
+(18)
+
+where i = 0, 1, 2, …, imax and imax is the maximum iterations number, fc is
+11
+
+Journal of Energy Storage 99 (2024) 113311
+
+E.H. Abdelhameed et al.
+
+a parameter used to control the movement behavior of search agent (the
+variable A). fc is linearly dropped from its initial value fc0 to 0.
+In addition to avoiding the collision with neighbors in the group, the
+seagull (the search agent) should move towards the direction of best
+neighbor i.e. the best-fit seagull. This action can be expressed mathematically as:
+(→
+̅→
+̅→ )
+Ms = B • Ps (i) − Pbs (i)
+(19)
+
+Table 4
+Pseudo-code of seagull optimization algorithm.
+.
+
+1 : Procedure
+2 : Define Parameters of the CMG system,
+3 :
+Energy pricing rates including ToU rates, P2P rates and FiT,
+4 : Collect Power rates and operating conditions of all the residential loads,
+5 :
+Estimation data of power resources and battery storage system rates
+6 : Initialize
+Generate random population and set the values of variables , ,
+7 :
+Set parameters of the optimization process termination criteria,
+8 :
+The optimal main objective function
+9 :
+Set the values of the control parameters i.e.
+10 :
+11 : Output
+The best search agent
+12 :
+do
+13 : While the optimal load scheduling is not obtained or ≤
+Migration behavior calculation,
+∈ [0 1]
+Generate a random number
+14 :
+Generate a random number ∈ [0 2π]
+15 :
+Attacking behavior calculation,
+16 :
+Determine the spiral turns radius over the migration action
+17 :
+Determine the distance ⃗ from Eq. (21)
+18 :
+Determine the updated position of each seagull ⃗( ) using Eq. (22)
+19 :
+Applying a rounding scheme to get feasible solutions
+20 :
+Do the P2P energy trading and import/export from main grid
+21 :
+Compute the fitness function value using Eq. (12)
+
+→
+̅→
+where M s is the updated position of the search agent, and Pbs is the
+position of the best fit search agent. The variable B administrates the
+balance between the exploration and exploitation actions i.e. it is
+responsible for the smooth transition from exploration phase to exploitation phase. The value of B changes randomly, as given in (20):
+B = 2 • A2 • rm
+
+(20)
+
+where rm is a random number between 0 and 1.
+The final step in the migration phase is that the search agent has to
+keep near to the best search agent i.e. updating the search agent position
+with regard to the best search agent position. Accordingly, the distance
+→
+D s between each seagull (the search agent) and the seagull that have the
+minimum fitness value during the previous iteration (the best fit search
+agent) can be given as:
+⃒→ → ⃒
+→
+⃒
+⃒
+D s = ⃒Cs + M s ⃒
+(21)
+
+22 :
+23 :
+24 :
+25 :
+
+Go to the next iteration, = + 1
+End while
+Return the best load scheduling to be used for next day energy management
+End procedure
+
+results show the impacts of the proposed coordinated CEMS on
+increasing utilization of RESs, reducing consumers' bills, and enable
+prosumers to obtain financial incentives. The modeling is done utilizing
+CMIP programming that optimally schedules the operation of households' residential loads and conducting a cooperative game theory-based
+P2P energy trading. The proposed CEMS model has been examined via
+simulations conducted on the understudy community model using
+MATLAB software to assess its benefits and shortcomings comparing
+with the reference operating scenario. The power rating of all peers'
+residential loads and their operating periods as well as EVs and battery
+storage system charging rates are given over 24-hours time duration in
+Table 2.
+Data concerning the incorporated EVs, installed PV and BESS of each
+household are presented in Table 5. These assets are utilized for partial
+or full covering of household energy demand through P2P energy
+trading. It is also assumed that the capability of selling energy to the
+utility is also available. The main grid provides the electricity tariff for
+24-hrours optimization horizon as displayed in Fig. 4. In addition, the
+customer is pay off at a price calculated using a modified mid-market
+rate pricing mechanism.
+As stated previously, the coordinated CEMS has been conducted in
+this study according to the following: The prosumers should primarily
+meet their energy demand subsequently share their excess energy with
+other peers in the local network During the day hours, whenever the
+solar energy is available or the offered grid energy is rated at low price,
+the prosumer's storage system can be charged however during the night
+hours, the batteries may be utilized as power source. Finally, the energy
+still demanded by the peers can be supplied by the utility.
+
+4.2. Modeling of seagull attacking behavior: exploitation phase
+The local search of SOA is described through this phase. Seagulls can
+change the attack angle and attack speed constantly during their
+migration, besides, where at the time of attack the seagulls move in
+spiral shape. If rs is the radius of each turn of the motion spiral, and c1 ,
+and c2 are two constants to form the spiral. θ is the attack angle which
+has a random value between 0 and 2π. The updated position of search
+agent can be formulated in x, y, and z plan as follows [34]:
+) ̅→
+(→
+→
+Ps (i) = D s • x́ • ý • ź + Pbs (i)
+(22)
+where x = rs • cos(θ), y = rs • sin(θ), z = rs • θ, and rs = c1 • ec2 θ .
+To sum up, at the beginning of the optimization process, SOA is
+started with a number of random populations equal to the seagull
+number in the hunting group and represent their positions. During the
+iterations, the search agents update their positions based on the current
+position of the seagull, the position of the best seagull, and a random
+term to promote exploration. Finally, with the progress of the optimization process, the completion of attack behavior on the prey can be
+done and the global optimal solution can be obtained. The termination
+criteria, that should be tested in every iteration during optimization
+process, are reaching the maximum iteration number and the fitness
+value hitting a given bound, in addition, the average relative change in
+the best objective function value over particular number of iterations
+should be lower than or equal to a predefined tolerance. The procedure
+of SOA used for solving the understudy energy management problem of
+the CMGs is described in Algorithm 2 as a pseudo-code form, as shown in
+Table 4.
+
+Table 5
+Smart homes energy resources and integrated EVs and Daily demand data.
+
+5. Results and discussion
+This section presents results of modeling neighborhood community
+area including rooftop solar PVs, plug-in EVs and battery storage systems which are incorporated in three SHs that represent the community.
+A community energy management system is proposed while targeting
+two main objectives: energy storage and exchange among the network
+peers and optimally schedule the residential loads. The simulation
+12
+
+Smart
+homes
+
+Energy sources
+PV rooftop
+
+Battery
+
+1st smart
+home
+2nd smart
+home
+3rd smart
+home
+
+Size
+(10KW)
+SIZE
+(10KW)
+⨯
+
+⨯
+Capacity
+(12KWh)
+⨯
+
+EVs
+
+Daily energy
+demand
+
+75.0 kWh,
+Tesla EV
+62.0 kWh,
+Nissan EV
+75.0 kWh.
+Tesla EV
+
+71.05 KW
+156.74 KW
+60.26 KW
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+The decision variables of the applied SOA are a combination of the
+status of the residential loads operation and the time shifts of the
+uninterruptible loads, thus the number of all decision variables of the
+scheduling problem is 321 variables. The SOA parameters, i.e. A and B,
+are calculated using Eqs. (18) and (19), where the fc is linearly dropped
+to zero from its initial value fc0 , which is set to 2.0 in this study. This
+algorithm performs effectively in minimizing the overall electricity bill
+price comparing to the reference case (the unscheduled case). Overall,
+the proposed coordinated CEMS provides efficient loads scheduling and
+energy sharing with regard to overall cost reduction.
+The following lines discuss the numerical results of two operating
+scenarios i.e. the operation with and without implementation of the
+designed coordinated CEMS. The former one is referred as “Reference
+Case”, whereas the latter scenario is referred as “Proposed Case”. A
+comparison has been conducted with regard to the electricity bill price
+and the self-consumption ratio. The features of the proposed CEMS have
+been outlined in the Table 6 regarding the daily demand supplied by the
+main grid, electricity bill, self-consumption ratio and overall saving. For
+the applied SOA over 300 iterations and 30 population size, under the
+2nd operating scenario, the convergence characteristics of the best
+objective value are as follows: the best objective value that obtained by
+the SOA is ¢161.36, whereas it converged within 229 iterations. As the
+simulation takes 930 s average computation time (i.e. computational
+efficiency) as it has been implemented in a computer with an Intel®_Core™ i7-8850H processor, 2.59 GHz CPU, and 32.0 GB RAM. The
+numerical results are discussed and analyzed in the following paragraphs in details whereas the Figs. 6–14 illustrate the findings and
+Table 6 sums up these results.
+Under the two operating scenarios, Figs. 6–8 illustrate the results of
+employing CEMS for managing the community's residential loads and
+resources over 24-hour time horizon. The red, yellow, purple and green
+bars in these figures represent the energy supplied by the solar system
+installed on the rooftop of the 1st SH, the PV system incorporated into
+the 2nd SH, the battery storage system, and the grid, respectively. While
+the black lines display the total load demand of the 1st, the 2nd, and the
+3rd smart homes, respectively. The consumption patterns of 1st SH
+under the reference and the proposed operating scenarios are depicted
+in Fig. 6 (a) and (b), respectively. It can be noticed from the figure that
+under the reference case of operation the peak value of load demand
+presents in the On-peak hours, as shown in Fig. 6(a), and is mainly
+supplied by the grid. This peak is shifted to Off-peak hours and is mainly
+supplied by the battery and the PV2, as shown in Fig. 6(b). It is also
+noted that, under the proposed case of operation, the energy required by
+the 1st SH is provided by its own solar system (PV1) during On-peak
+hours, then form neighborhood solar system (PV2) and battery during
+mid-peak and Off-peak hours, while it supplied by the grid during Offpeak time.
+Fig. 7(a) and (b) show the consumption patterns of 2nd SH under the
+reference and the proposed operating scenarios, respectively. It can be
+observed that the peak demand has been provided mainly by the solar
+systems (PV1 and PV2), as shown in Fig. 7(b), instead of supplying
+mainly by the grid, as shown in Fig. 7(a). Moreover, most of the loads
+
+demand of the 2nd SH is supplied from its integrated assets, i.e. PV2 and
+the battery storage system, then from the neighborhood solar system
+(PV1) and finally from the grid.
+Fig. 8(a) and (b) illustrates the consumption patterns of the 3rd SH
+under the reference and the proposed operating scenarios, respectively.
+It can be observed from Fig. 8(a) that the peak demand has been moved
+from the On-peak hours, under the reference operating scenario, into the
+Off-peak times, under the proposed operating scenario, as shown in
+Fig. 8(b). It can be remarked from Fig. 8(a) that; under the reference
+case, the energy required by the 3rd SH is provided on the whole by the
+main grid. While it is mainly supplied by the neighborhood assets, i.e.
+PV1, PV2 and the battery storage system when applying the proposed
+CEMS, indicating that its electricity bill will be reduced.
+The shared energy among the community households is summarized
+in Table 7. The P2P trading prices during the day utilizing the cooperative game theory based energy trading scheme are shown in Fig. 4, it is
+evident from the figure that, all the P2P prices offered between the
+dynamic electricity pricing scheme offered by the main gird (TOU tariff)
+and the feed-in tariff, as was assumed during modeling the P2P trade.
+The findings in Table 7, along with Fig. 9, are consistent with the
+concept that, installing a residential solar photovoltaic system and battery storage system is an effective way to reduce grid dependence. For
+more detailed analysis, the energy consumption of all households and
+the overall CMG are shown in Fig. 9 for both cases of operation i.e. the
+reference and proposed cases. The figure displays the power supplied by
+the 1st SH, 2nd SH, and the grid in blue, red, and green bars, respectively. As indicated from the figure, utilization of the power locally
+generated by the CMG is significantly increased; as a result, the grid
+dependence is expected to be reduced and the solar self-consumption
+ratio should be improved. As depicted in Fig. 10(a), for the understudy summer day and under the reference operating scenario, grid
+dependence of the 1st, 2nd, and 3rd SHs are calculated as 31.57 %, 22.0
+%, and 51.24 %, respectively, where they are 27.65 %, 13.02 %, and
+18.13 %, respectively, under the proposed operating scenario. The
+calculated grid dependence of the overall CMG under the reference and
+the proposed operating scenarios are 30.48 % and 17.69 %, respectively.
+Meaning that grid dependence is reduced by 41.95 %, this reduction
+gives an indication for the effectiveness of the proposed CEMS in
+reducing the electricity bills and improving the main grid stability. On
+the other hand, the solar self-consumption ratios of the 1st and the 2nd
+households, which denotes how much of the electricity generated by
+their solar systems and consumed by themselves, are 25.39 %, and
+59.54 %, respectively under the reference operating scenario, as shown
+in Fig. 10(b), while these ratios are 20.85 %, and 65.41 %, respectively,
+under the proposed operating scenario. Despite the solar selfconsumption ratio of the 1st household is reduced by 17.91 % but its
+trading enhanced by 137.48 % as will be shown later, in addition, the
+ratio of the overall CMG is enhanced by 18.39 %, as it is increased from
+69.51 % to 82.2 % under the reference and the proposed operating
+scenarios, respectively. The increase explains the reduction in 1st
+household's self-consumption ratio as the P2P energy trading utilizing
+the proposed CEMS provides the 3rd SH with its required energy while
+only taking into consideration the cost reduction.
+The surplus generation and deficit energy occur usually as the
+generated solar energy and the demand do not consistently match.
+Fig. 11 shows data of excess and deficit energies of all users under the
+reference and proposed operating cases. The positive value denotes
+excess energy, while the negative value denotes deficit energy. The
+Figure depicts that for the reference operating case significant excess
+energy is available in the time periods between 8:00 am to 1:00 pm,
+3:00 pm to 4:00 pm and 8:00 pm to 2:00 am, while the remaining intervals of the day is characterized mainly with deficiency of local energy, while, for the proposed operating case there is significant surplus
+energy in the time intervals between 6:00 am to 8:00 am and 11:00 am
+to 6:00 pm, while the remaining intervals of the day is characterized
+with deficiency of local energy.
+
+Table 6
+Summary results.
+Findings
+Daily energy
+imported from
+the utility (KW)
+Electricity bill
+(cent)
+Bill saving%a
+
+Reference case
+
+Proposed case
+
+SH1
+
+SH2
+
+SH3
+
+SH1
+
+SH2
+
+SH3
+
+22.44
+
+34.49
+
+30.87
+
+19.63
+
+20.41
+
+10.91
+
+269.51
+
+324.83
+
+375.48
+
+170.78
+
+228.58
+
+98.98
+
+–
+
+–
+
+–
+
+36.63
+
+29.63
+
+73.64
+
+a
+
+Calculation of the overall bill savings is attributed to the cost of the reference
+case.
+13
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Fig. 6. 1st smart home energy consumption from rooftop solar and main grid: (a) reference case, (b) proposed case.
+
+Fig. 7. 2nd smart home energy consumption from rooftop solar and main grid: (a) Reference case, (b) Proposed case.
+
+Fig. 8. 3rd smart home energy consumption from rooftop solar and main grid: (a) reference case, (b) proposed case.
+
+Delivering excess energy to the utility and trading it within the local
+power network are two ways to get benefit from the solar surplus power.
+Under a specified FiT (i.e. 4.8 cents per kilowatt hour of electrical energy
+delivered to the main grid) and P2P energy trading mechanism,
+
+procumers get their revenue. Fig. 12 shows the net energy cost of all SHs
+due to operation under the reference and proposed cases. As illustrated
+in Table 8, it is evident from the results that, after applying the proposed
+CEMS an increase of the amount of energy sold by the 1st SH appeared as
+14
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Fig. 11. Peers' hourly surplus and deficit energy.
+
+Fig. 9. The consumed energy in respect to the provider.
+
+the net cost of the sold energy increased from ¢143.8 to ¢341.5 meaning
+that his trading enhanced by 137.48 %. Whereas the 2nd SH is transformed from purchasing energy in the reference operating case (with a
+pay back of ¢157.0) to energy seller (with income of ¢21.77) in the
+proposed case, indicating that, the revenue of 2nd household is
+improved by 113.87 %. Nevertheless the 3rd household buys energy in
+both operating scenarios as he acts as a consumer and has lack of any
+energy resources, but he gains financial benefits as his energy purchase
+is decreased by 17.39 % as his electricity bill is reduced from ¢669.4 to ¢
+553 in the reference and proposed cases, respectively. Due to applying
+the proposed P2P electricity trade and exporting surplus energy to the
+utility, the overall gained revenue of the community, including all peers,
+is improved by 72.21 % as the net energy sharing is considered energy
+purchasing from the main grid which is decreased from ¢682.6 to ¢
+189.7.
+In order to confirm the capability of the proposed CEMS to establish a
+win-win scheme for community prosumers and customers, two comparisons have been done, as illustrated Fig. 13(a) and (b), under the
+designated two operating scenarios as follows: the first comparison has
+been conducted between the revenue of the prosumers under P2P energy
+trading (shown in Fig. 13(a) and (b) in black lines) and that obtained
+from exporting the same amount of excess energy to the main grid rather
+than incorporating in the P2P trading i.e. exporting all the surplus
+
+Fig. 12. Net energy cost of each household and the overall community: positive
+and negative net cost values indicating buying and selling energy, respectively.
+
+Fig. 10. (a) Grid dependence and (b) solar self-consumption ratio.
+15
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Fig. 13. Prosumers' revenue and consumers' electricity bill: (a) reference case, (b) proposed case.
+
+the bill of the consumers has been reduced by 18.84 %. The same
+consequence has be displayed in case of the proposed case, as the daily
+obtained revenue is ¢1113.7 and ¢575.73 in case of P2P trading and
+grid-only assumption, respectively. Whereas, the daily paid electricity
+bill is ¢1113.7 and ¢1395.0, respectively, which implies that the revenue of the prosumers has been enhanced by 93.71 % whereas the bill of
+the consumers has been decreased by 20.16 %. The aforementioned
+results confirm the effectiveness of the designed cooperative game theory based P2P energy trading scheme in getting significant revenue for
+the procumers and considerable bill saving for the consumers.
+It is indicated from the aforementioned result that, employing P2P
+energy trading in the CMG provides the procumers ability to increase the
+revenue and reduces the electricity bills of the consumers. In addition,
+P2P energy trading is more beneficial when the households have both
+energy storage and RESs. As for the households who are able only to
+generate renewable energy without having capability to store energy, it
+may not be beneficial in terms of financial gains. The main reason is that
+the SHs integrated with battery storage systems utilize their stored energy primarily to meet their own consumption and sell the surplus of
+that energy to other peers or the utility. Therefore, if the households
+install solar system, it is recommended to have a BESS.
+The circular graph depicted in Fig. 14 introduces a directed graph of
+the all users in the neighborhood area at a specific time interval during
+the day. This graph presents how that peers interact with each other
+through the best effective path regarding the energy production and
+demand. Besides, it shows the transfer of energy within the CMG i.e.
+from prosumers to consumers and the main grid to consumers. Through
+this figure, the aggregator and community's peers are able to recognize
+the details of the sold energy and subsequently the gained profit. It is
+clear from the figure that, for the energy sharing within the CMG, at a
+given time interval, one or more of following four operating conditions
+may be conducted: some households may satisfied their internal load
+demand, others export their surplus energy to the main grid, while
+others request energy from the main grid or other peers in the
+community.
+Although the proposed CEMS has the ability to provide significant
+savings for network households, increase utilization of the energy
+generated by their distributed rooftop solar PVs, reduce the electricity
+bills, and create an advantageous approach for prosumers and customers, it includes some shortcomings. The main shortcomings are
+related to the followings: the proposed pricing mechanism of the P2P
+energy exchange does not consider optimization of the function used to
+calculate trading price R P2P . In addition, the EVs charging has been
+considered as extra load to power system, however, the EVs can be
+employed as energy storage; accordingly the proposed management
+
+Fig. 14. Energy flow within the community microgrid during P2P energy trading.
+
+energy, that was exchanged between peers during P2P trading, to the
+main grid assuming there are no P2P trading among the households (this
+can be called Grid-only operating condition assumption), shown in
+Fig. 13(a) and (b) in red lines. The second comparison has been conducted between the cost of the electricity that purchased by the consumers under the P2P energy trading (shown in Fig. 13(a) and (b) in
+black lines) and that paid when importing this amount of deficit energy
+from the main grid only (Grid-only operating condition assumption),
+shown in Fig. 13(a) and (b) in blue lines. Numerical conclusion is given
+in Table 9, it is evident from Fig. 13 and the table that, in the reference
+and proposed scenarios, the prosumers get more revenue and the customers pay less electricity bills. Table 9 displays that, in the reference
+scenario, the daily revenue obtained is ¢865.28 and ¢426.68 in case of
+P2P trading and grid-only assumption, respectively. Whereas, the daily
+paid electricity bill is ¢865.28 and ¢1066.2, respectively. Meaning that,
+the revenue of the prosumers has been increased by 102.79 %, whereas
+16
+
+E.H. Abdelhameed et al.
+
+18.39
+41.95
+82.2
+
+–
+64.61
+–
+
+9.86
+40.81
+65.41
+
+− 17.91
+12.43
+20.85
+
+Smart
+home
+
+Reference case (¢)
+
+Proposed case
+
+Procumer
+(¢)
+
+Consumer
+(¢)
+
+Procumer
+(¢)
+
+Consumer
+(¢)
+
+SH 1
+SH 2
+SH 3
+
+143.8
+–
+–
+
+–
+157.0
+669.4
+
+341.5
+21.77
+–
+
+–
+–
+553
+
+Enhancement
+(%)
+137.48
+113.87
+17.39
+
+system should be developed to not only accommodate EVs charging but
+also considers them as energy supplies when it is required. Finally, the
+proposed CEMS depends on a static game theory model while a dynamic
+game theory model, in which all peers could time-dependently observe
+strategies of each other and the state of the main grid as well to
+dynamically determine trading pairs, can be taken into consideration.
+
+17.69
+50.95
+
+• Implementing a practical Peer-to-Peer (P2P) energy trading
+approach based on a cooperative game theory-based model which
+simultaneously confirms energy demand-based best priority and
+considers the PV systems, battery energy storage systems and EVs
+that are integrated to the community microgrid.
+• Addressing the energy transactions among the neighborhood community peers under modified mid-market rate pricing scheme for
+P2P energy trading while those between the community peers and
+the utility grid are addressed under dynamic pricing scheme that is
+prescribed by the main grid.
+• Simultaneously managing all possible operating conditions of all
+smart homes within the community i.e. purchasing energy from the
+utility grid, supplying energy to the utility grid, sharing energy under
+P2P trading.
+
+69.51
+
+Additionally, the considered model is solved under time-of-use (ToU)
+dynamic tariffs using seagull optimization algorithm. The optimization
+algorithm is used to relax the CMIP to a linear programming (during
+relaxation process) for providing optimal rational solutions which are
+approximated later to the best feasible optimal solutions through
+rounding scheme. Comparing to the reference case, the results reported
+in this study yields the followings: Implementation of the proposed
+incentive-based P2P energy trade resulting in cost savings of 72.21 %,
+reduction in grid dependency by 41.95 %, and covering 82.2 % of the
+demand from distributed local resources within the community. In
+addition, for the overall community, the proposed P2P energy trading
+allows more revenue and less bill cost comparing to the case when
+selling the excess power to the main grid only and purchasing the
+demanded energy from it without involving in neighborhood energy
+sharing scheme. The revenue in case of selling energy among the peers
+(P2P trade) and energy sold to the grid-only are 28.71 % and 34.74 %,
+respectively, whereas the bill reductions are 28.71 % and 30.55 % in
+case of purchasing the demanded energy from the other peers within the
+community (P2P trade) and purchased it from the grid-only, respectively. Overall, the findings of this study show that all households,
+whatever the assets they have (even solar PV and/or battery storage
+
+22.29
+
+146.18
+
+7.09
+
+54.06
+
+87.78
+
+30.48
+
+63.08
+
+173.95
+
+18.13
+10.91
+–
+
+93.32
+28.93
+
+30.87
+
+51.24
+
+14.4
+
+34.86
+
+13.02
+20.41
+102.52
+59.54
+22.00
+
+33.8
+
+19.63
+25.39
+30.57
+
+34.48
+
+In this research, a cooperative game theory with a constrained
+mixed-integer optimization model has been implemented for coordinated residential load scheduling and a peer-to-peer (P2P) energy
+management and exchange within a local grid-connected microgrid. The
+proposed Community Energy Management System (CEMS) is designed
+aiming at minimizing the electricity cost for each household within the
+community microgrid, enhancing the self-consumption of the renewable
+sources, and maximizing the revenue from sharing energy among the
+neighborhoods. This CEMS has the following features:
+
+1st smart
+home
+2nd smart
+home
+3rd smart
+home
+Community
+
+18.04
+
+22.43
+
+31.57
+
+14.8
+
+36.57
+
+27.65
+
+6. Conclusion
+
+Selfconsumption
+(%)
+
+Power
+supplied by
+the 1st SH
+(Kw)
+
+Table 8
+Electricity bill comparison under the reference and the proposed operating
+cases.
+
+Grid
+dependency
+(%)
+Power
+supplied by
+the grid (Kw)
+Power
+supplied by
+the 2nd SH
+(Kw)
+Power
+supplied by
+the 1st SH
+(Kw)
+
+Reference case
+Household
+
+Table 7
+Summary results of the analysis of energy sharing among the community peers.
+
+Proposed case
+
+Power
+supplied by
+the 2nd SH
+(Kw)
+
+Power
+supplied by
+the grid (Kw)
+
+Grid
+dependency
+(%)
+
+Selfconsumption
+(%)
+
+Reduction in
+grid dependency
+(%)
+
+Change in selfconsumption (%)
+
+Journal of Energy Storage 99 (2024) 113311
+
+17
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+
+Table 9
+Comparison between sharing energy via P2P trading and dealing with grid only for the overall community (for assumption).
+Operation assumption
+Reference case (¢)
+Proposed case (¢)
+a
+
+Energy sharing among the peers (P2P trading)
+
+Energy sharing with the grid (grid-only)
+
+Selling
+
+Purchasing
+
+Selling
+
+Purchasing
+
+865.28
+1113.7
+
+865.28
+1113.7
+
+426.68
+575.73
+
+1066.2
+1395.0
+
+Revenue enhancement (%)a
+
+Bill reduction (%)a
+
+102.79
+93.44
+
+18.84
+20.16
+
+These calculations are attributed to the cost of grid-only scenario (the assumed operating condition).
+
+systems), have chance to reduce their daily electricity costs via fostering
+solar energy usage within the local community. Also economic benefits
+were obtained at the community and home levels.
+For future work, as EVs charging adds up extra load to distribution
+systems, however, the EVs represent energy storage; so it is of interest to
+develop the proposed management system to not only accommodate EVs
+charging but also considers them as energy supplies when it is needed. In
+addition, dynamic game model, in which all peers could timedependently observe strategies of each other and the state of the main
+grid as well to dynamically determine trading pairs, will be considered.
+Finally, the pricing mechanism of the P2P energy exchange can be
+enhanced via optimizing the function used to calculate trading price
+R P2P .
+
+[6] M.K. Saraji, D. Streimikiene, Challenges to the low carbon energy transition: a
+systematic literature review and research agend, Energ. Strat. Rev. 49 (2023)
+101163, https://doi.org/10.1016/j.esr.2023.101163.
+[7] M.K. Saraji, D. Streimikiene, Challenges to the low carbon energy transition: a
+systematic literature review and research agenda, Energ. Strat. Rev. 49 (2023)
+101163, https://doi.org/10.1016/j.esr.2023.101163.
+[8] Lv Yongjun, Transitioning to sustainable energy: opportunities, challenges, and the
+potential of blockchain technology, Front. Energy Res. 11 (2023) 1258044,
+https://doi.org/10.3389/fenrg.2023.1258044.
+[9] X. Kong, S. Zhang, B. Sun, Q. Yang, S. Li, S. Zhu, Research on home energy
+management method for demand response based on chance-constrained
+programming, Energies 13 (2020) 2790.
+[10] R. Hemmati, Technical and economic analysis of home energy management system
+incorporating small-scale wind turbine and battery energy storage system, J. Clean.
+Prod. 159 (2017) 106–118.
+[11] R. Hemmati, H. Saboori, Stochastic optimal battery storage sizing and scheduling
+in home energy management systems equipped with solar photovoltaic panels,
+Energ. Buildings 152 (2017) 290–300.
+[12] M. Gomez-Gonzalez, J.C. Hernandez, D. Vera, F. Jurado, Optimal sizing and power
+schedule in PV household-prosumers for improving PV self-consumption and
+providing frequency containment reserve, Energy 191 (2020) 116554, https://doi.
+org/10.1016/j.energy.2019.116554.
+[13] M.M.U. Rashid, F. Granelli, M.A. Hossain, M.S. Alam, F.S. Al-Ismail, A.
+K. Karmaker, et al., Development of home energy management scheme for a smart
+grid community, Energies 13 (17) (2020) 4288.
+[14] Effective Hybrid Search Technique Based Constraint Mixed-Integer Programming
+for Smart Home Residential Load Scheduling.
+[15] B. Celik, R. Roche, D. Bouquain, A. Miraoui, Coordinated energy management
+using agents in neighborhood areas with RES and storage, in: IEEE International
+Energy Conference (ENERGYCON), 2016, pp. 1–6, https://doi.org/10.1109/
+ENERGYCON.2016.7514081.
+[16] Sweta Malik, Maeve Duffy, Subhasis Thakur, Barry Hayes, John Breslin, A prioritybased approach for peer-to-peer energy trading using cooperative game theory in
+local energy community, Int. J. Electr. Power Energy Syst. 137 (2022) 107865.
+[17] M. Khojasteh, P. Faria, L. Gomes, Z. Vale, Energy trading strategy of community
+shared energy storage, Electr. Eng. 106 (2024) 3415–3434, https://doi.org/
+10.1007/s00202-023-02163-0.
+[18] M. Ostadijafari, A. Dubey, N. Yu, Linearized price-responsive HVAC controller for
+optimal scheduling of smart building loads, IEEE Trans. Smart Grid 11 (4) (2020)
+3131–3145.
+[19] R. Schollmeier, A definition of peer-to-peer networking for the classification of
+peer to-peer architectures and applications, in: Proc of the International
+Conference on Peer to-Peer Computing, Linkoping, Sweden, 2001, pp. 101–102.
+[20] S. Kerscher, P. Arboleya, The key role of aggregators in the energy transition under
+the latest European regulatory framework, Int. J. Electr. Power Energy Syst. 134
+(2022) 107361, https://doi.org/10.1016/j.ijepes.2021.107361.
+[21] Marwa Mahmoud Hamed, A. El-Tayeb, I. Moukhtar, Adel Z. El-Dein, Esam
+H. Abdelhameed, “A review on recent key technologies of lithium-ion battery
+thermal management: external cooling systems”, results, Engineering 16 (2022)
+100703, https://doi.org/10.1016/j.rineng.2022.100703.
+[22] P. Bajpai, S. Singh, R. Kumar, Integration of Li-Ion Battery Energy Storage System
+in Smart Homes for Renewable Energy Management, International Conference on
+Power, Energy and Control Systems (ICPECS), 2019, https://doi.org/10.1109/
+ICPECS.2019.9073262.
+[23] Michael Blonsky, Prateek Munankarmi, Sivasathya Balamuruga, Incorporating
+Residential Smart Electric Vehicle Charging in Home Energy Management System,
+Preprint. Golden, CO: National Renewable Energy Laboratory. NREL/CP-5D0078540. https://www.nrel.gov/docs/fy21osti/78540.pdf, 2021.
+[24] Esam H. Abdelhameed, Samah Abdelraheem, Yehia Sayed Mohamed, Ahmed
+A. Zaki Diab, Effective hybrid search technique based constraint mixed-integer
+programming for smart home residential load scheduling, Sci. Rep. 13 (2023)
+21870, https://doi.org/10.1038/s41598-023-48717-x.
+[25] Hydro Ottawa Holding Inc. https://hydroottawa.com/en/accounts-services/acco
+unts/time-use accessed Jan. 25, 2024.
+[26] Sweta Malik, Subhasis Thakur, Maeve Duffy, John G. Breslin, Comparative double
+auction approach for peer-to-peer energy trading on multiple microgrids, Smart
+Grids Sustain. Energy 8 (4) (2023) 21.
+[27] Alexander Bogensperger, Joachim Ferstl, Yu. Ying, Comparison of pricing
+mechanisms in peer-to-peer energy communities, in: 12th. Internationale
+Energiewirtschaftstagung (IEWT), 2021.
+[28] Chao Long, et al.. Peer-to-Peer Energy Trading In a Microgrid, UK: School of
+Engineering, Cardiff University, Cardiff CF24 3AA, 2018.
+
+CRediT authorship contribution statement
+Esam H. Abdelhameed: Writing – review & editing, Validation,
+Supervision, Software, Project administration, Methodology, Formal
+analysis, Conceptualization. Samah Abdelraheem: Writing – original
+draft, Validation, Software, Methodology, Formal analysis, Conceptualization. Yehia Sayed Mohamed: Supervision, Resources, Project
+administration. Mohammed Abouheaf: Writing – review & editing,
+Project administration, Methodology, Formal analysis. Samy A. Marey:
+Writing – review & editing, Resources, Project administration, Funding
+acquisition. Ahmed A. Zaki Diab: Writing – review & editing, Supervision, Methodology, Formal analysis.
+Declaration of competing interest
+The authors declare that they have no conflict of interest.
+Data availability
+All data generated or analyzed during this study are included in this
+published article.
+Acknowledgements
+This research was funded by Researchers Supporting Project number
+(RSPD2024R752), King Saud University, Riyadh, Saudi Arabia.
+References
+[1] M.M.U. Rashid, M.A. Alotaibi, A.H. Chowdhury, M. Rahman, M.S. Alam, M.
+A. Hossain, M.A. Abido, Home energy management for community microgrids
+using optimal power sharing algorithm, Energies 14 (4) (2021) 1060, https://doi.
+org/10.3390/en14041060.
+[2] Melissa Eklund, Kaveh Khalilpour, Alexey Voinov, M.J. Hossai, Understanding the
+community in community microgrids: a conceptual framework for better decisionmaking, Energy Res. Soc. Sci. 104 (2023) 103260, https://doi.org/10.1016/j.
+erss.2023.10326.
+[3] Luigi Martirano, Sara Rotondo, Mostafa Kermani, Ferdinando Massarella,
+Roberto Gravina, Power sharing model for energy communities of buildings, IEEE
+Trans. Ind. Appl. 57 (1) (2021) 170–178, https://doi.org/10.1109/
+TIA.2020.3036015.
+[4] B. Lokeshgupta, K. Ravivarma, Coordinated smart home energy sharing with a
+centralized neighbourhood energy management, Sustain. Cities Soc. 96 (2023)
+104642, https://doi.org/10.1016/j.scs.2023.104642.
+[5] K. Ravivarma, B. Lokeshgupta, A peer-to-peer energy trading model for community
+microgrids with energy management, Peer-to-Peer Netw. Appl. 17 (2024)
+2538–2554, https://doi.org/10.1007/s12083-024-01722-x.
+
+18
+
+E.H. Abdelhameed et al.
+
+Journal of Energy Storage 99 (2024) 113311
+energy storage and distributed generation, IEEE Trans. Smart Grid 7 (6) (2016)
+2736–2747.
+[34] G. Dhiman, V. Kumar, Seagull optimization algorithm: theory and its applications
+for large-scale industrial engineering problems, Knowl.-Based Syst. 165 (2019)
+169–196, https://doi.org/10.1016/j.knosys.2018.11.024.
+[35] V. Kumar, D. Kumar, M. Kaur, Dilbag Singh, Sahar Ahmed, H. Alshazly, A novel
+binary seagull optimizer and its application to feature selection problem, IEEE
+Access 9 (2021), https://doi.org/10.1109/ACCESS.2021.3098642.
+[36] A. Subramanian, J. Raman, Modified seagull optimization algorithm based MPPT
+for augmented performance of photovoltaic solar energy systems, Automatika 63
+(1) (2022) 1–15, https://doi.org/10.1080/00051144.2021.1997253.
+[37] Jiao Wang, Yan Li, Hu Gang, Hybrid seagull optimization algorithm and its
+engineering application integrating Yin–Yang Pair idea, Eng. Comput. 38 (2022)
+2821–2857, https://doi.org/10.1007/s00366-021-01508-2.
+
+[29] Samuel Burer, Adam N. Letchford, Non-convex mixed-integer nonlinear
+programming: a survey (2012), Surveys Operat. Res. Manag. Sci. 17 (2) (2012)
+97–106, https://doi.org/10.1016/j.sorms.2012.08.001.
+[30] B. Vand, R. Ruusu, A. Hasan, B.M. Delgado, Optimal management of energy
+sharing in a community of buildings using a model predictive control, Energ.
+Conver. Manage. 239 (2021) 114178, https://doi.org/10.1016/j.
+enconman.2021.114178.
+[31] Georgios Chalkiadakis, Edith Elkind, Michael Wooldridge, Computational Aspects
+of Cooperative Game Theory, Springer Nature, 2022.
+[32] Raquel Salcedo-Diaz, J. Ruben Ruiz-Femenia, Adrian Amat-Bernabeu, Jose
+A. Caballero, A cooperative game strategy for designing sustainable supply chains
+under the emissions trading system, J. Clean. Prod. 285 (2021) 124845.
+[33] N.G. Paterakis, O. Erdinç, I.N. Pappi, A.G. Bakirtzis, J.P. Catalão, Coordinated
+operation of a neighborhood of smart households comprising electric vehicles,
+
+19
+
+

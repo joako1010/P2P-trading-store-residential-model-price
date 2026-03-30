@@ -1,0 +1,2550 @@
+Solar Energy 270 (2024) 112388
+
+Contents lists available at ScienceDirect
+
+Solar Energy
+journal homepage: www.elsevier.com/locate/solener
+
+A Stackelberg game-based peer-to-peer energy trading market with energy
+management and pricing mechanism: A case study in Guangzhou
+Xiaojun Yu a, Deng Pan a, Yuekuan Zhou a, b, c, d, *
+a
+
+Sustainable Energy and Environment Thrust, Function Hub, The Hong Kong University of Science and Technology (Guangzhou), Nansha, Guangzhou 511400,
+Guangdong, China
+b
+Department of Mechanical and Aerospace Engineering, The Hong Kong University of Science and Technology, Clear Water Bay, Hong Kong Special Administrative
+Region, China
+c
+HKUST Shenzhen-Hong Kong Collaborative Innovation Research Institute, Futian, Shenzhen 518048, China
+d
+Division of Emerging Interdisciplinary Areas, The Hong Kong University of Science and Technology, Clear Water Bay, Hong Kong Special Administrative Region, China
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+P2P energy trading
+Distributed energy resources
+Stackelberg game theory
+Nash bargaining
+Preference satisfaction
+
+With the global transition towards net-zero carbon buildings and carbon neutrality, peer-to-peer energy trading
+plays a significant role in mitigating spatio-temporal mismatches between on-site renewable energy generation
+and energy consumption. However, dynamic peer-to-peer trading prices and prosumer preference satisfaction
+with the dynamic peer-to-peer trading prices have not been fully considered to incentivize prosumers’ partici­
+pation in the sharing scheme. This research aims to provide frontier guidelines on peer-to-peer energy trading
+mechanisms and synergistic peer-to-peer sharing strategies to achieve the ‘win–win-win’ collaboration mode, so
+as to promote low-carbon and sustainable transformations. In this study, a Stackelberg game theory-based in­
+tegrated community energy system is proposed, comprising hybrid solar-wind renewables, energy storage sys­
+tem, grid-connected prosumers, and energy sharing providers. Dynamic peer-to-peer trading price is set based on
+the fair cost-benefit allocation among prosumers through Nash bargaining. Results indicate that peer-to-peer
+trading reduces operational carbon emissions by over 24 %, shifting from 865 kg CO2,e reduction to 1073 kg
+CO2,e reduction. Load-shifting within peer-to-peer trading improves self-consumed renewable energy from 46 %
+to 70 %, covering electricity demand with renewables from 50 % to 74 %. Identified peer-to-peer trading prices
+for hotel, office, and residential buildings are 0.59 CNY/kWh, 0.15 CNY/kWh, and 0.46 CNY/kWh, respectively.
+Compared to traditional prosumer-to-grid trading, peer-to-peer trading reduces costs from 2394 CNY to 448
+CNY, stimulating the proactivity of multi-stakeholders. Overall, peer-to-peer energy trading brings a further
+utilization of the renewable energy, and largely decreases the reliance on grid electricity, leading to great
+benefits from the techno-environmental-economic aspects. However, peer-to-peer energy trading should be
+continuously investigated under uncertainty prediction and sustainable business models to ensure its robust
+implementation and long-term feasibility.
+
+1. Introduction
+Nowadays, energy efficiency, clean energy, and low-carbon trans­
+formations are the mainstream for sustainable development all over the
+world [1–3]. Development and adoption of a multi-energy system with
+deep integration of emerging technologies with cross-scale models [4,5]
+has become the necessary choice and objective requirement for energy
+revolution and innovation [6], low-carbon transition [7,8]. As a
+response to this trend, integrated community energy system (ICES) is put
+
+forward and has become an objective requirement in the ongoing energy
+revolution, leading to the coordination and optimization of renewable
+energy generation, transmission, distribution, consumption, trading,
+and allocation [9]. Synergies of the ICES within the innovative ’sourcegrid-load-storage’ pattern greatly promote the consumption of on-site
+renewable energy and capitalize on the complementary advantages of
+the traditional fossil fuel energy system to ensure energy efficiency,
+economic feasibility and environmental benefit.
+The swift progress in renewable energy technologies has made solar
+and wind energy the primary renewable sources [10], resulting in
+
+* Corresponding author at: Sustainable Energy and Environment Thrust, Function Hub, The Hong Kong University of Science and Technology (Guangzhou),
+Nansha, Guangzhou 511400, Guangdong, China.
+E-mail addresses: yuekuanzhou@ust.hk, yuekuan.zhou@outlook.com, yuekuanzhou@hkust-gz.edu.cn (Y. Zhou).
+https://doi.org/10.1016/j.solener.2024.112388
+Received 1 September 2023; Received in revised form 26 January 2024; Accepted 4 February 2024
+Available online 14 February 2024
+0038-092X/© 2024 International Solar Energy Society. Published by Elsevier Ltd. All rights reserved.
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Nomenclature
+Pi,t
+load
+
+load consumption of prosumer i at time step t
+
+RES
+SCR
+SSR
+ToU
+
+Pi,t
+imp/exp
+
+import/export power of prosumer i at time step t
+
+Parameters
+Cap
+battery capacity
+
+Variables
+Pi,t
+RE
+
+on-site renewable energy of prosumer i at time step t
+
+min/max
+
+maximum/minimum importation/exportation restriction
+
+min/max
+Pchar/disch
+
+maximum/minimum charging/discharging restriction
+
+Pimp/exp
+
+Pi,t
+char/disch charging/discharging power of the battery of prosumer i
+at time step t
+
+renewable energy system
+self-consumption ratio
+self-sufficiency ratio
+time-of-use
+
+Pi,t
+P2P
+
+P2P trading amount of prosumer i at time step t
+
+ηchar/disch charging/discharging efficiency
+
+λi,t
+s/b
+
+internal trading price of prosumer i at time step t
+
+λi,t
+imp
+
+SOCi,t
+λi,t
+P2P
+
+state of charge of battery in prosumer i at time step t
+
+SOCmin/max upper/lower SOC limitation
+
+P2P trading price of prosumer i at time step t
+
+λi,t
+exp
+
+Acronyms
+ESS
+energy storage system
+FiT
+feed-in tariff
+ICES
+integrated community energy system
+P2G
+prosumer-to-grid
+P2P
+peer-to-peer
+
+Sets
+N
+T
+
+ρ
+
+grid import price (ToU)
+grid export price (FiT)
+set of prosumers
+set of time steps
+set of strategies
+
+various game theory models to analyse different participants’ behav­
+iours. Cooperative game theory models focus more on the fairness of a
+set of participants, while non-cooperative game theory models mainly
+focus on interactions and preferences of each participant [22]. Long
+et al. [23] used the cooperative game theory model with the Shapley
+value in the decision-making process for P2P energy trading. Compared
+with bill sharing, mid-market rate, and supply–demand ratio algorithms,
+results showed the optimality and fairness of the proposed method for
+P2P energy trading. Li et al. [24] designed an energy trading framework
+based on the generalized Nash bargaining cooperative game to realize
+the fairly allocated benefits. Han et al. [25] developed a cooperative
+game theory model for ESS operations optimization to minimize the
+coalitional energy cost, which greatly incentivized prosumers to
+participate in the P2P trading. However, in reality, not all participants
+are willing to be treated identically in a coalition, due to the possible
+sacrifice of several participants’ benefits under the uneven investmentpayback activities. Meanwhile, coalition can only operate based on
+self-enforcing, which makes the implementation more difficult. There­
+fore, in order to treat each participant in a coalition as equally as
+possible, non-cooperative game theory has been developed due to the
+more detailed interaction procedure. In the P2P energy trading process,
+both evolutionary game theory and Stackelberg game theory are applied
+by Paudel et al. [26] to model the dynamic selection among buyers and
+interactions between buyers and sellers. Lee et al. [27] added noncooperative games among sellers to further conduct the energy trading
+strategy with considerations on lifetime cost of ESS. Note that, the
+requirement is gradually increasing for feedback mechanisms and
+preference satisfaction of each participant, while the current literature
+fails to focus on DR and operation optimization under the noncooperative and dynamic game theory frameworks.
+Moreover, uncertainty optimization is important in the P2P energy
+trading market, since uncertainty may lead to suboptimal decisionmaking for inefficient allocation of energy resources and energy
+trading price setting. Electricity market model [28] and vehicle model
+[29] is important for industry applications. Coupling under multitimescales and multi-operating conditions on the end-user side makes
+the uncertainty optimization of the P2P energy trading even more
+extremely challenging [30]. Robust optimization and stochastic opti­
+mization are currently two effective paradigms for solving uncertainty
+problems [31]. Yan et al. [32] proposed a load uncertainty model by
+combining fuzzy multi-objective decisions and a two-stage adaptive
+
+increased distributed renewable energy penetration in the ICES. How­
+ever, due to their intermittent and uncertain nature [11], predicting the
+precise magnitude and duration of excess renewable energy remains
+challenging. In order to solve the above issues and achieve the novel
+’source-grid-load-storage’ paradigm, a peer-to-peer (P2P) energy
+trading market has gradually attracted widespread interest. Under the
+P2P trading mode with multi-participants, efficient energy dispatch and
+management are highly required for the ICES [12,13], especially flexible
+energy management strategies for the distributed renewable energy,
+energy storage system (ESS) [14,15], individual energy consumption
+and P2P energy trading among prosumers. From the perspective of
+prosumers’ behaviour characteristics, preference satisfaction [13,16],
+including prosumers’ individual preferences [16], financial subsidies
+[17], environmental and social policies [18], energy security [19,20],
+etc., can be assumed as tailored services for prosumers considering the
+willingness of prosumers. Therefore, establishment of the P2P energy
+trading system requires to maintain the balance between the flexible
+energy management through technological support and participants’
+willingness by considering their preference satisfaction to ensure its
+success and sustainability.
+Based on the above condition, operational mechanism of P2P energy
+trading is discussed in this research to promote sustainable energy
+development by optimizing energy utilization, enhancing economic ef­
+ficiency, and fostering the broader application of renewable energy
+sources. P2P energy trading is firstly conducted through economic in­
+centives, consequentially reducing reliance on traditional fossil fuel and
+switching to cleaner energy options. Thus, the objective of this research
+is not only to provide a profound understanding of the flexible and
+feasible P2P energy trading mechanism, but also to reveal its potential
+benefits in terms of economic advancement and environmental sus­
+tainability, further supporting the construction of a more sustainable
+energy framework.
+2. Literature review
+Previous studies have extensively explored different game theory
+models within the P2P distributed energy trading framework, such as
+cooperative game theory models and non-cooperative game theory
+models [21–27]. Game theory is the field of applied mathematics that
+uses models to study interactions in incentive structures among multiple
+participants [21]. In P2P energy trading, researchers have widely used
+2
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+robust method to select the type and capacity of the ESS in the ICES.
+Results show that the load budget uncertainty and annual load growth
+rate only affect the optimal capacity of ESS, while the energy purchase
+price influences both the optimal type and capacity. Tostado-Véliz et al.
+[33] carried out a three-stage day-ahead scheduling strategy for P2P
+transactions among prosumers. The involved uncertainties are incor­
+porated through a stochastic-robust formulation, forming a computa­
+tionally tractable optimization framework. Under the impact of
+stochastic robustness, expected import power is increased by 28 %
+compared to the deterministic case, while the export power from pro­
+sumers is notably reduced by 40 %. Additionally, optimizations have
+always been combined with the game theory approach to address un­
+certainty and dispatch problems. With the combination of uncertainty
+analysis, game theory can not only provide a framework to dynamically
+model the interactions between agents, but also improve the efficiency
+of uncertainty optimization techniques. Li et al. [34] proposed a tri-layer
+Cournot Nash game-based energy bidding method to solve the riskaversion uncertainty based on stochastic programming. Simulation re­
+sults indicate that the proposed method is more practical and econom­
+ical for real-world applications, since it comprehensively considers
+market competition, uncertainty handling, and energy trading risk.
+DR is a market-driven action at the DR service provider (aggregator)
+level according to the dynamic power supply characteristics, with the
+objective of demand reduction or shifting during peak periods. Pro­
+sumers subscribing to the DR program are requested to reduce their peak
+demand or turn off one or more energy-consuming appliances in ex­
+change for financial incentives, such as extra payments or discounted
+electricity rates [17,35]. DR can be generally categorized as price-based
+DR and incentive-based DR [36]. The main difference is that for
+incentive-based demand response, prosumers are offered subsidies to
+reduce load consumption during a given period [37]. Subsidy prices can
+be preset to match the wholesale market price (time-of-use price) as realtime pricing [38,39], or lifted only at critical periods (such as critical
+peak pricing periods) [40]. As for priced-based DR, prosumers volun­
+tarily respond to load reduction by reacting to economic signals, and the
+reduction amount highly depends on the dynamic pricing of retail
+electricity. Peak-shaving and load-shifting are two typical price signalbased strategies to achieve DR. In consequence, price-based DR is bet­
+ter adapted to the P2P distributed energy trading associated with dy­
+namic pricing. He et al. [16] introduced the energy pawn as an
+intermediary to handle a forecasting-based ESS capacity scheduling, DR
+problems, and dynamic pricing problems via Q-learning and rollinghorizon decision-making strategy to maximize benefit of the energy
+pawn. Jing et al. [30] used a Nash-type non-cooperative game model to
+quantify the fair pricing and demand response schedule for the mini­
+mum energy cost during P2P energy trading. However, these studies
+only consider the maximum revenue of one side (either for the end-user
+side or intermediary retailer) with DR strategies as the optimal objective
+instead of balancing the revenue of both sides. Therefore, DR strategies
+under the entire energy trading context need to closely connect with
+other actions, such as ESS and P2P energy trading, and combined ben­
+efits for both sides, instead of only considering one specific action.
+In terms of trading behaviours among prosumers and consumers, the
+success and scalability of P2P energy trading highly depend on the
+preference satisfaction of each participator, which has been embodied in
+the objective function under different P2P energy trading frameworks.
+Utility functions are widely used to measure welfare or satisfaction and
+analyse prosumer’s behaviours in different forms, such as the quadratic
+form proposed by Liu et al. [41] and the logarithmic form utility func­
+tion by Ma et al.[42]. Although these utility functions have different
+forms, they are closely related to the energy consumption and trading
+cost to describe the prosumer’s preference satisfaction. Liu et al. [41]
+integrated the inconvenience cost with prosumer’s electricity cost as the
+utility function in a quadratic form. Results indicate that users’ sensi­
+tivity to the price goes down with the enhancement of convenience
+level. Even if there is electricity with a lower price, they don’t want to
+
+adjust the power consumption and are more tolerant to the price in­
+crease since the adjustment may bother their regular life. Morstyn et al.
+[43] found that prosumers care more about risk aversion due to the
+relatively small scale. Conditional value at risk is merged as the risk
+aversion term in the objective function to quantify expected losses
+caused by the uncertainty of distributed renewable energy [44].
+Furthermore, mental accounting with cognitive mechanisms is consid­
+ered as novel theory-based intervention to promote the P2P energy
+trading and decarbonization [45]. Motivational psychology can influ­
+ence prosumer’s behaviours and trading decisions based on their per­
+spectives, beliefs, and opinions [46]. Human psychology might be
+affected by P2P trading design mechanism, subsequently affecting their
+behaviours and participations in renewable energy trading [45]. Tushar
+et al. [45] introduced the motivational psychology framework for P2P
+energy trading, which contains several motivational models that pro­
+sumers should satisfy before participating in the P2P energy trading.
+Although above research comprehensively explored the impact of pro­
+sumers’ preference and satisfaction on P2P energy trading from different
+perspectives, the feedback of prosumer’s behaviour and their attitudes
+on the previous energy trading price have not been discussed. The
+impact of dynamic trading prices on subsequent transaction behaviours
+and participation willingness in P2P energy trading of prosumers needs
+to be further studied to refine prosumers’ preference and attract their
+participation motivation with high satisfaction.
+Based on the above literature review, scientific gaps are summarized
+as follows: (1) Major existing P2P sharing studies have comparatively
+evaluated economic benefits among ESS management and different DR
+strategies. However, economic impact of combined ESS and DR on P2P
+energy trading has not been quantified, as well as the impact of these
+implementations on incentivizing participant willingness through P2P
+trading market.
+(2) Different pricing mechanisms between ESP and prosumers have
+been widely explored, while the P2P trading price (among prosumers)
+has not been specifically elaborated. The unclear distinguishment be­
+tween internal trading price (ESP and prosumers) and the P2P trading
+price (among prosumers) greatly restrains the further development of
+P2P energy sharing market.
+(3) Furthermore, financial metrics like conditional risk aversion,
+welfare utility, etc. have been thoroughly discussed in the energy
+trading market, while impacts of P2P trading prices on prosumers’
+subsequent transactions and behaviours have not been discussed. Pre­
+vious approach for P2P trading prices needs to be further improved,
+considering prosumers’ preference satisfaction reaction for long-term
+mechanism refinement.
+In order to cover the above research gaps, main contributions of this
+paper can be summarized as follows:
+(1) An ESP-based P2P energy trading framework is proposed to
+handle dynamic price and power signals, and the impact of integrated
+and combined ESS, DR and P2P transaction on P2P energy trading
+market is quantitatively analysed. Real-time control of dynamic energy
+consumption via different DR strategies and flexible charging/dis­
+charging of the ESS is proposed to achieve the feasible energy dis­
+patchment and ensure the maximum benefits, so as to attract
+participators’ interests in participating the P2P sharing markets.
+(2) Customized internal trading price is developed to guarantee the
+simultaneous maximum benefits for prosumers and ESP. Afterward,
+cost-benefit reallocation among prosumers is implemented to achieve
+the fairness and incentivize prosumer’s proactive to participate the P2P
+energy trading.
+(3) A general approach is proposed to evaluate prosumers’ prefer­
+ence satisfaction and their following reaction to the proposed energy
+trading prices (both internal trading price between ESP and local power
+grid, and P2P trading price among prosumers), considering additional
+constraints of P2P prices.
+The remaining sections of this paper are organized as follows: Sec­
+tion 2 provides a literature review on P2P energy trading, with an
+3
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 1. Outline of the research methodology.
+
+emphasis on the original contributions of this research. Section 3 in­
+troduces the architecture of the proposed ICES and its corresponding
+market mechanisms. Additionally, the equilibrium solution of the model
+is established in this section as well, along with the corresponding so­
+lution approach. In Section 4, P2P energy pricing mechanism and pro­
+sumer’s preference satisfaction are explored based on fair cost-benefit
+allocation method. Case studies and results analysis are comprehen­
+sively discussed in Section 5. Finally, Section 6 presents the conclusions
+drawn from this work.
+
+model in the ICES is studied with multi-criteria. Different energy man­
+agement strategies are implemented between prosumers and ESP,
+together with their performance assessments. More details can be
+checked in Section 3.3. Thirdly, after getting total costs of all prosumers,
+the cost-benefit allocation model is applied to identify the P2P trading
+price to ensure the cost equality among all stakeholders, and then the
+impact of the P2P trading price on prosumers’ preference satisfaction is
+analysed.
+As shown in Fig. 2, this study addresses energy management and
+pricing issues with ESP and a set of prosumers (including a hotel
+building, an office building, and a residential building) in the ICES. Each
+prosumer with wind, BIPV and ESS interacts with other prosumers to
+achieve the P2P trading mode. The role of local power grid is to work as
+a backup to dynamically balance the power supply and load consump­
+tions outside of the ICES. As the intermediate bridge between the local
+power grid and prosumers, ESP determines the amount of power
+importation, power exportation, ESS charging/discharging and P2P
+trading amount to balance the real-time supply and demand within the
+ICES. Furthermore, ESP also considers the price range to prevent direct
+
+3. Methodology
+3.1. Framework and energy flow of the ICES
+A holistic overview of the research in this study is shown in Fig. 1.
+Firstly, the building energy systems are modelled based on the Transient
+System Simulation (TRNSYS) platform to obtain the dynamic cooling/
+heating/electric loads, power consumption and renewable energy gen­
+eration. Secondly, P2P trading mode under the Stackelberg game theory
+4
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 2. Schematic diagram of the ICES operation.
+
+Fig. 3. Energy flow, cash flow and information flow (price and power signals) in the P2P trading mode.
+
+transactions between prosumers and the local power grid, so as to
+incentivize prosumers’ willingness to sell surplus renewable energy and
+stabilize the local grid power while developing various energy price
+strategies.
+The leader–follower Stackelberg game theory model is proposed to
+solve the energy management and dispatch procedure in the ICES. As
+demonstrated in Fig. 3, the optimization process between ESP and
+prosumers is sequential, which conforms to the leader–follower archi­
+tecture in the Stackelberg game. ESP in the upper-level benefits from the
+government’s subsidy and sends the price signal to the lower level, while
+prosumers in the lower-level act as the follower to adjust their load
+consumption and charging/discharging condition under different DR
+
+strategies after receiving the price signal from the upper-level leader.
+Afterwards, prosumers send the power signals back to the upper level as
+feedback. As an intermediary, ESP has the priority to determine the
+internal price to promote energy transactions among prosumers under
+the objective of the maximum revenue of both ESP and prosumers.
+Therefore, this study adopts the leader–follower Stackelberg game the­
+ory model as a bi-level model to deal with the corresponding game
+process of EPS with prosumers and local power grid and to obtain the
+maximum benefits for both prosumers and ESP, simultaneously.
+
+5
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+3.2. ESP model
+
+based on the real load consumption situation. According to China
+Southern Power Grid [48], external trading price for power import and
+export with utility grid has been pre-defined into four periods, i.e., peak
+periods (from 10:00 AM to 12:00 AM and from 14:00 PM to 19:00 PM)
+with the price at 1.293 CNY/kWh, flat periods (from 8:00 AM to 10:00
+AM and from 12:00 AM to 14:00 PM) with the price at 0.772 CNY/kWh,
+and off-peak periods (the rest time periods) with the price at 0.31 CNY/
+kWh. Meanwhile, grid feed-in tariff is 0.435 CNY/kWh when exporting
+renewable energy to local power grid. However, due to the confliction
+between time-duration of peak demand in different types of buildings
+and the peak period defined by the local power grid, price signals are fed
+back to prosumers to help make decisions on whether to choose the high
+profit by selling the extra power or stored in the ESS for their further
+load consumption.
+
+ESP formulates the price strategy, which controls the selling and
+buying prices between the feed-in tariff (FiT) and time-of-use (ToU)
+price to incentivize the participant’s motivation for P2P energy trading
+and to prevent participants from the direct transaction with the local
+grid. Its final benefit (FESP ) is expressed as Equation (1), which includes
+the subsidy from the government (Ctsubsidy ), income by exporting surplus
+renewable energy to the local power grid (Itexp,ESP ), selling the electricity
+to the prosumer (Its,ESP ) , while subtracting the import cost from the
+
+electric grid (Ctimp,ESP ) and buying cost from the prosumer (Ctb,ESP ).
+Objective function:
+∑N ∑T i,t
+i,t
+i,t
+i,t
+FESP =
+C
++I i,t
+(1)
+s,ESP + Iexp,ESP − Cb,ESP − Cimp,ESP
+i=1
+t=1 subsidy
+)
+(
+i,t
+i,t
+= α × Pi,t
+Csubsidy
+imp + Pexp
+
+3.3. Prosumer model
+
+(1.1)
+
+Prosumers’ benefit (Fprosumer ) is reflected in incomes for exporting
+
+i,t
+i,t
+Is,ESP
+= Pi,t
+imp × λs
+
+(1.2)
+
+surplus renewable energy to the ESP (Ii,t
+s,prosumer ), costs for importing the
+
+i,t
+i,t
+Iexp,ESP
+= Pi,t
+exp × FiT
+
+(1.3)
+
+nance cost for the ESS (Ci,t
+battery ), as shown in Equation (2).
+
+i,t
+t
+Cimp,ESP
+= Pi,t
+imp × ToU
+
+(1.4)
+
+i,t
+t
+Cb,ESP
+= Pi,t
+imp × λb
+
+(1.5)
+
+electricity shortage from the ESP (Ii,t
+b,prosumer ), operation and mainte­
+
+Objective function:
+∑N ∑T
+i,t
+i,t
+I i,t
+− Ib,prosumer
+− Cbattery
+Fprosumer =
+i=1
+t=1 s,prosumer
+
+i,t
+FiT i,t ≤ λi,t
+s ≤ ToU
+
+(1.6)
+
+i,t
+FiT i,t ≤ λi,t
+b ≤ ToU
+
+(1.7)
+
+∑T
+
+i,t
+t=1 λs
+
+T
+
+≤ λs
+
+T
+
+i,t
+Pi,t
+imp × λb
+
+(2.2)
+
+(
+)2
+(
+)
+i,t
+i,t
+i,t
+Cbattery
+= ae Pi,t
++ be Pi,t
+char + Pdisch
+char + Pdisch
+
+(2.3)
+
+t=1
+
+∑T
+t=1
+
+i,t
+where Pi,t
+imp and Pexp refer to the amount of import power from the local
+
+power grid and the export power to the local power grid at time step t,
+
+∑T
+
+i,t
+t=1 λb
+
+(2.1)
+
+i,t
+Ib,prosumer
+=
+
+(1.8)
+
+∑T
+
+i,t
+Pi,t
+exp × λs
+
+i,t
+Is,prosumer
+=
+
+s.t.
+
+(2)
+
+≤ λb
+
+i,t
+Pi,t
+char and Pdischar refer to the charging and discharging power of the
+battery at time step t. ae and be refer to charging/discharging coefficient.
+
+(1.9)
+
+i,t
+λi,t
+s and λb refer to the internal selling and buying price of the prosumer.
+Constraints for prosumers include energy balance constraints, de­
+mand response constraints and charging/discharging constraints.
+Energy balance constraints:
+Constraint (2.4) demonstrates the energy balance for the ICES, where
+total input power equals to the total output power.
+∫
+∫
+∫
+∫
+∫
+i,t
+i,t
+i,t
+Pi,t
+dt
++
+P
+dt
+=
+P
+dt
++
+P
+dt
++
+Pi,t
+(2.4)
+RE
+imp
+load
+loss
+exp dt
+
+i,t
+where Pi,t
+imp and Pexp refer to the amount of import power from the local
+
+power grid and the export power to the local power grid at time step t.
+i,t
+λi,t
+b is the internal buying price and λs is the internal selling price. λs and
+
+λb refer to the average internal trading price for selling and buying be­
+tween the ESP and prosumers, which are equal to the average of the ToU
+(time-of-use price) and FiT (grid feed-in tariff). α refers to the subsidy
+price. According to the data publicized by Guangdong Provincial
+Development and Reform Commission [47], from January to September
+in 2020, the response load of Guangdong Province is11.43 million kWh,
+and the total subsidy expenditure reached 1.74 million yuan, deducing
+to the average subsidy unit price at 0.152 CNY/kWh. To simultaneously
+guarantee the benefit of ESP and reduce cost of prosumers through the
+P2P transaction over the traditional P2G trading mode, subsidy price α is
+identified as 0.1 CNY/kWh after searching for the subsidy price within
+the range from 0.1 CNY/kWh to 0.15 CNY/kWh to guarantee the cost of
+ICES less than that in the traditional P2G trading.
+Constraints (1.6)-(1.9) represent internal price restrictions. In order
+to incentivize the prosumers’ motivation for P2P energy trading and
+prevent the direct transaction with local grid, internal trading price
+should be within the range between FiT and the external price. However,
+this leads to the cost payment of ESP during the transaction no matter
+whether buying from or selling to the prosumers. Extra subsidy is given
+to the ESP as financial compensation to support ESP profitable and
+incentivize its participation activity. As for the government, mainte­
+nance and operation cost for the ESS paid by prosumers is regarded as
+the income of the government to balance the subsidy expenses. Price
+signal determined by the ESP can be regarded as the tailored service
+
+i,t
+i,t
+where Pi,t
+RE , Pload , and PDR refer to the amount of the on-site renewable
+energy, original load consumption and the shifted load consumption
+i,t
+through DR strategies, Pi,t
+char , Pdischar refer to the charging and discharging
+
+i,t
+amount. Pi,t
+imp and Pexp refer to the import and export electricity with the
+
+local power grid. When the renewable energy is greater than the load
+consumption, ICES can decide whether to charge the battery or export
+the surplus energy to the local power grid. By contrast, when the
+renewable energy is less than the load consumption, ICES can decide
+whether to discharge from the battery or import the amount of the
+shortage energy from the local power grid.
+Demand response constraints:
+In this study, DR follows the peak-shaving and load-shaping strate­
+gies to realize the power stability and the grid protection. For the loadshifting demand response, it shaves the peak and fills the valley to
+reduce the fluctuation with constant total electricity demand as a prerequisite, as shown in Constraint (3.1).
+∑N ∑T i,t
+P =0
+(3.1)
+i=1
+t=1 DR
+
+6
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+as different followers to establish a leader–follower Stackelberg game
+model, which can be expressed as
+
+Table 1
+Parameters of the battery in the ESS [24].
+SOCmin
+0.1
+
+SOCmax
+
+Î⋅char
+
+1/ηdisch
+
+Battery capacity (kWh)
+
+Pmax
+char/disch (kWh)
+
+0.9
+
+0.95
+
+1.05
+
+800
+
+200
+
+G = {N; ρESP ; ρProsumer ; FESP ; FProsumer }
+
+Stackelberg game theory model contains three elements: partici­
+pants, strategies and revenue.
+
+i,t
+i,t
+− 0.2Pi,t
+load ≤ PDR ≤ 0.2Pload
+
+(3.2)
+
+i,t
+i
+Pi,t
+load + PDR ≤ Pload,max
+
+(3.3)
+
+(1) Participates: ESP and prosumers.
+
+N = {ESP, Prosumer1 , ⋯, Prosumeri }
+
+i,t
+Pi,t
+load refers to the original load consumption. Pload,max refers to load
+
+consumption of each prosumer at time step t.
+Constraints (3.2)-(3.3) formulate that 80 % of the load consumption
+is defined as the fixed load consumption that cannot be shifted, while the
+remaining 20 % can be shifted to the off-peak period [49]. Furthermore,
+in order to avoid the emerging peak, adjusted electricity demand after
+demand response should be less than the maximum original load
+consumption.
+As for the peak-shaving strategy, electricity demand is limited to a
+pre-specified value [50]. In this study, the load consumption should be
+reduced during the peak period, which is expressed as constraints (3.4)
+and (3.5).
+
+∑T
+t=1
+
+PtDR ≤ 0.05 ×
+
+Strategy of the prosumers (Follower) is the optimal power, including
+demand response and charging/discharging condition, which can be
+expressed as the vector form:
+)
+(
+(5.4)
+ρProsumer = PDR , Pchar/disch
+(3) Objective: Revenue of participants is their respective objective
+function.
+Before solving the Stackelberg equilibrium solution, it is necessary to
+prove its existence and uniqueness. Before proving the Stackelberg
+equilibrium, three theorems below should be satisfied:
+(1) Strategies set of the leader and the followers are compact, convex,
+and nonempty.
+(2) When the leader’s strategy is given, all followers exist a unique
+optimum solution.
+(3) When the strategy of the follower is given, the leader exists a
+unique optimum solution.
+The following process proves the unique Stackelberg equilibrium
+solution that satisfies the three theorems above for the leader–follower
+Stackelberg game theory model in this paper.
+(1) According to the demand response and charging/discharging
+mechanisms, both leader’s strategy and follower’s strategy satisfy con­
+straints. Therefore, each participant’s strategy set is compact, convex,
+and nonempty.
+(2) Prove that after the leader’s strategy is given, there exists a
+unique optimal solution for all followers with the minimum cost.
+First, the first-order partial derivatives of the objective function of
+the prosumer with respect to ICE are found as:
+
+(3.4)
+∑T
+t=1
+
+(3.5)
+
+Ptload
+
+where Pi,t
+DR refers to the shiftable load under peak shaving strategy, and
+
+Pi,t
+load refers to the original load consumption.
+According to a study [50], reduction amount in each time slot cannot
+exceed 20 % of the load, while the total reduction amount cannot exceed
+5 % of the total energy consumption according to the response target of
+5 % of the annual maximum load [48].
+Charging/discharging constraints:
+Charging/discharging process has been formulated below:
+SOCi,t × Cap = SOCi,t− 1 × Cap + ηchar × Pi,t
+char −
+
+1
+
+ηdisch
+
+× Pi,t
+disch
+
+(4.1)
+
+i,t
+where Pi,t
+char and Pdisch refer to charging and discharging power before
+being charged into battery and after being discharged from the battery.
+SOCi,t refers to the state of charge of battery in prosumer i at time step t.
+ηchar and ηdisch refer to the charging and discharging efficiency. Param­
+eters of the ESS in the Stackelberg game theory are summarized in
+Table 1 [24].
+Maximum charging/discharging power and the SOC in each time slot
+should be limited, which is restricted by Constraint (4.2) and (4.3),
+respectively.
+
+0 ≤ Ptchar/disch ≤ Pmax
+char/disch
+
+(4.2)
+
+SOCmin ≤ SOCt ≤ SOCmax
+
+(4.3)
+
+(5.2)
+
+(2) Strategies: Strategy of the ESP (Leader) is the buying and selling
+price in 24 h, which can be expressed as the vector form:
+(
+)
+ρESP = λs,ESP , λb,ESP
+(5.3)
+
+where Pi,t
+DR refers to the shiftable load under load shifting strategy, and
+
+PtDR ≤ 0.2 × Ptload
+
+(5.1)
+
+∂FProsumer
+= λts,prosumer − be − 2ae Ptbattery
+∂Ptbattery
+
+(6.1)
+
+(
+)
+∂F
+( Prosumer ) = 2αe Ptload + PtDR + βe − λtb,prosumer
+∂ Ptload + PtDR
+
+(6.2)
+
+Let the first-order partial derivatives equal to zero,
+
+∂2 FProsumer
+2
+
+∂(Ptbattery )
+
+= − 2ae
+
+∂2 FProsumer,b
+2
+
+∂(Ptload + PtDR )
+
+where Pmax
+char/disch refers to the maximum charging/discharging power.
+
+= − 2αe
+
+(6.3)
+
+(6.4)
+
+Since the cost coefficients (ae , αe ) are positive, the second-order
+partial derivatives are always less than zer0, so Ptbattery,0 and
+
+SOCmin and SOCmax refer to the lower and upper state of charge limi­
+tation of the battery.
+
+(Ptload,0 +PtDR,0 ) are the maxima value points. However, constrained by
+the upper and lower bounds of the strategy interval, the extrema value
+points may fall on the boundary of the interval when the price changes.
+Therefore, no matter how the power signal changes, the ICES has the
+unique optimum solution when the price is determined.
+(3) Prove that after the follower’s strategy is given, there exists a
+unique optimal solution for the leader.
+According to the above formula, the Hessian matrix of the leader’s
+
+3.4. Stackelberg equilibrium
+According to the above description of ICES, optimization of the
+prosumer is based on the price signal from ESP, and the optimization
+results will in turn affect the price offer. This energy trading process is
+consistent with the dynamic game situation of leader–follower structure.
+Therefore, ESP is considered as the leader, while prosumers are regarded
+7
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 4. Genetic algorithm quadratic programming process for Stackelberg game theory model.
+
+profit function is shown in:
+⎡
+⎤
+1
+−
+0
+⎢ 2a
+⎥
+e
+⎢
+⎥
+H=⎢
+⎥
+⎣
+1 ⎦
+0
+−
+2αe
+
+Stackelberg equilibrium. Assume that (ρ*ESP , ρ*Prosumer ) is the Stackelberg
+equilibrium solution, the following constraints are required:
+{
+(
+)
+(
+)
+FESP ρ*ESP , ρ*Prosumer ≥ FESP ρESP , ρ*Prosumer
+(
+)
+(
+)
+(8)
+FProsumer ρ*ESP , ρ*Prosumer ≥ FProsumer ρ*ESP , ρProsumer
+
+(7)
+
+When reaching the Stackelberg equilibrium, it is impossible for either
+participant to gain a greater benefit by unilaterally changing their
+strategy.
+
+It can be found that the Hessian matrix is negatively definite, so there
+are extrema (maximum) value points. When the follower takes other
+extreme value points, it can be proved that there is a unique optimal
+solution for the leader in the same way, and the proof is similar to the
+above process. In summary, the leader–follower Stackelberg game
+model proposed in this paper has a unique Stackelberg equilibrium.
+When all followers make the optimum response according to the leader’s
+strategy, and the leader accepts this response, the game reaches
+
+3.5. Model solving
+Traditional optimization methods require all participants to publish
+their detailed information to each other, such as load consumption,
+8
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+charging/discharging condition, utility preference, etc. However, in­
+formation is not transparent to each other in a competitive market, while
+information transparency cannot protect prosumers’ privacy. Therefore,
+with the support of the ESP, each prosumer can be optimized to avoid
+information leakage and effectively protect information privacy and
+security.
+The genetic algorithm quadratic programming (GA-QP) distributed
+equilibrium solving method is used for the bi-level Stackelberg game
+theory model. The algorithm process of the GA-QP is shown in the flow
+chart in Fig. 4. As a stochastic global search optimization method, ge­
+netic algorithm starts from a group of initial internal prices populations,
+and prosumer aggregators receive the price signal from the ESP and
+participate in the ICES. Afterwards, prosumers will obtain the optimal
+energy consumption profile, charging/discharging condition and power
+trading with the ESP, so as to calculate cost of prosumers based on both
+price and power signals. After going through random selection, cross­
+over, and mutation operations, the Stackelberg equilibrium is judged in
+each iteration. Finally, the objective function converges to reach the
+optimal results with the identified internal price. Optimal price and
+power condition in the upper level for this problem are identified as
+well. The genetic algorithm can reduce the solution complexity and
+improve the optimization-seeking ability. Given that the optimization
+objective of the prosumers is a quadratic function, the quadratic pro­
+gramming method can be used to solve the problem and improve the
+solution speed and accuracy. By embedding quadratic programming into
+the genetic algorithm, prosumers only need to accept the price signal
+from the ESP and provide feedback on their power signals on demand
+response, charging/discharging, and P2P energy trading. If participants
+obtain the same optimal strategy in two adjacent iteration times, pro­
+sumer and ESP’s objective functions during two consecutive iterations
+
+Table 2
+Case description.
+DR strategy
+
+Descriptions
+
+Case 1
+Case 2
+
+No
+Load-shifting
+Peak-shaving
+Load-shifting
+Peak-shaving
+
+Independent P2G trading without ESP and ESS
+Independent P2G trading with ESP and ESS
+
+Case 3
+
+Aggregated P2P trading with ESP and ESS
+
+∑T i,t
+Pimp
+SSR = 1 − ∑Tt=1 i,t
+P
+t=1 load
+
+(10.2)
+
+As for the environmental performance, net equivalent CO2 emission
+(ECE) is formulated as:
+)
+(
+∑T
+i,t
+(11)
+ECE =
+CEF × Pi,t
+imp − Pexp
+t=1
+where CEF is the equivalent CO2 emission factor of the grid, which is
+0.4263 kg CO2,e/kWh [52]. i refers to ith prosumer and t refers to tth time
+step. Positive ECE indicates that the CO2 emission of the building ac­
+tivity worsens the environment and accelerates climate issues. In
+contrast, negative ECE indicates that the building activity reduces car­
+bon emissions and delays climate change [53].
+The economic performance of ICES is evaluated by the net cost/
+benefit, which is the objective function of both prosumer and the ESP.
+Net cost/benefit of the government (NCgovernment ), and the local power
+grid (NIgrid ) can be expressed as:
+NCgovernment =
+
+(jth and (j-1)th iterations in in Equation (9)) do not change and are
+considered to be converged as the equilibrium point according to the
+previous definition of Stackelberg equilibrium. (ρ*ESP , ρ*Prosumer ), which
+(
+)
+j
+j
+equals to the ρESP , ρProsumer , is the optimal strategy under the Stack­
+elberg equilibrium.
+( j
+) (
+)
+1
+= (ρ*ESP , ρ*Prosumer )
+ρESP , ρjProsumer = ρj−ESP1 , ρj−Prosumer
+
+Case
+
+NI grid =
+
+∑Number of prosumers ∑T
+i=1
+
+∑Number of prosumers ∑T
+i=1
+
+i,t
+i,t
+Cbattery
+− Csubsidy
+
+(12.1)
+
+i,t
+i,t
+Eimp
+× ToU t − Eexp
+× FiT t
+
+(12.2)
+
+t=1
+
+t=1
+
+i,t
+where Ci,t
+battery and Csubsidy refer to the operation and maintenance cost
+
+for the ESS and subsidy for DR from government. Etexp and Etimp refer to
+
+grid export energy and grid import energy at time step t. FiTt and ToUt
+refer to grid feed-in tariff and time-of-use grid electricity price for the
+prosumer at time t.
+
+(9)
+
+(
+)
+(
+)
+j
+j
+j− 1 j− 1
+where ρESP , ρProsumer and ρESP , ρProsumer refer to strategies of the ESP
+
+3.7. Case analysis
+
+and prosumer at the jth and (j-1)th iterations. At the equilibrium point,
+no participant can individually change the strategy to obtain more
+benefits.
+In this study, the objective function of the follower (prosumer) is
+quadratic, and the constraints are linear, which belongs to the simplest
+nonlinear programming problem. Therefore, model in the lower level
+can be assumed as the quadratic programming problem solved by the
+Lagrange multiplier. CPLEX solver in MATLAB is used to deal with this
+problem.
+
+As shown in Table 2, three different cases have been comparatively
+studied to explore the influence of ESP, ESS, DR, and P2P energy trading.
+Case 1 operates under the traditional independent P2G trading without
+ESP and ESS. In the Case 1, surplus renewable energy is directly sold to
+the grid, while electricity demand in the shortage period is directly
+supplied by the local power grid. External trading price with the local
+power grid is the uniform pre-defined ToU price and FiT defined by the
+local government. Considering that most regions adopt P2G trading
+without ESP and ESS, the Case 1 is designed as the reference case for
+comparison purposes. The Case 2 is the independent P2G trading with
+ESP and ESS under different DR strategies. In the Case 2, surplus
+renewable energy can be stored in the ESS, instead of being directly sold
+to the grid. The demand shortage can be covered by the energy dis­
+charged from battery during the shortage period. In addition, internal
+trading prices between prosumers and ESP are optimally designed to
+maximize the economic benefits of both prosumers and ESP. Technoeconomic performances of ESS, DR and ESP are considered in the Case
+2 through the trading process. Contrary to the independent P2G trading
+in the Case 2, P2P energy trading among prosumers is considered in the
+Case 3 to promote the energy sharing, so as to improve the renewable
+penetration and grid independence. The three cases are specifically
+designed to study and compare the impact of P2P transactions, ESP and
+ESS on techno-environmental-economic performance of each stake­
+holder in a small-scale district community.
+
+3.6. Performance assessment criteria
+In this study, techno-economic-environmental performances of the
+ICES under different strategies will be evaluated. Specifically, selfconsumption ratio (SCR) and self-sufficiency ratio (SSR) are used to
+quantify renewable energy penetration and grid independence, respec­
+tively. SCR indicates the ratio of the renewable energy consumed by the
+prosumer to the total renewable energy generation, instead of being
+exported to the power grid [51]. SSR represents the proportion of the
+total load consumption covered by renewable energy, instead of being
+covered by energy imported from the power grid [51]. Mathematical
+formulas of SCR and SSR are expressed below:
+∑T i,t
+t=1 Pexp
+SCR = 1 − ∑T i,t
+(10.1)
+t=1 PRE
+9
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+4. Cost-benefit allocation and P2P pricing for participation
+equality of each stakeholder
+
+In addition to the energy quantity, lf can also characterize the impact
+of the peak power on the total cost. Therefore, costs during off-peak
+periods (Coff -peak ) and peak period (Cpeak ) are expressed as Equations
+(14.2) and (14.3)
+
+In respect to energy trading within the district community, each
+stakeholder (like each owner of office, hotel and residential buildings,
+energy sharing providers and utility grid) will care about its economic
+incomes or payment. Each stakeholder is willing to participate in the
+energy trading scheme only when they can get economic incomes or the
+income can be equally allocated among each stakeholder. In this section,
+different cost-benefit allocation models are developed and compared,
+with respect to P2P energy trading price and preference satisfaction. The
+objective is to identify the most optimal cost-benefit allocation model
+and attract each stakeholders’ participation willingness.
+
+Coff − peak = TC × lf ×
+Cpeak = TC × lf ×
+
+Tpeak
++ TC × (1 − lf )
+T
+
+(14.3)
+
+periods (Cipeak,P2P ), as shown in Equations (14.4) and (14.5)
+∫ t=off − peakperiod
+
+In this method, cost is allocated based on the number of prosumers in
+the community. It is considered as the simplest method to allocate the
+total costs evenly distributed to each prosumer. Cost allocated to each
+prosumer (Ci) in the ICES is formulated as:
+TC
+N
+
+(14.2)
+
+where TC refers to the total cost of ICES, Toff -peak and Tpeak refer to time
+durations for the entire off-peak periods and peak periods, while T refers
+to the total time duration during the simulation period.
+Based on above analysis, cost allocation of each prosumer under P2P
+trading are also distributed based on off-peak (Cioff -peak,P2P ) and peak
+
+4.1. Cost-benefit allocation and P2P pricing based on the number of
+prosumers
+
+Ci =
+
+Toff − peak
+T
+
+i
+Coff
+− peak =
+
+t=0
+
+∑N ∫ T
+
+∫ t=peakperiod
+i
+Cpeak
+=
+
+(13)
+
+Piload dt
+
+i,t
+i=1 t=1 Pload dt
+
+t=0
+∑N ∫ T
+i=1
+
+t=1
+
+Piload dt
+Pi,t
+load dt
+
+× Coff − peak
+
+× Cpeak
+
+(14.4)
+
+(14.5)
+
+where Toff -peak and Tpeak refer to time durations for the entire off-peak
+periods and peak periods, while T refers to the total time duration
+
+where TC is total cost, and N is the number of prosumers.
+This can be implemented without requiring any measuring equip­
+ment [54]. It is straightforward to understand and simple to compute.
+However, the most significant disadvantage is that it does not consider
+actual consumption and will lead to energy inequality, especially in
+cases where some prosumers consume too much energy while others
+consume very little energy.
+
+during the simulation period. Pi,t
+load refers to load power of prosumer i at
+tth time step.
+4.4. Cost-benefit allocation and P2P pricing based on symmetric Nash
+bargaining
+
+4.2. Cost-benefit allocation and P2P pricing based on load consumptions
+
+A well-designed incentive mechanism needs to have the following
+properties: individual rationality, feasibility, monotonicity, budget
+balance, and Pareto optimality [55]. Nash bargaining theory has above
+properties and can promise a fair incentive compensation scheme [56].
+Since all three prosumers in the ICES are assumed to have the same
+bargaining ability, symmetric Nash bargaining theory is used to incen­
+tivize the cost-benefit allocation.
+Symmetric Nash bargaining model for the cost-benefit allocation is
+calculated as:
+∑N
+ω
+i
+i
+Max : CostP2P =
+(CP2P
++ Callocation
+)
+(15)
+i=1
+
+In this approach, cost allocation is based on load consumption of
+each prosumer as a percentage of total energy consumption within a
+time period. Cost allocated to each prosumer (Ci ) in the ICES is formu­
+lated as:
+∫ T i,t
+TC ×
+Pload dt
+Ci = ∑N ∫ t=1
+(14)
+T
+i,t
+P
+i=1 t=1 load dt
+where TC is total cost, and N is the number of prosumers. T and Pi,t
+load
+refer to the operational time duration and the load power of prosumer i
+at time step t.
+
+s.t.
+i
+i
+i
+CP2P
++ Callocation
+≥ CP2G(ESPandESS)
+#
+
+4.3. Cost-benefit allocation and P2P pricing based on time-of-use energy
+
+∑N
+
+The pre-identified ToU energy pricing is to differentiate energy pri­
+ces between peak and off-peak hours. Rules for cost allocation follow
+that total cost is firstly divided into cost for peak hours and off-peak
+hours. Afterwards, cost allocation during peak hours and off-peak
+hours for each prosumer is then proportionally distributed based on
+their energy consumption. In multi-energy systems, generators are dis­
+patched according to dynamic demand at different times. It is therefore
+easy to calculate the costs incurred in different time periods from the
+actual operational situation. However, it is not easy to differentiate costs
+during the two periods in ICES, because energy generation by RESs is
+non-dispatchable. In this paper, costs are allocated to two periods by
+considering load factor, peak and off-peak time periods. lf is the load
+factor, defined as the ratio between average energy consumption to the
+peak demand, as shown in Equation (14.1):
+∑T t
+1
+P
+lf = T t=1 load
+(14.1)
+Ppeak
+
+i=1
+
+i
+Callocation
+=0
+
+(15.1)
+(15.2)
+
+where ω represents the contribution rate of each prosumer. Since
+contribution of each prosumer is assumed to be the same, ω equals to 13 as
+the symmetric Nash bargaining.
+4.5. P2P energy trading price and preference satisfaction
+Based on the cost-benefit allocation, net income from the P2P energy
+trading can be expressed as:
+NI P2P = IncomeP2P,allocated − IncomeP2GwithESP
+
+(16.1)
+
+where IncomeP2P, allocated and IncomeP2G with ESP refer to the re-allocated
+income of the P2P trading and the income of the P2G trading with the
+ESP.
+The trading price in the P2P energy trading can be expressed as:
+10
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 5. (a) Electricity demand and renewable energy generation; (b) grid import/export power of the hotel, office, and residential buildings. (Note: grid import/
+export power through traditional P2G trading (Case 1) is the difference between on-site renewable energy generation and electricity demand. Positive/negative
+values in Fig. 5(b) represent the grid export/import power.)
+
+NI i,t
+λiP2P = ∑T P2Pi,t
+t=1 PP2P
+
+5. Results and discussion
+
+(16.2)
+
+5.1. On-site renewable generations and energy consumptions in buildings
+
+After getting the P2P trading price, price-related constraints for each
+prosumer are considered as:
+
+i
+
+Three 30-floor high-rise buildings are included in the ICES, i.e.,
+hotel, office, and residential buildings in Guangzhou. After being
+designed by the building design code/standard [57–59], each building
+has its distinctive energy consumption characteristics on the hottest day
+based on the weather data from Meteonorm [60], which can be assumed
+as representative of community buildings [61]. Fig. 5(a) shows the
+electricity demand and on-site renewable energy generation of the hotel,
+office, and residential buildings to indicate their large spatial and tem­
+poral differences. Different buildings exhibit varying energy consump­
+tion behaviours with different peak value at different time step. For
+
+(16.3)
+
+λipro − γiP2P,i ≤ λiP2P
+i
+
+where Î»pro and Î»P2P refer to the Lagrange multiplier associated with the
+demand response (DR), charging/discharging amount and P2P trading
+amount.
+
+Fig. 6. Convergence of P2G trading (Case 2) under: (a) load-shifting and (b) peak-shaving strategies, and P2P trading (Case 3) (c) load-shifting and (d) peakshaving strategies.
+11
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 7. Impact of load-shifting strategy on electricity demand: (a) hotel, (c) office, and (e) residential buildings, and power interaction: (b) hotel, (d) office, and (f)
+residential buildings in the Case 2 (P2G with ESS and ESP trading mode). (Note: baseline refers to the electricity demand through traditional P2G trading (Case 1) as
+shown in Fig. 5 (a).)
+
+example, the peak value of electricity demand in the office building is at
+833 kW in the morning, while the peak value of electricity demand in the
+residential building is at 440 kW and hotel building is at 499 kW at
+night. The reason is that personnel activities in the office building pri­
+marily occur during the daytime, while activities of residential and hotel
+buildings mainly occur in the morning and evening.
+Fig. 5(b) shows the grid import/export power of hotel, office, and
+residential buildings through the traditional P2G energy trading. With
+the integration of the renewable energy, the maximum grid import
+power simultaneously changes with the variation of the renewable en­
+ergy generation. For example, in the office building, compared to the
+maximum grid import power at 839 kW at 10:00 AM without renewable
+energy (as shown in Fig. 5(a)), the maximum grid import power de­
+creases to 577 kW and the time is shifted to 14:00 PM (as shown in Fig. 5
+(b)). This is due to the renewable energy (at 247 kW) generated at 14:00
+PM, which partially covers the electricity demand at 824 kW (as shown
+in Fig. 5 (a)). Therefore, with the participation of the renewable energy,
+mutual influence between the electricity demand and renewable energy
+generation over time leads to the disparity in the supply–demand con­
+dition of the three buildings, which highlights the considerable potential
+for energy sharing to mitigate spatial and temporal mismatches in the
+
+supply–demand dynamics.
+5.2. Comparative analysis on algorithm convergence
+Traditional P2G trading between prosumers and local power grid has
+been shown above. In order to maximize the benefit of prosumers and
+energy sharing provider (ESP as the intermediary between prosumers
+and local power grid), optimal P2G and P2P energy trading with the ESP
+and ESS are identified based on the Stackelberg game theory model
+through genetic algorithm quadratic programming (GA-QP). Fig. 6
+shows the convergence process of the GA-QP for P2G and P2P trading
+under peak-shaving strategy and load-shifting strategy, respectively. As
+shown in Fig. 6, both the P2P and P2G trading converge within 150 it­
+erations. This indicates the feasibility of the GA-QP in optimal P2G and
+P2P energy trading processes.
+Furthermore, P2P energy trading (Case 3) converges more slowly
+with more iteration numbers than P2G (Case 2). For example, compared
+to the P2G trading with around 70 iteration times (as shown in Fig. 6 (a)
+and (b)), iteration of P2P trading reaches to 100 times (as shown in Fig. 6
+(c) and (d)). The reason is that, compared to P2G energy trading, P2P
+trading with both internal and external trading processes among
+12
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 8. Impact of peak-shaving strategy on electricity demand: (a) hotel, (c) office, and (e) residential buildings, and power interaction: (b) hotel building, (d) office
+building, and (f) residential building in the Case 2 (P2G with ESS and ESP trading mode). (Note: baseline refers to the electricity demand through traditional P2G
+trading (Case 1) as shown in Fig. 5(a).)
+
+prosumers results in heavier computational loads. Overall, the GA-QP
+significantly solves the P2G and P2P trading based on Stackelberg
+game theory model with good convergence characteristics and the
+collaborative optimization of each object.
+
+through P2G energy trading, respectively. From the prosumer’s
+perspective, DR strategies can effectively reduce the peak value of
+electricity demand during peak periods. For example, for both strate­
+gies, peak values of the electricity demand in hotel, office and residential
+buildings decrease from 440 to 396 kW by 10 % (as shown in Fig. 7(a)
+and Fig. 8(a)), from 839 to 755 kW by 10 % (as shown in Fig. 7(c) and
+Fig. 8(c)), and from 500 to 449 kW by 10 % (as shown in Fig. 7(e) and
+Fig. 8(e)), respectively. The reason for reduction on the maximum
+electricity demand is achieved by shifting a proportion of electricity
+demand from peak periods to off-peak periods, resulting in a more stable
+electricity demand by peak shifting and valley filling to mitigate grid
+congestion.
+Furthermore, Fig. 7(b)(d)(f) and Fig. 8(b)(d)(f) show the impact of
+load-shifting and peak-shaving strategies on power interaction with
+local power grid and ESS. Compared to the traditional P2G energy
+trading, ESS has been proven to be effective in reducing grid import
+power by discharging from the battery during high-demand periods. For
+instance, in the hotel building, compared to the traditional P2G trading
+with the maximum grid import power at 440 kW (as shown in Fig. 5(b)),
+P2G trading with ESS decreases the maximum grid import power to 344
+kW (reduced by 22 %) (as shown in Fig. 7(b)). The reason for the
+reduction of the grid import power is due to the battery discharging
+
+5.3. Performance assessment of the Stackelberg game theory model-based
+ICES
+In this section, techno-economic-environmental performances are
+comprehensively evaluated for the optimal energy dispatch strategy and
+price setting, including battery charging/discharging in ESS, DR stra­
+tegies (load-shifting and peak-shaving strategies), and internal trading
+price between prosumers and ESP. Multiple criteria include selfconsumption ratio (SCR) and self-sufficiency ratio (SSR) for technical
+performance, equivalent CO2 emission (ECE) for environmental per­
+formance, and cost/benefit of all participants for economic perfor­
+mance. Overall, the motivation of this section is to provide the
+performance assessment for the formulated energy trading network with
+ESP, concerning P2G/P2P energy interaction modes with different
+pricing and DR strategies.
+Fig. 7(a)(c)(e) and Fig. 8(a)(c)(e) depict the impact of load-shifting
+and peak-shaving strategies on the dynamic electricity demand
+13
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 9. Impact of load-shifting strategy on electricity demand: (a) hotel, (c) office, and (e) residential buildings, and power interaction:(b) hotel building, (d) office
+building, and (f) residential building in the Case 3 (P2P trading with ESS and ESP).
+
+power at 52 kW (as shown in Fig. 7(b)), and the DR strategy can further
+reduce the electricity demand by 44 kW (as shown in Fig. 7(a)). Overall,
+the implementation of DR strategies directly addresses grid congestion
+by reducing the electricity demand, while the integration of the ESS
+resolves temporal mismatches between on-site renewable energy and
+electricity demand to further alleviate grid power congestion. The
+combined effects of DR and ESS together contribute to the reliability and
+robustness of grid power stability.
+Based on the above analysis, despite the temporal mismatch being
+partially solved through DR strategies and ESS, spatial mismatch still
+needs to be addressed through P2P trading to further mitigate the grid
+pressure. Therefore, the impact of P2P energy trading on local energy
+sharing and grid power interaction will be analysed in this section.
+Fig. 9 and Fig. 10 demonstrate the impact of P2P energy trading
+(Case 3) on dynamic electricity demand and power interaction under
+load-shifting strategy and peak-shaving strategy, respectively. Although
+P2P energy trading does not further reduce the peak value of electricity
+demand from the user side, it does additionally contribute to decreasing
+the maximum grid import power through the support from other pro­
+sumers, especially for the office building (as the buyer in P2P trading
+among prosumers) that can utilize surplus renewable energy from hotel
+and residential buildings (as the seller in P2P trading). For instance, in
+the office building, compared to the P2G (Case 2) with the maximum
+
+grid import power at 514 kW (as shown in Fig. 7(b)), P2P trading (Case
+3) reduces the grid import power to 466 kW (reduced by 9.3 %) (as
+shown in Fig. 9(b)). The reason is that, according to the simulation re­
+sults, P2P energy trading supplies the surplus renewable energy at 72
+kW from hotel and residential buildings to the office building to reduce
+the grid import power of the office building. Overall, P2P energy trading
+promotes the direct utilization of the on-site renewable energy and
+improves the renewable penetration, which can address the spatial
+mismatch among prosumers to reduce the energy reliance on the local
+power grid.
+The previous section has covered the dynamic power interactions
+with the local power grid and ESS under different DR strategies. Fig. 11
+provides the impact of DR strategies on the total grid import and export
+energy, and Fig. 12 shows the technical performance to comprehen­
+sively evaluate the renewable penetration and grid independence based
+on the grid import/export energy (as shown in Fig. 11). Compared to the
+P2G energy trading, the P2P energy trading significantly enhances the
+self-consumption of renewable energy. For instance, under the loadshifting strategy, compared to the P2G energy trading with SCR at
+0.60, P2P energy trading further improves the SCR to 0.70 (as shown in
+Fig. 12(a)). The reason is that, compared to the P2G energy trading with
+total grid export energy at 8937 kWh, P2P energy trading reduces the
+total grid export energy to 6780 kWh (by 24 %) (as shown in Fig. 11(a)).
+14
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 10. Impact of peak-shaving strategy on electricity demand: (a) hotel, (c) office, and (e) residential buildings, and power interaction:(b) hotel building, (d) office
+building, and (f) residential building in the Case 3 (P2P trading with ESS and ESP).
+
+Furthermore, compared to the P2G energy trading, the P2P energy
+trading also significantly reduces the total grid import energy and en­
+hances the self-sufficiency of the ICES. For instance, under the loadshifting strategy, compared to the P2G energy trading with SSR at
+0.62, P2P energy trading further improves the SSR to 0.74 (as shown in
+Fig. 12(a)). The reason is that, compared to the P2G energy trading with
+total grid import power at 7610 kWh, P2P energy trading totally imports
+5269 kWh (reduced by 30.7 %) from local power grid (as shown in
+Fig. 11(a)).
+Furthermore, compared to the P2G trading, although P2P trading
+increases the self-sufficiency of the ICES as discussed above, individual
+self-sufficiency of hotel and residential buildings to cover their own
+electricity demands significantly decreases. From the individual
+perspective as shown in Fig. 12(b), compared to SSR of hotel building at
+0.79 and residential building at 0.64 through P2G trading, the P2P en­
+ergy trading will reduce the SSR to 0.48 for the hotel building and to
+0.62 for the residential building. The reason is that, compared to the
+total grid import energy of the hotel building at 1214 kWh and the
+residential building at 1859 kWh through P2G energy trading, the P2P
+energy trading increases the total grid import energy of the hotel
+building to 1600 kWh (by 31.8 %) and the residential building to 1981
+kWh (by 6.2 %), respectively (as shown in Fig. 11(a)).
+It should be noted that, in terms of hotel and residential buildings,
+
+the increased grid import energy is due to the decrease in battery
+charging amount in the ESS. Compared to the P2G trading with surplus
+renewable energy stored in the ESS for the self-sufficiency, P2P energy
+trading utilizes the surplus renewable energy to directly support the
+office building, instead of storing in the ESS. This is not beneficial to the
+hotel and residential buildings since they need to import more energy
+from the local power grid with less energy discharged from battery.
+Furthermore, in terms of the office building, compared to the
+increased grid import power of hotel and residential buildings with
+lower electricity price during off-peak periods, demand shortage period
+of the office building mainly occurs during peak periods with high
+electricity price. P2P energy trading can significantly reduce the grid
+import energy of the office building, as well as the total cost of the ICES.
+These adjustments compromise profits of hotel and residential buildings
+with more reduction in grid import energy of the office building (totally
+reduced by 2849 kWh) during peak periods, leading to the minimum
+collective cost of the ICES. Overall, compared to the P2G trading, P2P
+energy trading can effectively improve self-sufficiency and significantly
+reduce the total cost of the ICES. However, from the perspective of each
+individual householder, self-sufficiency of the energy sellers (e.g., hotel
+and residential buildings) is decreased, while the self-sufficiency of the
+energy buyer (e.g., office building) will be increased.
+Regarding the environmental performance, Table 3 lists the
+15
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 11. Total grid import and export energy: (a) load-shifting strategy; (b) peak-shaving strategy. (Note: ICES refers to the integrated community energy system
+including hotel, office, and residential buildings.)
+
+Fig. 12. (a) Self-consumption ratio (SCR) and self-sufficiency ratio (SSR) of the ICES; (b) SSR of each prosumer. (Note: ICES refers to the integrated community
+energy system including hotel, office, and residential buildings.)
+
+16
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Table 3
+Net power and equivalent CO2 emissions of each prosumer and ICES under DR strategies.
+Strategy
+Case
+
+Load-shifting strategy
+Case 1
+Case 2
+
+Hotel
+Office
+Residential
+ICES
+
+Net energy (kWh)/ECE (kg CO2,e)under load-shifting strategy
+− 1685/-718
+− 1885/-804
+− 1007/-429
+1650/703
+1714/731
+¡327/-139
+− 1993/-850
+− 2166/-923
+1183/504
+− 2028/-865
+− 2337/-996
+¡2517/-1073
+
+Peak-shaving strategy
+Case 1
+Case 2
+
+Case 3
+
+Case 3
+
+Net energy (kWh)/ECE (kg CO2,eunder peak-shaving strategy
+− 1685/-718
+− 1597/-681
+− 467/-199
+1650/703
+2177/928
+− 401/-171
+− 1993/-850
+− 1907/-813
+− 644/-275
+− 2028/-865
+− 1327/-566
+¡1512/-645
+
+(Note: Net energy refers to the difference between the total grid import energy and total grid export energy. Positive value of the net energy refers to the net grid import
+energy, and negative value of the net energy refers to the net grid export energy. Positive value of the ECE refers to the carbon emission, and negative value of the ECE
+refers to the carbon reduction.)
+
+assessment of equivalent CO2 emissions (ECE) during the operational
+stage. The role of the office building transforms from a carbon-positive
+building (under traditional P2G trading in the Case 1) to a carbonnegative building (under P2P energy trading in the Case 3). For
+instance, in the office building, compared to the traditional P2G energy
+trading with ECE at 703 kg, P2P energy trading reduces the ECE to − 139
+kg, leading to the net carbon reduction at 842 kg. The reduction of ECE is
+due to the role transformation of the office building from the net grid
+importer (net grid import energy at 1650 kWh) under the traditional
+P2G energy trading to the net grid exporter (net grid export energy at
+− 327 kWh) under the P2P energy trading.
+Moreover, in terms of P2P energy trading of the ICES, the loadshifting strategy shows a more obvious carbon reduction through than
+the peak-shaving strategy. Specifically, compared to the peak-shaving
+strategy with ECE at − 645 kg, the load-shifting strategy further re­
+duces the ECE to − 1073 kg. The reason is that the load-shifting strategy
+with the net grid export energy at − 2517 kWh exports more energy than
+the peak-shaving strategy with the net grid export energy at − 1512
+kWh. Therefore, from the environmental perspective, P2P energy
+trading with the load-shifting strategy can greatly reduce the energyrelated operational carbon emissions.
+The analysis above has evaluated the technical and environmental
+performance of the P2P energy trading. Cost-benefit of all participants,
+including the government, ESP, prosumers, and the local power grid,
+will be discussed from the economic perspective. Fig. 13 and Fig. 14
+show the internal trading price between ESP and prosumers under P2G
+trading and P2P energy trading, respectively. Compared with the P2G
+trading, P2P energy trading leads to a higher internal selling price than
+the Feed-in Tariff (FiT). Take hotel building for example, compared with
+the internal selling price of the hotel building at 0.435 CNY/kWh (as
+shown in Fig. 13(a)) through the P2G energy trading, the internal selling
+price of the hotel building increases to 0.6 CNY/kWh (as shown in
+Fig. 14(a)) at around 12:00 AM and 15:00 PM when the P2P energy
+process occurs. The reason is that ESP wants to attract prosumers to sell
+their surplus renewable energy to the ESP instead of participating P2P
+energy trading by increasing the selling price.
+Furthermore, during the demand shortage period, compared with the
+P2G energy trading, P2P energy trading results in a lower internal
+buying price than the Time-of-Use (ToU) price. For instance, in the office
+building, compared with the internal buying price at 1.2 CNY/kWh (as
+shown in Fig. 13(c)) through the P2G energy trading, P2P energy trading
+decreases the internal buying price to 0.65 CNY/kWh (as shown in
+Fig. 14(c)) at around 12:00 AM. The reason is that ESP wants to attract
+office building to buy electricity from the ESP instead of through the P2P
+energy trading by decreasing the buying price, since the energy demand
+of the office building reaches its peak at around 12:00 AM with
+maximum profit margin. Overall, the pricing strategy employed by the
+ESP does not exclusively benefit either prosumers or the ESP itself. This
+phenomenon serves as a vivid demonstration of the principles of game
+theory, in which both parties involved in a game relationship endeavour
+to prevent the continuous maximization of the other party’s interests.
+In terms of the cost-benefit of each participant, each participant’s
+revenue through different trading modes (as shown in Table 4) will be
+
+specifically discussed in this subsection. Although the revenue scenarios
+in Table 4 ensures the maximum profits for both the ESP and ICES, it is
+evident that the distribution of benefits is currently unfair, particularly
+for hotel and residential buildings. For example, compared with the
+benefit of hotel building at 219 CNY and residential building at 584
+CNY, P2P energy trading decreases the benefits of hotel and residential
+buildings to 42 CNY and 182 CNY, respectively, resulting in the un­
+fairness of hotel and residential buildings with less income after
+participating in P2P energy trading. The reason for this imbalanced or
+unfair benefit allocation is that P2P transactions only focused on
+reducing the overall cost by considering P2P electricity trading volumes,
+rather than considering the actual P2P transaction price. Overall,
+maximum overall benefits of ICES can not necessarily guarantee the fair
+profit distribution among prosumers, and P2P trading should strive to
+keep a balance between individual interest and overall benefits by
+enabling efficient resource allocation and fostering collaboration.
+Otherwise, the P2P energy sharing fails to be practically implemented
+due to the participation unwillingness of each stakeholder.
+Furthermore, the successful operation of the ESP and the active
+participation of prosumers in P2P trading heavily depends on severe
+fiscal spending provided by the government. For instance, under the P2P
+trading, the government requires to pay 910 CNY under load-shifting
+strategy and 1175 CNY under peak-shaving strategy for subsidy. This
+is due to the fact that, under the lower internal buying price than ToU
+price and higher internal selling price than FiT price, the ESP will suffer
+from economic losses if there is no any subsidy from the government.
+However, without these beneficial internal prices, prosumers are not
+willing to engage in P2P energy trading since they would not receive any
+benefits compared to the traditional P2G energy trading mode.
+Moreover, the implementation of P2P energy trading resulted in a
+significant decrease in revenue for the local power grid. For example,
+revenue of local power grid substantially decreased from 2394 CNY
+under traditional P2G energy trading to 687 CNY under load-shifting
+and 322 CNY under peak-shaving strategies through P2P energy
+trading. The reduction in revenue is due to the reduction of the grid
+import and export energy through P2P energy trading (as shown in
+Fig. 12). Overall, although the revenue of the local power grid reduces,
+intermittency and uncertainty of renewable energy generation with the
+great instability of the local power grid can be greatly alleviated, leading
+to a less security risk for the grid. Therefore, the reduced revenue with
+fewer transactions with the local power grid can be assumed as a pro­
+tection for the local power grid infrastructure to avoid grid congestion
+and fluctuation.
+5.4. Cost-benefit allocation for P2P energy trading price and preference
+satisfaction
+Regarding to the unfair cost-benefit allocation among each stake­
+holder in Table 4, this section aims to investigate the fair cost-benefit
+allocation among each stakeholder. Cost-benefit allocation and P2P
+pricing are introduced in Section 4 for participation equality of each
+stakeholder. The rational distribution based on different methods is
+shown in Table 5. Drawbacks of M1 to M3 lie in their failure to consider
+17
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 13. Real-time internal trading prices between the ESP and (a) hotel building, (c) office building and (e) residential building under load-shifting strategy; and (b)
+hotel building, (d) office building and (f) residential building under peak-shaving strategy through P2G trading (Case 2).
+
+equitable distribution, thereby neglecting to ensure the increased profit
+for each prosumer, and only M4 guaranteed the profit increase of each
+prosumer. For instance, hotel and residential buildings in M1 to M3 need
+to pay for extra cost (negative value in Table 4), while they can earn 219
+CNY and 584 CNY even through traditional P2G energy trading. This is
+due to the high dependence on the overall benefit in M1 to M3. In other
+words, individual revenues are in line with overall benefits in M1 to M3.
+This will greatly dampen prosumer’s enthusiasm for participating in the
+
+P2P energy trading. Thus, the utilization of the Nash bargaining (M4) for
+cost-benefit allocation is more reasonable since it ensures both the
+overall benefits and preservation of individual interests through fair
+allocation.
+Based on the allocation results from the Nash bargaining, results
+show that P2P energy trading price of the hotel, office and residential
+building can be defined as 0.42 CNY/kWh, 0.19 CNY/kWh and 0.36
+CNY/kWh under load-shifting strategy, while 0.59 CNY/kWh, 0.15
+18
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Fig. 14. Real-time internal trading prices between the ESP and (a) hotel building, (c) office building, and (e) residential building under load-shifting strategy; and (b)
+hotel building, (d) office building, and (f) residential building under peak-shaving strategy through P2P trading (Case 3).
+
+CNY/kWh and 0.46 CNY/kWh under peak-shaving strategy. P2P trading
+prices of the hotel and residential buildings are higher than the office
+building. This is reasonable since they comprise their interests with
+more grid import power in order to achieve the overall maximum benefit
+of ICES (as shown in Fig. 12 and has been discussed in more details in
+Section 5.3). P2P trading price for the office building is notably lower
+which can be assumed as compensation, since office building benefits
+the most in the P2P trading market.
+
+As for the preference satisfaction, Fig. 15 depicts the energy reallocation after considering the influence of P2P trading prices on P2P
+trading amounts. When the P2P transaction price of hotel (0.59 CNY/
+kWh) exceeds that of residential building (0.46 CNY/kWh), P2P trans­
+action amount automatically shifts towards the residential building,
+especially under the peak-shaving strategy. For example, when the P2P
+trading price is limited, P2P trading amount of the hotel building de­
+creases from 812 to 550 kWh (reduced by 32 %) under the load-shifting
+19
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+Table 4
+Cost-benefit of each participant under different trading modes and DR strategies.
+
+Case 1(Traditional P2G)
+Case 2 (P2G
+Loadwith ESS and
+shifting
+ESP)
+Peakshaving
+Case 3 (P2P)
+Loadshifting
+Peakshaving
+
+Prosumer（CNY)
+Hotel
+Office
+
+Residential
+
+Grid (CNY)
+Hotel
+Office
+
+Residential
+
+Sum
+(Grid)
+
+Government (CNY)
+Hotel
+Office
+Residential
+
+ESP (CNY)
+Hotel
+Office
+
+219
+292
+
+− 3197
+− 3160
+
+584
+632
+
+− 219
+− 384
+
+3197
+3324
+
+− 584
+− 490
+
+2394
+2450
+
+\
+− 272
+
+\
+− 639
+
+\
+− 601
+
+364
+
+\
+476
+
+\
+458
+
+457
+
+− 2812
+
+830
+
+− 300
+
+2943
+
+− 758
+
+1885
+
+− 519
+
+− 535
+
+− 579
+
+363
+
+404
+
+507
+
+− 312
+
+− 649
+
+2
+
+201
+
+580
+
+− 94
+
+687
+
+− 245
+
+− 307
+
+− 358
+
+355
+
+376
+
+450
+
+42
+
+− 672
+
+182
+
+− 96
+
+703
+
+− 285
+
+322
+
+− 321
+
+− 540
+
+− 314
+
+375
+
+508
+
+416
+
+Residential
+
+(Note: Positive value refers to the income and negative value refers to the expense.).
+
+varies significantly, which is strongly influenced by the P2P trading
+price. By analysing feedback from buyers and sellers in P2P energy
+trading, more targeted and effective P2P trading strategies can be
+developed, leading to a realignment for subsequent pricing decisions
+and a fair balance within the P2P trading market.
+
+Table 5
+Comparison on different cost-benefit allocation methods.
+Cost-allocation
+method
+
+DR strategy
+
+Hotel
+(CNY)
+
+Office
+(CNY)
+
+Residential
+(CNY)
+
+Method 1
+
+Loadshifting
+Peakshaving
+Loadshifting
+Peakshaving
+Loadshifting
+Peakshaving
+Loadshifting
+Peakshaving
+
+− 320
+
+− 320
+
+− 320
+
+− 149
+
+− 149
+
+− 149
+
+− 273
+
+− 440
+
+− 246
+
+− 127
+
+− 206
+
+− 115
+
+− 211
+
+− 649
+
+− 100
+
+− 94
+
+− 313
+
+− 41
+
+718
+
+− 2734
+
+1058
+
+888
+
+− 2564
+
+1228
+
+Method 2
+
+Method 3
+
+Method 4
+
+5.5. Research limitations and future outlooks
+Throughout the P2P energy trading with DR strategies and ESS for
+the distributed renewable energy system, prosumers will be more
+willing to participate in the energy sharing framework. Moreover,
+frontier guidelines are provided on dynamic P2P energy pricing and
+dispatchment for synergistic P2P sharing strategies, energy manage­
+ment, and economic policy for utility grid, energy sharing provider, and
+even P2P prosumers, so as to promote low-carbon and sustainable
+transformations. However, some limitations still should be noticed:
+(1) Pre-regulatory roles and uncertainty analysis on renewable en­
+ergy are lacked in this research. Demand response strategies in this
+research only explored their impacts on energy management and price
+setting. Hour-ahead or day-ahead considering climatic conditions and
+renewable energy generation prediction has not been considered for preregulatory controls [62]. Meanwhile, deterministic demand and pro­
+duction are simulated without considering stochastic load and uncer­
+tainty in renewable generations;
+(2) Government financial support for the self-adaptive trading mode
+and static pricing mechanism should be further explored for a more
+comprehensive analysis. Compared to static power pricing with more
+stable and consistent economic incentives and higher market trans­
+parency, dynamic power price significantly increases the complexity
+and potential uncertainty. Although the current economic model relies
+on government support to sustain ESP’s profits and encourage prosumer
+participation in the early developmental stage, a more sustainable
+approach is needed for the long-term P2P pricing mechanism instead of
+
+(Note: cost-benefit allocation methods 1–4 are applied for P2P trading in Case
+3.).
+
+strategy and from 794 to 544 kWh (reduced by 32 %) under peakshaving strategy. However, for the residential building, P2P trading
+amount increases from 873 to 1017 kWh (increased by 16 %) under the
+load-shifting strategy and from 823 to 1023 kWh (increased by 24 %)
+under the peak-shaving strategy, respectively. The decrease in P2P
+trading amount of the hotel building is due to the higher P2P trading
+price (0.59 CNY/kWh), while the increased P2P trading amount of
+residential building is attributed to the lower P2P trading price (0.46
+CNY/kWh), leading to office building with more energy trades with
+residential building. Overall, despite of the relative stable of the overall
+P2P trading amount, redistribution of internal P2P trading amount
+
+Fig. 15. Impact of the P2P trading price on the P2P energy amount under: (a) the load-shifting strategy; (b) the peak-shaving strategy.
+20
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+
+purely depending on the local government.
+(3) Computational complexity with increasing prosumers will
+become computationally challenging. As the number of prosumers in­
+creases in reality, power and information transmission (such as price,
+power signals, etc.) will also increase, leading to the convergence
+problem of the genetic algorithm with higher iteration times.
+Based on the above limitations, future research will focus on:
+(1) uncertainty prediction on load consumption and renewable
+generation for more accurate predictions and robust operation, so as to
+improve the reliability and effectiveness of the ESP;
+(2) sustainable business models and static pricing mechanisms to
+reduce dependence on government support and incentivize prosumers’
+participation for a more stable trading market;
+(3) alternative optimization techniques and scalable computational
+methods like deep learning to enable accurate and efficient handling of
+the increasing computational demands.
+
+possibility for P2P energy trading operation. Compared to traditional
+P2G energy trading, P2P energy trading integrated with DR strategies
+and ESS under the control of the ESP can enhance the techno-economicenvironmental performances. Results can provide frontier guidelines on
+the P2P trading design for prosumers, policy makers, and energy man­
+ager to collaboratively develop a more sustainability energy system.
+CRediT authorship contribution statement
+Xiaojun Yu: Conceptualization, Data curation, Formal analysis,
+Investigation, Methodology, Resources, Software, Writing – original
+draft. Deng Pan: Conceptualization, Data curation, Formal analysis,
+Investigation, Methodology, Resources, Writing – review & editing.
+Yuekuan Zhou: Conceptualization, Data curation, Formal analysis,
+Supervision, Methodology, Writing – review & editing.
+Declaration of competing interest
+
+6. Conclusions
+
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+
+In this study, Stackelberg game theory-based P2P energy trading
+market is established in the ICES to explore the P2P energy trading
+mechanism. In order to promote active participation, P2P energy trading
+prices are determined by fair cost-benefit allocation based on the
+maximum total income of ESP and minimum total cost of prosumers.
+Moreover, prosumers’ preference satisfaction on the P2P trading price is
+also discussed to incentivize their motivation to participate in P2P en­
+ergy trading. It has been proved that P2P energy trading demonstrates
+superior performance across techno-environmental-economic aspects.
+Main conclusions are summarized as follows:
+(1) Compared with the traditional P2G energy trading, P2P energy
+trading shows superiorities in improving techno-economicenvironmental performances. P2P energy trading under the peakshaving strategy reduces the grid import power by 47 % (from 9945
+kW to 5269 kW). Meanwhile, P2P energy trading improves the selfconsumption ratio (proportion of the renewable energy consumed
+within the system) from 0.46 to 0.70, and the self-sufficiency ratio
+(proportion of the electricity demand covered by renewable energy)
+from 0.5 to 0.74. Moreover, compared with the traditional P2G energy
+trading with − 865 kg equivalent CO2 emission (ECE), the P2P energy
+trading can reduce ECE to − 1073 kg, leading to over 24 % reduction in
+carbon emissions.
+(2) The implementation of P2P energy trading can reduce the cost of
+prosumers and contribute to the grid power stability, while the cost
+decreasing magnitude depends on the peak-shaving strategy and the
+load-shifting strategy. With the customized internal trading price be­
+tween prosumer and ESP, 2394 CNY is paid to the local power grid via
+the traditional P2G energy trading, while cost of prosumers is decreased
+to 959 CNY and 448 CNY under the peak-shaving strategy and the loadshifting strategy, respectively. From grid’s perspective, although the
+revenue reduces, grid congestion caused by the intermittency and un­
+certainty of the renewable energy generation can be greatly alleviated
+with a relatively stable operation condition.
+(3) Based on the Nash bargaining, P2P energy trading prices of hotel,
+office, and residential building are identified as 0.59 CNY/kWh, 0.15
+CNY/kWh, and 0.46 CNY/kWh. When the preference satisfaction is
+considered, P2P trading amounts of hotel building totally decreased by
+262 kWh and 250 kWh under the load-shifting and peak-shaving stra­
+tegies, while P2P trading amount of residential building increased by
+144 kWh and 187 kWh, respectively. Re-allocation amount of P2P in­
+ternal trading amount is closely linked to the trading price, revealing
+that the prosumers’ preference satisfaction is inclined towards pur­
+chasing energy from lower trading prices. This provides the subsequent
+pricing guidance for the P2P energy trading.
+Overall, the spatio-temporal dissimilarity between the load con­
+sumption and renewable energy generation and complementarity of the
+load consumption characteristics among prosumers provide the
+
+Acknowledgement
+This work was supported by National Development and Reform
+Commission (2023-Dual Carbon-3), Natural Science Foundation Project
+(General Project)-Guangdong Basic and Applied Basic Research Fund
+(2414050003253), Regional joint fund youth fund project
+(2022A1515110364, P00038-1002), Guangdong Basic and Applied
+Basic Research Foundation 2023 (2023A04J1035, P00121-1003), Joint
+Funding of Institutes and Enterprises in 2023 (2023A03J0104, P000541003,1004), Green Tech Fund in the Hong Kong Special Administrative
+Region ‘Developing low-cost PEM electrolysis at scale by optimizing
+transport components and electrode interfaces’ (GTF202220034). This
+work is also supported/funded by the Guangzhou-HKUST(GZ) Joint
+Funding Program (No. 2024A03J0630). HKUST(GZ)-enterprise coop­
+eration project (R00017-2001), HKUST(GZ)-enterprise cooperation
+project ‘Research on Development of Vehicle-City-Network and Electric
+Vehicle Charging Pile Industry’ (R00114-2001). HKUST(GZ)-enterprise
+cooperation project (R00017-2001), HKUST(GZ)-enterprise cooperation
+project ‘Optimization Design of Proton Exchange Membrane Fuel Cell
+Plate’ (R00072-2001), HKUST(GZ)-enterprise cooperation project
+‘Next-generation radiant cooling for built environment’ (R00079-2001).
+This research is supported by The Hong Kong University of Science and
+Technology (Guangzhou) startup grant (G0101000059). This work was
+also supported in part by the Project of Hetao Shenzhen-Hong Kong
+Science and Technology Innovation Cooperation Zone (HZQB-KCZYB2020083).
+References
+[1] B. Jiang, Z.Q. Sun, M.Q. Liu, China’s energy development strategy under the lowcarbon economy, Energy 35 (11) (2010) 4257–4264.
+[2] Y. Zhou, Worldwide carbon neutrality transition? Energy efficiency, renewable,
+carbon trading and advanced energy policies, Energ. Rev. 2 (2) (2023) 100026.
+[3] Y. Zhou, Low-carbon transition in smart city with sustainable airport energy
+ecosystems and hydrogen-based renewable-grid-storage-flexibility, Energ. Rev. 1
+(1) (2022) 100001.
+[4] Y. Zhou, A co-simulated material-component-system-district framework for
+climate-adaption and sustainability transition, Renew. Sust. Energ. Rev. 192
+(2024) 114184.
+[5] Y. Zhou, S. Zheng, J. Lei, A cross-scale modelling and decarbonisation
+quantification approach for navigating Carbon Neutrality Pathways in China,
+Energ. Convers. Manage. 297 (2023) 117733.
+[6] C.S. Wang, C.X. Lv, P. Li, G.Y. Song, S.Q. Li, X.D. Xu, J.Z. Wu, Modeling and
+optimal operation of community integrated energy systems: A case study from
+China, Appl. Energy 230 (2018) 1242–1254.
+[7] Y. Zhou, Transition towards carbon-neutral districts based on storage techniques
+and spatiotemporal energy sharing with electrification and hydrogenation, Renew.
+Sust. Energ. Rev. 162 (2022) 112444.
+
+21
+
+X. Yu et al.
+
+Solar Energy 270 (2024) 112388
+[34] Z. Li, L. Wu, Y. Xu, L. Wang, N.J.A.E. Yang, Distributed tri-layer risk-averse
+stochastic game approach for energy trading among multi-energy microgrids, Appl.
+Energy 331 (2023) 120282.
+[35] S. Mohagheghi, F. Yang, B. Falahati, Impact of demand response on distribution
+system reliability, IEEE Power and Energy Society General Meeting (2011) 1–7.
+[36] Y. Zhou, Demand response flexibility with synergies on passive PCM walls, BIPVs,
+and active air-conditioning system in a subtropical climate, Renew. Energ. 199
+(2022) 204–225.
+[37] A. Asadinejad, K. Tomsovic, Optimal use of incentive and price based demand
+response to reduce costs and price volatility, Electr. Pow. Syst. Res. 144 (2017)
+215–223.
+[38] A.G. Kök, K. Shang, Ş.J.M.S. Yücel, Impact of electricity pricing policies on
+renewable energy investments and carbon emissions, Manag. Sci. 64 (1) (2018)
+131–148.
+[39] T. Lohmann, S. Rebennack, Tailored Benders Decomposition for a Long-Term
+Power Expansion Model with Short-Term Demand Response, Manag. Sci. 63 (6)
+(2017) 2027–2048.
+[40] K. Herter, Residential implementation of critical-peak pricing of electricity, Energy
+Policy 35 (4) (2007) 2121–2130.
+[41] N. Liu, X.H. Yu, C. Wang, C.J. Li, L. Ma, J.Y. Lei, Energy-Sharing Model With PriceBased Demand Response for Microgrids of Peer-to-Peer Prosumers, IEEE Trans.
+Power Syst. 32 (5) (2017) 3569–3583.
+[42] L. Ma, N.A. Liu, J.H. Zhang, W. Tushar, C. Yuen, Energy Management for Joint
+Operation of CHP and PV Prosumers Inside a Grid-Connected Microgrid: A Game
+Theoretic Approach, IEEE Trans. Ind. Inf. 12 (5) (2016) 1930–1942.
+[43] T. Morstyn, A. Teytelboym, M.D.J.I.T.o.S.G. McCulloch, Bilateral contract
+networks for peer-to-peer energy trading, IEEE Transactions on Smart Grid 10(2)
+(2018) 2026-2035.
+[44] J.C. Do Prado, W.J.I.T.o.S.E. Qiao, A stochastic bilevel model for an electricity
+retailer in a liberalized distributed renewable energy market, IEEE Transactions on
+Sustainable Energy 11(4) (2020) 2803-2812.
+[45] W. Tushar, T.K. Saha, C. Yuen, T. Morstyn, M.D. McCulloch, H.V. Poor, K.L. Wood,
+A motivational game-theoretic approach for peer-to-peer energy trading in the
+smart grid, Appl. Energy 243 (2019) 10–20.
+[46] S.A. Beebe, S.J. Beebe, M.V. Redmond, T. Geerinck, L. Salem-Wiseman,
+Interpersonal communication: Relating to others, Allyn and Bacon, 2002.
+[47] J. Liu, J. Hua, H. Fu, H. Li, Q. Yang, Research on the Source of Subsidies Funds for
+Power Demand Response, IOP Conference Series: Earth and Environmental
+Science, IOP Publishing (2021) 042107.
+[48] China Southern Power Grid, Announcement of Guangdong Power Grid Co., Ltd. on
+the Price of Purchasing Electrician Commercial Users in April (2022).
+[49] D. Huang, R. Billinton, W. Wangdee, Effects of demand side management on bulk
+system adequacy evaluation, 2010 IEEE 11th International Conference on
+Probabilistic Methods Applied to Power Systems, IEEE (2010) 593-598.
+[50] C.W.J.P.o.t.I. Gellings, The concept of demand-side management for electric
+utilities, Proceedings of the IEEE 73(10) (1985) 1468-1470.
+[51] S.Q. Zheng, G.S. Huang, A.C.K. Lai, Techno-economic performance analysis of
+synergistic energy sharing strategies for grid-connected prosumers with distributed
+battery storages, Renew. Energy 178 (2021) 1261–1278.
+[52] J.Q. Li, Y.M. Wei, L.C. Liu, X.Y. Li, R. Yan, The carbon footprint and cost of coalbased hydrogen production with and without carbon capture and storage
+technology in China, J. Clean. Prod. 362 (2022) 132514.
+[53] W. Xu, Y. Xie, D. Xia, L. Ji, G. Huang, A multi-sectoral decomposition and
+decoupling analysis of carbon emissions in Guangdong province, China, Journal of
+Environment Management 298 (2021) 113485.
+[54] N. Li, R.A. Hakvoort, Z.J.A.E. Lukszo, Cost allocation in integrated community
+energy systems—Performance assessment, Appl. Energy 307 (2022) 118155.
+[55] J. Guo, Y. Li, Y. Shen, J. Yu, Y.J.I.T.o.P.S. Chen, A novel incentive mechanism for
+CCHP-based microgrids in spinning reserve, IEEE Transactions on Power Systems
+36(3) (2020) 1697-1712.
+[56] Y. Chen, B. Park, X. Kou, M.Q. Hu, J. Dong, F.X. Li, K. Amasyali, M. Olama,
+A comparison study on trading behavior and profit distribution in local energy
+transaction games, Appl. Energy 280 (2020) 115941.
+[57] Design code for residential buildings.GB 50096-2011. https://www.mohurd.
+gov.cn/gongkai/fdzdgknr/tzgg/201110/20111026_206878.html.
+[58] Standard for design of office building. JGJ/T67-2019. http://www.gov.cn/
+zhengce/zhengceku/2020-04/03/content_5498866.htm.
+[59] Code for design of hotel building. JGJ62-2014. https://www.mohurd.gov.cn/
+gongkai/fdzdgknr/tzgg/201409/20140902_224213.html.
+[60] Meteonorm, 2003. Meteonorm. Retrieved from: https://meteonorm.com/.
+[61] D. Pan, X. Yu, Y. Zhou, Cradle-to-grave lifecycle carbon footprint analysis and
+frontier decarbonization pathways of district buildings in subtropical Guangzhou,
+China, Journal of Cleaner Production 416 (2023) 137921.
+[62] M. Kumar, S. Chandel, A. Kumar, Performance analysis of a 10 MWp utility scale
+grid-connected canal-top photovoltaic power plant under Indian climatic
+conditions, Energy 204 (2020) 117903.
+
+[8] Z. Liu, Y. Zhou, J. Yan, M. Tostado-Véliz, Frontier ocean thermal/power and solar
+PV systems for transformation towards net-zero communities, Energy 284 (2023)
+128362.
+[9] B.P. Koirala, E. Koliou, J. Friege, R.A. Hakvoort, P.M. Herder, Energetic
+communities for community energy: A review of key issues and trends shaping
+integrated community energy systems, Renew. Sustain. Energy Rev. 56 (2016)
+722–744.
+[10] T. Lehtola, A. Zahedi, Solar energy and wind power supply supported by storage
+technology: A review, Sustainable Energy Technol. Assess. 35 (2019) 25–31.
+[11] M.Y. Suberu, M.W. Mustafa, N. Bashir, Energy storage systems for renewable
+energy power sector integration and mitigation of intermittency, Renew. Sustain.
+Energy Rev. 35 (2014) 499–514.
+[12] S. Tajjour, S. Chandel, A comprehensive review on sustainable energy management
+systems for optimal operation of future-generation of solar microgrids, Sustainable
+Energy Technol. Assess. 58 (2023) 103377.
+[13] T. Morstyn, N. Farrell, S.J. Darby, M.D. McCulloch, Using peer-to-peer energytrading platforms to incentivize prosumers to form federated power plants, Nat
+Energy 3 (2) (2018) 94–101.
+[14] Y. Zhou, Peer-to-peer energy sharing and trading of renewable energy in smart
+communities ─ trading pricing models, decision-making and agent-based
+collaboration, Renew. Energ. 207 (2023) 177–193.
+[15] Y. Zhou, Sustainable energy sharing districts with electrochemical battery
+degradation in design, planning, operation and multi-objective optimisation,
+Renew. Energ. 202 (2023) 1324–1341.
+[16] Z. Shi, R. Wang, T. Zhang, Multi-objective optimal design of hybrid renewable
+energy systems using preference-inspired coevolutionary approach, Sol. Energy
+118 (2015) 96–106.
+[17] P.-A. Parent, P. Mirzania, N. Balta-Ozkan, P. King, Post subsidy conditions:
+Evaluating the techno-economic performance of concentrating solar power in
+Spain, Sol. Energy 218 (2021) 571–586.
+[18] A.A. Khan, S. Razzaq, A. Khan, F. Khursheed, Owais, HEMSs and enabled demand
+response in electricity market: An overview, Renew. Sustain. Energy Rev. 42
+(2015) 773–785.
+[19] S.J. Deng, L. Xu, Mean-risk efficient portfolio analysis of demand response and
+supply resources, Energy 34 (10) (2009) 1523–1529.
+[20] N. Spiliopoulos, I. Sarantakos, S. Nikkhah, G. Gkizas, D. Giaouris, P. Taylor,
+U. Rajarathnam, N. Wade, Peer-to-peer energy trading for improving economic and
+resilient operation of microgrids, Renew. Energy 199 (2022) 517–535.
+[21] C. Rahul, S. Chandel, Performance analysis outcome of a 19-MWp commercial
+solar photovoltaic plant with fixed-tilt, adjustable-tilt, and solar tracking
+configurations, Prog. Photovolt. Res. Appl. 30 (2022) 27–48.
+[22] A.D. Farooqui, M.A.J.C.A.S.M. Niazi, Game theory models for communication
+between agents: a review, Complex Adaptive Systems Modeling 4(1) (2016) 1-31.
+[23] C. Long, Y. Zhou, J.Z. Wu, A game theoretic approach for peer to peer energy
+trading, Renewable Energy Integration with Mini/microgrid 159 (2019) 454–459.
+[24] G.G. Li, Q.Q. Li, W. Song, L.H. Wang, Incentivizing distributed energy trading
+among prosumers: A general Nash bargaining approach, Int. J. Electr. Power
+Energy Syst. 131 (2021) 107100.
+[25] L. Han, T. Morstyn, M.J.I.T.o.P.S. McCulloch, Incentivizing prosumer coalitions
+with energy management using cooperative game theory, IEEE Transactions on
+Power Systems 34(1) (2018) 303-313.
+[26] A. Paudel, K. Chaudhari, C. Long, H.B.J.I.T.o.I.e. Gooi, Peer-to-peer energy trading
+in a prosumer-based community microgrid: A game-theoretic model, IEEE
+Transactions on Smart Grid 66(8) (2018) 6087-6097.
+[27] W.P. Lee, D.J. Han, D. Won, Grid-Oriented Coordination Strategy of Prosumers
+Using Game-theoretic Peer-to-Peer Trading Framework in Energy Community,
+Appl. Energy 326 (2022) 119980.
+[28] M. Tostado-Véliz, A.R. Jordehi, S.A. Mansouri, Y. Zhou, F. Jurado, A local
+electricity-hydrogen market model for industrial parks, Appl. Energ. 360 (2024)
+122760.
+[29] Y. Zhou, X. Liu, A stochastic vehicle schedule model for demand response and grid
+flexibility in a renewable-building-e-transportation-microgrid, Renew. Energ. 221
+(2024) 119738.
+[30] R. Jing, M.N. Xie, F.X. Wang, L.X. Chen, Fair P2P energy trading between
+residential and commercial multi-energy systems enabling integrated demand-side
+management, Appl. Energy 262 (2020) 114551.
+[31] B. Pickering, R. Choudhary, District energy system optimisation under uncertain
+demand: Handling data-driven stochastic profiles, Appl. Energy 236 (2019)
+1138–1157.
+[32] R.J. Yan, J.J. Wang, S.K. Lu, Z.R. Ma, Y. Zhou, L.D. Zhang, Y.L. Cheng, Multiobjective two-stage adaptive robust planning method for an integrated energy
+system considering load uncertainty, Energ. Buildings 235 (2021) 110741.
+[33] M. Tostado-Véliz, A.R. Jordehi, S.A. Mansouri, F.J.A.E. Jurado, Day-ahead
+scheduling of 100% isolated communities under uncertainties through a novel
+stochastic-robust model, Appl. Energy 328 (2022) 120257.
+
+22
+
+

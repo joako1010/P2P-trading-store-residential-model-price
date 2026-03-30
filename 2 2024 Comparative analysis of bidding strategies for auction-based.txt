@@ -1,0 +1,1670 @@
+Energy 291 (2024) 130211
+
+Contents lists available at ScienceDirect
+
+Energy
+journal homepage: www.elsevier.com/locate/energy
+
+Comparative analysis of bidding strategies for auction-based local energy
+markets
+Joel David Schölzel ∗, Sarah Henn, Milena Tings, Rita Streblow, Dirk Müller
+RWTH Aachen University, E.ON Energy Research Center, Institute for Energy Efficient Buildings and Indoor Climate, Mathieustrasse 10, 52074 Aachen, Germany
+
+ARTICLE
+
+INFO
+
+Keywords:
+Community-based energy trading
+Auction-based local energy market
+Bidding strategies
+Prosumer
+Distributed energy resources
+
+ABSTRACT
+In view of the ongoing integration of distributed energy resources (DERs) and energy storage into the energy
+system, conventional consumers are transitioning into prosumers and flexumers. Local energy markets (LEMs)
+enables these end users to trade electricity directly with each other in order to obtain lower energy prices
+and to increase the local self-consumption. Since bidding strategies have a decisive impact on efficient
+trading in auction-based LEMs, the comparison and consistent evaluation of bidding strategies is an important
+research area. As novelty we propose an uniform evaluation methodology keeping all market features equal
+except the used bidding strategy. For the first time we evaluate a device-oriented (DO) strategy including an
+incentive price signal with a zero-intelligence (ZI) strategy, a learning-intelligence (LI) strategy employing the
+modified Roth–Erev learning algorithm. As evaluation we analyze the resulting market trading with various key
+performance indicators (KPIs), which consider both cost savings and local energy supply. Our findings reveal
+that the chosen bidding strategy has a decisive impact on cost savings and the distribution of gains between
+the buyer and seller side. In a photovoltaic (PV) and combined heat and power (CHP) scenario with different
+technology penetrations, the end users’ gains attain the highest values for the DO bidding strategy with 7909
+e and 16454 e. Also the average market clearing prices are for the DO bidding strategy the highest with
+0.269 e/kWh for the and 0.3032 e/kWh, which implies that the seller side predominantly obtains the gains.
+
+1. Introduction
+1.1. Promoting the integration of distributed energy resources
+Due to the energy transition, devices such as PV, CHP systems,
+heat pumps (HP), thermal energy storage (TES) and battery storage
+(BAT), as well as electric cars, are increasingly installed in buildings
+and neighborhoods. Consequently, the decentralization of energy supply is increasing, which requires a coordinated integration of locally
+generated heat and electricity [1]. This transformation converts the role
+of the end user away from pure consumer to prosumer or flexumer.
+Prosumers are private end users who independently generate electrical
+energy through their own devices. In addition to self-consumption,
+prosumers can also feed the generated electricity into the electricity
+grid and receive a fixed feed-in tariff. Flexumers deliver flexibility to
+the distribution grid. This flexibility can be provided on the generation
+and demand sides, e.g. through flexible operation of consumer devices
+such as HPs, or through the utilization of energy storages. By providing
+flexibility to the grid and feeding in self-produced electricity, the role
+of the end users changes from passive energy consumers to active
+participants in the energy system [2].
+
+Nevertheless, end users currently have to accept fixed tariffs that
+are set in contracts. LEMs allow the end user to actively participate
+in the energy market by trading their energy with flexible prices.
+The energy trading can consist of the provision of surplus electricity
+generation or flexible demand. In LEMs, pricing is determined by the
+market design and the market participants’ bids. Thus the end users
+can achieve financial savings and gains by marketing their flexible
+capacity and self-generated electricity [3]. Consequently, profitable
+market trading motivates the further integration of DERs by creating
+financial incentives, which can ultimately also support the acceleration
+of the energy transition [4]. Besides these financial benefits, the need
+for further grid expansion, as well as the risk of distribution grid
+bottlenecks, get reduced by using the generated energy directly in the
+local neighborhood [5]. One possible trading form on a LEM is auctionbased market trading [6]. In an auction-based market, an allocation
+process is executed for the acquisition of a commodity, in which certain
+participants are chosen for trading based on their bids. Consequently,
+trading volume and price are determined within a competition between
+the participants [7].
+
+∗ Corresponding author.
+
+E-mail address: joel.schoelzel@eonerc.rwth-aachen.de (J.D. Schölzel).
+https://doi.org/10.1016/j.energy.2023.130211
+Received 11 July 2023; Received in revised form 21 November 2023; Accepted 29 December 2023
+Available online 4 January 2024
+0360-5442/© 2024 Elsevier Ltd. All rights reserved.
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+c
+CH
+ch
+d
+dch
+dom
+e
+el
+fl
+imp
+inj
+loss
+max
+min
+OH
+PH
+s
+signal
+sold
+total
+traded
+
+Nomenclature
+Abbreviations
+BAT
+BEMS
+BES
+BOI
+CHP
+COP
+D
+DCF
+DER
+DHW
+DO
+ER
+HP
+KPI
+LEM
+LI
+PV
+S
+SCF
+SH
+SOC
+TES
+ZI
+
+Battery storage
+Building energy management system
+Building energy system
+Boiler
+Combined heat and power
+Coefficient of performance
+Consumer
+Demand-cover-factor
+Distributed energy resources
+Domestic hot water
+Device-oriented
+Electric rod
+Heat pump
+Key performance indicator
+Local energy market
+Learning-intelligence
+Photovoltaic
+Supplier
+Supply-cover-factor
+Space heating
+State of charge
+Thermal energy storage
+Zero-intelligence
+
+Energy Directive (RED II) [8] describes the right of prosuming within
+Renewable Energy Communities (REC). In addition to the right to generate renewable energies, store and sell surplus electricity production,
+this refers in particular to the right to share renewable energy generated
+within a REC. Sharing of renewable energies can be performed for
+example via peer-to-peer trading or rather on LEMs [9]. Members of
+RECs can be households, public authorities including municipalities,
+and small and medium-sized enterprises [8]. Due to the definition
+of RECs, these members must be geographically close to each other.
+Within the communities energy transactions are exempt from network
+charges [10]. Furthermore, no levies or additional charges must be
+payed which cannot be justified by incurred costs [8]. In recent years,
+new business models have been developed within energy communities
+based on these directives. [10] identifies eight potential energy community business model archetypes. One of these business model archetypes
+for energy communities are LEMs. Within this context, the analysis and
+evaluation of bidding strategies in auction-based local energy markets
+are pivotal for various reasons, including price settlement and market
+efficiency [6]. The selection of an effective bidding strategy is of
+paramount importance achieving cost savings for end users but and
+ensuring the equitable distribution of these savings among them [11].
+The paper is structured as follows: Section 1.2 provides a literature
+overview of LEM designs and several bidding strategies. In Section 1.3
+we highlight the paper’s goal and analyze the LEM model’s features. In
+Section 2 we discuss the implemented market design, the operational
+optimization method of the building energy systems (BESs), and the
+investigated bidding strategies and scenarios. The scenarios are then
+evaluated and discussed in Section 3. We conclude our work in Section 4 with a summary of the main conclusions and recommendations
+for further research.
+
+Greek symbols
+𝛼
+𝛽
+𝜂
+
+Dimensionless power
+Dimensionless energy
+Efficiency
+
+Symbols
+b
+C
+g
+K
+L
+m
+m
+n
+P
+p
+Q
+q
+R
+T
+t
+w
+X
+F
+
+Bid
+Costs
+Propensity
+Set of prices
+Electrical load within neighborhood
+Index of consumer
+Index of market agents
+Index of supplier
+Electrical power
+Price
+Thermal energy
+Quantity
+Market outcome
+Temperature
+Time
+Probability of a bid price
+Average gain
+Electrical feed-in within neighborhood
+
+Subscripts
+air
+bought
+
+Carnot
+Control horizon
+Charging
+Demand
+Discharging
+Domestic
+Equilibrium
+Electrical
+Flow temperature
+Imported
+Injected
+Energy loss
+Maximum
+Minimum
+Overlap horizon
+Prediction horizon
+Supply
+Signal
+Sold electricity
+Total electricity
+Traded electricity
+
+1.2. Literature overview
+Outdoor temperature
+Bought electricity
+
+In general, LEM within neighborhoods can be categorized according
+to their level of centralization. There are three possible market designs:
+centralized, distributed and decentralized [12,13].
+In a centralized market, a central controller manages energy sharing
+within the neighborhood. It directly communicates with each BES,
+overseeing end-user device operations. Following the calculation and
+
+In the future, the legal framework for implementing LEM may improve significantly. As part of the Clean Energy Package 2019, Energy
+Communities were defined by the European Union. The Renewable
+2
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+strategy is considered as a reference, respectively lower bound, for
+other bidding strategies. Also Lin et al. [27] investigated different
+bidding strategies in a LEM with double-sided auction. Again the ZI
+bidding strategy is used as reference and compared with three gametheoretical approaches. In both studies, the results show that ZI bidding
+strategy achieves the lowest market efficiency in terms of energy costs
+and energy exchange.
+In [5] a modified Roth–Erev reinforcement learning algorithm is
+implemented in the context of a double-sided, closed-book auction with
+uniform pricing as the market clearing mechanism. The basic idea
+of the modified Roth–Erev reinforcement learning algorithm is that
+actions with a positive outcome get strengthened, whereas actions with
+a negative outcome should be dismissed. The reinforcement learning is
+combined with a demand response algorithm which causes load shifting
+on an individual level. With the Roth–Erev learning algorithm, individual households are able to achieve promising economic benefits. Higher
+levels of demand response improve the market outcome and increase
+the self-sufficiency of the households. This learning-intelligence (LI)
+bidding strategy is also applied in [11,28] with promising results in
+energy trading.
+In [29] a continuous double-sided auction is applied with a payas-bid pricing scheme. In this case reinforcement learning is used for
+the bidding strategy. In addition to the market outcome, the associated states of solar irradiation and PV generation are also considered
+in the learning process. In summary, the study shows that market
+trading is beneficial for both prosumers and consumers in terms of selfconsumption and savings. However, the LI bidding strategy achieves
+only slightly better results than the zero-intelligent strategy.
+El-Baz et al. [22] describe a double-sided auction with fast clearing mechanism and bidding rules in order to reduce the computational power and waiting times during data communication. A deviceoriented (DO) bidding strategy is introduced for several devices like
+electric vehicles, CHPs and CHP taking into account the electrical
+power, the heat generation and the state of charge (SoC) of energy
+storages. Summarizing, the results show that the offered market model
+including the device-oriented bidding strategies almost doubles selfconsumption and all market participants benefit financially from energy trading.
+Zhou et al. [17] implemented a peer-to-peer energy market with
+three different internal price signals. The price signal is calculated
+by a coordinator agent based on the submitted bids and sent to the
+prosumer agents. With the price signal the prosumer agents adjust the
+price and energy quantity of their bids. In order to achieve convergence
+in trading, this process is repeated until the bids stay equal or a fixed
+number of iterations has been reached. The used mechanisms to calculate the price signal were supply–demand-ratio, mid-market rate and
+bill sharing mechanisms which mainly differ in terms of their iterative
+pricing. The results show that the iterative use of each price signal
+leads to a better overall performance compared to the conventional case
+where prosumers have fixed prices with the retailer.
+
+execution of energy sharing, the controller allocates neighborhood
+costs and revenue among end users based on predefined rules of
+cost distribution [14]. In a decentralized market, peers communicate
+directly within a connected neighborhood without a central controller.
+The building energy management system (BEMS) exercises full control
+over end-user devices. Costs arise from bilateral market trading among
+end users [12,13]. In [15], for example, a multi-agent system (MAS)
+employs a coalition mechanism for direct energy trading among end
+users, ensuring autonomous energy management for individual prosumers. In a distributed market, a coordinator facilitates energy trading
+influencing the operation of end users’ devices solely through price
+signals. Limited information, including tradeable energy quantities and
+prices, is shared with the coordinator by end users. Using various
+features and pricing schemes, the coordinator regulates the final energy trading [12,16]. Despite a hierarchical information exchange, all
+building energy management systems (BEMSs) operate autonomously
+in decision-making [17].
+Within these different categories of markets and levels of centralization auctions can be divided into different terminologies. These
+include whether the auction is open-cry or sealed-bid and whether it is
+one-sided or two-sided [18]. In an open-cry auction, each participant
+has all the information about the other bids, whereas in a sealedbid auction, only the auctioneer has the information about the bids.
+In [19], market agents negotiate directly with each other and therefore
+each market agent has information on all other bids on the market. In
+contrast, in [20] only the auctioneer has access to all generated bids.
+The auctioneer determines the equilibrium price with the information
+of these bids. In one-sided auctions, either only the buyers or only the
+sellers place their bid on the market [21]. In contrast, in two-sided
+auctions, buyers and sellers compete at the same time with their bids
+to trade a commodity [22].
+Trading transactions occur continuously or are time-discrete. In
+continuous trading, market clearing is performed immediately as soon
+as two matching bids are found. In time-discrete markets, bids are
+submitted until a fixed closing time and the market is cleared at
+defined time intervals [23].The market clearing can be iterative or oneshot. One-shot means that the market clearing is executed once and
+the not traded bids are rejected. In iterative procedures, the bids are
+traded in several rounds and adjusted if they were not traded [24].
+Various auction procedures can be selected to allocate energy quantities
+and to set pricing mechanisms for market clearing. The main types
+are Uniform Pricing Auction (UPA), Pay-as-Bid Auction (PABA), and
+Vickrey Auction. For two-sided auctions, UPA and PABA are commonly
+used. In UPA, winners pay the same market clearing price (MCP),
+promoting marginal costs and social welfare maximization [25].
+In addition to the market clearing rules, the outcome of each auction
+is also determined by the bidding strategies. Bidding strategies are
+used to determine the respective bids of the participants. For financially successful participation in an auction-based market, submitting
+competitive bids is essential. However, the market participants have
+neither knowledge nor time to engage in trading activities themselves.
+Therefore, the operation of an automated bidding process is necessary.
+Hence, there is a need to identify reliable bidding strategies that ensure
+the creation of financial incentives for the market participants while
+respecting the available time and computational power [12].
+The trading benefit of auction-based LEMs depends highly on the
+bidding behavior of the participants. Therefore various bidding strategies can be applied and the range of bidding strategies with different
+functional mechanisms is wide. For example, some strategies take into
+account the behavior of other market participants, while others try
+to draw conclusions for future price developments from past market
+rounds. Other strategies only consider the technical parameters of the
+devices or simply randomly choose the bid pricing [26].
+Mengelkamp et al. [11] evaluated and compared two different
+market designs as well as two bidding strategies. One bidding strategy
+is the zero-intelligence (ZI) which selects random bid prices. The ZI
+
+1.3. Contribution
+While most papers concentrate on comparing LI bidding strategies
+with ZI bidding strategies, to the author’s best knowledge, there is no
+evaluation and comparison of DO bidding strategies, which consider
+the use of operational flexibilities in response to a price signal. To fill
+this research gap, we provide an auction-based local energy market
+with different, modular selectable bidding strategies and the implementation of an evaluation methodology with economic and energetic
+KPIs. We implement a distributed local energy market characterized by
+the decentralized operation of the BES. This decentralization empowers
+an autonomous decision-making process for device operation. In the
+auction process, an auctioneer collects all bids, maintaining sole access
+to energy quantities and prices. A two-sided auction mechanism with
+uniform pricing for market clearing is used. Both the collection of
+3
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+bids and the execution of trading transactions occur in a time-discrete
+manner. The market clearing is executed as a one-shot process, whereby
+unsuccessful bids are rejected. In this manner, all market characteristics
+remain constant except the modular selectable bidding strategies. This
+establishes the groundwork for a novel evaluation methodology that
+exclusively assesses the impact of bidding strategies on the market
+outcome, isolating this factor from other market variables.
+We summarize the main contributions of this study regarding the
+evaluation of bidding strategies with the following points:
+• A detailed comparison and evaluation of a DO bidding strategy
+with ZI and LI bidding strategies to identify efficient bidding
+strategies for LEMs. The evaluation is based on several KPIs
+such as the accumulated gain, the market clearing prices, the
+total costs, the traded bids and the overlap between demand and
+generation within the neighborhood.
+• Implementation of a price signal which ensures the activation
+of flexibilities and thus facilitates local energy balancing. In this
+way, the market coordinator informs the participants of an expected future price trend that BEMS use to manage their flexible
+devices.
+• An adjustment of the device operation depending on the market outcome of each trading round. Rejected bids result in the
+usage of available storage capacities and the non-traded energy
+quantities determine the operational adjustment.
+
+Fig. 1. Structure of the implemented LEM and exchange of information.
+
+2.2. Operational optimization method
+2.2.1. Workflow and operational adjustment within rolling horizon approach
+To solve the optimization problems a rolling horizon method is implemented. The rolling horizon method divides the problem temporally
+into several subproblems. The subproblems have a prediction horizon
+with 𝑛PH time steps. Within 𝑛PH all data are given with the assumption
+of perfect foresight.
+The overall workflow of the market process is presented in Fig. 2.
+The algorithm starts by loading the annual time series of simulated
+demands and forecasted weather data as well as the parameters of
+the devices. Afterward, the objects of the BES for the decentralized
+operation optimizations and the market agents for the bidding are created. Due to the applied rolling horizon, the total number of necessary
+optimizations and market rounds is determined by the number of time
+steps within the scheduling horizon. Each market process starts with the
+operational optimizations, with the length of the prediction horizon.
+The operational data of 𝑛CH like the initial SoC and powers serve as
+input data for the bidding strategies. Regardless of the selected bidding
+strategy, the bid quantity results directly from the operational optimization. Solely the determination of the corresponding bid price varies
+between the different strategies explained in 2.3. After computing the
+bids, they are collected on the LEM. The market is cleared according
+to the UPA explained in Section 2.1. End users whose bids have been
+rejected have to adjust the previously optimized operation and cover
+their demands through the storage systems. In the case that market
+trading does not satisfy a bid with not-shiftable demand or supply, the
+superordinate grid level serves as a backup. The corrected SoCs serve
+as initial values for the next prediction horizon. Finally, the price signal
+for the next 𝑛CH is calculated according to Eq. (24).
+
+2. Methodology
+In Section 2.1 an overview of the underlying market model and its
+characteristics is given. Afterward, the underlying optimization method
+of the BES and the three investigated bidding strategies are introduced
+in Sections 2.2 and 2.3. Finally, we present the investigated scenarios
+in 2.5 and KPIs used for the comparative analysis in 2.4.
+2.1. Market design
+In this work, a LEM with a hierarchical structure is investigated.
+Fig. 1 shows the structure of the LEM. It consists of two levels, the
+market platform and the operating system. Consequently, each end user
+has an autonomous market agent. The market agent uses the optimized
+operation schedule to create bids depending on the applied bidding
+strategy. The operating schedule of a household is determined by a
+BEMS which has control over the entire devices.
+Each market agent submits its bid on the market where trading
+quantity and trading price are determined according to the UPA. After
+the market clearing, the auctioneer sends a feedback to the participants.
+This feedback includes the traded amount of electricity and the corresponding price. Depending on the bidding strategy, also a price signal
+can be sent.
+The auction is designed in a double-sided manner. Thus, both buyers
+and sellers submit their bids simultaneously on the market. A market
+agent has only access to its own bid. Consequently, buyers and sellers
+submit sealed bids. Moreover, the auction is time discrete and only one
+market clearing is performed per time period.
+In this work, we apply for market clearing the UPA. This algorithm
+identifies a market equilibrium, which determines the cleared quantity
+𝑞e and the MCP 𝑝MCP . The intersection of the supply and demand step
+functions defines this equilibrium. To obtain these step functions, the
+buying bids 𝑏𝑑,𝑚 = (𝑝𝑑,𝑚 , 𝑞𝑑,𝑚 ) of the consumers 𝐷 = (1, 2, 3..., 𝑚) and
+the selling bids 𝑏𝑠,𝑛 = (𝑝𝑠,𝑛 , 𝑞𝑠,𝑛 ) of the supplier 𝑆 = (1, 2, 3..., 𝑛) get
+arranged according to the offered prices in the form of a descending
+and an ascending curve. The bids whose energy quantities are within
+the cleared quantity get traded. The feedback to the consumers and
+supplier includes the respective trading volume and the trading price
+𝑝MCP .
+
+2.2.2. Building energy systems
+Each BEMS optimizes its consumption or feed-in profile for defined
+observation periods. The following data are required for the calculation
+of the mixed-integer linear program (MILP).
+• Domestic electricity demand 𝑃dom
+• Domestic hot water 𝑄̇ DHW and space heating demand 𝑄̇ SH
+• Electrical generation of the PV 𝑃PV
+• Outdoor temperature 𝑇air
+• Energy prices or price signal 𝑝̂signal
+4
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+Fig. 2. Workflow of the market process.
+
+The objective function of each BEMS is the minimization of the
+operational costs incurred from the purchasing electricity and gas
+minus the revenues for feed-in (Eq. (1)).
+∑
+𝑚𝑖𝑛 𝐶BES = 𝛥𝑡 ⋅
+(𝑝gas ⋅ 𝑃gas,t + 𝑝̂signal,t ⋅ 𝑃imp,t − 𝑝̂signal,t ⋅ 𝑃inj,t )
+(1)
+
+𝑄̇ ER,min ≤ 𝑄̇ ER,t ≤ 𝑄̇ ER,max
+
+(5)
+
+𝑄̇ BOI,min ≤ 𝑄̇ BOI,t ≤ 𝑄̇ BOI,max
+
+(6)
+
+𝑡∈𝑛PH
+
+The electrical power of the HP is calculated according to Eq. (7).
+
+As explained in detail in Section 2.3.3, the price signal 𝑝̂signal takes
+into account the participants’ future bid prices and bid quantities.
+Accordingly, the implementation of the price signal in the objective
+function is only useful if the bid prices are functions of the predictive
+operating mode and SoCs of the BES devices. Note that 𝑝̂signal does not
+correspond to the final price, which only occurs after market trading.
+𝑃imp,t and 𝑃inj,t represent the submitted electricity quantity-bids to be
+bought or sold.
+Because of the random and learning selection of bid prices in the ZI
+and LI bidding strategies, the price signal is avoided in the objective
+function (Eq. (2)) of the operational optimization when using these
+bidding strategies.
+∑
+𝑚𝑖𝑛 𝐶BES = 𝛥𝑡 ⋅
+(𝑝gas ⋅ 𝑃gas,t + 𝑝max ⋅ 𝑃imp,t − 𝑝min ⋅ 𝑃inj,t )
+(2)
+
+𝑃HP,t =
+
+𝑄̇ HP,t
+
+(7)
+
+𝐶𝑂𝑃t
+
+The coefficient of performance is calculated for each time step as a
+function of the flow temperature and the outdoor temperature as seen
+in (8).
+𝐶𝑂𝑃t = 𝜂c ⋅
+
+𝑇f l
+𝑇f l − 𝑇air,t
+
+(8)
+
+For hygienic reasons, the domestic hot water must be heated from
+𝐷𝐻𝑊 = 60◦ C. HPs maximally provide heat at
+𝑇in𝐷𝐻𝑊 = 10◦ C to 𝑇out
+𝐷𝐻𝑊
+◦
+𝑇min
+= 35 C. The remaining heat demand to raise the temperature
+up to 60 degrees is provided by the EH. In Eq. (9), the heat provided
+by the ER is calculated.
+
+𝑡∈𝑛PH
+
+𝐷𝐻𝑊 − 𝑇 𝐷𝐻𝑊
+𝑇out
+min
+
+In the following, all characteristics of the BES are introduced. The
+thermal output of the HP, the CHP, the boiler (BOI) and the electric rod
+(ER) are always between the following limits according to Eqs. (3)–(6).
+
+𝑄̇ ER,t =
+
+𝑄̇ HP,min ≤ 𝑄̇ HP,t ≤ 𝑄̇ HP,max
+
+(3)
+
+𝑄̇ ER,t = 𝑃ER,t ⋅ 𝜂ER,th
+
+𝑄̇ CHP,min ≤ 𝑄̇ CHP,t ≤ 𝑄̇ CHP,max
+
+(4)
+
+The charging and discharging of the TES are represented with
+Eqs. (11) and (12).
+
+𝐷𝐻𝑊 − 𝑇 𝐷𝐻𝑊
+𝑇out
+in
+
+⋅ 𝑄̇ DHW,t
+
+(9)
+
+The current required by the heating rod results from the efficiency
+of the component and is calculated in Eq. (10).
+
+5
+
+(10)
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+𝑄̇ ch,t = 𝑄̇ CHP,t + 𝑄̇ BOI,t + 𝑄̇ ER,t + 𝑄̇ HP,t
+
+(11)
+
+𝑄̇ dch,t = 𝑄̇ SH,t + 𝑄̇ DHW,t
+
+(12)
+
+each LI agent 𝑖 now holds a propensity 𝑔𝑖,𝑝 (𝑡) for each of the possible
+prices 𝑝 of 𝐾. Every market round, the agent calculates a probability
+distribution from the set of propensities using (17).
+𝑔𝑖,𝑝,𝑡
+𝑤𝑖,𝑝,𝑡 = ∑𝐾
+(17)
+𝑝 𝑔𝑖,𝑝,𝑡
+
+This results in the energy balance Eq. (13) for the TES.
+
+1
+
+𝑆𝑜𝐶TES,t+1 = 𝑆𝑜𝐶TES,t ⋅ 𝜂TES,loss + 𝑑𝑡 ⋅ (𝑄̇ ch,t ⋅ 𝜂TES,ch −
+
+𝑄̇ dch,t
+𝜂TES,dch
+
+)
+
+The probability 𝑤𝑖,𝑝 (𝑡) for a market agent 𝑖 to bid a certain price 𝑝
+in a market round 𝑡 is equal to the propensity of this price divided by
+the sum of the propensities for all possible prices 𝐾. The bid price 𝑝
+is then chosen in accordance with the probability distribution. In the
+first market round, the propensity for each possible price is equal. After
+each market round, the agents evaluate the respective market outcome
+and update the propensities according to (18).
+{
+𝑅𝑡 ⋅ (1 − 𝑒𝑥𝑝) + 𝑔𝑖,𝑝,𝑡 ⋅ (1 − 𝑟𝑒𝑐) , if 𝑝𝑡 = 𝑝𝑡−1
+(18)
+𝑔𝑖,𝑝,𝑡+1 =
+𝑒𝑥𝑝
+𝑔𝑖,𝑝,𝑡 ⋅ |𝐾|−1
++ 𝑔𝑖,𝑝,𝑡 ⋅ (1 − 𝑟𝑒𝑐) , else
+
+(13)
+
+The corresponding energy balance equation for the BAT is shown in
+(14).
+𝑆𝑜𝐶BAT,t+1 = 𝑆𝑜𝐶BAT,t ⋅ 𝜂BAT,loss + 𝑑𝑡 ⋅ (𝑃BAT,ch,t ⋅ 𝜂BAT,ch −
+
+𝑃BAT,dch,t
+𝜂BAT,dch
+
+) (14)
+
+The electricity balance of the BES is given by Eq. (15).
+𝑃imp,t +𝑃PV,t +𝑃CHP,t +𝑃BAT,dch,t = 𝑃inj,t +𝑃HP,t +𝑃ER,t +𝑃dom,t +𝑃BAT,ch,t (15)
+
+The propensity 𝑔𝑖,𝑝,𝑡+1 of a market agent 𝑖 for a possible price 𝑝 in
+the next market round 𝑡 + 1 depends on the propensity for this price
+in the last market round 𝑔𝑖,𝑝,𝑡 . The influence of the past propensities is
+limited by the recency parameter 𝑟𝑒𝑐. The experimentation principle is
+implemented through the parameter 𝑒𝑥𝑝 which ensures that the agent
+does not fixate on one price too quickly without testing other options.
+Nicholaisen et al. [31] modified the Roth–Erev algorithm to include
+updating the propensities in response to a market round where the bid
+of the respective participant is not traded at all, as this also counts as
+an unfavorable outcome. The market outcome of the previous market
+round is represented by 𝑅𝑡 . The Eqs. (19) and (20) show the calculation
+of 𝑅𝑡 for the selling and buying participants respectively. Prosumers
+that need to buy energy in one market round and sell surplus generation
+in another have two separate sets of propensities.
+
+2.3. Investigated bidding strategies
+In this section, the three investigated bidding strategies are described. A ZI bidding strategy is presented in 2.3.1. It serves as a lower
+benchmark for the DO and the LI bidding strategies explained in 2.3.2
+and 2.3.3. In all three cases, the bids contain price and trading quantity.
+2.3.1. Zero-intelligence bidding strategy
+With the ZI bidding strategy, each market agent randomly chooses
+one price 𝑝 of the set of possible prices 𝐾 for the bid. In consequence,
+the same bidding strategy is applied by all agents, regardless of the
+devices and whether the market agent sets supply or demand bids. The
+possible discrete prices are within the set 𝐾 from 𝑝min to 𝑝max to with
+a step size 𝑠.
+𝐾 = [𝑝𝑚𝑖𝑛 , 𝑝𝑚𝑖𝑛 + 𝑠, … , 𝑝𝑚𝑎𝑥 − 𝑠, 𝑝𝑚𝑎𝑥 ]
+
+𝑅d,t = 𝑞bought,t ⋅ (𝑝max − 𝑝MCP,t )
+
+(16)
+
+(19)
+
+For each buying participant 𝑅d,t represents the costs saved through
+market trading in the corresponding market round. Here, 𝑞bought,t represents the quantity traded by the participant on the LEM and 𝑝MCP,t
+is the corresponding MCP. When the bid was not successful, then
+𝑞bought = 0. The evaluation for selling participants is performed according to Eq. (20).
+
+In literature, this strategy often represents a lower benchmark for
+bidding strategies [5,30].
+2.3.2. Learning-intelligence bidding strategy
+Through the progress in the field of machine learning in recent
+years, new possibilities for the development of bidding strategies
+emerged. As shown in Section 1.2, several reinforcement learning algorithms have been developed. By learning from historical data, future
+chances of successful market trading increase. The modified Roth–Erev
+learning intelligence algorithm has proven successful in a variety of
+studies on LEMs and is therefore analyzed in this work [11,28,31,32].
+The Roth–Erev algorithm is a reinforcement learning model, in
+which the basic idea describes that actions leading to favorable results
+should be chosen more often in future decisions. The propensity for
+this action is reinforced through the reward in the form of a positive
+outcome. However, actions that led to unprofitable results should
+not be repeated and the propensity for such actions decreases. This
+principle is known in psychology as the law of effect. An additional
+principle is the power law of practice which states that learning curves
+are initially steep while they flatten over time. Roth and Erev [33]
+developed an algorithm combining both principles and also addressing
+two further learning principles. There is a risk that the agent falls into
+a pattern too quickly without exploring other options. Considering this
+experimentation effect ensures that potentially better options are not
+overlooked prematurely. Moreover, the recency effect states that recent
+experiences usually play a more significant role in the current decision
+than experiences that lie further in the past.
+As with the ZI algorithm, the possible discrete prices are within the
+set 𝐾 from 𝑝min to 𝑝max with a step width of 1 ct/kWh. Furthermore,
+
+𝑅s,t = 𝑞sold,t ⋅ (𝑝MCP,t − 𝑝min )
+
+(20)
+
+𝑅s,t is the total profit generated with 𝑞sold,t representing the quantity
+sold on the LEM.
+2.3.3. Device-oriented bidding strategy
+In the DO strategy, the market agents determine the bid price
+through predefined rules that focus on the devices of the respective
+participant. Hence, the bid price depends on the devices’ operation and
+technical limitations.
+The technical limitations cause shiftable and non-shiftable loads
+to be distinguished. Loads are shiftable if electrical consumption and
+injection can be held back or brought forward to cover demand. This
+is called operational flexibility, which can be quantified in terms of
+time, power and energy [34]. The metrics can be calculated in both
+the positive and the negative direction, which describes the possibility
+of increasing or decreasing the power and charging or discharging the
+storage. In this work, the metrics power and state-of-charge are used
+for the DO bidding strategies.
+In order to ensure the operation of non-flexible devices, the corresponding bid price of non-shiftable consumption is always set to 𝑝max
+and the corresponding bid price of non-shiftable injection to 𝑝min . The
+price for the shiftable loads is always set between 𝑝min and 𝑝max . In this
+way, financial benefits can be promised to the end user if flexibilities
+are used.
+6
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+𝑝d,HP,t
+⎧𝑝max ,
+⎪
+𝑄̇ d,t −𝑄̇ HP,t
+,
+⎪𝑝min + (𝑝max − 𝑝min ) ⋅ 𝑄̇ −𝑄̇
+d,t
+HP,min
+⎪
+⎪
+=⎨
+𝑄̇ HP,t −𝑄̇ d,t
+⎪𝑝min + (𝑝max − 𝑝min ) ⋅ 𝑄̇ HP,max −𝑄̇ d,t ,
+⎪
+⎪
+⎪
+⎩𝑝min ,
+
+Price Signal
+When using the device-oriented bidding strategies, a price signal
+is needed, which serves as an input parameter for the operational
+optimization of the BES (see Eq. (1)). It indicates the expected market
+clearing price in the future market rounds. Thus, load shifting and
+usage of storage systems is encouraged because the BEMS can gain
+financial advantages by shifting loads in times of low prices.
+The rolling horizon method is used for operational optimization,
+which includes the optimization of the prediction horizon (see Section 2.2.1). As a result, the signal is calculated for the length of the
+prediction horizon and updated after each market round by making a
+new calculation for the next horizon.
+
+if 𝑆𝑂𝐶TES,t ≤ 𝑆𝑜𝐶TES,min
+if 𝑄̇ d,t > 𝑄̇ HP,t
+and 𝑆𝑜𝐶TES,min ≤ 𝑆𝑜𝐶TES,t ≤ 𝑆𝑜𝐶TES,max
+if 𝑄̇ d,t < 𝑄̇ HP,t
+and 𝑆𝑜𝐶TES,min ≤ 𝑆𝑜𝐶TES,t ≤ 𝑆𝑜𝐶TES,max
+if 𝑆𝑜𝐶TES,t > 𝑆𝑜𝐶TES,max
+
+(21)
+Eq. (21) shows the price determination for the electricity consumption of HPs. It depends on the heat generation and the SoC of the
+TES. If the SoC falls below 𝑆𝑜𝐶TES,min , the maximum price 𝑝max is
+offered regardless of heat generation and consumption. 𝑆𝑜𝐶TES,min is
+selected on the necessity that the heat demand has to be ensured for
+the next time period, even if the bid is not satisfied by the market.
+Above 𝑆𝑜𝐶TES,max , the bids are submitted with the minimum price 𝑝min .
+It guarantees to cover the heat demand for the next 24 h. Between
+these SoCs, the price is calculated using the ratio of the current demand
+and heat generation as well as the technical limitations of the HP.
+These equations ensure that high discharging of the TES or high heat
+generation correlates with higher bid prices. By this, the probability
+increases that the related bids will be accepted during market clearing.
+
+∑
+
+⎧ 𝑆𝑛=1 𝑝s,n,t ⋅𝑞s,n,t
+,
+⎪
+𝑞
+𝑝̂signal,t = ⎨ ∑𝐷 s,total,t
+𝑝
+⋅𝑞
++𝑝
+⋅(𝑞
+−𝑞
+)
+⎪ 𝑚=1 d,m,t d,m,t max d,total,t s,total,t ,
+𝑞d,total,t
+⎩
+
+if 𝑄̇ d,t < 𝑄̇ CHP,t
+and 𝑆𝑜𝐶TES,min ≤ 𝑆𝑜𝐶TES,t ≤ 𝑆𝑜𝐶TES,max
+
+2.4. Evaluation criteria for market trading
+
+if 𝑆𝑜𝐶TES,t ≤ 𝑆𝑜𝐶TES,min
+if 𝑄̇ d,t > 𝑄̇ CHP,t
+and 𝑆𝑜𝐶TES,min ≤ 𝑆𝑜𝐶TES,t ≤ 𝑆𝑜𝐶TES,max
+
+if 𝑆𝑜𝐶TES,t > 𝑆𝑜𝐶TES,max
+
+In this section, we introduce the KPIs which are used to analyze the
+market trading and evaluate the different bidding strategies. Besides
+the obtained gains of the participants, we also analyze the achieved
+market prices and determine further energetic KPIs for the evaluation
+of the different bidding strategies. In addition, we determine the total
+costs including costs for gas consumption.
+The financial benefit that the participants obtain from market trading is examined by calculating the accumulated gain with Eq. (25).
+
+(22)
+The pricing of the feed-in by CHP, presented in Eq. (22), also
+takes into account heat generation and the state of charge of the
+TES. However, it further takes into account that the CHP generates
+electricity and while the HP consumes electricity. The maximum price
+𝑝max is offered when the SoC is smaller than 𝑆𝑜𝐶TES,min , because there
+is still the possibility to store the not traded generation. For a SoC above
+𝑆𝑜𝐶TES,max the price 𝑝min is offered to ensure the feed-in to the grid due
+to the insufficient storage capacity. Between those two SoCs the price
+depends on the CHP heat generation 𝑄̇ CHP , the current heat demand
+𝑄̇ d and the technical limitations of the CHP.
+⎧
+⎪𝑝max ,
+⎪
+𝑃PV,t
+⎪𝑝max + (𝑝min − 𝑝max ) ⋅ 𝑃Peak ,
+⎪
+⎪
+𝑝d,PV,t = ⎨
+𝑃 −𝑃
+⎪𝑝min + (𝑝max − 𝑝min ) ⋅ PV,t𝑃 dem,t ,
+Peak
+⎪
+⎪
+⎪
+⎪𝑝min ,
+⎩
+
+(24)
+
+if 𝑞d,total,t ≥ 𝑞s,total,t
+
+As shown in Eq. (24), the price signal takes into account the prices
+of the supply bids and the bid quantity of the producers. The sum
+of the bid quantities multiplied by the associated price is divided by
+the summed bid quantity to obtain an estimation of the fluctuation of
+the market price for the following prediction horizon. In the case that
+demand exceeds generation, the missing difference is added with the
+maximum price 𝑝max .
+Due to the autonomously operating BES, a signal that only reflects
+the supply prices would lead to the problem that all flexible consumers
+concentrate their operations in times of low prices irrespective of the
+supply quantities on the market. The purpose of considering the supply
+quantities for the calculation of the price trend is to avoid demand
+peaks that are higher than the available generation of the DER. In
+summary, the aim of the price signal is to improve the overlap between
+local demand and generation. The DO bidding strategy rewards the use
+of operational flexibility financially.
+
+𝑝d,CHP,t
+⎧
+⎪𝑝min ,
+⎪
+𝑄̇ d,t −𝑄̇ CHP,t
+⎪𝑝max + (𝑝min − 𝑝max ) ⋅ 𝑄̇ d,t −𝑄̇ CHP,min ,
+⎪
+⎪
+=⎨
+𝑄̇ CHP,t −𝑄̇ d,t
+⎪𝑝max + (𝑝min − 𝑝max ) ⋅ 𝑄̇
+̇ ,
+CHP,max −𝑄d,t
+⎪
+⎪
+⎪
+⎪𝑝max ,
+⎩
+
+if 𝑞s,total,t ≥ 𝑞d,total,t
+
+gain =
+
+𝐷 ∑
+𝑆 𝑡=8760
+∑
+∑
+
+𝑞bought,𝑖,𝑡 ⋅ (𝑝max − 𝑝MCP,𝑡 ) + 𝑞sold,𝑦,𝑡 ⋅ (𝑝MCP,𝑡 − 𝑝min )
+
+𝑖=0 𝑦=0 𝑡=0
+
+(25)
+
+if 𝑆𝑜𝐶BAT,t ≤ 𝑆𝑜𝐶BAT,min
+
+The gain is calculated as the saved costs through buying on the
+LEM instead of purchasing electricity at 𝑝MCP,𝑡 from the superordinate
+grid at 𝑝max and the additional profit through selling at 𝑝MCP,𝑡 on the
+LEM instead of feeding into the superordinate grid 𝑝min . The quantities
+𝑥bought,𝑖,𝑡 and 𝑥sold,𝑖,𝑡 represent the bought and sold electricity quantity
+of each participant within one market round 𝑡. The neighborhoods gain
+is calculated by summation of all consumer 𝐷 and supplier 𝑆 gains of
+each market round.
+In [35], two energetic KPIs are presented, which are calculated
+based on load and feed-in profiles. These are the demand-cover-factor
+(DCF) and the supply-cover-factor (SCF). With these factors, conclusions about the coverage of the local electrical load 𝐿 by the local electrical feed-in 𝐹 or the share of locally consumed feed-in are
+possible.
+
+if 𝑃BAT,t < 0
+and 𝑆𝑜𝐶BAT,min ≤ 𝑆𝑜𝐶BAT,t ≤ 𝑆𝑜𝐶BAT,max
+if 𝑃BAT,t > 0
+and 𝑆𝑜𝐶BAT,min ≤ 𝑆𝑜𝐶BAT,t ≤ 𝑆𝑂𝐶BAT,max
+if 𝑆𝑜𝐶BAT,t > 𝑆𝑜𝐶BAT,max
+
+(23)
+Surplus PV power intended to be fed into the grid is offered depending on the SoC of the battery and is priced using Eq. (23). To ensure
+the fed-in to the grid, the maximum price 𝑝max is offered when the SoC
+is above 𝑆𝑜𝐶BAT,max . Below 𝑆𝑜𝐶BAT,min , the need to sell the energy is
+low and thus 𝑝min is offered. Between the SoCs of the BAT, the price
+depends on the current PV power generation, the PV peak power and
+the power of the battery.
+
+𝑡=8760
+
+DCF =
+7
+
+∫𝑡=0
+
+min{|𝐹t |; |𝐿t |}d𝑡
+𝑡=8760
+∫𝑡=0
+|𝐿t |d𝑡
+
+(26)
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+Table 1
+Investigated scenarios and their technology penetration.
+
+Table 2
+Technical parameters of the building devices.
+
+Household type
+
+PV scenario
+
+CHP scenario
+
+Device
+
+Parameter
+
+Values
+
+Prosumer
+Flexumer
+
+20 BES with PV
+20 BES with HPs
+
+20 BES with CHPs
+20 BES with HPs
+
+Heat pump
+
+𝑄̇ HP
+
+12 kW
+
+Combined heat and power
+
+𝑄̇ CHP
+𝜂CHP,el
+𝜂CHP,th
+
+12 kW
+0.339
+0.607
+
+Heating rod
+
+𝑄̇ HR
+𝜂HR,th
+
+6 kW
+1
+
+Thermal energy storage
+
+𝑄TES,max
+𝜂TES,ch
+𝜂TES,dch
+𝜂TES,loss
+
+10 kWh
+1
+1
+0.98
+
+Photovoltaic
+
+𝑃PV
+
+5 kW𝑝
+
+Battery energy storage
+
+𝐸BAT
+𝑃BAT,ch
+𝜂BAT,ch
+𝑃BAT,dch
+𝜂BAT,dch
+𝜂BAT,loss
+
+5 kWh
+3.4 kW
+0.96
+3.4 kW
+0.96
+1
+
+𝑡=8760
+
+SCF =
+
+min{|𝐹t |; |𝐿t |}d𝑡
+
+∫𝑡=0
+
+𝑡=8760
+
+∫𝑡=0
+
+|𝐹t |d𝑡
+
+(27)
+
+To analyze the traded energy quantities resulting from the UPA, we
+determine the share of traded demands and supply bids to the total
+quantities submitted on the LEM. These two KPIs are introduced in the
+Eqs. (28) and (29) and will be called market-based demand-cover-factor
+(mDCF) and market-based supply-cover-factor (mSCF). The DCF and
+the SCF represent the maximum values for the tradable bid quantities.
+Thus, the difference between the DCF and the mDCF respectively the
+SCF and mSCF are the energy quantities of the rejected bids. The
+demand and supply quantities of the submitted bids are equal to the
+local electrical load and feed-in. Due to the UPA, the traded demand
+and supply quantities are also equal in each market round.
+𝑡=8760
+
+mDCF =
+
+mSCF =
+
+∫𝑡=0
+
+𝑞traded,t d𝑡
+
+𝑡=8760
+
+∫𝑡=0
+
+|𝐿t |d𝑡
+
+𝑡=8760
+
+𝑞traded,t d𝑡
+
+∫𝑡=0
+
+𝑡=8760
+
+∫𝑡=0
+
+|𝐹t |d𝑡
+
+quantity available and therefore does not send a bid. The coordinator
+sorts the bids in each market round and determines the market clearing
+according to the UPA. Thus, unsatisfied bids are rejected and cannot be
+traded in the next market round.
+Studies investigating the learning process with variations of the
+parameters have shown that the recency parameter has the greatest
+influence on learning behavior. For the recency parameter, 𝑟 = 0.08
+was used. The value was selected based on a previously performed
+analysis with different recency parameters between 0 and 0.14 with
+a step size of 0.2. For all calculations, the recency parameter was
+pre-learned on a monthly basis using a yearly simulation. For the
+experimentation parameter, only one value exp = 0.99 is chosen in
+accordance with [31]. For the ZI bidding strategy, we set the step size
+𝑠 to 1 ct/kWh for the set of prices 𝐾.
+
+(28)
+
+(29)
+
+2.5. Investigated scenarios
+We analyze a neighborhood with 40 single-family houses of the
+TABULA construction year class 2010 till 2015. Furthermore we investigate two technology scenarios which are different in terms of the
+devices for decentralized heat and electricity supply. In both scenarios,
+the heat demand in 20 buildings is covered by HPs and ERs. In scenario
+1, the other 20 buildings are each equipped with a CHP. In scenario 2,
+gas boilers are installed in the 20 buildings, and 16 PV systems are
+installed with a module area of 1.6 square meters each (see Table 1).
+Following [34], we use two dimensionless characteristics 𝛼th and
+𝛽th to define the thermal capacity of the heat generators and the TES
+capacity of the BES. With 𝛼th = 1, we assume that the maximal power
+of the heat generator 𝑄̇ heater,max is equal to the nominal heat load of
+the building (including DHW demand). By setting 𝛽th = 0.2, we define
+the TES capacity to be 20 % of the average daily heat demand of the
+building. The required flow temperature is 𝑇f l = 35◦ C and the quality
+grade to calculate the coefficient of performance of the HPs is 𝜂c = 0.4.
+An overview of the remaining technical parameters is presented in
+Table 2.
+The annual profiles of the electrical load and heat demands are
+computed for each building. To simulate the electrical load profiles, the
+richardsonpy tool is used [36]. With the pyCity tool, the domestic hot
+water demand profiles are determined [37]. The space heat demand of
+the buildings is generated using the tool TEASER [38].
+The purchasing tariff from the superordinate grid is 𝑝max = 32,16
+ct/kWh. Therefore, this is the maximum possible trading price and bid
+price for the LEM. Furthermore, the feed-in tariff for generated energy
+that is not used within the neighborhood is 𝑝min, PV = 8,16 ct/kWh for
+PV and 𝑝min, CHP = 9,65 ct/kWh for CHP. These prices correspond to
+the average prices in Germany in the year 2021. Moreover, every bid
+price lies within the interval of 𝑝min to 𝑝max .
+We investigate a time-discrete market with an hourly frequency
+of a single market round. The submission and trading of bids occurs
+therefore one hour forwards. Each participant can bid exactly once
+at the beginning of a market round. The number of participants can
+change at any time. This is the case when a participant has no trading
+
+3. Results
+In the following, the LEM operation with the usage of the different
+bidding strategies for the PV and CHP scenarios are showcased. In
+Section 3.1 the different bidding strategies are compared in terms of
+average market and overall prices as well as the resulting financial
+benefits for the end users. In Section 3.2 the usage of the price signal is analyzed. Therefore a detailed examination of traded energy
+quantities and used energy within the neighborhood is undertaken. In
+Section 3.3 the effects of the operational adjustment on market trading
+is examined.
+3.1. Impact of the bidding strategies on achieved gains and the market
+clearing prices
+Fig. 3 compares the development of the accumulated gain for the
+PV scenario (a) and the CHP scenario (b) with the application of the
+different bidding strategies. In the PV scenario, the DO bidding strategy
+achieves the highest profit for end users over the entire time horizon.
+The total gain at the end of the year is 7909 e. This is followed by
+the LI bidding strategy with an absolute gain of 7880 e and the ZI
+bidding strategy achieves the lowest gain with 5904 e. Whereas in the
+CHP scenario the DO bidding strategy achieves the highest gain with
+16454 e. For the LI and ZI bidding strategies, the gains are 15574 e
+and 12815 e.
+The comparison between the two scenarios underlines the positive
+effect of a high temporal overlapping of supply and demand. Although
+the accumulated gain in the PV scenario increases continuously over
+the entire time horizon, the highest gradient is smaller compared to
+the one in the CHP scenario. There, the gains are mainly achieved at
+8
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+Fig. 3. Total gain of the participants with the different bidding strategies.
+
+Fig. 4. Distribution of the market clearing prices with UPA.
+Table 3
+Total costs and revenues of the neighborhood.
+
+the beginning and end of the year, when the heating demand is high,
+and thus electricity is being offered and demanded mainly during the
+same periods of time.
+Furthermore, the different curve gradients of the three bidding
+strategies are conspicuous. In the respective scenario, the demand and
+generation profiles are similar. Also, the market clearing prices are
+thereby irrelevant to the accumulated gain of the whole neighborhood due to the joint consideration of the buyer and seller sides.
+Nevertheless, the offered bid prices and thus the bidding strategies are
+crucial for the market clearing and the considered energy quantities for
+the transactions. Therefore, the decisive factor for the achieved gains
+are the traded energy quantities, which depend on the used bidding
+strategy. We analyze the traded bids in detail in Section 3.2.
+Fig. 4 shows the distribution of market clearing prices for the
+bidding strategies in the two scenarios. In both scenarios (a) and (b),
+the average price is the highest for the DO strategy with 0.2690 e/kWh
+and 0.3032 e/kWh. There the quartiles show, especially in the CHP
+scenario, that transactions are often executed with prices close to the
+maximum price. Consequently, achieved gains are mainly on the sellers’
+side. Compared to the DO strategy, the average market price for the LI
+bidding strategy is significantly lower. Additionally, in the PV scenario
+it is with 0.182 e/kWh below the average market price of 0.2056
+e/kWh using the ZI bidding strategy and in the CHP scenario with
+0.2711 e/kWh it is above the average market price of 0.226 e/kWh
+using the ZI bidding strategy. However, considering the achieved gains,
+where we found the DO bidding strategy to be the most profitable, the
+market prices resulting from the LI bidding strategy lead to a fairer
+distribution of gains between buyer and seller.
+Table 3 gives an overview of the total costs for consumed electricity
+and gas as well as the revenues for electricity fed into the grid. It
+also includes the electricity quantities that were not traded on the
+market and were thus calculated with 𝑝min to 𝑝max if no flexibility was
+available. The gas costs in the PV scenario are the same for all bidding
+
+KPI
+
+Electricity costs [ke]
+Electricity revenues [ke]
+Gas costs [ke]
+
+PV scenario
+
+CHP scenario
+
+ZI
+
+DO
+
+LI
+
+ZI
+
+DO
+
+LI
+
+55.49
+8.27
+15.47
+
+55.78
+11.17
+15.47
+
+54.44
+8.71
+15.47
+
+50.63
+12.86
+27.71
+
+55.60
+21.71
+27.77
+
+50.24
+14.89
+27.93
+
+strategies because only the boilers consumed gas and the operation of
+these devices was not influenced by market trading. The gas costs in the
+CHP scenario are up to 12.46 ke higher because of the heat supply with
+the CHP plants instead of the boilers. On the other hand, the achieved
+revenues by the CHP are higher than the revenues with the PV. This
+difference of the revenues in the PV and CHP scenarios is between 4.59
+ke and 10.54 ke and is strongly dependent on the bidding strategy,
+especially in the CHP scenario.
+The additional gas costs in the CHP scenario are only compensated
+by the revenues when using the DO bidding strategy. With the other
+two bidding strategies, there are additional costs for end users heating
+with CHP. However, the distribution of market prices in 4 shows that
+the prices are always close to 𝑝max and the gains are thus mainly on the
+seller side. This also explains the highest electricity costs with the DO
+bidding strategy. If the gains are distributed more equally between the
+buyer and seller side, see the ZI and LI bidding strategy, revenues no
+longer reach the amount of the additional costs for gas consumption.
+3.2. Impact of the bidding strategies on the share of traded bids
+Fig. 5 shows the SCF and mSCF for the PV scenario and the CHP
+scenario. In the PV scenario the SCF is the highest for the DO bidding
+strategy with 47.58%. The SCF of the LI bidding strategy is 41.39%.
+With an SCF of 40.31%, the ZI bidding strategy attains the lowest
+9
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+Fig. 5. Supply-Cover-Factor and market-based Supply-Cover-Factor.
+
+Fig. 6. Demand-Cover-Factor and market-based Demand-Cover-Factor.
+
+value. The differences between the respective mSCF are greater. Again,
+the DO bidding strategy achieves the highest value with 39.23%. It is
+followed by the LI bidding strategy with 34.36% and the ZI strategy
+with 24.99%.
+
+can be traded with the existing supply bids are considered for transactions after the market clearing. The reason is the higher electricity
+demand in the neighborhood compared to the generation. Thus also
+the demanded energy quantity on the market is higher than the offered
+energy quantities. Consequently, more demand bids potentially can
+cover the maximum trading quantity determined by the offered energy
+quantities. However, the higher simultaneity of electricity demand and
+generation results in better KPIs values independent of the used bidding
+strategies.
+
+These results show that the DO bidding strategies in combination
+with the price signal can increase the share of traded supply bids and
+improve self-consumption in the neighborhood for a scenario with low
+overlap of electricity feed-in and consumption.
+In the CHP scenario, the SCF for the DO bidding strategy is highest
+with 83.15% and with 44.80% the mSCF is higher than the benchmark
+represented by the ZI bidding strategy. There, the SCF is 75.16% and
+the mSCF is 32.00%. For the LI bidding strategy, the SCF is 77.18%
+and the mSCF is 53.03%, which is the best value among the strategies
+in the CHP scenario. The better results in the CHP scenario compared
+to the PV scenario can be explained by the higher simultaneity of the
+electricity demand of the heat pumps and the electricity generation
+of the CHP. However, the most bid quantities are traded in both
+scenarios with the DO bidding strategy, which indicates that the DO
+bidding strategy, including a price signal and operational flexibilities
+in bid pricing, again increases the quantity of traded bids. However,
+considering the average market clearing price, the DO bidding strategy
+is not the most effective strategy in terms of the welfare.
+
+3.3. Impact of the operation adjustment
+As described in Section 2.2.1, the energy storages compensate the
+rejected energy quantities of the auction-based market trading and
+the operation determined by optimization is adjusted. Fig. 7 shows
+the cumulative profit at the end of the observed time horizon of the
+simulations with and without operation adjustment. For both scenarios
+and all bidding strategies, the operation adjustment achieves higher
+gains. The explanation is that the energy quantities of the rejected
+bids are not billed with minimum and maximum prices. There is the
+possibility of acquiring these required energy quantities in further
+market rounds through the LEM. Although this results in deviations
+from the optimal operating plan, the economic benefits for the end user
+increase.
+
+The DCF and the mDCF are presented in Fig. 6. In the PV scenario
+the DCF is also the highest for the DO bidding strategy with. The DCF of
+the LI and ZI bidding strategies have almost the same niveau with and.
+The mDCF is for the LI bidding strategy, for the DO bidding strategy and
+for the ZI bidding strategy. Again in the CHP scenario, the DO bidding
+strategy achieves the highest DCF with , also the mDCF is highest for
+this strategy with. The LI bidding strategy is next with for the DCF and
+for the share of traded demand bids. For the ZI bidding strategy, the
+DCF is and the mDCF is.
+
+4. Final conclusions and future work
+In this study, we implement a LEM for building energy systems in
+neighborhoods. We apply a distributed market with a time-discretely
+two-sided auction. For the market clearing the uniform pricing scheme
+is used. In this context, three bidding strategies (zero-intelligent, deviceoriented and learning-intelligent) are comparatively examined. We
+investigate the impact of the bidding strategies for a PV scenario
+and a CHP scenario, which allows us to make conclusions about the
+
+Generally, the gap between the mDCF and the DCF, representing the
+maximum possible value, is smaller than for the share of traded supply
+bids and the SCF. This means that more demand bids that maximally
+10
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+Fig. 7. Total gain of the participants with the different bidding strategies.
+
+advantages of different devices. Furthermore, we test the effects of
+operational adjustment resulting from rejected bids, which can occur
+in auction-based market trading.
+This study introduces an auction-based local energy market with
+different, modular selectable bidding strategies and the implementation
+of an evaluation methodology emphasizing economic and energetic
+analyses. Since the market design as well as the modeling of the
+building energy systems and the operational optimization remain the
+same, a new uniform evaluation methodology for bidding strategies is
+established and used to evaluate a DO bidding strategy comparatively
+for the first time. Our findings successfully fulfill the predetermined
+research objective and offer valuable insights into the substantial impact of bidding strategies within LEMs, which may play an important
+role for the further integration of renewable energy, DERs and energy
+management systems in buildings and neighborhoods. We derive the
+following conclusions from the results:
+
+costs outweigh the achieved gains for all investigated bidding
+strategies.
+• The adjustment of the operation ensures that rejected energy
+quantities can be traded in the following market rounds. With this
+feature, higher energy quantities are traded on the LEM The end
+users can increase their gains in both scenarios for the DO bidding
+strategy up to 799 e and 1959 e.
+Based on the model limitations, results and analysis of this work,
+we recommend investigating the following aspects in more detail in
+the future:
+• For the DO bidding strategy we have formulated equations specific to each device accounting the SoC of the energy storage and
+incorporated a price signal. In future work, exploring further price
+equations considering operational flexibilities and other signals
+such as supply–demand-ratio or mid-market-range can enable
+a comparative analysis to enhance the effectiveness of the DO
+bidding strategy.
+• The market clearing process was conducted solely using uniform pricing, without exploring alternative auction mechanisms
+like Pay-as-Bid or the Vickrey auction. Additionally, negotiation
+mechanisms were not included in this study. Subsequent research
+could explore how the performance of bidding strategies varies
+under different market clearing processes.
+• Since in this study market trading and operational optimization are only executed time-discretely with an hourly resolution,
+following studies should investigate operation of the BES using
+high-temporal resolution simulations to verify the feasibility of
+the market-based operation. In particular, the assumed flexibility
+of the devices must be examined. Moreover, the corresponding
+grid conditions should be determined in order to analyze whether
+critical grid conditions are avoided.
+• We assumed perfect foresight for the energy demands and weather
+conditions in the predictive operation optimization. In reality,
+forecast deviations are possible and thus also influence the available trading quantities, which deviate from the bid quantities. For
+this reason, a real-time market can be added to investigate the
+effects of forecast deviations.
+• In the motivation, we mentioned that LEMs could bring financial
+benefits to the end user and thus promote the integration of
+renewable energy systems. Obviously, the crucial decision factor
+for an investment is the required time to refinance the investment through the cost savings. Therefore, we recommend further
+research on the payback period for the investment of different
+devices as well as potential price developments for electricity and
+gas.
+
+• Auction-based LEM trading is a promising approach that reduces
+energy costs in neighborhoods and creates financial incentives to
+promote the integration of renewable energy in the long term.
+The selected bidding strategy clearly impacts the achieved gains
+and, in particular, the distribution of gains between the buy and
+sell sides. In this work, the DO bidding strategy led to the best
+results of achieved gains with 7909 e in the PV and 16454 e in
+the CHP scenario.
+• The average market clearing prices are highest for the DO bidding
+strategies with 0.269 e/kWh for the PV scenario and 0.3032
+e/kWh for the CHP scenario. Consequently, the gains are mainly
+distributed to the sell side. For a fair distribution of the gains, the
+average market clearing price should be the mean of 𝑝min to 𝑝max .
+Closest to this mean value are the average market clearing prices
+0.2056 e/kWh and 0.226 e/kWh that result when using the ZI
+bidding strategy.
+• The approach of the DO bidding strategy to reward the use of
+flexibility financially and to activate the flexibilities through a
+dynamic price signal results in higher energy quantities traded on
+the market in the PV scenario. In particular, the share of traded
+selling bids increases compared to the other bidding strategies
+and is 39.23%. In contrast, for the CHP scenario the mSCF is the
+highest with 53.03% using the LI bidding strategy.
+• Through the two selected scenarios, we have shown the influence
+of different devices in the neighborhood on market trading. The
+decisive factor here is the temporal course of supply and demand
+on the market, which is determined by the electrical demand
+and feed-in of the BES. The involvement of CHPs results in
+significantly higher revenues compared to the involvement of
+PV systems. However, the additional gas consumption and its
+11
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+CRediT authorship contribution statement
+
+[12] Zhou Y, Wu J, Long C, Ming W. State-of-the-art analysis and perspectives
+for Peer-to-Peer energy trading. Engineering 2020;6(7):739–53. http://dx.doi.
+org/10.1016/j.eng.2020.06.002, URL https://linkinghub.elsevier.com/retrieve/
+pii/S2095809920301405.
+[13] Tushar W, Yuen C, Saha T, Morstyn T, Chapman A, Alam MJE, et al. Peer-toPeer energy systems for connected communities: A review of recent advances
+and emerging challenges. Appl Energy 2021;282:116131. http://dx.doi.org/10.
+1016/j.apenergy.2020.116131, URL http://arxiv.org/abs/2011.11118.
+[14] Alam MR, St-Hilaire M, Kunz T. Peer-to-peer energy trading among smart homes.
+Appl Energy 2019;238:1434–43. http://dx.doi.org/10.1016/j.apenergy.2019.01.
+091, URL https://linkinghub.elsevier.com/retrieve/pii/S0306261919300935.
+[15] Luo F, Dong ZY, Liang G, Murata J, Xu Z. A distributed electricity trading system
+in active distribution networks based on multi-agent coalition and blockchain.
+IEEE Trans Power Syst 2019;34(5):4097–108. http://dx.doi.org/10.1109/TPWRS.
+2018.2876612, URL https://ieeexplore.ieee.org/document/8494790/.
+[16] Sousa T, Soares T, Pinson P, Moret F, Baroche T, Sorin E. Peer-to-peer and
+community-based markets: A comprehensive review. Renew Sustain Energy
+Rev 2019;104:367–78. http://dx.doi.org/10.1016/j.rser.2019.01.036, URL https:
+//linkinghub.elsevier.com/retrieve/pii/S1364032119300462.
+[17] Zhou Y, Wu J, Long C. Evaluation of peer-to-peer energy sharing
+mechanisms based on a multiagent simulation framework. Appl Energy
+2018;222:993–1022. http://dx.doi.org/10.1016/j.apenergy.2018.02.089, URL
+https://linkinghub.elsevier.com/retrieve/pii/S0306261918302149.
+[18] Klein M. Auctions and bidding: A guide for computer scientists. SSRN Electron
+J 2011. http://dx.doi.org/10.2139/ssrn.3794860, URL https://www.ssrn.com/
+abstract=3794860.
+[19] Sorin E, Bobo L, Pinson P. Consensus-based approach to Peer-to-Peer electricity
+markets with product differentiation. IEEE Trans Power Syst 2019;34(2):994–
+1004. http://dx.doi.org/10.1109/TPWRS.2018.2872880, URL https://ieeexplore.
+ieee.org/document/8481579/.
+[20] Kok K, Roossien B, MacDougall P, van Pruissen O, Venekamp G, Kamphuis R,
+et al. Dynamic pricing by scalable energy management systems &#x2014;
+Field experiences and simulation results using PowerMatcher. In: 2012 IEEE
+power and energy society general meeting. San Diego, CA: IEEE; 2012, p. 1–
+8. http://dx.doi.org/10.1109/PESGM.2012.6345058, URL http://ieeexplore.ieee.
+org/document/6345058/
+[21] Shen F, Wu Q, Jin X, Zhou B, Li C, Xu Y. ADMM-based market clearing
+and optimal flexibility bidding of distribution-level flexibility market for dayahead congestion management of distribution networks. Int J Electr Power
+Energy Syst 2020;123:106266. http://dx.doi.org/10.1016/j.ijepes.2020.106266,
+URL https://linkinghub.elsevier.com/retrieve/pii/S0142061520306645.
+[22] El-Baz W, Tzscheutschler P, Wagner U. Integration of energy markets in
+microgrids: A double-sided auction with device-oriented bidding strategies.
+Appl Energy 2019;241:625–39. http://dx.doi.org/10.1016/j.apenergy.2019.02.
+049, URL https://linkinghub.elsevier.com/retrieve/pii/S0306261919303460.
+[23] Haas M, Zoican MA. Discrete or continuous trading? HFT competition and
+liquidity on batch auction markets. SSRN Electron J 2016. http://dx.doi.org/
+10.2139/ssrn.2738071, URL http://www.ssrn.com/abstract=2738071.
+[24] Kilkki O, Repo S, Mendes G, Ferreira JR, Lezama F, Faia R, Faria P,
+Vale Z, Matos L, Landeck J, Klein L, Almeida B, Ahmad Y, Terras JM.
+DOMINOES D2.3 - Scalable local energy market architecture, D2.3, Tech.
+rep.
+https://ec.europa.eu/research/participants/documents/downloadPublic?
+documentIds=080166e5cad9d2d1&appId=PPGMS.
+[25] Nojavan S, Zare K, editors. Electricity markets: New players and pricing
+uncertainties. Cham: Springer; 2020,
+[26] Prabavathi M, Gnanadass R. Energy bidding strategies for restructured electricity
+market. Int J Electr Power Energy Syst 2015;64:956–66. http://dx.doi.org/
+10.1016/j.ijepes.2014.08.018, URL https://linkinghub.elsevier.com/retrieve/pii/
+S0142061514005444.
+[27] Lin J, Pipattanasomporn M, Rahman S. Comparative analysis of auction
+mechanisms and bidding strategies for P2P solar transactive energy markets. Appl Energy 2019;255:113687. http://dx.doi.org/10.1016/j.apenergy.2019.
+113687, URL https://linkinghub.elsevier.com/retrieve/pii/S0306261919313741.
+[28] Kühnbach M, Bekk A, Weidlich A. Towards improved prosumer participation: Electricity trading in local markets. Energy 2022;239:122445. http://
+dx.doi.org/10.1016/j.energy.2021.122445, URL https://www.sciencedirect.com/
+science/article/pii/S0360544221026943.
+[29] Okwuibe GC, Wadhwa M, Brenner T, Tzscheutschler P, Hamacher T. Intelligent
+Bidding strategies in local electricity markets: A simulation-based analysis. In:
+2020 IEEE electric power and energy conference. Edmonton, AB, Canada: IEEE;
+2020, p. 1–7. http://dx.doi.org/10.1109/EPEC48502.2020.9320067, URL https:
+//ieeexplore.ieee.org/document/9320067/.
+[30] Gode DK, Sunder S. Allocative efficiency of markets with zero-intelligence
+traders: Market as a partial substitute for individual rationality. J Polit
+Econ 1993;101(1):119–37. http://dx.doi.org/10.1086/261868, URL https://
+www.journals.uchicago.edu/doi/10.1086/261868.
+[31] Nicolaisen J, Petrov V, Tesfatsion L. Market power and efficiency in a computational electricity market with discriminatory double-auction pricing. IEEE
+Trans Evol Comput 2001;5(5):504–23. http://dx.doi.org/10.1109/4235.956714,
+URL http://ieeexplore.ieee.org/document/956714/.
+
+Joel David Schölzel: Conceptualization, Investigation, Methodology, Visualization, Writing – original draft. Sarah Henn: Methodology,
+Supervision, Writing – review & editing. Milena Tings: Methodology,
+Writing – review & editing. Rita Streblow: Writing – review & editing.
+Dirk Müller: Writing – review & editing.
+Declaration of competing interest
+The authors declare the following financial interests/personal relationships which may be considered as potential competing interests:
+Joel David Schoelzel reports financial support was provided by Federal
+Ministry for Economic Affairs and Climate Action. If there are other
+authors, they declare that they have no known competing financial interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+Data availability
+Data will be made available on request.
+Acknowledgment
+We gratefully acknowledge the financial support by Federal Ministry for Economic Affairs and Climate Action (BMWK), promotional
+reference 03EWB003B.
+References
+[1] Deutsche Energie-Agentur (Hrsg). Energy communities: Beschleuniger der
+dezentralen Energiewende. Tech. rep., 2022.
+[2] Bogensperger A, Estermann T, Köppl S, Wohlschlager D, Faller S, Müller M. Wie
+die Digitalisierung die Rolle von Verbrauchern verändert. Tech. rep., München;
+2019, p. 78.
+[3] Jin X, Wu Q, Jia H. Local flexibility markets: Literature review on concepts,
+models and clearing methods. Appl Energy 2020;261:114387. http://dx.doi.org/
+10.1016/j.apenergy.2019.114387, URL https://linkinghub.elsevier.com/retrieve/
+pii/S0306261919320744.
+[4] Lovati M, Huang P, Olsmats C, Yan D, Zhang X. Agent based modelling of a
+local energy market: A study of the economic interactions between autonomous
+PV owners within a micro-grid. Buildings 2021;11(4):160. http://dx.doi.org/10.
+3390/buildings11040160, URL https://www.mdpi.com/2075-5309/11/4/160.
+[5] Bose S, Kremers E, Mengelkamp EM, Eberbach J, Weinhardt C. Reinforcement
+learning in local energy markets. Energy Inform. 2021;4(1):7. http://dx.doi.
+org/10.1186/s42162-021-00141-z, URL https://energyinformatics.springeropen.
+com/articles/10.1186/s42162-021-00141-z.
+[6] Suthar S, Cherukuri SHC, Pindoriya NM. Peer-to-peer energy trading in smart
+grid: Frameworks, implementation methodologies, and demonstration projects.
+Electr Power Syst Res 2023;214:108907. http://dx.doi.org/10.1016/j.epsr.2022.
+108907, URL https://linkinghub.elsevier.com/retrieve/pii/S0378779622009580.
+[7] Maurer L, Barroso L. Electricity auctions: An overview of efficient practices. The
+World Bank; 2011, http://dx.doi.org/10.1596/978-0-8213-8822-8, URL http:
+//elibrary.worldbank.org/doi/book/10.1596/978-0-8213-8822-8.
+[8] DIRECTIVE (EU) 2018/ 2001 OF THE EUROPEAN PARLIAMENT AND OF THE
+COUNCIL - of 11 December 2018 - on the promotion of the use of energy from
+renewable sources. 2018, p. 128.
+[9] Lowitzsch J, Hoicka C, van Tulder F. Renewable energy communities under
+the 2019 European Clean Energy Package – Governance model for the energy
+clusters of the future? Renew Sustain Energy Rev 2020;122:109489. http:
+//dx.doi.org/10.1016/j.rser.2019.109489, URL https://linkinghub.elsevier.com/
+retrieve/pii/S1364032119306975.
+[10] F.G. Reis I, Gonçalves I, A.R. Lopes M, Henggeler Antunes C. Business models for
+energy communities: A review of key issues and trends. Renew Sustain Energy
+Rev 2021;144:111013. http://dx.doi.org/10.1016/j.rser.2021.111013, URL https:
+//linkinghub.elsevier.com/retrieve/pii/S1364032121003038.
+[11] Mengelkamp E, Staudt P, Garttner J, Weinhardt C. Trading on local energy
+markets: A comparison of market designs and bidding strategies. In: 2017 14th
+international conference on the European energy market. Dresden, Germany:
+IEEE; 2017, p. 1–6. http://dx.doi.org/10.1109/EEM.2017.7981938, URL http:
+//ieeexplore.ieee.org/document/7981938/.
+12
+
+Energy 291 (2024) 130211
+
+J.D. Schölzel et al.
+
+[36] Richardson I, Thomson M, Infield D, Clifford C. Domestic electricity use: A highresolution energy demand model. Energy Build 2010;42(10):1878–87. http://
+dx.doi.org/10.1016/j.enbuild.2010.05.023, URL https://linkinghub.elsevier.com/
+retrieve/pii/S0378778810001854.
+[37] Schiefelbein J, Rudnick J, Scholl A, Remmen P, Fuchs M, Müller D. Automated
+urban energy system modeling and thermal building simulation based on
+OpenStreetMap data sets. Build Environ 2019;149:630–9. http://dx.doi.org/10.
+1016/j.buildenv.2018.12.025, URL https://linkinghub.elsevier.com/retrieve/pii/
+S0360132318307686.
+[38] Remmen P, Lauster M, Mans M, Fuchs M, Osterhage T, Müller D. TEASER:
+an open tool for urban energy modelling of building stocks. J Build Perform
+Simul 2018;11(1):84–98. http://dx.doi.org/10.1080/19401493.2017.1283539,
+URL https://www.tandfonline.com/doi/full/10.1080/19401493.2017.1283539.
+
+[32] Weidlich A, Veit D. A critical survey of agent-based wholesale electricity market models. Energy Econ 2008;30(4):1728–59. http://dx.doi.org/
+10.1016/j.eneco.2008.01.003, URL https://linkinghub.elsevier.com/retrieve/pii/
+S0140988308000170.
+[33] Erev I, Rapoport A. Coordination, ‘‘Magic,’’ and reinforcement learning
+in a market entry game. Games Econom Behav 1998;23(2):146–75. http:
+//dx.doi.org/10.1006/game.1997.0619, URL https://linkinghub.elsevier.com/
+retrieve/pii/S0899825697906199.
+[34] Stinner S, Huchtemann K, Müller D. Quantifying the operational flexibility of building energy systems with thermal energy storages. Appl Energy
+2016;181:140–54. http://dx.doi.org/10.1016/j.apenergy.2016.08.055, URL https:
+//linkinghub.elsevier.com/retrieve/pii/S0306261916311424.
+[35] Müller D, Monti A, Stinner S, Schlösser T. Energieoptimiertes Bauen. Tech. rep.,
+2017.
+
+13
+
+

@@ -1,0 +1,3153 @@
+Received: 29 November 2023
+DOI: 10.1049/stg2.12166
+
+CASE STUDY
+
+- Revised: 16 February 2024
+
+-
+
+Accepted: 10 March 2024
+
+IET Smart Grid
+
+Incentivising peers in local transactive energy markets: A case
+study for consumers, prosumers and prosumagers
+Yaa S. A. Kwateng
+
+| Dawei Qiu | Goran Strbac
+
+Department of Electrical and Electronic Engineering,
+Imperial College London, London, UK
+Correspondence
+Yaa S. A. Kwateng.
+Email: yaa.kwateng18@imperial.ac.uk
+Funding information
+EPSRC Centre for Doctoral Training in Future
+Power Networks and Smart Grids, Grant/Award
+Number: EP/L015471/1
+
+Abstract
+A decarbonised future grid should couple technological novelty with innovative market
+models to efficiently capture the value of grid‐edge decarbonised assets. The transactive
+energy (TE) concept inverts the centralised grid model by leveraging the evolution of
+consumers to prosumers to prosumagers. The principal TE market design challenge is
+transactive control—using market and pricing mechanisms to coordinate autonomous
+peer interactions, to optimally allocate power and incentivise peers. Peer attraction,
+incentivisation and retention are all critical for practical TE implementation along three
+adoption stages, starting from independent peer transactions with the centralised market;
+to decentralised peer coordination; towards distributed peer‐to‐peer trading. Addressing
+gaps in related scholarship, the authors investigate the economic positions of distinct peer
+roles in each adoption stage and two local pricing strategies. Using a real market dataset,
+trading decisions are simulated over a 1‐year horizon at hourly granularity. Coordinated
+action achieves better transactive control for the community, with economic superiority
+over centralised and distributed mechanisms. Distinct peer incentives should equitably
+align with their contribution to market functionality, such as the value ascribed to prosumagers' flexibility in local pricing and the constrained bargaining power of prosumers
+in distributed bilateral negotiations.
+KEYWORDS
+double auction P2P market, energy storage scheduling, local energy market, local pricing strategy, market design,
+microgrids, peer incentives, peer‐to‐peer energy trading, transactive energy market, optimisation of distributed
+flexibility
+
+1 | INTRODUCTION
+1.1 | Motivation
+Legacy grids typically transmit unidirectional power flows from
+predominantly huge, high carbon emitting generators to passive
+end users. Carbon neutrality policy motivation and technological innovation have facilitated the proliferation of smaller scale,
+distributed low carbon generation and multidirectional power
+flows. Intermittent decarbonised power makes power quality
+control and local supply‐demand balancing difficult for network
+operators, leading to their managed curtailment in favour of
+high carbon, dispatchable generation.
+The future grid can be envisioned to be optimally efficient,
+economical, ecological and equitable. This vision can be
+
+-
+
+facilitated via smart grid technologies to intelligently monitor,
+capture, control and integrate the power, information and
+economic actions of all network participants [1, 2]. This system
+level innovation should couple business model innovation to
+fully engage the adapting roles of all market participants as the
+existing centralised market model fails to effectively capture an
+increasingly localised energy value. Several local, microgrid or
+community‐based energy market archetypes have been proposed [3, 4].
+The power market exists to principally create energy value
+for and capture economic value from the grid edge, where the
+shift from passive to active market involvement is accelerating.
+Business models that aspire to disruptively innovate the
+incumbent should effectively address the motivations of
+empowered consumers and prosumers. Beneficially, prosumers
+
+This is an open access article under the terms of the Creative Commons Attribution‐NonCommercial‐NoDerivs License, which permits use and distribution in any medium, provided the
+original work is properly cited, the use is non‐commercial and no modifications or adaptations are made.
+© 2024 The Authors. IET Smart Grid published by John Wiley & Sons Ltd on behalf of The Institution of Engineering and Technology.
+672
+
+IET Smart Grid. 2024;7:672–694.
+
+wileyonlinelibrary.com/journal/stg2
+
+can drive low carbon generation, price competitiveness and
+through demand flexibility [5] simultaneously addresses the
+system stability challenges caused by the growth of intermittent
+low carbon generation on distribution networks. Plausible
+prosumer‐centric market models explored in ref. [6] comprise
+direct transactions with one another (peer‐to‐peer) and their
+provision of physical or virtual local, microgrid or macrogrid
+services.
+Inverting the current grid logic by utilising prosumers for
+decentralised generation and supply‐demand balancing is
+termed transactive energy (TE) [7]. Transactive energy is
+defined as “a system of economic and control mechanisms that
+allows the dynamic balance of supply and demand across the
+entire electrical infrastructure using value as a key operational
+parameter” [8]. Local energy markets which provide marketplaces for the exchange of locally generated power are recognised as a route to realising fully TE systems [9]. Indeed, the
+smart grid future can be built from a nexus of smart microgrids
+and local energy marketplaces. The past decade has seen an
+increase in research on local energy market (LEM), peer‐to‐
+peer (P2P) energy trading and transactive energy market
+(TEM). A comprehensive compilation is in ref. [10].
+SESAM (Self Organisation and Spontaneity in Liberalised
+and Harmonised Markets) is one early pilot of a P2P market
+platform, executed with electronic contracts to transparently
+integrate peer autonomy, spontaneity and incentivisation
+through decentralised control mechanisms and secure
+communication [11, 12]. The Brooklyn Microgrid project has
+emerged as a prototypical, cyber‐physical TE market with
+extensive referencing in related literature since 2017, fronted by
+Mengelkamp et al. [13] who contextualised a 7‐component
+architecture. The physical layer includes the grid connection,
+market set‐up (peer composition and energy profiling) and
+energy management systems (for supply‐demand monitoring,
+order submissions and fulfilment), interfacing with a virtual
+layer comprising the information system (platform for secure
+transactions) which executes the market mechanism (bidding
+rules for efficient power allocation) and pricing mechanism
+(incentivising strategies within the market mechanism). Regulation is the seventh component.
+Thus, subject to the extrinsic regulatory enablers, a transactive market must (i) intrinsically coordinate the actions and
+satisfy the motivations of autonomous peers through an efficient market and pricing mechanism within (ii) a secure communications platform.
+What are the motivations for peer participation and how
+can these be met?
+A survey conducted on participants in the Centrica‐
+Cornwall LEM pilot involving 100 households where 54
+were provided with free solar PV and all with free battery installations indicates that the top 3 motivating factors for
+joining the LEM were wanting a clean energy supply, reducing
+carbon emissions and lowering bills [14]. However, only 4%
+were prepared to join the LEM if they had to bear the capital
+costs, with respondents expecting a discount and guaranteed
+reduction in electricity bill on any investment. The free text‐
+box question of “What do you think would need to change
+
+673
+
+to encourage other households to participate in a local energy
+market?” received the most responses of 84, with the financial
+factor sighted as both a barrier and incentive. 63% preferred an
+automated trading route, tuned to their distinct preferences. A
+survey of 261 German households on their motivation for
+LEM participation suggested a strong importance in security of
+supply, although the economic and ecological benefits were
+underlying security‐of‐supply drivers [15]. Having distinct local
+energy pricing is reported to be a ‘high value booster’ for the
+EMPOWER LEM project [16].
+Answering the motivation question to align the right incentives requires recognising the distinct peer characterisations
+in a transactive market set‐up. Presently, three peer groups exist
+—consumers, prosumers and prosumagers [17]. Consumers
+purely have a demand profile, prosumers both consume and
+generate power, whereas prosumagers are prosumers with
+energy storage. Transactive energy market design should follow
+the principles of electricity market design where rules are
+defined to optimally allocate power subject to network constraints [18] with the distinct economic objectives of peers
+incentivised to drive an efficient competitive market [19].
+Effectively matching locally generated power to local demand
+can enable primary substations to maintain their regulated
+power limits without additional constraint management.
+
+1.2 | Scope and contribution
+Whereas the theme of TE market design has attracted significant research recently, the increasing trend in algorithmic sophistication should not shift the focus from peer‐centric
+analysis. Computationally tested TEM designs extensively
+quantify the collective community benefit, rather than the
+differentiated incentives of each peer characteristic. Though a
+sense of community can galvanise peer participation, the decision to participate is an individual one. Thus, the expected
+incentives should rationally align with the level of investment –
+ergo, prosumagers may expect to be better incentivised than
+prosumers and then consumers.
+Our identification of the scalability issue in computational
+analyses is supported by Capper et al. [10], who highlighted that
+96 out of 119 papers case studied markets comprising up to 100
+participants. Further gaps exist in terms of simulating diverse
+peer profiles within a realistic market size, over a longer time
+horizon. By investigating 300 prosumers with heterogeneous
+portfolios, Ye at al. [20] attempt to address the diversity issue,
+although consumers were excluded, and test cases covered 52
+randomly selected days from an annual dataset. In addition to
+peer evolution, the three market design phases towards TEM
+maturity should be juxtaposed to shape the strategy for practical
+deployment. This market evolution was examined by Guerrero
+et al. [21] for a community of 30 consumers, 20 prosumers and
+50 prosumagers, albeit over a 24‐h trading simulation.
+To address these gaps, this paper is structured as follows:
+Section 2 outlines the broad market design principles along
+the TE maturity roadmap. The mathematical frameworks
+governing their economic evaluation are formulated.
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+In Section 3, a case study based on hourly‐discretised real
+market data, spanning 1 year is used to quantify the distinct
+economic implications for each peer group (consumers, prosumers, and prosumagers) along the TEM evolution (Figure 1).
+
+FIGURE 1
+
+Whereas works by [22, 23] provide a framework for analysing different peer‐to‐peer energy sharing mechanisms, Lüth
+et al. [24] proposed three business models that seek to better
+integrate grid‐edge storage flexibility to create a fairer
+
+Market designs along the transactive energy (TE) maturity roadmap.
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+674
+
+marketplace. This paper draws on the learnings noted in ref.
+[24], in conjunction with the TEM maturity roadmap to
+investigate the economic outcomes of market participants
+under five different flexibility‐driven market designs, at a scale
+that exceeds previous scholarship.
+
+2 | TRANSACTIVE ENERGY MARKET
+DESIGN
+As per definition, a TE market consists of economic and energy control mechanisms—known as transactive control [8]
+which organises peer interaction through economic signals to
+optimise power allocation [25].
+TEMs, like other market‐based contracts, are underpinned
+by the fundamental economic rules of individual peer rationality (IR), incentive compatibility (IC) and utility preservation (UP) [26]. The TEM design aim is to coordinate peers'
+behaviours to maximise overall system efficiency or social
+welfare, subject to these rules [18]. A peer has a voluntary
+willingness to participate in the market and exhibits a rational
+behaviour (IR) by taking decisions and actions which maximise
+its personal objective. A peer is duly incentivised to actively
+participate in the market (IC), and to a level of satisfaction that
+retains their participation (UP).
+Peers use energy management devices (intelligent agents)
+to automatically communicate and negotiate their actions with
+each other for effective dispatch and supply‐demand balancing
+through electronic market algorithms [9, 27]. Transactive
+control techniques will evolve along the industrial adoption
+stages identified in ref. [8]. This trajectory to TE maturity
+initiates from centralised, develops to decentralised, towards
+fully distributed mechanisms.
+� Independent Peer Strategy (IPS), the first mechanism, is
+the status‐quo, independent peer‐to‐grid model, described
+as self‐optimisation in ref. [8] and uncoordinated approaches in ref. [21]. Peers transact independently with the
+centralised grid via their retailer with whom they exchange
+power and economic information (Figure 1(i)). In each
+trading period, peers autonomously manage their energy,
+subject to the grid import and export price signals, to
+minimise their bill, based on the formulation in Section 2.1.
+The IPS is the baseline against which the other adoptive
+mechanisms are measured. Self‐optimisation approaches
+were applied in refs. [20, 21, 28, 29] to model the strategic
+trading decisions of independent market agents.
+� Local Energy Sharing (LES) defines the second adoption
+stage, a decentralised, coordinated [21] mechanism. A local
+market operator acts as an intermediary between peers and
+the retailer, acquiring information on the demand and
+generation profiles and storage assets within the community
+(Figure 1(ii)). Acting on behalf of participants, the operator's
+objective is to maximise social welfare or minimise the
+aggregate community bill. It executes this by using the
+external price signals to coordinate the efficient allocation of
+power locally to prioritise local supply‐demand balance and
+
+-
+
+675
+
+minimise grid imports. The computational formulation is
+outlined in Section 2.2. LES approaches have been
+computationally examined by the authors in refs. [20, 21, 29,
+30]. LES facilitates the adoption of local pricing strategies
+(Section 2.2.1). Once the aggregate bill is settled with the
+grid, the pro‐rated economic burden or revenue can be
+allocated to each peer based on their distinct demand or
+supply contribution.
+� Distributed Peer‐to‐Peer (P2P) – with no intermediary,
+distributed communications at each peer node enable the
+direct bilateral exchange between a seller [a peer with surplus
+power] and buyer [a peer with deficit] in discretised trading
+slots. Unlike the decentralised approach, peers have autonomy
+over their information and self‐optimise their energy
+schedule, to execute smart contracts (a set of algorithmically
+written protocols between peers [31]). Distributed ledger
+technology, such as blockchain is characteristically suited to
+provide a platform with non‐discriminatory peer access for
+transparent, secure, non‐repudiable P2P exchanges as highlighted in Section 1.1. P2P mechanisms have been categorised
+into optimisation methods, game theory, matching algorithms
+and auctions [21, 32–34]. P2P exchanges, in the pure sense, are
+of a bilateral nature with full peer autonomy, executable
+through matching algorithm or auctions. Game theory is
+limited to theoretical simulations as in practice, peers may not
+have information on each other [34] unless in the LES.
+Whereas LES models result in energy and economic transfer
+from one peer to the other, they are not a P2P model, as
+transactive control lies with the local operator. Indeed, whilst
+an operator may manage the information system that facilitates P2P transactions, energy management autonomy resides
+with individual peers.
+Auction‐based methods are a zero‐intelligence approach. An
+auction algorithm was originally proposed [35] for a distributed resource allocation problem with limited local information on network data and topology. A double auction (DA)
+consists of multiple buyers and sellers where both parties
+submit bids or asks in allocated time slots. A variant is the
+continuous double auction characterised by continual market
+clearing in the auction period [36, 37]. Double auctions are
+used in commodities trading and stock exchange. Buyers
+submit bid orders of [quantity, price] and sellers submit paired
+ask orders. Bid orders are sorted in descending order and ask
+orders in ascending order, the highest bid price is then
+matched with the lowest ask price [38, 39]. In this paper, a DA
+mechanism is formulated in Section 2.3 to execute distributed
+P2P trades, drawing on related work in ref. [40]. Distributed
+approaches have scalability advantages. The absence of
+cooperative action via a local coordinator may yield inefficient
+resource allocation, resulting in social welfare not being
+maximised for the community. Another challenge is that
+network operators may lack the visibility of P2P trading for
+efficient operational management. In ref. [41], a P2P trading
+with network constraint modelling is used to assess trading
+impacts on a typical UK low‐voltage network. To facilitate
+upstream‐downstream energy balancing, Morstyn et al. [42]
+designed real‐time and forward contracts to allow bilateral
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+"
+
+h
+i
+−
+⋅
+bc
+ℇbi;t ¼ ℇbi;t−∆t þ ηbc
+i;t
+i
+
+trades among prosumers, suppliers and generators in an
+islanded microgrid.
+
+"
+
+##
+1
+⋅ bd i;t
+ηbd
+i
+
+∗ ∆t
+
+ð5Þ
+
+∀ t2T
+
+2.1 | Independent peer strategy
+
+ℇbi
+
+Consider a market comprising I peers, who receive information
+ahead of a daily trading cycle, d to act at every timestep, t to
+optimise their distinct daily trading outcomes. The baseline demand is assumed to consist of uncontrollable loads. The baseline
+net demand is the baseline demand less PV generation. For a peer
+net
+with battery storage (flexibility), the flexible net demand, d i;t is
+the baseline net demand, plus battery charge less discharge. At
+every timestep, a peer can only sell to or buy from the grid. At
+timestep, t a peer with a flexible net demand surplus ðdnet
+i;t < 0Þ
+exports its surplus to the grid at the grid export price, λst . At
+net
+timestep, t a peer with a flexible net demand deficit ðdi;t > 0Þ
+
+For every peer i 2 I :
+f or every day; d 2 D:
+min
+
+�
+
+T h
+X
+
+pv
+ðθt ; d i;t ; gi;t ; dnet
+i;t ; ℇbi;t ; bci;t ; bd i;t
+
+�
+t¼1
+
+net−pos
+
+λbt d i;t
+
+i
+
+h
+
+net−neg
+
+þ λst di;t
+
+i
+
+≤ ℇbi;t ≤ ℇbi
+
+0 ≤ bci;t ≤
+
+�
+
+max
+
+∀ t2T
+
+�
+max
+βi;t ∗ b i
+
+∀ t2T
+
+0 ≤ bci;t ≤ 2
+0 ≤ bd i;t ≤
+
+�
+
+at t ¼ 1
+
+�
+max
+1 − βi;t ∗ b i
+
+∀ t2T
+
+ð6Þ
+ð7Þ
+ð8Þ
+
+The optimised cost of distinct peer groups or the community can be calculated using (9).
+I
+X
+
+2
+4�
+
+i¼1
+
+b
+
+buys the deficit from the grid at the retail price, λt .
+The objective of a flexible prosuming peer (a prosumager)
+is to autonomously adjust its battery charge and discharge
+decisions to minimise its daily cost. For a peer, i 2 I , the
+objective function (1) is subject to the binary variable, θt
+activating for a deficit flexible net demand (2) and deactivating
+for a surplus (3); a peer's supply‐demand balance (4) and
+battery operating constraints (5), (6), (7) and (8). To prevent
+charging spikes and allow system stabilisation, bci,t was constrained in the first hour. An optimisation with a linear
+objective function; continuous and integer variables; linear,
+bounded and binary constraints present a classic mixed integer
+linear programming (MILP) problem, typically solved using
+linear programming‐based branch‐and‐bound algorithms [43].
+Consumers have no self‐generation and thus buy to cover their
+deficit demand at all timesteps. Prosumers have no storage
+flexibility; their grid imports and exports are based on their
+baseline net demand as dictated by their PV generation output.
+For consumers and prosumers, there is no optimisation. Their
+hourly costs are calculated as the sum of the price and net
+demand product terms in Equation (1) and aggregated daily.
+
+min
+
+T h
+X
+t¼1
+
+min
+
+pv
+
+θt ; d i;t ; gi;t ; d net
+i;t ; ℇbi;t ; bc i;t ; bd i;t
+net−pos
+
+λt b d i;t
+
+i
+
+�
+
+3
+i
+net−neg 5
+þ λt s d i;t
+h
+
+ð9Þ
+
+2.2 | Local energy sharing
+In the decentralised LES model, peers grant access (to their
+generation, demand and battery data) to the local market
+operator who acts to minimise the aggregate cost via coordinated flexibility dispatch for efficient local power allocation.
+The objective function minimises the cost of purchasing
+aggregate deficit flexible net demand less revenue from surplus
+exports (10). It is subject to the binary variable, θt activating for
+an aggregate deficit flexible net demand (11) and deactivating
+for a surplus (12); supply‐demand balance (13) and (14) and
+operating constraints of prosumagers' batteries—stored energy
+balance, limit, charging and discharging protocols (15), (16),
+(17) and (19). The battery characteristics of consumers and
+prosumers are set to zero. The cost minimisation model is
+solved as a MILP problem, and the distinct peer contributions
+calculated.
+For every day; d 2 D:
+
+�
+
+pv
+
+min
+
+θt ; di;t ; gi;t ; D nett ; ℇbi;t ; bci;t ; bd i;t ;
+
+�
+
+T h
+i
+X
+net−pos
+λt b D t
+þ λt s D net−neg
+t
+t¼1
+
+ð10Þ
+ð1Þ
+subject to:
+
+subject to:
+net−pos
+
+0 ≤ d i;t
+
+≤ θt Ε
+net−neg
+
+ðθt − 1Þ Ε ≤ d i;t
+pv
+
+≤ 0
+
+net−pos
+
+d i;t − gi;t þ bci;t − bd i;t ¼ d i;t
+
+net−pos
+t
+
+∀t2T
+
+ð2Þ
+
+0≤D
+
+∀t2T
+
+ð3Þ
+
+ðθt − 1Þ Ε ≤ D net−neg
+≤0
+t
+
+net−neg
+
+þ d i;t
+
+∀
+
+¼ d net
+i;t
+t2T
+
+pv
+
+ð4Þ
+
+≤ θt Ε
+
+∀
+
+net
+
+d i;t − gi;t þ bci;t − bd i;t ¼ d i;t
+
+t2T
+
+ð11Þ
+
+∀ t2T
+
+ð12Þ
+
+∀ t2T
+∀ i2I
+
+ð13Þ
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+676
+
+I
+X
+i¼1
+
+net−pos
+þ D net−neg
+t
+t
+
+net
+d net
+i;t ¼ D t ¼ D
+
+∀ t2T
+ð14Þ
+
+"
+ℇbi;t ¼ ℇbi;t−∆t þ
+∀ t2T
+
+h
+
+ηbc
+i ∙ bci;t
+
+"
+
+i
+
+þ D net−neg
+¼
+t
+
+∀ t2T
+
+∀ i2I
+
+I
+X
+i¼1
+
+net−pos
+
+d i;t
+
+I
+X
+
+þ
+i¼1
+
+net−neg
+
+d i;t
+
+ð21Þ
+
+##
+1
+∙ bd i;t
+ηbd
+i
+
+−
+
+net−pos
+t
+
+D nett ¼ D
+
+677
+
+∗ ∆t
+MMR Cost ¼
+
+∀ i2I
+
+T X
+I h
+X
+t¼1
+
+i¼1
+
+∀ t2T
+
+ð15Þ
+
+net−pos
+
+λ t b MMR d i;t
+
+net−neg
+
+þ λt s MMR d i;t
+
+i
+
+∀ i2I
+
+ð22Þ
+ℇbi
+
+min
+
+≤ ℇbi;t ≤ ℇbi
+
+0 ≤ bci;t ≤
+
+�
+
+max
+
+�
+max
+βi;t ∗ b i
+
+∀ t2T
+
+∀ i2I
+
+ð16Þ
+
+∀ t2T
+
+∀ i2I
+
+ð17Þ
+
+t¼1
+
+ð18Þ
+
+0 ≤ bci;t ≤ 2
+0 ≤ bd i;t ≤
+
+�
+
+�
+
+1 − βi;t ∗ b max
+i
+
+at
+
+∀ t2T
+
+∀ i2I
+ð19Þ
+
+Scenario 1 MMR Pricing during Local Supply‐Demand
+Balance
+At a timestep, t in T when local flexible net demand is equal to
+net generation (Figure 2), D nett ¼ 0 (23). The MMR buy price,
+λ t b MMR and sell price, λ t s MMR are at mid‐market price, λt mid (24).
+D
+
+net−pos
+¼ D net−neg
+;
+t
+t
+
+2.2.1 | Local pricing strategies
+
+MMR pricing
+At timestep, t the mid‐market price, λt mid is the average of the
+grid buy and sell prices (20). The local MMR buy price, λ t b MMR
+and sell price, λ t s MMR are decided based on the local flexible net
+demand status, D nett (21) which is the sum of each peer's
+deficit and surplus flexible net demand at any timestep (13)
+(14). The aggregate MMR cost per peer group is calculated in
+(22). The LES cost minimisation problem is initially solved as
+in Section 2.2, to determine the D nett value at every
+timestep, t 2 T , creating three MMR pricing scenarios for
+Equation (22).
+λt mid ¼
+
+2
+
+D nett ¼ 0 at t in T
+
+λ t b MMR ¼ λ t s MMR ¼ λt mid
+
+An internal pricing scheme can be adopted within the LEM to
+reallocate the aggregate LES bill to peers. This is a potential
+win‐win for both retailer and community as the retailer preserves the aggregate economic value captured from the community and the community can assign to peers an economic
+reward or burden based on their contribution to the discretised
+local supply‐demand status. Several local pricing strategies are
+proposed in literature, such as bill sharing, mid‐market rate
+(MMR) [23] and pricing based on the supply‐demand ratio
+(SDR) [44]. The bill sharing model is however suboptimal for
+prosuming peers as it does not incentivise them fairly for their
+local generation and flexibility, making them worse‐off than in
+the IPS, [22, 23] at the benefit of consumers who receive local
+power at a discount. MMR was used to encourage coalitional
+game theoretic prosumer exchanges [45] and analyse the
+trading decisions among prosumers with multiple generation
+and demand portfolios [30]. SDR was demonstrated in the
+energy sharing among peers in community microgrids [28, 46].
+
+λ bt þ λ t s
+
+s:t:
+
+∀
+
+t2T
+
+ð20Þ
+
+at t in T
+
+ð23Þ
+ð24Þ
+
+Scenario 2 MMR Pricing during Local Supply Deficit
+When the local flexible net demand is more than the net
+generation, D nett > 0 (25), the community imports from the
+grid to meet the deficit, D nett at the higher grid buy price, λ bt .
+The cost of λ bt D nett is borne by consuming peers in pronet−pos
+portionality to their contributing demand, d i;t
+. The local
+
+supply shortfall increases λ tb MMR above mid‐market price,
+λt mid (Figure 3) and is calculated as in Equation (26) for every
+timestep, t in T in which scenario 2 occurs. The selling price
+for the surplus power from prosuming peers is at λt mid , above
+the export price, λ st .
+D
+
+net−pos
+t
+
+�
+�
+�; s:t:
+> � D net−neg
+t
+
+D nett > 0
+
+at t in T
+ð25Þ
+
+h
+λt b MMR ¼
+
+h
+i
+�i
+�
+� þ λ b ∗ D net
+λt mid ∗ � D net−neg
+t
+t
+t
+net−pos
+
+Dt
+at t in T
+
+ð26Þ
+λ t s MMR ¼ λt mid at t in T
+
+ð27Þ
+
+Scenario 3 MMR Pricing during Local Supply Surplus
+As observed in Figure 4, when the local flexible net demand is
+lower than the net generation, the community exports the
+surplus power, D nett to the grid at the lower export price, λ st .
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+FIGURE 2
+
+MMR Scenario 1: Supply‐demand balance in LES. LES, Local Energy Sharing; MMR, mid‐market rate.
+
+FIGURE 3
+
+MMR Scenario 2: Supply deficit in LES. LES, Local Energy Sharing; MMR, mid‐market rate.
+
+Prosuming peers, contributing
+� net � to this excess receive a reduced
+s �
+total revenue of λ t D t �, which is proportionally allocated
+net−neg
+to their individual net generation, d i;t
+. The local surplus
+s MMR
+drives down the local sell price, λ t
+below the mid‐market
+price, λt mid and is determined as in Equation (29). The MMR
+buy price for consuming peers is set below the grid buy price,
+λ bt at λt mid .
+net−pos
+D t
+
+�
+�
+�; s:t:
+< � D net−neg
+t
+
+D nett
+
+< 0 at t in T
+ð28Þ
+
+h
+λ t s MMR ¼
+
+λt mid ∗ D
+
+i
+
+��
+�
+λ st ∗ � D nett �
+� net−neg �
+�D
+�
+ð29Þ
+
+net−pos
+t
+
+þ
+
+�
+
+t
+
+at t in T
+λ t b MMR ¼ λt mid at t in T
+
+ð30Þ
+
+SDR pricing
+The SDR pricing strategy mimics the MMR logic. Whereas the
+MMR uses the local net supply and net demand difference as
+the decision variable for local price indexing, the SDR derives
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+678
+
+FIGURE 4
+
+679
+
+MMR Scenario 3: Supply surplus in LES. LES, Local Energy Sharing; MMR, mid‐market rate.
+
+local price indices from their inverse proportionality to the
+local net SDR (31).
+SDRt ¼
+
+� net−neg �
+�D
+�
+D
+
+t
+net−pos
+t
+
+at t in T
+
+ð31Þ
+
+Scenario 3 SDR Pricing during Local Supply Surplus
+With a local oversupply, the surplus must be exported to the
+grid at the export price, λ st .
+
+Scenario 1 SDR Pricing during Local Supply Deficit
+�
+�
+� ¼ 0 , SDRt = 0.
+When local net generation, � D net−neg
+t
+Simplifying (33) and (34), the SDR buy and sell prices become
+the grid buy price, that is, λ t b SDR ¼ λ t s SDR ¼ λ bt . When there is
+a pure local deficit (0 < SDRt < 1), the deficit power is imported into the community from the grid at λ bt . Under this
+scenario, the SDR prices are discretely calculated as in Equations (33) and (34).
+0 ≤ SDRt ≤ 1 at t in T
+i
+λ t s ∗ λ bt
+i
+i
+λ t s SDR ¼ hh
+λ bt − λ t s ∗ SDRt þ λ t s
+
+ð32Þ
+
+ð35Þ
+
+λ ts SDR ¼ λ t s at t in T
+
+ð36Þ
+
+λ t b SDR ¼ λ t s at t in T
+
+ð37Þ
+
+This formulation, proposed in ref. [44] creates a disincentive for prosuming peers as the SDR buy and sell prices are
+equal to the price floor. To better incentivise prosuming peers,
+Long et al. [46] introduced a positive compensating surcharge,
+λ applied to the SDR sell price in all scenarios, such that λ t s SDR
+h
+i
+becomes λ t s SDR þ λ , where 0 ≤ λ ≤ λ t b SDR − λ t s SDR . We
+assess the original proposition.
+
+h
+
+at t in T
+
+SDRt > 1 at t in T
+
+SDR Cost ¼
+
+T X
+I h
+X
+t¼1
+
+i¼1
+
+∀ t2T
+
+net−pos
+
+λ t b SDR d i;t
+
+λ t b SDR ¼ λ ts SDR ∗
+at t in T
+
+SDRt
+
+�
+
+h
+i
+þ λ t b ∗ ½ 1 − SDRt �
+
+ð34Þ
+
+Scenario 2 SDR Pricing during Supply‐Demand Balance
+At a supply‐demand balance, SDRt ¼ 1 such that from (33)
+and (34), λ t b SDR ¼ λ t s SDR ¼ λ st .
+
+i
+
+∀ i2I
+
+ð33Þ
+�
+
+net−neg
+
+þ λt s SDR d i;t
+
+ð38Þ
+
+2.3 | Distributed P2P: DA
+The DA market mechanism executes transactions in discretised
+time slots called the auction period, which is equivalent to each
+timestep, t 2 T . A trading day has 24 auction periods. A peer
+independently predicts (from the IPS model) its flexible net
+demand status ðd net
+i;t Þ to drive their trading action in an auction
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+period. Peers with a deficit power ðd net
+i;t ≥ 0Þ are classified as
+net
+buyers and those with a surplus ðd i;t < 0Þ as sellers. Every
+auction period is characterised by:
+
+KWATENG ET AL.
+
+10:
+11:
+12:
+
+� A set, S t comprising N t s sellers. A seller, s offers a quantity
+of electricity, q t s for sale at an ask price, λ t s P2P . A seller's ask
+�
+�
+order, os is a pair of offer quantity and ask price q t s ; λ t s P2P .
+
+� A set, Bt of N t b buyers. A buyer, b submits a bid to purchase a quantity of electricity, q t b at a bid price, λ t b P2P . A
+bid horder, ob icontains a bid quantity and price
+
+pair q t b ; λ t b P2P .
+� An orderbook comprising set, Os of N t s sell orders, iden�
+�
+b
+tified by os s; q ts ; λ t s P2P and a set, Ob of N t distinct
+h
+i
+buyer bids ob b; q t b ; λ t b P2P . The orderbook queues the
+sell orders in increasing order of ask prices and sorts the buy
+orders in decreasing order of bid prices.
+
+Algorithm 1 outlines the pseudocode for order matching
+and clearing. In every auction period, t 2 T , a peer i 2 I submits a discretised array of [quantity, price] orders [lines 2–3].
+Prices are randomly selected from a normal distribution
+bounded by the FiT and ToU. A peer is assigned as a buyer,
+b 2 Bt with a bid order or a seller, s 2 S t with an ask order based
+net
+on their d i;t values [lines 4–8]. A set of bid orders, Ob and sell
+orders, Os are published to the orderbook (line 9). The matching
+algorithm reads down the sorted orderbook and seeks to match
+the buy order containing the highest bid price with the sell order
+of least ask price. When a matching occurs, the exchange price is
+calculated as the average of the bid and ask prices (line 12). The
+traded quantity is the minimum of the bid and offered quantities
+to ensure order fulfilment (line 11). Orders are matched (lines
+11–18), until the bid price is less than the ask price or the
+maximum number of either bid or ask orders are reached [lines
+19–20]. Unmatched P2P orders are exchanged with the grid at
+the ToU or FiT [line 22]. The sorting, matching and clearing
+rules in the DA mechanism are theorised as promising an
+outcome of social welfare maximisation [37].
+
+Algorithm 1 P2P DA Order Matching and Clearing
+1: Initiate auction
+2: for every auction period, t 2 T and every
+peer, i 2 I
+3:
+submit order of [quantity, price]
+4:
+if peer is buyer, then
+5:
+define bid order, ob as
+�
+�
+b; q tb ; λ tb P2P
+6:
+else
+7:
+define
+sell order,
+os as
+�
+�
+s; q ts ; λ ts P2P
+8:
+end if
+9:
+publish orderbook of buy orders, Ob
+and sell orders, Os
+▹ Evaluate orders to match best bid and
+ask
+
+while λ tb P2P ≥ λ ts P2P do
+match exchange
+� b quantity,
+�
+P2P
+q t ¼ min q t ; q ts
+calculate P2P exchange price,
+λ
+
+b P2P
+
+þλ
+
+s P2P
+
+t
+λ t P2P ¼ t
+2
+13:
+update buy order book q tb ) q tb −
+q tP2P
+14:
+if q tb ¼ 0 then
+15:
+b←bþ1
+16:
+update seller order book q ts
+) q ts − q tP2P
+17:
+if q ts ¼ 0 then
+18:
+s←sþ1
+19:
+break if
+b
+s
+20:
+b > N t or s > N t
+21:
+end while
+22: Balance unmatched P2P quantity, export
+surplus at λts and buy deficit at λtb
+
+3 | CASE STUDY
+The aim is to examine the economic outcomes for the three
+evolutionary peer types (consumers, prosumers, prosumagers)
+when they participate in the five market designs (three mechanisms and two pricing strategies) along the TE maturity
+roadmap. The mathematical formulations outlined in Sections 2.1, 2.2, MMR pricing, SDR pricing and 2.3 for the
+market designs were computationally simulated using the
+market construct and input data described in Section 3.1.
+For every daily trading period with hourly timesteps,
+T ¼ f1; 2; 3; :::; 24g, the IPS and LES cost minimisation
+models were algorithmically written and individually solved
+using a Python‐based optimisation tool on an Intel(R) Core™
+i7‐9850H, 2.6 GHz processor, 32 GB RAM computer. For the
+MMR and SDR pricing models, the respective costs are
+calculated as in Equations (22) and (38), with local buy and sell
+prices derived from the discretised flexible net demand values
+in the LES optimisation output. The distributed peer‐to‐peer
+exchanges in the DA are executed in the bilateral matching
+algorithm outlined in Section 2.3. In the DA, the amount of
+surplus electricity offered for sale by a prosumager is based on
+its optimised flexible net demand output in the IPS, whereas
+prosumers and consumers trade based on their baseline net
+demand values.
+In Section 3.2.2, the quantified community bill and the
+differentiated bill for each peer group are extracted from the
+simulation output.
+
+3.1 | Input data
+The study utilises a variant of the Australian grid market [47]
+comprising 300 participants with baseline demand ðdi;t Þ and
+pv
+solar PV generation ðgi;t Þ data sampled hourly for a year. Our
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+680
+
+analysis groups participants into 100 consumers (with demand
+but no PV output), 100 prosumers (with demand and PV
+generation) and 100 prosumagers (with demand, PV generation and battery storage). Every prosumager is assumed to be
+equipped with a battery of 90% dischargeable depth, 20 kWh
+max
+min
+maximum capacity ðℇbi Þ, 2 kWh minimum ðℇbi Þ, 2 kWh
+0
+bd
+initial level ðℇbi Þ, 95% charge ðηbc
+i Þ and discharge ðηi Þ efficiencies with a 4 kW maximum charge and discharge power ðbmax
+Þ.
+i
+The typical daily baseline demand for consumers, and
+the baseline net demand characteristics of prosumers and
+prosumagers are profiled in Figure 5. The community has
+an annual aggregate baseline demand of 3,090 MWh and
+986.7 MWh PV generation. The daily community generation and baseline net demand trends are illustrated in
+Figure 6.
+Purchases from the grid are at the buy price, λbt , known as
+time‐of‐use (ToU) tariff. Our analysis uses the ToU profile in
+Figure 7 with a £0.0499/kWh off‐peak rate, £0.1199/kWh
+shoulder and £0.2499/kWh evening peak price. Exports to the
+grid are at λst , the feed‐in‐tariff (FiT), fixed at £0.0395/kWh. The
+mid‐market price, λt mid is the average of the ToU and FiT price.
+
+681
+
+This number of datapoints is also generated for battery
+scheduling and flexible net demand.
+The determinants for the cost functions are power and
+price. The power values
+n are the flexibleodeficit and surplus net
+net−pos
+
+net−neg
+
+or the community
+; d i;t
+demand per peer d i;t
+� net−pos
+�
+net−neg
+aggregate D t
+. Flexibility is exhibited only by
+; D t
+prosumagers via their battery
+charging and odischarging den
+cisions. For prosumers,
+
+net−pos
+
+d i;t
+
+net−neg
+
+; d i;t
+
+becomes the
+
+baseline net demand (demand less PV generation), whereas
+consumers maintain a deficit demand. In the IPS and LES,
+peers exchange
+power at the grid buy and sell prices
+n
+o
+λ bt ; λ st which also guide the local buy and sell prices in the
+n
+o
+n
+o
+MMR λ t b MMR ; λ t s MMR , SDR λ t b SDR ; λ t s SDR and DA
+
+mechanism, λ t P2P .
+Thus, we initially examine the influence of prosumagers'
+battery scheduling on market flexibility and how the latter,
+driven by the price signals, determine the costs under each
+market design.
+
+3.2.1 | Demand flexibility
+3.2 | Discussion of results
+The cost per market design is generated at every timestep, t in
+24 hours within every trading period, d in 366 days, producing
+8784 hourly cost datapoints per peer and for the community.
+
+Prosumagers manage their battery scheduling through two
+strategies—independent energy management in the IPS and
+coordinated decision in the LES. Battery scheduling is
+controlled by the external price signals, subject to the local
+generation, demand and storage limits. Although prosumagers
+
+200
+
+Aggregate Baseline (Net) Demand [ kWh ]
+
+180
+160
+140
+120
+100
+80
+60
+40
+20
+0
+-20
+-40
+-60
+-80
+-100
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+
+FIGURE 5
+
+Typical daily baseline (net) demand per peer group.
+
+Prosumers
+
+Prosumagers
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+600
+550
+
+Market Aggregate Demand and Generation [ kWh ]
+
+500
+450
+400
+350
+300
+250
+200
+150
+100
+50
+0
+-50
+-100
+-150
+-200
+-250
+-300
+-350
+-400
+-450
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Baseline Demand
+
+FIGURE 6
+
+Baseline Net Demand
+
+PV Generation
+
+Typical daily energy profile of examined market.
+
+0.26
+0.24
+0.22
+0.2
+
+Price [ £/kWh ]
+
+0.18
+0.16
+0.14
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Time-of-Use [ToU]
+
+FIGURE 7
+
+Mid-Market Price
+
+Feed-in-Tariff [FiT]
+
+Buy‐from‐grid, mid‐market and sell‐to‐grid prices.
+
+have access to the same information in the IPS and LES,
+Figure 8 demonstrates the differing battery scheduling actions
+under each strategy on a typical day. Through LES coordination, prosumagers are mobilised to enable the community take
+
+better advantage of the low off‐peak ToU prices between 00:00
+– 05:00 to nearly double the aggregate charged power realised
+in the IPS, increasing the stored energy level to 91% of capacity compared with 57% in the IPS.
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+682
+
+flexible net demand are driven by battery charging (a consumption) and decreases by discharging (a generation). The
+aggregate flexible net demand during 00:00 – 05:00 is 2.8 MWh
+
+500
+
+100
+
+400
+
+90
+
+300
+
+80
+
+200
+
+70
+
+100
+
+60
+
+0
+
+50
+
+-100
+
+40
+
+-200
+
+30
+
+-300
+
+20
+
+-400
+
+10
+
+-500
+
+State-of-Charge, SoC [%]
+
+Aggregate Battery Power of Prosumagers [ kW ]
+
+This is reflected in Figure 9 which compares the baseline
+net demand to the optimised flexible net demand under the
+IPS and LES. Since the baseline is unaltered, increases in
+
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+IPS Charge
+
+FIGURE 8
+
+LES Charge
+
+IPS Discharge
+
+LES Discharge
+
+IPS SoC
+
+LES SoC
+
+Prosumagers battery dispatch under IPS and LES. IPS, Independent Peer Strategy; LES, Local Energy Sharing.
+
+600
+550
+
+Aggregate Market Net Demand [ kWh ]
+
+500
+450
+400
+350
+300
+250
+200
+150
+100
+50
+0
+-50
+-100
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Baseline In!lexible
+
+FIGURE 9
+
+683
+
+IPS Flexible
+
+LES Flexible
+
+Comparison of community flexible net demand in IPS and LES. IPS, Independent Peer Strategy; LES, Local Energy Sharing.
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+in the LES and 2 MWh for IPS, compared to the baseline net
+of 1.1 MWh. During the shoulder ToU (06:00 – 17:00), charge
+and discharge trends in the IPS and LES align to give similar
+flexible net demand curves. The distinction is evidenced in the
+community's stored flexibility with 78%–88% of the 2 MWh
+battery capacity maintained under LES, against the IPS range
+of 45%–54%. In both designs, stored power is discharged to
+reduce the morning peak demand by over 200 kWh between
+06:00 – 10:00. During abundant PV generation (11:00 – 15:00),
+some surplus is charged to prosumagers' batteries. Although a
+similarity is observed in the IPS and LES flexible net demand
+troughs, contrastingly a local supply‐demand balance typically
+occurs under the LES but not in the IPS.
+Figure 10 contrasts the power allocation effectiveness of
+the two energy management strategies. A supply‐demand balance occurs when the flexible net demand at any hour is within
+�0.001 kW. LES enables supply‐demand balancing, particularly during PV generation and crucially over the evening peak
+demand (18:00 – 21:00). This is attributable to the significant
+flexibility reserve accumulated, 70% of which is quickly
+
+dispatched towards the 3‐h peak demand to reduce it from 2
+MWh to 0.72 MWh. By focussing on their own utility in the
+IPS, prosumagers are unable to build enough flexibility,
+achieving a combined stored level of 50% by 17:00 and allocating 30% towards peak demand to reduce it to 1.5 MWh,
+twice the value achieved under LES.
+
+3.2.2 | Economic analysis
+Table 1 summarises the annual bill in each market design for
+the community and each peer group. LES achieves a 24%
+annual saving on the IPS community bill. This is 79% traceable
+to the profit accrued by prosumagers who gained a 116% IPS‐
+to‐LES bill reduction. As generation, demand and pricing are
+uncontrollable, a correlation can be observed between flexibility (Figure 9) and the aggregate cost profiles (Figure 11)
+under the IPS and LES. The community's bill under the MMR
+and SDR is equal to that in the LES (Figure 11) as aggregate
+economic value is preserved, albeit distributed differently
+
+Periods of Supply-Demand Balance [ days ]
+
+220
+200
+180
+160
+140
+120
+100
+80
+60
+40
+20
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+IPS
+FIGURE 10
+TABLE 1
+
+LES
+
+Occurrences of local supply‐demand balance in IPS and LES.
+
+Annual costs per market design and savings over the IPS status‐quo.
+
+Bill (£)
+Community
+Saving over IPS [%]
+Consumers
+Saving over IPS [%]
+Prosumers
+Saving over IPS [%]
+Prosumagers
+Saving over IPS [%]
+
+IPS
+
+LES
+
+MMR
+
+SDR
+
+DA
+
+300,624.30
+
+227,392.32
+
+227,392.32
+
+227,392.32
+
+288,985.34
+
+–
+
+24.36
+
+24.36
+
+24.36
+
+3.87
+
+142,118.03
+
+142,118.03
+
+117,958.34
+
+98,057.25
+
+138,280.61
+
+–
+
+0.00
+
+17.00
+
+31.00
+
+2.70
+
+108,623.58
+
+93,357.74
+
+83,366.38
+
+75,879.27
+
+120,027.78
+
+–
+
+14.05
+
+23.25
+
+30.14
+
+−10.50
+
+49,882.69
+
+−8083.45
+
+26,067.60
+
+53,455.81
+
+30,676.95
+
+–
+
+116.20
+
+47.74
+
+−7.16
+
+38.50
+
+Abbreviations: DA, Double Auction; IPS, Independent Peer Strategy; LES, Local Energy Sharing; MMR, mid‐market rate; SDR, supply‐demand ratio.
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+684
+
+among each peer group (Table 1). Overall, the distributed peer‐
+to‐peer DA model realises a 4% comparative benefit over
+the IPS.
+
+period. The product of consumers’ demand (Figure 5) and
+ToU (Figure 7) reflects their cost profile (Figure 12), with
+evening peak periods accounting for 45% of their typical £388
+daily cost. The morning and evening peak costs of prosumers
+in the IPS are analogous to those of consumers. A divergence
+occurs from 08:00–17:00 when prosumers' solar generation
+reduces their bill to £36.94 against consumers' £133.85. This
+difference contributes significantly to the observed £33,500
+
+Economic comparison of IPS versus LES
+To recap, peers transact independently with the grid under the
+IPS, buying deficit at the ToU and exporting surplus at FiT.
+Consumers buy power at the ToU price during every trading
+
+110
+100
+90
+
+Community Bill [£]
+
+80
+70
+60
+50
+40
+30
+20
+10
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+IPS
+
+FIGURE 11
+
+LES
+
+MMR
+
+SDR
+
+DA
+
+Typical hourly community cost per market design.
+
+50
+40
+
+Typical Hourly Cost [ £ ]
+
+30
+20
+10
+0
+-10
+-20
+-30
+-40
+-50
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+FIGURE 12
+
+685
+
+Prosumers
+
+Typical hourly costs in IPS. IPS, Independent Peer Strategy.
+
+Prosumagers
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+annual bill gap in Table 1. Although prosumagers have similar
+baseline net demand profiles as prosumers (Figure 5), prosumagers' flexibility provides them with a flatter cost profile
+(Figure 12). With autonomy over their energy assets and data,
+prosumagers rationally act on the external ToU and FiT price
+signals to charge around 200 kW/h to their batteries during
+00:00–05:00 (Figure 8), incurring an average cost of £13/h
+(Figure 12). They discharge to cover their morning and evening
+peak demands, enabling them to maintain hourly costs below
+£8 during the shoulder and evening peak ToU, as well as a zero
+sum during abundant PV generation.
+Despite prosumagers' favourable IPS cost profile in comparison with consumers and prosumers, it can be inferred from
+Table 1 that the IPS is not the most economically incentivising
+strategy for prosumagers to execute. This is due to them
+having no visibility of extrinsic power data, the limited options
+for flexibility dispatch (self‐allocate or export) and the low FiT.
+By sharing information on the community's demand and
+supply, prosumagers coordinate in the LES to increase their
+battery charge to around 340 kW/h during 00:00–05:00
+(Figure 8), absorbing a higher average cost of £21/h
+(Figure 13) to subsequently discharge 340 kW/h during peak
+ToU prices, gaining a profit of £41/h during 18:00–21:00. This
+intra‐day price arbitraging makes the LES the most incentivising market design for prosumagers, as they benefit from
+selling their surplus to consuming peers at the ToU prices.
+Consuming peers are still subject to paying for their deficit
+demand at the ToU prices, hence the parity between consumers' costs in the IPS and LES. The distinction is that in the
+IPS, economic exchanges occur between the consumer and the
+retailer, who receives the entire £142,118 yearly revenue from
+consumers. Through cooperative power and monetary exchanges in the LES, a share of consumers' cost is allocated to
+
+prosuming peers as revenue. This is particularly lucrative for
+prosumagers who effectively coordinate their flexibility to
+accumulate a £61,000 yearly profit during peak ToU. Prosumagers' profit provides 83% of the aggregate IPS to LES
+cost saving and is the dominant contributor to the LES being
+economically optimal for the community. By having no flexibility, prosumers benefit to a lesser extent. The 14% reduction
+in their LES bill links to the option to transfer some of their
+surplus power to consuming peers at the shoulder ToU price
+of £0.1199/kWh rather than the fixed £0.0395/kWh FiT rate
+in the IPS. During abundant PV generation (11:00 – 15:00),
+prosumers attract an average £5.88/h profit (Figure 13),
+compared to £0.20/h in the IPS (Figure 12).
+
+Economic comparison local pricing strategies ‐ MMR
+versus SDR
+It can be inferred from Figures 14 and 15 that consumers'
+evening peak costs average £33/h and £24/h respectively in
+the MMR and SDR, reducing from £43/h in the IPS and LES.
+As the local MMR buy prices are set between the mid‐market
+price and ToU, consuming peers benefit from buy prices below
+the shoulder and peak ToU (Figure 16). Peak MMR buy price is
+around £0.17/kWh. During abundant PV generation (11:00–
+15:00), when local supply exceeds demand (Figure 9), the
+shoulder MMR prices average £0.09/kWh. The benefit to
+consuming peers comes at some loss to prosumagers who
+discharge their batteries to cover the local evening peak net
+demand at a lower sell price. At peak hours, prosumagers'
+profits shrink to £22/h from an average of £41/h in the LES.
+Contrastingly, since prosumers lack flexibility, it costs them an
+average of £34/h to cover their peak demand, compared to
+£43/h in the LES. Nevertheless, prosumagers gain a 47%
+saving in the MMR compared to trading with the grid
+
+50
+40
+
+Typical Hourly Cost [ £ ]
+
+30
+20
+10
+0
+-10
+-20
+-30
+-40
+-50
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+FIGURE 13
+
+Typical hourly costs in LES. LES, Local Energy Sharing.
+
+Prosumers
+
+Prosumagers
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+686
+
+687
+
+50
+40
+
+Typical Hourly Cost [ £ ]
+
+30
+20
+10
+0
+-10
+-20
+-30
+-40
+-50
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+FIGURE 14
+
+Prosumers
+
+Prosumagers
+
+Typical hourly costs in MMR. MMR, mid‐market rate.
+
+50
+40
+
+Typical Hourly Cost [ £ ]
+
+30
+20
+10
+0
+-10
+-20
+-30
+-40
+-50
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+FIGURE 15
+
+Prosumers
+
+Prosumagers
+
+Typical hourly costs in SDR. SDR, supply‐demand ratio.
+
+independently. The profits accrued by prosumagers in the LES
+are further squeezed when the community executes the SDR
+pricing strategy (Figure 15). This is because the price floor
+shifts down from the mid‐market price in the MMR to the FiT
+in the SDR, whilst the ToU remains the price ceiling in both
+the MMR and SDR. Thus the SDR buy and sell prices (Figure
+17) are typically lower than the corresponding MMR buy and
+sell prices (Figure 16). The periods of LES supply‐demand
+balance, deficit or surplus are not synchronised within each
+
+trading day. Hence, the hourly MMR and SDR prices vary
+for each day, resulting in the daily averaged MMR and SDR
+prices in Figures 16 and 17 not aligning strictly with the
+mathematical formulations in Sections MMR pricing and SDR
+pricing.
+To purely demonstrate the execution of the MMR and SDR
+pricing strategies for this community, we consider 08 June as a
+case in point. On 08 June, the community experiences a supply‐
+demand balance from 06:00–09:00 and at 18:00, a deficit from
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+0.26
+0.24
+0.22
+0.2
+
+Price [ £/kWh ]
+
+0.18
+0.16
+0.14
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Time-of-Use [ToU]
+
+FIGURE 16
+
+MMR Buy
+
+Mid-Market Price
+
+MMR Sell
+
+Feed-in-Tariff [FiT]
+
+Typical MMR buy and sell prices. MMR, mid‐market rate.
+
+0.26
+0.24
+0.22
+0.2
+
+Price [ £/kWh ]
+
+0.18
+0.16
+0.14
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Time-of-Use [ToU]
+FIGURE 17
+
+SDR Buy
+
+Mid-Market Price
+
+SDR Sell
+
+Feed-in-Tariff [FiT]
+
+Typical SDR buy and sell prices. SDR, supply‐demand ratio.
+
+00:00–05:00 and 19:00–23:00, with a surplus from 10:00–17:00
+(Figure 18). Consider the prices transacted in Figure 19. With no
+net generation occurring from 00:00–05:00, D net−neg
+¼ 0 and
+t
+net−pos
+net
+D t ¼D t
+> 0. According to Equation (26), the MMR
+buy price, λ t b MMR simplifies to λ bt , which is the ToU off‐peak
+
+price of £0.0499/kWh. From Equation (27), the MMR sell
+price, λ t s MMR is at the off‐peak mid‐market price, λt mid of
+£0.0447/kWh. With a supply‐demand balance occurring from
+06:00–09:00 and at 18:00, both λ t b MMR and λ t s MMR are at discretised λt mid prices, that is, the shoulder λt mid of £0.0797/kWh
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+688
+
+689
+
+650
+600
+550
+
+Aggregate Power [ kWh ]
+
+500
+450
+400
+350
+300
+250
+200
+150
+100
+50
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+LES Net Demand
+FIGURE 18
+
+LES Net Supply
+
+Local flexible net demand and supply on 8 June.
+
+0.26
+0.24
+0.22
+0.2
+
+Price [ £/kWh ]
+
+0.18
+0.16
+0.14
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Time-of-Use [ToU]
+Feed-in-Tariff [FiT]
+
+FIGURE 19
+
+MMR Buy
+SDR Buy
+
+MMR Sell
+SDR Sell
+
+Mid-Market Price
+
+MMR and SDR exchange prices on 8 June. MMR, mid‐market rate; SDR, supply‐demand ratio.
+
+from 06:00–09:00, and a peak λt mid of £0.1447/kWh at 18:00, in
+fulfilment to (24). As the net supply exceeds demand from
+10:00–17:00, D nett < 0. According to (30), λ t b MMR remains at
+λt mid to offer consuming peers a lower price than the ToU, due
+to the surplus generation in the local market. Prosuming peers
+are penalised for this over‐supply with their sell price, λ t s MMR
+reduced from the ToU in the LES to between the FiT, λ st and
+
+mid‐market, λt mid , as calculated in Equation (29). In this period,
+the lowest λ t s MMR of £0.0488/kWh is registered at 14:00, the
+time of highest net generation. From 19:00–23:00, the community experiences a supply deficit ðD nett > 0Þ, at an advantage
+to prosumagers who receive the prevailing λt mid prices for their
+dispatched flexible power (27). The deficit penalty, attributed to
+consuming peers is reflected in their higher buy price between
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+KWATENG ET AL.
+
+λt mid and λ bt , according to (26). The highest λ t b MMR of
+£0.1921/kWh is observed at the greatest deficit which occurs
+during the peak ToU time of 21:00. In the SDR, power transacted during an over‐supply ðSDRt > 1Þ at 10:00–17:00, are
+priced in Equations (36) and (37) with λ t s SDR ¼ λ t b SDR ¼ λ t s ¼
+£0.0395/kWh. With no net generation from 00:00–05:00,
+SDRt ¼ 0; so Equations (33) and (34) simplify to
+λ t s SDR ¼ λ t b SDR ¼ λ t b ¼ £0.0499/kWh, the off‐peak ToU
+price. In a supply‐demand balance ðSDRt ¼ 1Þ; occuring
+from 06:00–09:00 and at 18:00, Equations (33) and (34) simplify
+to λ t b SDR ¼ λ t s SDR ¼ λ t s ¼ £0.0395/kWh. In deficit occurrences, where 0 < SDRt < 1; (19:00–23:00), the exchange
+prices calculated in Equations (33) and (34) show the reduction
+in consuming peers' peak prices compared to the MMR, with a
+correlated squeeze in prosumagers' returns.
+
+indicating that a maximum 208 MWh should be rationally sold
+to consuming peers. However, prosumers import an extra 61
+MWh, of which 8 MWh is sold to the community and 53 MWh
+is exported back to the grid. Their ineffective power allocation
+and irrational economic behaviour reflect their worst economic
+outcome in the DA model. Their DA cost curve (Figure 22)
+shows their resultant cost during abundant PV generation
+(11:00–15:00), compared with the zero sum achieved in the IPS
+(Figure 12). The cost borne by prosumers during 08:00–18:00
+is transferred as a £52 daily profit to prosumagers. Prosumagers have an annual 737.5 MWh deficit and 194 MWh surplus
+baseline net demand. In the IPS, 47 MWh aggregate is stored
+in their batteries, leaving a residual 590 MWh deficit net demand which is met by grid imports. In the DA, prosumagers
+reduce their IPS bill by purchasing 120 MWh at lower prices
+via P2P from prosumers during PV output hours to reduce
+their overall grid imports to 470 MWh. Prosumagers have
+distinct net demand profiles and thus unique sell and buy
+trends – they exchange 7 MWh (of their requested 127 MWh
+bid quantity) among themselves during P2P trading. Consumers purchase at all hours, benefitting from the lower daytime P2P prices to reduce their costs compared to that in the
+IPS and LES.
+
+Economic analysis under distributed P2P DA
+In the P2P DA, sellers (peers with a surplus net demand)
+autonomously ask prices which are randomly selected between
+the FiT and ToU. Buyers (consuming peers) negotiate buy
+prices bilaterally with individual sellers. Within the FiT to ToU
+range constraint, a correlation is seen between the P2P
+auctioned prices (Figure 20) and the intra‐day supply‐demand
+variability (Figure 9). Aside a few peak and off‐peak time
+outliers, P2P trading typically occurs between 08:00–18:00
+(Figure 21) during which prosumers' restricted bargaining
+power compels them to sell their excess generation at the lower
+exchange prices. They sell an aggregate 216 MWh annually to
+the community, export an additional 53 MWh to the grid at the
+lower FiT and import 816 MWh to fulfil their deficit net demand at the higher ToU. Prosumers' yearly baseline deficit and
+surplus net demand are 755 MWh and 208 MWh respectively,
+
+4 | SUMMARY NOTES AND FUTURE
+DIRECTION
+Economic incentivisation is a strong driver for active grid‐edge
+participation in the TE paradigm which can be achieved by
+efficient power and economic allocation to sustain distinct peer
+motivations. Distinguished from related scholarship, this paper
+looks through the lens of each peer type (consumers,
+
+0.26
+0.24
+0.22
+0.2
+
+Price [ £/kWh ]
+
+0.18
+0.16
+0.14
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Time-of-Use [ToU]
+FIGURE 20
+
+P2P Exchange Price
+
+P2P exchange prices in the DA. DA, double auction.
+
+Mid-Market Price
+
+Feed-in-Tariff [FiT]
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+690
+
+691
+
+350
+300
+250
+
+Power Traded [ kW ]
+
+200
+150
+100
+50
+0
+-50
+-100
+-150
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers P2P
+Consumers Net Grid
+FIGURE 21
+
+Prosumers P2P
+Prosumers Net Grid
+
+Prosumagers P2P
+Prosumagers Net Grid
+
+P2P and grid power exchanges in the DA. DA, double auction.
+
+50
+40
+
+Typical Hourly Cost [ £ ]
+
+30
+20
+10
+0
+-10
+-20
+-30
+-40
+-50
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
+Time of Day
+Consumers
+FIGURE 22
+
+Prosumers
+
+Prosumagers
+
+Typical hourly costs in the P2P DA. DA, double auction.
+
+prosumers, prosumagers) to value their economic positions
+along the TE evolution. Using a representative LEM dataset
+from a real network, the evolutionary market designs were
+computationally analysed to generate economic insights at
+hourly granularity for each peer over a year's trading horizon.
+The market designs examined are (i) the centralised model –
+IPS; (ii) the decentralised LES mechanism along with two local
+
+pricing strategies – (iii) MMR and (iv) SDR; and (v) a distributed P2P model via DA. The key points are hereby
+summarised.
+� Community:
+It is economically optimal for the community to share information and coordinate local energy management in the
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+LES. However, a functioning local market should incentivise
+all parties fairly to retain their participation.
+� Consumers:
+The mechanism of pure LES without a local pricing
+strategy may not attract the participation of consumers if
+their local power purchases are priced at the ToU,
+making them not economically better off than buying
+from their retailer. By introducing local pricing, consumers can be given a discount on their local purchases
+from the savings accrued by the community through
+the LES.
+� Prosumers:
+Prosumers' generation supports market models which aim
+to match local generation to demand. For solar prosumers
+however, their peculiar generation profiles limit their independent bargaining power in bilateral P2P negotiations.
+Their economic outcomes improve when they relinquish
+their autonomy to a local operator to maximise their generation assets in the LES.
+� Prosumagers:
+Prosumagers' flexibility is a critical asset for LES coordination and a significant contributor to the community's bill
+reduction. This must be duly incentivised through a more
+equitable local pricing strategy such as the MMR, since the
+SDR devalues the flexibility dispatched by prosumagers to
+cover peak demand, at the benefit of consuming peers.
+With full autonomy, prosumagers can push their negotiating position to capture more economic value through
+P2P transactions. Their strategy should be community‐
+tailored by juxtaposing the economic outcome of their
+P2P autonomy with that which a locally priced LES
+mechanism could offer.
+� Future direction:
+Contrary to refs. [15, 23, 48] and similar propositions, the
+level of PV penetration and consumer‐to‐prosumer ratios
+are not the critical success criteria for locally driven TE
+markets. Local flexibility is the key enabler for optimal
+power allocation, subject to external price signals.
+Currently, grid‐edge participants lack full visibility of the
+centralised real‐time price signals. This, together with the
+absence of regulatory enablers, is the barrier to the
+practical implementation of local TE markets. The
+extension to this work is the execution of P2P transactions via smart contracts on a distributed platform (to
+address the second intrinsic TE market design challenge)
+and signposting the required legislative drivers (the
+extrinsic TE market design challenge) for practical
+deployment.
+NOME NCL AT U R E
+S ETS :
+D set of days in analysed time horizon;
+D ¼ fd1 ; d 2 ; :::; d D−1 ; Dg
+T
+set of timesteps in daily trading cycle;
+T ¼ ft1 ; t2 ; :::; tT −1 ; T g
+I
+set of all peers in the examined market;
+I ¼ f1; 2; …; Ig
+
+KWATENG ET AL.
+
+set of sellers in P2P auction at timestep; t
+s
+S t ¼ f1; 2; …; N t g
+set of buyers in P2P auction at timestep; t
+b
+Bt ¼ f1; 2; …; N t g
+set of P2P sell orders at timestep; t
+Os ¼ fos1 ; os2 ; os3 ; …; osN st g
+set of P2P buy orders at timestep; t
+Ob ¼ fob1 ; ob2 ; ob3 ; …; o N bt g
+
+St
+Bt
+Os
+Ob
+
+b
+
+C O N S TA N T S :
+I
+total number of peers in the examined market
+D
+total number of days in analysed time horizon;
+D ¼ 366 days
+d
+granularity of every trading cycle; d 2 D
+t
+discrete timesteps f or deciding trading actions;
+t2T
+T
+total time period per daily trading cycle;
+T ¼ 24 hours
+min
+ℇbi
+minimum storage level of battery of peer; i ½kW h�
+max
+maximum storage level of battery of peer; i ½kW h�
+ℇbi
+0
+initial storage level of battery of peer; i ½kW h�
+ℇbi
+max
+maximum charge and discharge power of battery
+bi
+of peer; i ½kW �
+ηbc
+charge ef f iciency of battery of peer; i ½%�
+i
+discharge ef f iciency of battery of peer; i ½%�
+ηbd
+i
+E
+total energy available f rom grid f or trading with
+peers ½kW h�
+
+VA RI A B L E S :
+i
+s
+b
+Nt
+
+s
+
+index of a peer in the examined
+market
+index of a seller in P2P auction at
+timestep; t
+index of a buyer in P2P auction at
+timestep; t
+number of P2P sellers at timestep; t
+
+b
+
+number of P2P buyers at timestep; t
+
+pv
+gi;t
+
+PV generation f rom peer; i in
+timestep; t ½kW �
+baseline demand of peer; i in
+timsetep; t ½kW �
+f lexible net demand of peer; i over
+pv
+net
+timestep; t ½kW � ½d i;t ¼ d i;t − gi;t
+þ bci;t − bd i;t �
+f lexible net demand def icit
+net
+ðd i;t > 0Þ of peer; i ½kW �
+f lexible net demand surplus
+ðd net
+i;t < 0Þ of peer; i ½kW �
+aggregate community f lexible net
+demand in timestep; t ½kW �
+aggregate community f lexible net
+demand def icit ðD net t > 0Þ ½kW �
+aggregate community f lexible net
+demand surplus ðD net t < 0Þ ½kW �
+
+Nt
+
+di;t
+net
+
+d i;t
+
+net−pos
+
+d i;t
+
+net−neg
+
+d i;t
+
+D net t
+D
+
+net−pos
+t
+
+D net−neg
+t
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+692
+
+q ts
+
+quantity of electricity of f ered by a
+P2P seller; s at timestep; t ½kW �
+quantity of electricity bid by a P2P
+q tb
+buyer; b at timestep; t ½kW �
+q tP2P
+quanity of electricity bilaterally
+exchanged in P2P auction at timestep;
+t ½kW �
+ℇbi;t
+stored energy of battery of peer; i at
+timestep; t ½kW h�
+battery charge of peer; i at timstep;
+bci;t
+t ½kW �
+bd i;t
+battery discharge of peer; i at
+timestep; t ½kW �
+ℇbi;t
+x 100% state – of – charge of battery of peer;
+SoC ¼ ℇbi max
+i at timestep; t ½%�
+λt b
+buy price f rom grid ½T oU : time –
+of – use� at timestep; t ½£=kW h�
+λt s
+sell price to grid ½FiT : f eed – in –
+tarif f � at timestep; t ½£=kW h�
+λ t mid
+calculated mid ‐ market price at
+timestep; t ½£=kW h�
+local MMR buy price in LES at
+λ t b MMR
+timestep; t ½£=kW h�
+λ t s MMR
+local MMR sell price in LES at
+timestep; t ½£=kW h�
+local SDR buy price in LES at
+λ t b SDR
+timestep; t ½£=kW h�
+λ t s SDR
+local SDR sell price in LES at
+timestep; t ½£=kW h�
+electricity ask price by seller in P2P
+λ t s P2P
+trading at timestep; t ½£=kW h�
+λ t b P2P
+electricity bid price by buyer in P2P
+auction at timestep; t ½£=kW h�
+agreed exchange price in P2P auction
+λ t P2P
+at timestep; t ½£=kW h�
+os
+a seller0 s ask
+quantity
+� order of paired
+�
+and price q t s ; λ t s P2P
+ob
+a buyer 0 s bid
+quantity
+h order of paired
+i
+and price q t b ; λ t b P2P
+θt 2 ½0; 1�
+binary variable denoting purchase
+f rom or sale to grid ; θt ¼ 1 f or
+buying def icit net demand f rom grid
+ðimportsÞ ; θt ¼ 0 f or selling
+surpplus net demand to grid ðexportsÞ
+binary variable f or denoting battery
+βi;t 2 ½0; 1�
+charging or discharging ; βi;t ¼ 1 f or
+charging ; βi;t ¼ 0 denotes battery
+discharging
+
+A UT HOR CON TR I BU TI O N S
+Yaa Serwaah Amoah Kwateng: Conceptualisation; Data
+curation; Formal analysis; Investigation; Methodology; Software; Validation; Visualisation; Writing – original draft; Writing
+– review & editing. Dawei Qiu: Data curation; Methodology;
+Resources; Supervision. Goran Strbac: Supervision.
+
+693
+
+DA TA AVA I L AB I LI T Y S TAT E ME N T
+The data used in our case study have been derived from the
+Australian Grid solar home electricity data which is openly
+available at: https://www.ausgrid.com.au/Industry/Our‐
+Research/Data‐to‐share/Solar‐home‐electricity‐data.
+O R CI D
+https://orcid.org/0009-0004-2952Yaa S. A. Kwateng
+9714
+Goran Strbac
+https://orcid.org/0000-0001-7421-3947
+R E F E R EN C ES
+1. Jenkins, N., Ekanayake, J., Strbac, G.: Distributed Generation. IET
+Institution of Engineering and Technology, London (2010)
+2. International Electrotechnical Commission (IEC), Bringing Intelligence
+to the Grid (2018). [Online]. https://www.iec.ch/resource‐centre/
+bringing‐intelligence‐grid. [Accessed 10 Feb 2021]
+3. Hall, S., Roelich, K.: Business model innovation in electricity supply
+markets: the role of complex value in the UK. Energy Pol. 92, 286–298
+(2016). https://doi.org/10.1016/j.enpol.2016.02.019
+4. Gui, E.M., MacGill, I.: Typology of future clean energy communities: an
+exploratory structure, opportunities, and challenges. Energy Res. Social
+Sci. 35, 94–107 (2018). https://doi.org/10.1016/j.erss.2017.10.019
+5. Strbac, G., et al.: Cost‐effective decarbonization in a decentralized market: the benefits of using flexible technologies and resources. IEEE
+Power Energy Mag. 17(2), 25–36 (2019). https://doi.org/10.1109/mpe.
+2018.2885390
+6. Parag, Y., Sovacool, B.: Electricity market design for the prosumer era.
+Nat. Energy 1(4), 16032 (2016). https://doi.org/10.1038/nenergy.
+2016.32
+7. Hertz‐Shargel, B., Livingston, D.: Assessing Blockchain’s Future in
+Transactive Energy. Atlantic Council, Global Energy Center, Washington
+(2019). [Online]. https://atlanticcouncil.org/wp‐content/uploads/2019/
+09/BLOCKCHAIN‐0919‐WEB.pdf. [Accessed 16 Dec 2019]
+8. GridWise® Architecture Council (GWAC): GridWise transactive energy
+framework Version 1.1 (2019). [Online]. https://www.gridwiseac.org/
+pdfs/pnnl_22946_gwac_te_framework_july_2019_v1_1.pdf. [Accessed
+11 Feb 2021]
+9. Lezama, F., et al.: Local energy markets: paving the path toward fully
+transactive energy systems. IEEE Trans. Power Syst. 34(5), 4081–4088
+(2019). https://doi.org/10.1109/tpwrs.2018.2833959
+10. Capper, T., et al.: Peer‐to‐peer, community self‐consumption, and
+transactive energy: a systematic literature review of local energy market
+models. Renew. Sustain. Energy Rev. 162, 112403 (2022). https://doi.
+org/10.1016/j.rser.2022.112403
+11. Eßer, A., et al.: Future power markets. Impacts of consumer response
+and dynamic retail prices on electricity markets. Economic Informatics
+49(5), 335–341 (2007). https://doi.org/10.1007/s11576‐007‐0077‐7
+12. Conrad, M., et al.: A peer‐to‐peer framework for electronic markets. In:
+Steinmetz, R., Wehrle, K. (eds.) Peer‐to‐Peer Systems and Applications.
+LNCS 3485, pp. 509–525. Springer‐Verlag, Berlin (2005)
+13. Mengelkamp, E., et al.: Designing microgrid energy markets. A case
+study: the Brooklyn Microgrid. Appl. Energy 210, 870–880 (2018).
+https://doi.org/10.1016/j.apenergy.2017.06.054
+14. Bray, R., Woodman, B.: Cornwall Local Energy Market ‐ Householder
+Survey Summary Report (2020)
+15. Okwuibe, G., et al.: Survey and analysis of local energy markets based on
+distributed ledger technologies. IEEE Access 11, 23771–23791 (2023).
+https://doi.org/10.1109/access.2023.3254508
+16. Bremdal, B.A., et al.: Creating a local energy market. CIRED‐Open
+Access Proceedings Journal 2017(1), 2649–2652 (2017). https://doi.
+org/10.1049/oap‐cired.2017.0730
+17. Sioshansi, F.: Consumer, Prosumer, Prosumager: How Service Innovations Will Disrupt the Utility Business Model. Academic Press (2019)
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+-
+
+KWATENG ET AL.
+
+-
+
+18. Kiesling, L.: Chapter 16 ‐ an economic analysis of market design: local
+energy markets for energy and grid. In: Pinto, T., Vale, Z., Widergren, S.
+(eds.) Local Energy Markets, pp. 279–293. Academic Press (2021)
+19. Morrison, E.: Unbundling, markets and regulation. In: Hafner, M.,
+Luciani, G. (eds.) The Palgrave Handbook of International Energy
+Economics, pp. 471–491. Palgrave Macmillan Cham. (2022)
+20. Ye, Y., et al.: Multi‐agent deep reinforcement learning for coordinated
+energy trading and flexibility services provision in local electricity markets. IEEE Trans. Smart Grid 14(2), 1541–1554 (2023). https://doi.org/
+10.1109/tsg.2022.3149266
+21. Guerrero, J., et al.: Towards a transactive energy system for integration of
+distributed energy resources: home energy management, distributed
+optimal power flow, and peer‐to‐peer energy trading. Renew. Sustain.
+Energy Rev. 132, 110000 (2020). https://doi.org/10.1016/j.rser.2020.
+110000
+22. Zhou, Y., Wu, J., Long, C.: Evaluation of peer‐to‐peer energy sharing
+mechanisms based on a multiagent simulation framework. Appl. Energy 222, 993–1022 (2018). https://doi.org/10.1016/j.apenergy.2018.
+02.089
+23. Long, C., et al.: Peer‐to‐peer energy trading in a community microgrid.
+IEEE Power & Energy Society General Meeting, 1–5 (2017). Chicago,
+IL, USA
+24. Lüth, A., et al.: Local electricity market designs for peer‐to‐peer trading:
+the role of battery flexibility. Appl. Energy 229, 1233–1243 (2018).
+https://doi.org/10.1016/j.apenergy.2018.08.004
+25. Hu, J., et al.: Transactive control: a framework for operating power
+systems characterized by high penetration of distributed energy resources. Journal of Modern Power Systems and Clean Energy 5(3),
+451–464 (2017). https://doi.org/10.1007/s40565‐016‐0228‐1
+26. Sabounchi, M., Wei, J.: Towards resilient networked microgrids:
+blockchain‐enabled peer‐to‐peer electricity trading mechanism. In: IEEE
+Conference on Energy Internet and Energy System Integration (EI2),
+Beijing, pp. 1–5 (2017)
+27. Kok, K., Widergren, S.: A society of devices: integrating intelligent
+distributed resources with transactive energy. IEEE Power Energy Mag.
+14(3), 34–45 (2016). https://doi.org/10.1109/mpe.2016.2524962
+28. Luo, X., et al.: Distributed peer‐to‐peer energy trading based on game
+theory in a community microgrid considering ownership complexity of
+distributed energy resources. J. Clean. Prod. 351, 131573 (2022). https://
+doi.org/10.1016/j.jclepro.2022.131573
+29. Qiu, D., Ye, Y., Papadaskalopoulos, D.: Exploring the effects of local
+energy markets on electricity retailers and customers. Elec. Power Syst.
+Res. 189, 106761 (2020). https://doi.org/10.1016/j.epsr.2020.106761
+30. Qiu, D., Ye. Y, P.D., Strbac, G.: Scalable coordinated management of
+peer‐to‐peer energy trading: a multi‐cluster deep reinforcement learning
+approach. Appl. Energy 292, 116940 (2021). https://doi.org/10.1016/j.
+apenergy.2021.116940
+31. Szabo, N.: Smart contracts: building blocks for digital markets (1996)
+[Online]. https://www.fon.hum.uva.nl/rob/Courses/InformationIn
+Speech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.
+net/smart_contracts_2.html. [Accessed 01 Mar 2020]
+32. Khorasany, M., et al.: Lightweight blockchain framework for location‐
+aware peer‐to‐peer energy trading. Int. J. Electr. Power Energy Syst.
+127, 106610 (2021). https://doi.org/10.1016/j.ijepes.2020.106610
+33. Tushar, W., et al.: Peer‐to‐Peer trading in electricity networks: an overview. IEEE Trans. Smart Grid 11(4), 3185–3200 (2020). https://doi.org/
+10.1109/tsg.2020.2969657
+
+KWATENG ET AL.
+
+34. Lin, Y., Wang, J.: Realizing the transactive energy future with local energy
+market: an overview. Current Sustainable Renewable Energy Reports 9,
+1–14 (2022). https://doi.org/10.1007/s40518‐021‐00198‐0
+35. Bertsekas, D.P.: The distributed algorithm for the assignment problem.
+In: Laboratory for Information and Decision Sciences Wrking Paper.
+Massachusetts Institute of Technology, Cambridge (1979)
+36. Parsons, S., Rodriguez‐Aguilar, J., Klein, M.: Auctions and bidding: a
+guide for computer scientists. ACM Comput. Surv. 43(2), 1–59 (2011).
+https://doi.org/10.1145/1883612.1883617
+37. Friedman, D., Rust, J. (eds.) The Double Auction Market: Institutions,
+Theories and EvIdence. Proceedings Volume XIV Santa Fe Institute
+Studies in the Sciences of Complexity. Routledge, New York (1993)
+38. Liang, J., Tang, W.: Optimal trading strategies in continuous double
+auctions for transactive energy. In: North American Power Symposium
+(NAPS), Wichita, KS, USA, pp. 1–6 (2019)
+39. Li, Z., Ma, T.: Peer‐to‐peer electricity trading in grid‐connected residential
+communities with household distributed photovoltaic. Appl. Energy 278,
+115670 (2020). https://doi.org/10.1016/j.apenergy.2020.115670
+40. Qiu, D., et al.: Multi‐agent reinforcement learning for automated peer‐to‐
+peer energy trading in double‐side auction market. In: Proceedings of the
+Thirtieth International Joint Conference on Artificial Intelligence (IJCAI‐
+21) (2021)
+41. Guerrero, J., Chapman, A., Verbič, G.: Decentralized P2P energy trading
+under network constraints in a low‐voltage network. IEEE Trans. Smart
+Grid 10(5), 5163–5173 (2019). https://doi.org/10.1109/tsg.2018.2878445
+42. Morstyn, T., Teytelboym, A., Mcculloch, M.: Bilateral contract networks
+for peer‐to‐peer energy trading. IEEE Trans. Smart Grid 10(2),
+2026–2035 (2019). https://doi.org/10.1109/tsg.2017.2786668
+43. Gurobi Optimization: Mixed‐integer programming (MIP) – a primer on
+the basics (2021). [Online]. https://www.gurobi.com/resource/mip‐
+basics/. [Accessed 16 Feb 2021]
+44. Liu, N., et al.: An energy sharing model with price‐based demand
+response for microgrids of peer‐to‐peer prosumers. IEEE Trans. Power
+Syst. 32(5), 3569–3583 (2017). https://doi.org/10.1109/tpwrs.2017.
+2649558
+45. Tushar, W., et al.: A motivational game‐theoretic approach for peer‐to‐
+peer energy trading in the smart grid. Appl. Energy 243, 10–20 (2019).
+https://doi.org/10.1016/j.apenergy.2019.03.111
+46. Long, C., et al.: Peer‐to‐peer energy sharing through a two‐stage aggregated battery control in a community Microgrid. Appl. Energy 226,
+261–276 (2018). https://doi.org/10.1016/j.apenergy.2018.05.097
+47. Ratnam, E.L., et al.: Residential load and rooftop PV generation: an
+Australian distribution network dataset. Int. J. Sustain. Energy 36(8),
+787–806 (2017). https://doi.org/10.1080/14786451.2015.1100196
+48. Lin, J., Pipattanasomporn, M., Rahman, S.: Comparative analysis of
+auction mechanisms and bidding strategies for P2P solar transactive
+energy markets. Appl. Energy 255, 113687 (2019). https://doi.org/10.
+1016/j.apenergy.2019.113687
+
+How to cite this article: Kwateng, Y.S.A., Qiu, D.,
+Strbac, G.: Incentivising peers in local transactive energy
+markets: A case study for consumers, prosumers and
+prosumagers. IET Smart Grid. 7(5), 672–694 (2024).
+https://doi.org/10.1049/stg2.12166
+
+25152947, 2024, 5, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/stg2.12166 by Pontificia Universidad Catolica De Chile, Wiley Online Library on [11/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+694
+
+

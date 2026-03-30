@@ -1,0 +1,1917 @@
+Energy Economics 152 (2025) 108985
+
+Contents lists available at ScienceDirect
+
+Energy Economics
+journal homepage: www.elsevier.com/locate/eneco
+
+Financial viability of energy communities: The role of flexible assets,
+balancing market participation and peer-to-peer tradingI , II
+Ole Herman Imset, Rubab Ishmam, Jakob Kleinau, Maria Lavrutich
+
+∗
+
+, Dung-Bai Yen
+
+Norwegian University of Science and Technology, Norway
+
+ARTICLE
+JEL classification:
+C02
+C61
+G50
+Q40
+Q41
+Q42
+Keywords:
+Smart grids
+Peer-to-peer trading
+Energy communities
+Balancing markets
+Real options analysis
+Battery energy storage
+
+INFO
+
+ABSTRACT
+Energy communities accelerate the green transition by enabling prosumers and non-generating households
+to benefit from electricity exchange and cost savings. At the same time, there is a need for more flexibility
+providers in the balancing markets, creating opportunities for energy communities to reduce energy costs
+and enhance grid stability. This paper examines the financial viability of energy communities equipped with
+electric vehicles, photovoltaics, and battery energy storage systems, that are actively engaged in peer-to-peer
+trading and participating in the balancing markets. Our optimization model applied to a case study in Norway
+shows a substantial reduction in energy costs for the energy community through peer-to-peer trading and
+participation in reserve markets. Balancing market participation is crucial to ensure profitability of investment
+in photovoltaics and battery energy storage systems. However, solar investments only yield negative net present
+values even if the revenue of the balancing markets is present. To account for uncertainties in future costs
+of battery energy storage systems and photovoltaics, we develop a real option investment valuation model,
+which reveals additional value by deferring solar investments, making them more profitable. Furthermore,
+an important finding is that incorporating the operational flexibility of assets in the optimization model
+substantially reduces exposure to the volatility of spot and balancing market prices in the long-term investment
+model.
+
+1. Introduction
+Several key trends—digitalization, electrification, decentralization,
+and the growing role of renewable energy sources—are transforming
+the future of the electricity grid (Kjølle et al., 2021). As the grid
+becomes more reliant on intermittent renewable energy sources (RES)
+like solar and wind, flexibility offered by distributed energy resources
+(DERs), which can respond to price signals and grid requirements in
+real time, becomes more important for maintaining grid stability. In
+this context, the end-users have the potential to play a more active
+role, as the increasing integration of DERs such as photovoltaics (PV),
+battery energy storage systems (BESS), and electric vehicles (EVs)
+is shifting the grid from a centralized model to a more distributed
+structure. Thus, understanding the incentives that drive end-users to
+become prosumers, who both generate, consume, and trade energy
+using DERs, is essential for enhancing grid flexibility.
+Digitalization and the resulting emergence of smart technologies,
+such as, for example, peer-to-peer (P2P) trading platforms, offer the
+
+potential to make it more attractive for consumers to become prosumers. peer-to-peer platforms enable prosumers to collaborate and
+form energy communities, where they can trade electricity directly with
+other users, bypassing traditional intermediaries (Mengelkamp et al.,
+2018). By allowing prosumers to sell their excess energy and provide
+flexibility services to the grid, energy communities can enhance local
+energy efficiency while contributing to the broader stability of the
+power system (Astero and Evens, 2020; Thingvad et al., 2022; Ahčin
+et al., 2019). For energy communities to succeed and play a meaningful
+role in grid flexibility, they must also be economically viable. One
+way to improve profitability for energy communities is participation
+in balancing markets, where they can offer flexibility services to help
+stabilize the grid in exchange for an additional revenue stream. The
+economic benefits allowing various flexibility assets into the balancing
+markets have been investigated to some extent in the past (Radu et al.,
+2019; Schwabeneder et al., 2021; Javanshir et al., 2023), and a brief
+
+I This article is part of a Special issue entitled: ‘Carbon neutrality’ published in Energy Economics.
+II Maria Lavrutich and Dung-Bai Yen gratefully acknowledge support from FME CINELDI, grant number 272398, and FME NTRANS, grant number 296205,
+
+supported by the Research Council of Norway. The authors also thank Raquel Alonso Pedrero and Pedro Crespo Del Granado for their insightful comments and
+feedback.
+∗ Corresponding author.
+E-mail address: maria.lavrutich@ntnu.no (M. Lavrutich).
+https://doi.org/10.1016/j.eneco.2025.108985
+Received 18 March 2025; Received in revised form 29 July 2025; Accepted 9 October 2025
+Available online 13 October 2025
+0140-9883/© 2025 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Table 1
+Technical characteristics of various flexibility assets that can participate in balancing markets in an energy
+community.
+Technology
+type
+
+Synergy with other
+transition policies
+
+Temporal
+availability
+
+Flexibility
+range
+
+BESS
+
+Distributed renewable
+energy deployment
+
+High
+
+High
+
+EV
+
+Decarbonization in the
+transportation sector
+
+Constrained
+by service
+
+Constrained
+by service
+
+Heat Pumps
+
+Decarbonization in the
+building sector
+
+High
+
+Constrained
+by service
+
+Other appliances
+in general
+
+Less directly related
+
+Constrained
+by service
+
+Constrained
+by service
+
+summary of the technical characteristics of different types of flexibility
+technology within an energy community is shown in Table 1. However,
+despite these previous studies, the potential of energy communities
+equipped with EVs and BESS becoming flexibility providers in the
+balancing markets remains an area that has not yet been fully explored.
+In this paper, we address the gap by evaluating the financial viability of future energy communities. We examine the impact of investing
+in PVs and/or BESS, and explore how the availability of different
+income streams affects the profitability of peer-to-peer energy communities. To do this, we construct an optimization model that simulates
+the operation of a hypothetical peer-to-peer trading energy community in Norway.1 Households in the community are equipped with
+PVs, EVs and BESS, and are to derive cost savings from balancing
+markets, energy arbitrage,2 peer-to-peer trading, and grid export. We
+focus on two balancing products: Fast Frequency Reserve (FFR) and
+Frequency Containment Reserves (FCR) as they are characterized by
+rapid response times and are well-suited for BESS and EVs due to
+their ability to quickly charge and discharge energy in response to grid
+needs (Canals Casals et al., 2019; Hollinger et al., 2017). However,
+regulatory barriers currently limit household participation in these
+markets. In this paper, we investigate the potential impact of allowing
+households to participate and how this could promote greater end-user
+involvement.
+Our model integrates household demand estimates and simulated
+solar generation profiles, as well as uncertainty in spot and FCR prices
+using a Markov regime switching (MRS) model. The output from the
+optimization model is then used to assess the value of investment in
+PV-BESS through real options valuation (ROV) analysis. This method
+allows us to quantify the profitability of investing in PVs and BESS
+while accounting for uncertainties in market conditions and future
+technology costs.
+Our paper contributes to the growing stream of literature on financial viability of forming energy communities. This literature has
+explored different approaches, focusing on either short-term optimization or long-term investment flexibility. Optimization models have
+been used to demonstrate the potential cost savings from aggregating
+BESS and EVs to participate in reserve markets. Studies such as Bessa
+and Matos (2014), Iria et al. (2019), and Xiao et al. (2020) focus
+on optimizing operations to maximize cost savings from flexibility
+aggregation in various geographical contexts. Additionally, research on
+peer-to-peer trading uncovers cost savings from local energy exchanges
+within communities (Lüth et al., 2018; Nguyen et al., 2018; Zepter
+
+et al., 2019), though these studies typically do not account for reserve
+market participation, which can further enhance savings. The latter is
+recognized by the literature on the integration of peer-to-peer trading
+with flexibility markets where the distribution system operator (DSO)
+is the flexibility requester (Kilthau et al., 2023; Khorasany et al.,
+2021). In our paper, we build on these insights but focus on the
+transmission system operator (TSO) as the procurer of flexibility. In
+this context, closest to our study is the contribution by Bjarghov et al.
+(2019), which develops a three-stage stochastic optimization model
+to determine optimal bidding in day-ahead, intraday, FFR, and FCR
+markets for the households in a peer-to-peer energy community in
+Norway. They suggest that reserve market participation is significantly
+higher when peer-to-peer trading in an energy community takes place.
+While the potential cost savings are significant, it is crucial to recognize
+that realizing these savings requires an initial investment in a PV-BESS
+system. Thus, we expand this stream of literature to explicitly study if
+these savings are sufficiently large to justify the investment in PV-BESS.
+In this, we utilize a real option approach that recognizes the additional value of managerial flexibility to defer substantial long-term
+investment decisions in uncertain environments. Several studies that
+adopt this approach find that while conventional net present value
+(NPV) analysis often deems the investments infeasible, the real options
+framework supports making the investment (Penizzotto et al., 2019; Or
+et al., 2024; Moon and Baran, 2018). Contributions by Castellini et al.
+(2021) and Bertolini et al. (2018) extend the real options analysis by
+considering the inclusion of peer-to-peer trading and reserve market
+participation, respectively. While these models demonstrate how the
+option to defer can add value to investments, they lack the component
+that either captures the possibility to store energy using BESS. In
+the meantime, Ma et al. (2019) apply the real options approach to
+value PV-BESS systems but do not account for participation in different
+balancing markets. In this paper, we address this gap by integrating
+an optimization of operational decisions for peer-to-peer trading energy communities with PV-BESS and balancing market revenues into a
+long-term investment framework.
+Our main findings can be summarized as follows. We show that it is
+profitable for households to form an energy community if they invest in
+BESS and PVs at current prices. The main driver for the profitability of
+investing in PV-BESS systems is the participation in balancing markets,
+particularly FCR and FFR. Excluding these markets significantly reduces
+financial viability, with NPVs turning negative in some cases. This also
+applies to the case of BESS investment alone, where, without balancing
+market participation, such investments yield negative NPVs, in line
+with the conclusions of several existing contributions that conclude
+that such investments are not profitable. In addition, we show that
+investing in PVs alone currently yields negative NPV regardless of
+balancing market participation. However, when accounting for the
+value of flexibility to defer investment, which conventional valuation
+methods disregard, we find that a price decrease over the coming years
+would make the investment viable if balancing market revenue streams
+are available. In addition, we explored the option of involving EVs
+in the FCR market, which utilizes an existing asset without requiring
+significant investment costs, showing some potential for cost reduction.
+
+1
+Norway is chosen as the case study in this paper due to the comprehensive
+policy support of electrification of end-use energy demand and highly dynamic
+time-of-use retailer electricity prices, resulting in a society with one of the
+highest level of electrified, flexible end-use energy demand around the world.
+As discussed in Table 1, these friendly policies in the various sectors have
+synergies that enable flexibility in the balancing markets.
+2
+By ‘‘energy arbitrage’’, we refer to the charging of batteries when spot
+prices are low and discharging at times when the spot prices are higher, within
+the same day.
+
+2
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Fig. 1. Illustration of the houses, assets and available markets for the energy community.
+
+Further, our analysis offers interesting insights about the volatility
+of the savings achieved in the energy community. Particularly, the savings volatility is significantly lower than the spot and balancing prices.
+This is because the optimization model considers multiple uncorrelated
+income streams. The hedge offered by batteries against elevated spot
+prices also diminishes the savings volatility. This insight contrasts with
+studies that disregard optimization models and rely only on exogenous
+processes governing price uncertainty. Despite the low savings volatility, we show that a real options valuation identifies additional value
+compared to the conventional NPV in some investment cases.
+Following this introduction, the paper is structured as follows.
+Section 2 outlines the modeling approach, including the optimization
+and investment valuation models. Section 3 presents the data sources
+and the calibration of model parameters. Section 4 presents the results
+and discussion. Finally, Section 5 concludes.
+
+2.1. Functions, sets, indices, parameters and variables
+Table 2 gives an overview of the functions, sets, indices, parameters,
+and variables used in this section.
+2.2. The optimization model
+An optimization model is used in this paper to determine the shortterm operation of the flexible assets within the energy community.
+Rather than optimizing the operation over a long time span, the model
+is run for the first week of each quarter, with discrete days, as illustrated in Fig. 2. This is to make a satisfactory representation of an entire
+year while maintaining a reasonable computational runtime. The model
+plans operations for discrete 24-hour intervals with perfect foresight.
+This aligns well with the fact that spot and FCR prices are known for up
+to 36 h into the future. Nevertheless, the assumption that PV production
+and household demand are known would not apply in reality. FFR
+participation is predetermined as one has to sign a contract that lasts
+longer than 24 h. Regarding FCR participation, we assume that the net
+FCR regulation is zero per time step. Hence, FCR does not affect the
+state of charge of the batteries.
+
+2. Methodology
+To explore the viability of investment in PVs and/or BESS, we
+analyze a hypothetical energy community that consists of seven houses,
+each equipped with different flexible assets, visualized in Fig. 1. The
+households can engage in peer-to-peer trading, export to the main grid,
+and provide flexibility through FFR Flex3 and FCR. When considering
+short-term operations, we assume the community members have collectively invested in assets to benefit all participants, with the number
+of EVs, PVs, and BESS set to four for each asset type whose investment
+has occurred.
+The workflow of our model for determining the value of PV and/or
+BESS investments is described below. First, we calibrate household
+demand using real data and simulate solar generation profiles to realistically represent energy consumption and production. Then we simulate
+spot and FCR prices to account for the uncertainty in future market
+conditions. These simulated price paths are then used as inputs for
+running the optimization model, which determines the optimal operational decisions for the energy community equipped with flexible
+assets. For each price path, the optimization model generates potential
+savings. These savings are then fed into the valuation model to assess
+the long-term financial viability of investing in PVs and/or BESS.
+
+2.2.1. Price modeling
+In our model, we introduce uncertainty in FCR and spot prices by
+assuming that they follow a Markov regime switching (MRS) model
+where three independent states are used, capturing normal price behavior, price spikes, and price drops (Daglish et al., 2021; Eichler
+and Türk, 2013; Huisman and Mahieu, 2003; Janczura et al., 2013).
+While jump-diffusion models are commonly used in the literature to
+capture price spikes, the MRS framework models extreme price behavior through discrete regime transitions. In particular, the high-price
+regime replicates sudden and persistent deviations from normal prices,
+serving a similar purpose to jump components in diffusion models. This
+provides a flexible and tractable alternative for capturing both volatility
+clustering and structural breaks observed in historical electricity price
+dynamics. The MRS model is defined by:
+𝑚
+⎧𝑋𝑡,1
+⎪ 𝑚
+𝑚
+𝑋𝑡 = ⎨𝑋𝑡,2
+⎪ 𝑚
+⎩𝑋𝑡,3
+
+3
+There are two types of FFR products in the Norwegian balancing market:
+FFR Flex and FFR Profil. Both are procured on a seasonal basis, with a fixed
+price per MW per hour for the entire delivery period. FFR Flex allows the TSO
+to activate capacity with short notice during a flexible set of hours, while FFR
+Profil requires a predefined delivery profile throughout the season.
+
+if 𝑅𝑚
+𝑡 =1
+if 𝑅𝑚
+𝑡 =2
+
+𝑚 = {𝑠, 𝑏}
+
+(1)
+
+if 𝑅𝑚
+𝑡 = 3,
+
+where 𝑚 = {𝑠, 𝑏} represents spot and FCR prices, respectively, and
+𝑅𝑚
+𝑡 is the state variable of the unobserved Markov chain that governs transitions between the three regimes. Here, 𝑋𝑡𝑚 represents the
+stochastic component of the original price data, so the prices 𝑝𝑚
+𝑡 =
+3
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Fig. 2. The optimization model is run in discrete daily intervals over representative weeks over 30 years, and data are revealed to the model annually, weekly,
+and daily.
+
+∀𝑡′ ∈ 𝜏𝜔 (13)
+
+𝑓𝑡 +𝑋𝑡𝑚 , with 𝑓𝑡 as the deterministic part composed of daily (𝑑𝑡 ), weekly
+(𝑤𝑡 ), and long-term seasonal components (𝑇𝑡 ), i.e. 𝑓𝑡 = 𝑑𝑡 + 𝑤𝑡 + 𝑇𝑡 .
+The long-term seasonal component (𝑇𝑡 ) is modeled using sinusoidal
+functions for better forecasting accuracy (Janczura and Weron, 2010),
+while dummy variables capture the short-term components (𝑑𝑡 and
+𝑤𝑡 ) (Bakke et al., 2016). This approach ensures that the deseasonalized
+price 𝑋𝑡𝑚 effectively captures the stochastic variations required for the
+MRS model.
+The base regime (normal price behavior) in the MRS model follows the Chan–Karolyi–Longstaff–Sanders (CKLS) differential equation,
+which captures mean reversion and volatility:
+𝑚
+
+𝑚
+𝑚
+𝑚 𝛾1
+𝑚
+𝑑𝑋𝑡,1
+= (𝛼1𝑚 − 𝛽1𝑚 𝑋𝑡,1
+)𝑑𝑡 + 𝜎1𝑚 |𝑋𝑡,1
+| 𝑑𝑍𝑡,1
+
+The income streams from balancing market participation are elaborated in Eq. (5). The level of FCR participation is the only decision
+variable in Eq. (5); 𝑧𝐹 𝑙𝑒𝑥 is a parameter set to 90% of the BESS capacity
+during summer and 0% during winter.
+
+2.2.3. Constraints
+The balance equation, Eq. (6), ensures supply–demand balance for
+every household at all times.
+
+(2)
+
+𝐒𝐮𝐩𝐩𝐥𝐲
+
+⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞
+∑
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝑟𝑒𝑠𝑡,ℎ +
+𝐷𝑡,𝑓 + 𝐺𝑡,ℎ
++ 𝐼𝑡,ℎ
+𝑓 ∈𝜈𝐻 (ℎ)
+
+min 𝑧(𝑡′ )
+
+=
+−
+
+ℎ∈𝐻
+
+∀
+
+𝐃𝐞𝐦𝐚𝐧𝐝
+
+=
+
+𝑡 ∈ 𝑇, ℎ ∈ 𝐻
+
+(6)
+
+⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞
+∑
+𝑒𝑥𝑝𝑜𝑟𝑡
+𝑑𝑒𝑚𝑡,ℎ +
+𝐶𝑡,𝑓 + 𝐺𝑡,ℎ
++ 𝑋𝑡,ℎ
+𝑓 ∈𝜈𝐻 (ℎ)
+
+Eq. (7) through Eq. (10) describe the grid properties of the problem.
+∑
+
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+≤ 𝐺𝑡𝑝𝑒𝑎𝑘
+′
+
+∀ 𝑡 ∈ 𝜏𝐷 (𝑡′ ),
+
+𝑡′ ∈ 𝜏𝜔 (13)
+
+(7)
+
+ℎ∈𝐻
+
+∑
+
+2.2.2. Objective function
+Eq. (4) is the objective function of the optimization problem. It seeks
+to minimize the cost for the community. All positive terms represent
+costs, while the negative terms represent revenue from different income
+streams for the community. The first and second term is the sum of
+imports and exports. Note that there is an extra retail cost for imports,
+which is not incurred when exporting to the grid. The last term is due
+to the compensation of balancing market participation.
+𝐄𝐥𝐞𝐜𝐭𝐫𝐢𝐜𝐢𝐭𝐲𝐩𝐮𝐫𝐜𝐡𝐚𝐬𝐞𝐜𝐨𝐬𝐭𝐬
+
+(5)
+
+𝑡∈𝜏𝐷 (𝑡′ )
+
+where 𝑘 = 2 corresponds to price spikes and 𝑘 = 3 to price drops. The
+quantiles are set as 𝑞2𝑚 = 0.75 and 𝑞3𝑚 = 0.25 to reflect that spikes occur
+above the median and drops occur below the median. We generate
+10 000 paths of spot and FCR prices for use in the optimization model.
+
+∑
+
+𝐅𝐂𝐑𝐬𝐚𝐯𝐢𝐧𝐠𝐬
+
+𝐅𝐅𝐑𝐅𝐥𝐞𝐱𝐬𝐚𝐯𝐢𝐧𝐠𝐬
+
+⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞ ⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞
+∑
+𝐵𝑀𝑃 = 𝑝𝐹 𝑙𝑒𝑥 𝑧𝐹 𝑙𝑒𝑥 ℎ𝐹 𝑙𝑒𝑥 +
+𝑝𝐹𝑡 𝐶𝑅 𝑍𝑡𝐹 𝐶𝑅
+
+𝑚 are increments of
+where 𝛼1𝑚 , 𝛽1𝑚 , 𝜎1𝑚 , and 𝛾1𝑚 are constants, and 𝑑𝑍𝑡,1
+mutually independent Wiener processes.4 For both price spikes and
+drops, we use a shifted log-normal distribution. The spikes occur when
+𝑚 > 𝑋(𝑞 𝑚 ), while drops occur when
+prices exceed a specified quantile 𝑋𝑡,2
+2
+𝑚
+𝑚
+prices fall below 𝑋𝑡,3 < 𝑋(𝑞3 ). The general form for both regimes is as
+follows:
+(
+(
+))
+(
+)
+𝑚
+log (−1)𝑘 𝑋𝑡,𝑘
+− 𝑋(𝑞𝑘𝑚 ) ∼ 𝑁 𝛼𝑘𝑚 , (𝜎𝑘𝑚 )2 ,
+(3)
+
+∑
+
+(4)
+
+𝑒𝑥𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+≤ 𝑥𝑙𝑖𝑚𝑖𝑡
+
+𝑡∈𝑇
+
+∑
+𝑡∈𝑇
+
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+≥
+
+∑
+
+(8)
+
+∀ ℎ∈𝐻
+
+𝑒𝑥𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+
+(9)
+
+∀ ℎ∈𝐻
+
+𝑡∈𝑇
+
+𝑝𝑒𝑥𝑝𝑜𝑟𝑡
+= (1 − 𝜓)𝑝𝑠𝑝𝑜𝑡
+𝑡
+𝑡
+
+(10)
+
+∀ 𝑡∈𝑇
+
+Eq. (11) through Eq. (15) constrain both the BESS and EV batteries
+according to their respective properties. Note that at specified times,
+the batteries are modeled to have a state of charge at a set percent
+of maximum. To model EV behavior, Eqs. (13) and (14) are added.
+Eq. (15) ensures that EVs are not able to contribute in the community
+outside the specified time intervals.
+
+𝐄𝐱𝐩𝐨𝐫𝐭𝐬𝐚𝐯𝐢𝐧𝐠𝐬
+
+⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞ ⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞⏞
+𝑠𝑝𝑜𝑡
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝑒𝑥𝑝𝑜𝑟𝑡
+(
++ 𝑝𝑟𝑒𝑡𝑎𝑖𝑙
+)𝐺𝑡,ℎ
+− 𝑝𝑒𝑥𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+)
+𝑡∈𝜏𝐷 (𝑡′ ) (𝑝𝑡
+𝑡
+𝑡
+
+𝐵𝑀𝑃
+
+𝑆𝑡,𝑓 = 𝑆𝑡−1,𝑓 +𝜂𝑓𝑐ℎ𝑎𝑟𝑔𝑒 𝐶𝑡,𝑓 −
+4
+
+Since the correlation coefficient between the historical spot and FCR
+prices is found to be 0.2, this correlation is disregarded in the model.
+
+1
+𝜂𝑓𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+
+𝐷𝑡,𝑓
+
+∀
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪𝐹 𝐸𝑉
+(11)
+
+4
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+𝑠𝑡,𝑓 ≤ 𝑆𝑡,𝑓 ≤ 𝑠𝑡,𝑓
+Table 2
+Functions, Sets, Indices, Parameters and Variables.
+Function
+
+Description
+
+𝜏𝜔 (⋅)
+
+A mapping 𝜔 ↦ , where 𝜔 ∈ {0, 1, 2, … , 23} and
+ = {𝑡|𝑡 ∈ 𝑇 & mod (𝑡, 24) = 𝜔},
+indicating all the time steps of the same hour of day.
+A mapping 𝑡 ↦  where 𝑡 ∈ 𝑇 and
+ = {𝑞|𝑞 ∈ 𝑇 & 0 ≤ 𝑞 − 𝑡 < 24},
+indicating the next 24 h after hour 𝑡.
+A mapping 𝑡 ↦ 𝑦 where (𝑡, 𝑦) ∈ 𝑇 × ,
+indicating the year of 𝑡.
+(
+)
+A mapping ℎ ↦  where (ℎ, ) ∈ 𝐻 × 𝑃 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 ,
+indicating the BESS and EV assets of a household ℎ.
+
+𝜏𝐷 (⋅)
+
+𝜏𝑦 (𝑡)
+𝜈𝐻 (⋅)
+Set
+
+Description
+
+𝐹 𝐵𝐸𝑆𝑆
+𝐹 𝐸𝑉
+𝐹 𝑃𝑉
+𝐻
+
+𝑇
+𝑇 𝐸𝑉 ⊆ 𝑇
+
+The set of all BESS.
+The set of all EVs.
+The set of all PVs.
+Houses
+Years
+The set of all time steps (in hours),
+ordered in consecutive natural numbers.
+Time steps where EVs are connected to a household charger
+
+Index
+
+Description
+
+ℎ
+𝑓
+𝑝
+𝑡
+
+House
+Flexible asset
+Peer (in a peer-to-peer trade)
+Time step
+
+Parameter
+
+Description
+
+𝛼𝑓
+𝛽𝑓
+𝜂𝑓𝑐ℎ𝑎𝑟𝑔𝑒
+𝜂𝑓𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+𝜂 𝑃 2𝑃
+𝜓
+𝑑𝑒𝑚𝑡,ℎ
+ℎ𝑃 𝑟𝑜𝑓 𝑖𝑙
+ℎ𝐹 𝑙𝑒𝑥
+𝑝𝑒𝑥𝑝𝑜𝑟𝑡
+𝑡
+𝑝𝐹𝑡 𝐶𝑅
+𝑝𝐹 𝑙𝑒𝑥
+𝑝𝑟𝑒𝑡𝑎𝑖𝑙
+𝑡
+𝑝𝑠𝑝𝑜𝑡
+𝑡
+𝑟𝑒𝑠𝑡,ℎ
+𝑠𝑡,𝑓
+𝑠𝑡,𝑓
+𝑠𝑒𝑣𝑒𝑛𝑖𝑛𝑔𝐸𝑉
+𝑓
+𝑠𝑚𝑜𝑟𝑛𝑖𝑛𝑔𝐸𝑉
+𝑓
+𝑥𝑙𝑖𝑚𝑖𝑡
+𝑧𝐹 𝑙𝑒𝑥
+𝑧𝑃 𝑟𝑜𝑓 𝑖𝑙
+
+Maximum charging power of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 [kW]
+Maximum discharging power of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 [kW]
+Charging efficiency of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 [%]
+Discharge efficiency of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 [%]
+Distribution network efficiency for peer-to-peer transactions [%]
+Marginal loss rate for feeding into grid [%]
+Demand for electricity from ℎ ∈ 𝐻 at 𝑡 ∈ 𝑇 [kWh]
+Number of hours of revenue from FFR Profil [h]
+Number of hours of revenue from FFR Flex [h]
+Electricity export cost at 𝑡 ∈ 𝑇 [NOK/kWh]
+FCR market price at 𝑡 ∈ 𝑇 [NOK/kW/h]
+FFR Flex market price per hour [NOK/kW/h]
+Grid surcharge at 𝑡 ∈ 𝑇 [NOK/kWh]
+Spot price at 𝑡 ∈ 𝑇 [NOK/kWh]
+Renewable energy production of ℎ ∈ 𝐻 at 𝑡 ∈ 𝑇 [kWh]
+Maximum energy content in 𝑓 ∈ 𝐹 at 𝑡 ∈ 𝑇 [kWh]
+Minimum required energy content in 𝑓 ∈ 𝐹 at 𝑡 ∈ 𝑇 [kWh]
+State of charge for EV 𝑓 ∈ 𝐹 at 𝑡 ∈ 𝜏𝜔 (22) [kWh]
+State of charge for EV 𝑓 ∈ 𝐹 at 𝑡 ∈ 𝜏𝜔 (7) [kWh]
+Grid export limit per house [kW]
+The reserved power for FFR Flex [kW]
+The reserved power for FFR Profil [kW]
+
+Variable
+
+Description
+
+𝐵𝑀𝑃
+𝐶𝑡,𝑓
+𝐷𝑡,𝑓
+𝑆𝑡,𝑓
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+𝑒𝑥𝑝𝑜𝑟𝑡
+𝐺𝑡,ℎ
+𝐺𝑡𝑝𝑒𝑎𝑘
+′
+𝑅𝑐ℎ𝑎𝑟𝑔𝑒
+𝑡,𝑓
+𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+𝑅𝑡,𝑓
+𝑍𝑡𝐹 𝐶𝑅
+𝐼𝑡,ℎ
+𝐼𝑡,ℎ←𝑝
+
+Payment for participation in the balancing market [NOK]
+Charging of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 at 𝑡 ∈ 𝑇 [kWh]
+Discharging of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 at 𝑡 ∈ 𝑇 [kWh]
+State of charge of 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 at 𝑡 ∈ 𝑇 [kWh]
+Grid import during 𝑡 ∈ 𝑇 for ℎ ∈ 𝐻 [kWh]
+Grid export during 𝑡 ∈ 𝑇 for ℎ ∈ 𝐻 [kWh]
+Peak community load for 𝑡 ∈ 𝜏𝐷 (𝑡′ ) [kW]
+Reserved charging power from 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 at 𝑡 ∈ 𝑇 [kW]
+Reserved discharging power from 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 at 𝑡 ∈ 𝑇 [kW]
+The reserved power for FCR at 𝑡 ∈ 𝑇 [kW]
+peer-to-peer electricity purchase from ℎ ∈ 𝐻 at 𝑡 ∈ 𝑇 [kWh]
+peer-to-peer electricity purchase of ℎ ∈ 𝐻 from 𝑝 ∈ 𝐻 at 𝑡 ∈ 𝑇
+[kWh]
+peer-to-peer electricity sale from ℎ ∈ 𝐻 at 𝑡 ∈ 𝑇 [kWh]
+peer-to-peer electricity sale of ℎ ∈ 𝐻 to 𝑝 ∈ 𝐻 at 𝑡 ∈ 𝑇 [kWh]
+
+𝑋𝑡,ℎ
+𝑋𝑡,ℎ→𝑝
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉
+
+∀
+
+(12)
+
+𝑆𝑡,𝑓 = 𝑠𝑒𝑣𝑒𝑛𝑖𝑛𝑔𝐸𝑉
+𝑓
+
+∀ 𝑡 ∈ 𝜏𝜔 (22), 𝑓 ∈ 𝐹 𝐸𝑉
+
+(13)
+
+𝑆𝑡,𝑓 = 𝑠𝑚𝑜𝑟𝑛𝑖𝑛𝑔𝐸𝑉
+𝑓
+
+∀ 𝑡 ∈ 𝜏𝜔 (7), 𝑓 ∈ 𝐹 𝐸𝑉
+
+(14)
+
+𝑆𝑡,𝑓 = 0
+
+∀
+
+𝑡 ∉ 𝑇 𝐸𝑉 , 𝑓 ∈ 𝐹 𝐸𝑉
+
+(15)
+
+Charging and discharging properties are given in Eq. (16) through
+Eq. (20). Maximum limits are implemented according to battery properties, and batteries reserve their charging and discharging power
+depending on promised flexibility provisions at every time step.
+𝐶𝑡,𝑓 ≤ 𝛼𝑓
+
+∀
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉
+
+(16)
+
+𝐷𝑡,𝑓 ≤ 𝛽𝑓
+
+∀
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉
+
+(17)
+
+𝐶𝑡,𝑓 ≥ 𝑅𝑐ℎ𝑎𝑟𝑔𝑒
+𝑡,𝑓
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉
+
+∀
+
+𝐷𝑡,𝑓 + 𝑅𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+≤ 𝛽𝑓
+𝑡,𝑓
+∑
+
+(18)
+
+𝑡 ∈ 𝑇 , 𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉
+
+(19)
+
+(𝑅𝑐ℎ𝑎𝑟𝑔𝑒
++ 𝑅𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+) ≥ 𝑧𝐹 𝑙𝑒𝑥 + 𝑧𝑃 𝑟𝑜𝑓 𝑖𝑙 + 𝑍𝑡𝐹 𝐶𝑅
+𝑡,𝑓
+𝑡,𝑓
+
+∀ 𝑡∈𝑇
+
+∀
+
+𝑓 ∈𝐹 𝐵𝐸𝑆𝑆 ∪𝐹 𝐸𝑉
+
+(20)
+Constraints modeling peer-to-peer transactions are given in Eq. (21)
+through Eq. (23).
+∑
+𝑋𝑡,ℎ =
+𝑋𝑡,ℎ→𝑝
+∀ 𝑡 ∈ 𝑇, ℎ ∈ 𝐻
+(21)
+𝑝∈𝐻⧵ℎ
+
+𝐼𝑡,ℎ =
+
+∑
+
+𝐼𝑡,ℎ←𝑝
+
+∀
+
+𝑡 ∈ 𝑇, ℎ ∈ 𝐻
+
+(22)
+
+𝑝∈𝐻⧵ℎ
+
+𝐼𝑡,ℎ←𝑝 = 𝜂 𝑃 2𝑃 𝑋𝑡,ℎ→𝑝
+
+∀
+
+𝑡 ∈ 𝑇 , (ℎ, 𝑝) ∈ 𝐻 × 𝐻
+
+(23)
+
+Lastly, non-negativity in variables is reflected in Eqs. (24), (25) and
+(26).
+𝑖𝑚𝑝𝑜𝑟𝑡
+𝑒𝑥𝑝𝑜𝑟𝑡
+𝐶𝑡,𝑓 , 𝐷𝑡,𝑓 , 𝑆𝑡,𝑓 , 𝐺𝑡𝑝𝑒𝑎𝑘
+, 𝐺𝑡,ℎ
+, 𝐺𝑡,ℎ
+≥0
+′
+
+∀
+
+𝑓 ∈ 𝐹 𝐵𝐸𝑆𝑆 ∪ 𝐹 𝐸𝑉 , 𝑡 ∈ 𝑇 , ℎ ∈ 𝐻, 𝑡′ ∈ 𝜏𝜔 (13)
+
+𝑅𝑐ℎ𝑎𝑟𝑔𝑒
+, 𝑅𝑑𝑖𝑠𝑐ℎ𝑎𝑟𝑔𝑒
+, 𝑍𝑡𝐹 𝐶𝑅 ≥ 0
+𝑡,𝑓
+𝑡,𝑓
+𝐼𝑡,ℎ , 𝐼𝑡,ℎ←𝑝 , 𝑋𝑡,ℎ , 𝑋𝑡,ℎ→𝑝 ≥ 0
+
+∀
+∀
+
+𝑡 ∈ 𝑇, 𝑓 ∈ 𝐹
+𝑡 ∈ 𝑇 , (ℎ, 𝑝) ∈ 𝐻 × 𝐻
+
+(24)
+
+(25)
+(26)
+
+2.3. Investment valuation
+We use real options (ROV) to value the investment, as it accounts
+for the flexibility of delaying decisions under uncertainty, unlike NPV,
+which assumes now-or-never choices. Uncertainty in savings arises
+from fluctuating spot and FCR prices, which are integrated into the
+optimization model. The resulting savings paths are then used in the
+valuation. To capture the uncertainty in future investment costs, we
+model them using Geometric Brownian motion (Penizzotto et al., 2019;
+Or et al., 2024; Moon and Baran, 2018; Tang et al., 2014).
+The investment problem is structured as follows. In each year 𝑦
+up to 𝑇𝐷𝑒𝑐𝑖𝑠𝑖𝑜𝑛 , the energy community can choose to invest in PVs
+and/or BESS. Each possible investment decision 𝑗 comes with a cost
+𝐼𝑗 (𝑦) and generates a profit flow 𝑃 𝐹𝑗 (𝑦). The value of the investment,
+∀𝑗 ∈ 𝑃 ({𝐹 𝐵𝐸𝑆𝑆 , 𝐹 𝑃 𝑉 }) is:
+(
+)
+∗
+𝑅𝑂𝑉𝑗 =
+max
+EQ [𝑒−𝑟𝑦 (𝑃 𝐹𝑗 (𝑦∗ ) − 𝐼𝑗 (𝑦∗ ))| 𝑃 𝐹𝑗 (0), 𝐼𝑗 (0)], 0
+(27)
+∗
+0≤𝑦 ≤𝑇𝐷𝑒𝑐𝑖𝑠𝑖𝑜𝑛
+
+5
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+where 𝑟 is the risk-neutral discount rate5 and EQ [⋅] denotes the expectation under the risk-neutral probability measure Q. Practically, this
+optimal stopping problem is solved using Least Squares Monte Carlo
+(LSM) method developed by Longstaff and Schwartz (2001), which
+estimates conditional expectations through least squares regression and
+determines the optimal times to exercise the investment option. The
+LSM simulation procedure works backward by comparing the immediate payoff with the continuation value of postponing the investment
+at each time step. To implement it we first simulate paths for 𝑃 𝐹𝑗 (𝑦)
+and 𝐼𝑗 (𝑦), i.e. the discounted future profits from immediate investment
+and investment cost, respectively. This means that for each simulated
+sample 𝑖 we would have realized paths 𝑃 𝐹𝑖,𝑗 (𝑦) and 𝐼𝑖,𝑗 (𝑦). At each time
+step 𝑦, 𝑃 𝐹𝑖,𝑗 (𝑦) is given by
+
+participation during weekends, while FFR Flex offers more flexibility
+with weekly procurement for immediate demands. Our analysis focuses on FFR Flex, as the community’s EVs cannot meet the full-time
+commitment for FFR Profil.
+To estimate the regimes for spot and FCR prices, we use the algorithm by Janczura and Weron (2012), with a 10-year calibration
+window for spot prices (2013–2023) and a 2-year window for FCR
+prices (2021–2023), both based on Norwegian NO3 data obtained from
+Stattnett and Bloomberg.6 We focus on the FCR-N D2 segment, which
+provides symmetric frequency regulation, and has a higher average
+price compared to FCR-N D1.
+3.2. Calibration of demand and PV production
+
+𝑦+𝑌max
+
+𝑃 𝐹𝑖,𝑗 (𝑦) =
+
+∑
+
+𝑆𝑖,𝑗 (𝑛) ⋅ 𝑒−𝑟⋅(𝑛−𝑦) ,
+
+PV production for the Norwegian electricity price area NO3 is
+simulated using data from Berg and Löschenbrand (2022), which filters
+the data by season, day type (weekday or weekend), and time of day.
+The data set is based on irradiation and temperature measurements
+from 15 weather stations across Norway, spanning from January 1,
+2015, to December 31, 2020. Hourly solar production, 𝑟𝑒𝑠𝑡 , is simulated
+for each hour 𝑡 and scaled to the system’s maximum PV capacity 𝑃 𝑉𝑚𝑎𝑥 :
+𝑟𝑒𝑠𝑡 = 𝑥𝑡 ⋅ 𝑃 𝑉𝑚𝑎𝑥 , 𝑥𝑡 ∼  (𝜇𝑡 , 𝜎𝑡2 ). Here 𝑥𝑡 is drawn from a Gaussian
+distribution with mean 𝜇𝑡 and volatility 𝜎𝑡 . Values below 2% of the
+system’s capacity, typically occurring at night, are set to zero to avoid
+unrealistically small outputs.
+Demand profiles in our model are based on smart-meter data from
+seven houses in a community in Trondheim in 2021. The data was
+segmented into four seasons: winter (Dec–Feb), spring (Mar–May),
+summer (Jun–Aug), and autumn (Sep–Nov) to reflect the impact of
+outdoor temperatures on electricity usage. We filter the data by season,
+day of the week, and time of day to generate representative weekly
+profiles for each season and house, which were then extrapolated to
+cover the full season.
+
+(28)
+
+𝑛=𝑦
+
+where 𝑌max is the maximum year into the future considered in the
+investment problem, and 𝑆𝑖,𝑗 (𝑛) is the expected annual cost savings due
+to the investment decision 𝑗. More specifically, we first calculate the
+total annual cost for an option 𝑗:
+∑
+𝑍𝑖,𝑗 (𝑦) =
+𝑧∗ (𝑡′ |𝑖, 𝑗) ∀𝑗
+(29)
+𝑡′ ∈𝜏𝜔 (13)∩𝜏𝑦 (𝑡′ )=𝑦
+
+where 𝑧∗ (𝑡′ |𝑖, 𝑗) is the optimal value for the optimization problem in Eq.
+(4), subject to conditions in sample path 𝑖 and option 𝑗. We can then
+define 𝑆𝑖,𝑗 (𝑦) as
+(30)
+
+𝑆𝑖,𝑗 (𝑦) = 𝑍𝑖,∅ (𝑦) − 𝑍𝑖,𝑗 (𝑦)
+Meanwhile, the investment cost 𝐼𝑖,𝑗 (𝑦) is given by
+𝐼𝑖,𝑗 (𝑦) = 𝐼0,𝑖,𝑗 (𝑦) + 𝐼𝑌𝑅𝐼 ,𝑖,𝑗 (𝑦) ⋅ 𝑒−𝑟⋅𝑌𝑅𝐼 ,
+
+𝑗 ∈ 𝑃 ({𝐹 𝐵𝐸𝑆𝑆 , 𝐹 𝑃 𝑉 })
+
+(31)
+
+where 𝑌𝑅𝐼 is the expected year of reinvestment, 𝐼𝑌𝑅𝐼 ,𝑖,𝑗 (𝑦) is the reinvestment cost for the flexible assets, and 𝐼0,𝑖,𝑗 (𝑦) is assumed to follow
+Geometric Brownian motion simulated under the risk-neutral measure:
+𝑑𝐼0,𝑖,𝑗 (𝑦) = 𝑟𝐼0,𝑖,𝑗 (𝑦)𝑑𝑦 + 𝜎𝑗 𝐼0,𝑖,𝑗 (𝑦)𝑑 𝑧̂ 𝑖,𝑗 ,
+
+𝑗 ∈ 𝑃 ({𝐹 𝐵𝐸𝑆𝑆 , 𝐹 𝑃 𝑉 })
+
+3.3. Parameters of community
+To model BESS and EV battery properties, we use technical parameters of Tesla Powerwall 2 (5 kW maximum power, 13.5 kWh
+storage capacity) and Tesla Model S (7.4 kW maximum power, 100
+kWh storage capacity). For simplification, we assume that EVs charge
+10 kWh per night between 22:00 and 07:00, based on Norwegian EV
+statistics.7 The PV capacity is set to 5 kWp.
+We assume a lifetime of 25 years for PVs and half of that for BESS,
+as in Peters et al. (2021) and Chowdhury et al. (2020). To optimize
+asset utilization, the horizon is set to 25 years with BESS reinvestment
+halfway through the period.
+Four Tesla Powerwall 2 units cost $37 875 (NOK 405 000 with 25%
+VAT).8 For the PVs, the installed price of a 5 kWp panel is assumed to
+be NOK 120 000 after accounting for subsidies.9 The total investment
+cost for four houses thus amounts to NOK 480 000.
+For valuation model, we use a risk-free rate of 3.7%, equivalent to
+the yield of the Norwegian 10-year Government bond. For each of the
+presented cases, we use 10 000 paths to simulate the cost savings. We
+assume that the energy community has to decide within five years if it
+invests into PVs and/or BESS or not. Once invested, the assets operate
+for 25 years. The drift and volatility for the geometric Brownian motion
+process governing the evolution of the investment costs 𝛼𝐵𝐸𝑆𝑆 , 𝛼𝑃 𝑉 ,
+𝜎𝐵𝐸𝑆𝑆 and 𝜎𝑃 𝑉 are estimated from historical data from 2010 to 2020
+(Ziegler and Trancik (2021), Ritchie et al. (2024)). The analyses in
+this section use input data summarized in Table 8 in Appendix B. All
+valuation results presented in the next section are per household.
+
+(32)
+
+where 𝑑 𝑧̂ 𝑖,𝑗 ∼ N(0, dy) and 𝜎𝑗 is a parameter that governs the volatility
+of the random fluctuations of the investment cost. In addition, we have
+𝐼𝑌𝑅𝐼 ,𝑖,𝑗 (𝑦) = 𝐼0,𝑖,𝑗 (𝑦 + 𝑌𝑅𝐼 ).
+Next, we compute the payoff from immediate investment: 𝐹𝑖,𝑗 (𝑦) =
+max(𝑃 𝐹𝑖,𝑗 (𝑦) − 𝐼𝑖,𝑗 (𝑦), 0) and estimate the continuation value of postpon[ −𝑟𝛥𝑦
+ing the investment
+𝑉𝑖,𝑗 (𝑦 + 𝛥𝑦)
+] for years 𝑦 < 𝑇𝐷𝑒𝑐𝑖𝑠𝑖𝑜𝑛 : 𝐶𝑖,𝑗 (𝑦) = EQ 𝑒
+|
+| 𝑃 𝐹𝑖,𝑗 (𝑦), 𝐼𝑖,𝑗 (𝑦) , with option value 𝑉𝑖,𝑗 at year 𝑦 + 𝛥𝑦. A second-degree
+|
+polynomial is used to estimate the continuation value and the profit
+flows, as tests have shown this method is robust while minimizing
+computational demands (Jafarizadeh and Bratvold, 2009). The LSM
+iterates backwards to calculate the option value. The option value is
+then updated as follows: 𝑉𝑖,𝑗 (𝑦) = max(𝐹𝑖,𝑗 (𝑦), 𝐶𝑖,𝑗 (𝑦)). Finally, the real
+option value at time 0 is computed as the sample average of the initial
+∑
+option value: 𝑅𝑂𝑉𝑗 = 𝑁1 𝑁
+𝑖=1 𝑉𝑖,𝑗 (0). A detailed workflow of the LSM
+method can be found in Appendix A.
+3. Data and calibration
+3.1. Price calibration
+We assume deterministic FFR prices based on historical data. FFR,
+introduced as a commercial market in Norway in 2022, is procured
+through FFR Profil and FFR Flex, priced at 115 NOK/MW/h and
+419 NOK/MW/h in 2024, respectively. FFR Profil requires full-time
+
+6
+
+Table 9 in Appendix B presents the estimated parameters.
+https://www.ssb.no/transport-og-reiseliv/landtransport/statistikk/
+bilparken/artikler/nysgjerrig-pa-elbiler-i-norge-se-siste-elbilstatistikk-her
+8
+https://www.tesla.com/powerwall/design/overview
+9
+https://www.enova.no/privat/alle-energitiltak/solenergi/solcelleanlegg
+7
+
+5
+The risk preferences of households can vary, but we simplify the analysis
+by assuming that all risks are spanned by tradable market assets and utilize
+the risk-neutral valuation framework (Sundaram, 1997).
+
+6
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Table 3
+Case configurations.
+Case
+
+Available assets
+EV
+
+Base: Both
+Base: No peer-to-peer
+Base: No FCR
+Base: None
+BA
+BA: No FCR
+BA: No FFR
+BA: No FFR or FCR
+BA: No peer-to-peer
+BESS
+BESS: No FFR or FCR
+PV
+PV: No peer-to-peer or FCR
+
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+BESS
+
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+Available income streams
+PV
+
+Arb.
+
+Peer-to-peer
+
+FCR
+
+Exp.
+
+✓
+
+✓
+✓
+
+✓
+✓
+✓
+✓
+✓
+
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+✓
+✓
+
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+✓
+✓
+✓
+✓
+✓
+
+FFR
+
+✓
+✓
+
+✓
+✓
+
+Table 4
+Average annual savings per house with respect to the base cases.
+
+4. Results and discussion
+To identify the most crucial income streams and determine whether
+PV or BESS is more beneficial for community savings, we simulate cases
+with different community configurations, provided in Table 3. In Table
+3, a checkmark indicates the availability of an asset or income stream
+to the community. EVs are assumed to be owned by four community
+participants and are included in all cases. Acronyms in case names
+represent available assets along with EVs - ‘‘BA’’ (both assets: PV and
+BESS), ‘‘PV’’ (only PVs), and ‘‘BESS’’ (only BESS) - as well as indicate
+which income stream is removed.
+
+Case
+
+Base case
+
+Savings w.r.t. the base case
+
+BA
+BA: No peer-to-peer
+BA: No FFR
+BA: No FCR
+BA: No FFR or FCR
+BESS
+BESS: No FFR or FCR
+PV
+PV: No peer-to-peer or FCR
+
+Base: Both
+Base: No peer-to-peer
+Base: Both
+Base: No FCR
+Base: No FCR
+Base: Both
+Base: No FCR
+Base: Both
+Base: None
+
+NOK 11 235
+NOK 10 873
+NOK 9 429
+NOK 7 183
+NOK 2 591
+NOK 9 126
+NOK
+446
+NOK 2 082
+NOK 1 688
+
+4.1. Optimization model results
+Potential savings of up to NOK 11 235 per year can be achieved by
+investing in PVs and BESS while accessing all defined income streams.
+First, we examine the effect of balancing market participation.
+When FFR participation is unavailable, savings decrease to NOK 9 429
+per year, while the absence of FCR leads to a larger decrease to NOK
+7 183 per year, indicating that FCR is more valuable in the model. If
+neither FFR nor FCR is available, the savings decrease to NOK 2 591
+per year, surpassing the sum of losing the balancing markets separately.
+This is because FCR helps offset the loss of FFR by utilizing additional
+battery capacity.
+Next, we analyze the value of peer-to-peer trading. The decrease
+in savings when eliminating the opportunity for peer-to-peer trading is
+only NOK 362, reducing the total savings from NOK 11 235 to NOK
+10 873 in Table 4. However, this does not diminish the significance
+of peer-to-peer trading, as it can serve as an offsetting mechanism
+when other income streams, e.g. FCR or FFR, are not available. A
+crucial aspect of our optimization model lies in managing the battery
+power, a limited resource. FFR participation consumes 90% of this
+power, limiting the full potential of peer-to-peer and FCR. However,
+the objective is to minimize the community’s costs rather than solely
+showcasing the maximum savings achievable through individual income streams. Nevertheless, in our case, peer-to-peer trading yields
+little value compared to FFR and FCR participation.
+Furthermore, we explore the implications of having only PVs or
+BESS. BESS alone can provide savings of NOK 9 126, more than four
+times that of PVs. Consequently, according to our model, BESS emerges
+as the superior asset. However, without FFR and FCR, in ‘‘BESS: No FFR
+or FCR’’, the savings amount to only NOK 446. Additionally, ‘‘PV: No
+peer-to-peer or FCR’’ represents ‘‘plus customers’’: current PV owners
+who use the PV generated electricity to primarily cover their demand,
+and export to the grid if they have surplus energy. Adding peer-topeer and FCR to the current plus customer case results in additional
+savings of only NOK 394. This is partly due to PVs not being able
+to participate in FCR in our model. The additional savings therefore
+represents the potential of allowing EVs to participate in the FCR
+market. The assumption that EVs are available for FCR participation
+
+To understand how flexible assets such as BESS and EVs are operated within the energy community under varying market conditions,
+we analyze the outcomes of the optimization model for the different simulation periods. These results provide insights into the dynamic scheduling of resources across seasons and market participation
+scenarios.
+Fig. 3 shows the operational schedule of flexibility resources in the
+local energy community from various months in a sampled year of the
+‘‘BA’’ case, based on the results of the optimization model. A positive
+value in power means that the flexibility resources in the local energy
+community are discharging electricity (providing upward flexibility),
+whereas a negative value indicates charging activity (absorbing excess
+electricity from the grid). Each subplot (a) through (d) represents a
+different seasonal snapshot of operation. The stacked bars are divided
+into two components: the green shaded area represents the reserved upward flexibility, i.e., the capacity set aside for participation in balancing
+markets, while the red shaded area shows the used upward flexibility,
+indicating actual dispatch or charging/discharging activity. The black
+dashed line denotes the feasible range of operation for the aggregated
+flexibility resource.
+As one can see, the local energy community exhibits greater operational flexibility during nighttime hours, primarily because EVs are only
+available to provide flexibility services overnight. In addition, during
+the winter months the flexibility resources do not participate in the
+FFR market, allowing for higher utilization since no minimum reserve
+power is required for balancing services. In contrast, the utilization of
+BESS and EVs during the summer months is rather limited (especially
+at daytime), since most of the capacity has been reserved for the FFR
+market participation.
+4.2. Annual average costs and savings
+Table 4 displays the average annual savings per household, compared to the corresponding ‘‘Base’’ cases, where neither PV nor BESS are
+available. The savings are averaged over the 30-year simulation period.
+7
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Fig. 3. The operational schedule of flexibility resources (BESS and EVs) in the local energy community from various months in a sampled year of the ‘‘BA’’ case,
+based on the results of the optimization model.
+
+only during the night might be conservative. If EVs are connected to
+chargers more than 9 h a day, the savings could surpass the value
+presented here.
+
+Fig. 4, however, also shows that the savings volatility is lower
+without FCR. The lower savings volatility is a result of completely
+removing the exposure to FCR prices. As the BESS are utilized more
+for energy arbitrage and peer-to-peer trading, the correlation of the
+volatility of the savings with the spot price volatility becomes higher
+than that with the FCR price volatility.
+Further, it is important to consider FFR price levels. The referenced
+community costs for the cases where FFR participation is included
+are dependent on the compensation rates for flexibility. If the price
+of FFR Flex declines, the optimal amount of power allocated to FFR
+might reduce, enabling more power for participation in peer-to-peer
+trading and/or the FCR market. In this case, the energy community
+increases their exposure to spot prices and/or FCR prices, which are
+highly volatile, as shown in Fig. 4. As a result, the savings volatility
+will increase.
+In 2024, Statnett reduced the FCR bid size from 1 MW to 0.1 MW,
+but most of the FCR prices used in the simulations (spanning from 2021
+to 2024) don’t reflect this change. This reduction could lead to lower
+FCR prices, decreasing the potential value for energy communities.
+However, the impact may be offset by increased FFR provisions or
+higher FFR prices, particularly if more power is allocated to FFR Flex,
+which has lower volatility than FCR. Allocating to FFR Profil, which has
+higher volatility, would result in smaller changes to savings volatility.
+Moreover, the energy community would be exposed to the risk of
+elevated spot prices if it did not have any assets, due to increased cost
+of covering demand. However, by investing in batteries the energy
+community mitigates the spot price risk. This is due to batteries’
+ability to charge when prices are low and discharge when prices are
+high, effectively hedging against grid import at high prices. The value
+of charging and discharging at low and high prices, respectively, is
+enhanced when PV generated electricity is used to charge the batteries
+as well, reducing the cost of charging.
+Thus, the savings volatility is influenced by both driving factors
+and mitigating factors. On one hand, FCR and spot prices exhibit high
+volatilities. On the other hand, FFR Flex prices are significantly less
+volatile than FCR and spot prices. Moreover, the hedge offered by the
+battery diminishes the savings volatility. Thus, the volatilities of FCR
+and spot prices do not fully feed through into the savings. This result
+is crucial for the investment valuation.
+
+4.3. Savings volatility
+After analyzing the potential savings from various income streams,
+it is also important to consider the associated volatilities in the context
+of investment analysis. Savings alone do not provide a complete picture
+of the financial viability of an energy community. The uncertainty
+in future prices and income streams, represented by volatilities, can
+significantly influence the risk and return of the investment.
+Interyear volatilities, calculated using log returns, are shown in
+Fig. 4 for spot and FCR prices, as well as for savings in ‘‘BA’’ and ‘‘BA:
+No FCR’’.
+Fig. 4 shows that the high volatilities of FCR (24.87%) and spot
+prices (23.95%) do not fully translate into the community’s savings
+volatility. In the ‘‘BA’’ case, savings volatility is only 12.34%, and for
+‘‘BA: No FCR’’, it drops to 5.01%. This discrepancy arises because the
+optimization model accounts for multiple uncorrelated income streams,
+reducing savings volatility compared to price volatility. This is in
+contrast to Castellini et al. (2021) and Bertolini et al. (2018) who model
+price uncertainty as the main driver of uncertainty in investment value.
+These contributions, however, do not consider available operational
+flexibility from battery storage. As a consequence, the results of their
+investment valuation models are largely driven by higher price volatility, which could potentially overestimate the value of deferring the
+investment.
+An interesting observation in the ‘‘BA’’ case, as shown in Fig. 5,
+is the stronger dependence of savings volatility on FCR prices rather
+than spot prices. The scatter plots illustrate the relationship between
+interyear volatility in savings and in spot or FCR prices for each
+path, with each point representing the volatility of a price path and
+its corresponding savings. The greater influence of FCR volatility is
+likely due to the higher value of FCR participation compared to energy
+arbitrage, prompting the community to prioritize reserving power for
+FCR provisions. Meanwhile, the optimization model minimizes spot
+price exposure by storing energy during low-price periods and using it
+during high-price periods, reducing the impact of spot price volatility
+on savings.
+8
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Fig. 4. Interyear volatility in annual savings, FCR and spot prices for the ‘‘BA’’ and ‘‘BA: No FCR’’ cases.
+
+Fig. 5. Interyear volatility in annual savings and simulated FCR/spot prices for the ‘‘BA’’ case with linear regressions.
+
+Table 5
+NPVs per household.
+
+Table 6
+Discount rates when the NPV changes signs.
+
+Case
+
+NPV
+
+Case
+
+Critical discount rate
+
+BA
+BA: No peer-to-peer
+BA: No FFR
+BA: No FCR
+BA: No FFR or FCR
+BESS
+BESS: No FFR or FCR
+PV
+PV: No peer-to-peer or FCR
+
+NOK 50 575
+NOK 44 544
+NOK 20 332
+NOK −17 051
+NOK −93 341
+NOK 84 133
+NOK −60 363
+NOK −33 999
+NOK −40 550
+
+BA
+BA: No peer-to-peer
+BA: No FFR
+BA: No FCR
+BESS
+
+7.42%
+6.95%
+5.23%
+2.27%
+4.92%
+
+No FFR or FCR’’ demonstrates a negative NPV in our case in contrast
+with Lüth et al. (2018) and Zepter et al. (2019) which do not include
+the capital expenditure for PVs in the valuation.
+The choice of discount rate has a large impact on the NPVs above.
+The literature shows no convergence on a specific discount rate to use
+for investments in PV and/or BESS. The discount rates utilized range
+between 0.38% and 9.2% (Lüth et al., 2018; Zepter et al., 2019; Andreolli et al., 2022; Castellini et al., 2021; Peng et al., 2021; Chaianong
+et al., 2020; Berg et al., 2021; Moon and Baran, 2018; Bertolini et al.,
+2018). We conduct a sensitivity analysis on the discount rates in order
+to examine the robustness of the NPVs to changes in discount rates.
+In line with the literature, a discount interval of [0%, 10%] has been
+chosen.
+The cases shown in Table 6 are the cases where the NPV changes
+its conclusion within the discount rate interval of [0%, 10%]. For
+cases without balancing market participation of BESS investment, the
+NPV remains negative no matter the discount rate. The results above,
+however, do not capture the potential value-add that can arise when
+deferring an investment. Thus, when there is uncertainty, a ROV can
+result in investment decisions suggesting that deferral is more valuable
+than immediate investment.
+To further analyze the potential value of deferral, we apply the real
+options approach to determine the optimal timing of the investment.
+
+4.4. PV-BESS investment analysis
+This section presents the investment valuation results. The resulting
+NPVs of the different cases are shown in Table 5.
+The results show that the case with the highest NPV is ‘‘BA’’, where
+all possible income streams are available. Further, the participation of
+balancing markets heavily determines the NPV of the cases; all cases
+with negative NPV are those where one or both balancing markets are
+not available to the energy community. In addition, the cases with PV
+investment only will always yield negative NPV.
+Comparing the positive NPVs with the literature yields interesting
+insights. First, the NPV rule suggests an investment in the ‘‘BESS’’ case.
+This contradicts Castellini et al. (2021) who exclude batteries, arguing
+they are not yet cost-effective. While they consider peer-to-peer trading,
+our approach also incorporates energy arbitrage and balancing market
+participation, income streams not accounted for in their analysis. These
+results are also in contrast to Ahčin et al. (2019) who find that investment in batteries for FCR and peak load reduction is highly unprofitable
+regardless of PV ownership. When omitting balancing markets, ‘‘BA:
+9
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Table 7
+Results of the real options analysis.
+Case
+
+ROV
+[NOK]
+
+Year of investment [%]
+0
+
+BA
+BA: No peer-to-peer
+BA: No FFR
+BA: No FCR
+BA: No FFR or FCR
+BESS
+BESS: No FFR or FCR
+PV
+PV: No peer-to-peer or FCR
+a
+
+86 486
+81 283
+60 589
+28 386
+0
+90 764
+0
+56 254
+0
+
+1
+
+2
+
+3
+
+4
+
+1.41
+1.06
+2.78
+
+98.59
+98.94
+97.22
+100.00
+
+23.32
+
+69.17
+
+0.47
+
+99.53
+
+NIa
+
+100.00
+0.06
+
+0.94
+
+6.52
+
+100.00
+100.00
+
+Never Invest.
+
+The results from the ROV for the different cases are derived from 10
+000 simulations and presented in Table 7.
+In Table 7, both the ROV and the distribution of investment timing
+is presented. By investment timing distribution, we refer to the distribution of the timing of investments made during the decision period for
+different simulation paths. In the real options framework, an energy
+community would receive positive return for investing in any of the
+cases; the results in Table 7 therefore imply that it is financially viable
+for an energy community to invest in either PV and/or BESS within
+the next five years in cases where one or both balancing markets are
+available.
+Further, we can observe that for the cases where balancing markets
+are available, most simulations prefer an investment postponement
+until the last year. This is due to the steep negative drift rate of
+the investment cost of the technologies of concern, which makes it
+more attractive for the energy community to wait for the decrease in
+investment costs. Comparing the ‘‘BESS’’ case with the ‘‘BA’’ and ‘‘PV’’
+case shows however, that the investment in PV is more affected by the
+steep negative drift rate of the investment cost.
+Moreover, in the cases without the balancing markets as income
+streams, the ROV remains 0 and the energy community never invests
+in PVs or BESS. The key takeaway is that the participation of balancing
+markets is a crucial factor for the eventual investment in PVs and
+BESS. If Statnett wishes to obtain new flexible resources from energy
+communities in the near future, they should therefore allow those
+communities to participate in the balancing markets.
+A comparison of the NPV approach and the ROV approach is
+illustrated in Fig. 6. For three of the cases, the ROV is the same
+as the NPV. These are the cases where both balancing markets are
+unavailable and investments never take place. Note also that in the real
+options framework, the additional ROV of ‘‘PV’’ is the highest, while
+the additional ROV for ‘‘BESS’’ is quite small. Therefore the value of
+investment deferral is higher for PVs than that for BESS.
+Both Tables 4 and 7 show that energy communities with BESS and
+PVs can be profitable, which raises the question of why there is a low
+prevalence of such energy communities today. However, there are some
+other barriers that are not addressed in this paper. To participate in
+the balancing markets, an aggregator is necessary. Currently, there are
+no such aggregators. This presents a question of whether communities or aggregators should be established first. However, it has been
+shown that investments are profitable even without balancing markets, suggesting that energy communities could emerge even without
+aggregation.
+
+profitability of the energy communities, with FCR providing more value
+due to its shorter commitment time, particularly benefiting households
+with EVs. peer-to-peer trading also contributes to savings, though less
+than balancing market participation.
+Further, the interyear volatility in savings of PV-BESS investment
+is found to be relatively small, increasing the value of immediate investment. Several factors contribute to this finding. Spot price volatility
+does not fully translate into savings volatility because batteries smooth
+out potential spikes during the 24-hour optimization period. Additionally, the mean-reverting nature of spot prices prevents extreme changes
+over multiple years. The same applies to FCR prices. However, FCR
+volatility does not fully translate into savings volatility for a different
+reason. Multiple uncorrelated income streams help mitigate the impact
+of drops in FCR prices. In instances where FCR prices are low, the
+optimization model can select alternative cost-saving options, such as
+energy arbitrage. Other factors that could contribute to higher savings
+volatility include different modeling approaches for PV production and
+demand, as these cannot be predicted over 24 h, unlike FCR and spot
+prices, which are cleared before optimization. Furthermore, FFR prices
+may change. In summary, BESS is crucial for capitalizing on spot price
+opportunities, while having multiple income streams is essential to
+avoid dependency on any single source.
+Future research could address optimizing energy community configurations, such as clustering prosumers, and investigating the role of
+aggregators in enhancing system efficiency. It is also interesting to examine how to design TSO–DSO coordination as TSO’s flexibility needs
+elevate congestion risk at the distribution level. Additionally, integrating intraday markets as a potential income stream would be valuable,
+although it may require a stochastic bidding model and substantial
+computational power to simulate over large systems and extended time
+periods. Finally, incorporating more detailed modeling of EV behavior
+and battery degradation would offer a deeper understanding of the
+system’s full potential.
+
+CRediT authorship contribution statement
+Ole Herman Imset: Writing – original draft, Visualization, Validation, Methodology, Investigation, Formal analysis, Data curation,
+Conceptualization. Rubab Ishmam: Writing – original draft, Visualization, Validation, Methodology, Formal analysis, Data curation,
+Conceptualization. Jakob Kleinau: Writing – original draft, Visualization, Validation, Methodology, Investigation, Formal analysis, Data
+curation, Conceptualization. Maria Lavrutich: Writing – review & editing, Supervision, Project administration, Conceptualization. Dung-Bai
+Yen: Writing – review & editing, Writing – original draft, Visualization,
+Validation, Methodology, Investigation, Formal analysis, Data curation,
+Conceptualization.
+
+5. Conclusion
+In this paper, we assess the financial viability of investing in PV and
+BESS systems for energy communities. We find that having multiple
+income streams enhances cost savings resilience, as they can offset
+losses when one stream becomes less effective or unavailable. The
+participation in the balancing markets plays a crucial role in the
+10
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Fig. 6. Investigating the added value of ROV.
+
+Table 8
+Investment valuation inputs.
+Parameter
+
+Value
+
+𝐼𝑃 𝑉
+𝐼𝐵𝐸𝑆𝑆
+𝑇𝑂𝑝𝑒𝑟𝑎𝑡𝑖𝑜𝑛𝑎𝑙
+𝑇𝑅𝑒𝑖𝑛𝑣𝑒𝑠𝑡𝐵𝐸𝑆𝑆
+𝑇𝐷𝑒𝑐𝑖𝑠𝑖𝑜𝑛
+𝑁𝑆𝑖𝑚𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠
+𝑟
+𝛼𝐵𝐸𝑆𝑆
+𝛼𝑃 𝑉
+𝜎𝐵𝐸𝑆𝑆
+𝜎𝑃 𝑉
+
+480 000 NOK
+405 000 NOK
+25 Years
+13 Years
+25 Years
+10 000
+3.7%
+−11%
+−14%
+9%
+8%
+
+Declaration of Generative AI and AI-assisted technologies in the
+writing process
+During the preparation of this work the authors used ChatGPT in
+order to improve readability. After using this tool, the authors reviewed
+and edited the content as needed and take full responsibility for the
+content of the published article.
+
+Appendix A. Least squares Monte Carlo algorithm
+See Fig. 7.
+
+Appendix B. Investment valuation inputs and estimation of parameters for price processes
+Fig. 7. Simplified graphical illustration of the LSM algorithm.
+
+See Table 8.
+See Table 9.
+
+11
+
+Energy Economics 152 (2025) 108985
+
+O.H. Imset et al.
+
+Table 9
+Estimated parameters used to simulate price paths.
+Spot prices
+FCR-N D2 prices
+
+𝛼1
+
+𝛽1
+
+𝜎12
+
+𝛾
+
+𝛼2
+
+𝜎22
+
+𝛼3
+
+𝜎32
+
+𝑝11
+
+𝑝22
+
+𝑝33
+
+0.0174
+0.0375
+
+0.0068
+0.0211
+
+0.0120
+0.0293
+
+0.1814
+0.3720
+
+0.6192
+0.6478
+
+0.8987
+1.0620
+
+−0.2710
+−0.6910
+
+0.3796
+0.2344
+
+0.9898
+0.9858
+
+0.9628
+0.9398
+
+0.9679
+0.9390
+
+References
+
+Khorasany, Mohsen, Najafi-Ghalelou, Afshin, Razzaghi, Reza, 2021. A framework for
+joint scheduling and power trading of prosumers in transactive markets. IEEE Trans.
+Sustain. Energy 12 (2), 955–965.
+Kilthau, Maximilian, Asman, Martin, Karmann, Alexandra, Suriyamoorthy, Ghayathri, Beck, Jan-Philip, Regener, Vincenz, Derksen, Christian, Loose, Nils,
+Volkmann, Moritz, Tripathi, Shashank, Gehlhoff, Felix, Korotkiewicz, Kamil,
+Steinbusch, Philippe, Skwarek, Volker, Zdrallek, Markus, Fay, Alexander, 2023.
+Integrating peer-to-peer energy trading and flexibility market with self-sovereign
+identity for decentralized energy dispatch and congestion management. IEEE Access
+11, 145395–145420.
+Kjølle, G., Sand, K., Gramme, E., 2021. Scenarios for the future electricity distribution
+grid. In: CIRED 2021 - the 26th International Conference and Exhibition on
+Electricity Distribution. vol. 2021, pp. 3259–3263.
+Longstaff, Francis A., Schwartz, Eduardo S., 2001. Valuing American options by
+simulation: A simple least-squares approach. Rev. Financ. Stud. 14, 113–147.
+Lüth, Alexandra, Zepter, Jan Martin, Crespo del Granado, Pedro, Egging, Ruud, 2018.
+Local electricity market designs for peer-to-peer trading: The role of battery
+flexibility. Appl. Energy 229, 1233–1243.
+Ma, Yiju, Verbič, Gregor, Chapman, Archie C., 2019. Estimating the option value of
+grid-scale battery systems to distribution network service providers. In: 2019 IEEE
+Milan PowerTech. pp. 1–6. http://dx.doi.org/10.1109/PTC.2019.8810600.
+Mengelkamp, Esther, et al., 2018. Designing microgrid energy markets: A case study:
+The brooklyn microgrid. Appl. Energy 210, 870–880.
+Moon, Yongma, Baran, Mesut, 2018. Economic analysis of a residential PV system from
+the timing perspective: A real option model. Renew. Energy 125, 783–795.
+Nguyen, Su, Peng, Wei, Sokolowski, Peter, Alahakoon, Damminda, Yu, Xinghuo, 2018.
+Optimizing rooftop photovoltaic distributed generation with battery storage for
+peer-to-peer energy trading. Appl. Energy 228, 2567–2580.
+Or, Bartu, Bilgin, Gozde, Akcay, Emre Caner, Dikmen, Irem, Birgonul, M. Talat, 2024.
+Real options valuation of photovoltaic investments: A case from Turkey. Renew.
+Sustain. Energy Rev. 192, 114200.
+Peng, Cheng-Yu, Kuo, Cheng-Chien, Tsai, Chih-Ta, 2021. Optimal configuration with
+capacity analysis of PV-plus-BESS for behind-the-meter application. Appl. Sci. 11
+(17).
+Penizzotto, F., Pringles, R., Olsina, F., 2019. Real options valuation of photovoltaic
+power investments in existing buildings. Renew. Sustain. Energy Rev. 114, 109308.
+Peters, I.M., Breyer, C., Jaffer, S.A., Kurtz, S., Reindl, T., Rinton, S., Vetter, M., 2021.
+The role of batteries in meeting the PV terawatt challenge. Joule 5, 1353–1370.
+Radu, Adrian-Toni, Eremia, Mircea, Toma, Lucian, 2019. Participation of the electric vehicles in the balancing market. In: 2019 Electric Vehicles International Conference.
+EV, IEEE, pp. 1–6.
+Ritchie, H., Rosado, P., Roser, M., 2024. ‘‘Data page: Solar photovoltaic module price",
+part of the following publication: Hannah Ritchie, Pablo Rosado and Max Roser
+(2023) - ‘‘Energy’’. Data adapted from International Renewable Energy Agency,
+Nemet, Farmer and Lafond. Retrieved from. https://ourworldindata.org/grapher/
+solar-pv-prices.
+Schwabeneder, Daniel, Corinaldesi, Carlo, Lettner, Georg, Auer, Hans, 2021. Business
+cases of aggregated flexibilities in multiple electricity markets in a European market
+design. Energy Convers. Manage. 230, 113783.
+Sundaram, Rangarajan K., 1997. Equivalent martingale measures and risk-neutral
+pricing: An expository note.
+Tang, Shengjin, Yu, Chuanqiang, Wang, Xue, Guo, Xiaosong, Si, Xiaosheng, 2014.
+Remaining useful life prediction of lithium-ion batteries based on the Wiener
+process with measurement error. Energies 7 (2), 520–547.
+Thingvad, Andreas, Ziras, Charalampos, Ray, Guillaume Le, Engelhardt, Jan, Mosbæk, Rasmus Rode, Marinelli, Mattia, 2022. Economic value of multi-market
+bidding in nordic frequency markets. In: 2022 International Conference on
+Renewable Energies and Smart Technologies. REST, vol. I, pp. 1–5.
+Xiao, Xiangsheng, Wang, Jianxiao, Lin, Rui, Hill, David J., Kang, Chongqing, 2020.
+Large-scale aggregation of prosumers toward strategic bidding in joint energy and
+regulation markets. Appl. Energy 271, 115159.
+Zepter, Jan Martin, Lüth, Alexandra, Crespo del Granado, Pedro, Egging, Ruud, 2019.
+Prosumer integration in wholesale electricity markets: Synergies of peer-to-peer
+trade and residential storage. Energy Build. 184, 163–176.
+Ziegler, Micah S., Trancik, Jessika E., 2021. Data Series for Lithium-Ion Battery
+Technologies. Harvard Dataverse, http://dx.doi.org/10.7910/DVN/9FEJ7C.
+
+Ahčin, Peter, Berg, Kjersti, Petersen, Idar, 2019. Techno-economic analyis of battery
+storage for peak shaving and frequency containment reserve. In: 2019 16th
+International Conference on the European Energy Market. EEM, pp. 1–5.
+Andreolli, Francesca, D’Alpaos, Chiara, Moretto, Michele, 2022. Valuing investments in
+domestic PV-battery systems under uncertainty. Energy Econ. 106, 105721.
+Astero, Poria, Evens, Corentin, 2020. Stochastic bidding strategy for electrical vehicle
+charging stations to participate in frequency containment reserves markets. IET
+Gener. Transm. Distrib. 14 (13), 2566–2572.
+Bakke, Ingrid, Fleten, Stein-Erik, Hagfors, Lars Ivar, et al., 2016. Investment in electric
+energy storage under uncertainty: A real options approach. Comput. Manag. Sci.
+13, 483–500.
+Berg, Kjersti, Löschenbrand, Markus, 2022. A data set of a norwegian energy
+community. Data Brief 40, 107683.
+Berg, Kjersti, Resch, Matthias, Weniger, Thaddäus, Simonsen, Stig, 2021. Economic
+evaluation of operation strategies for battery systems in football stadiums: A
+Norwegian case study. J. Energy Storage 34, 102190.
+Bertolini, Marina, D’Alpaos, Chiara, Moretto, Michele, 2018. Do smart grids boost
+investments in domestic PV plants? Evidence from the Italian electricity market.
+Energy 149, 890–902.
+Bessa, R.J., Matos, M.A., 2014. Optimization models for an EV aggregator selling
+secondary reserve in the electricity market. Electr. Power Syst. Res. 106, 36–50.
+Bjarghov, Sigurd, Naversen, Christian Ø., Thorvaldsen, Kasper, Farahmand, Hossein,
+2019. A three-stage stochastic peer-to-peer market clearing model with real-time
+reserve activation. arXiv:1910.10951.
+Canals Casals, Lluc, Barbero, Mattia, Corchero, Cristina, 2019. Reused second life
+batteries for aggregated demand response services. J. Clean. Prod. 212, 99–108.
+Castellini, Marta, et al., 2021. Photovoltaic smart grids in the prosumers investment decisions: a real option model. J. Econom. Dynam. Control 126, 103988, Investment,
+Energy and Green Economy.
+Chaianong, Aksornchan, Bangviwat, Athikom, Menke, Christoph, Breitschopf, Barbara,
+Eichhammer, Wolfgang, 2020. Customer economics of residential PV–battery
+systems in Thailand. Renew. Energy 146, 297–308.
+Chowdhury, Md. Shahariar, Rahman, Kazi Sajedur, Chowdhury, Tanjia, Nuthammachot, Narissara, Techato, Kuaanan, Akhtaruzzaman, Md., Tiong, Sieh Kiong,
+Sopian, Kamaruzzaman, Amin, Nowshad, 2020. An overview of solar photovoltaic
+panels’ end-of-life material recycling. Energy Strat. Rev. 27, 100431.
+Daglish, Toby, de Bragança, Gabriel Godofredo Fiuza, Owen, Sally, Romano, Teresa,
+2021. Pricing effects of the electricity market reform in Brazil. Energy Econ. 97,
+105197.
+Eichler, M., Türk, D., 2013. Fitting semiparametric Markov regime-switching models to
+electricity spot prices. Energy Econ. 36, 614–624.
+Hollinger, Raphael, Cortés, Agustín Motte, Erge, Thomas, Engel, Bernd, 2017. Analysis
+of the minimum activation period of batteries in frequency containment reserve.
+In: 2017 14th International Conference on the European Energy Market. EEM, pp.
+1–6.
+Huisman, Ronald, Mahieu, Ronald, 2003. Regime jumps in electricity prices. Energy
+Econ. 25 (5), 425–434.
+Iria, José, Soares, Filipe, Matos, Manuel, 2019. Optimal bidding strategy for an
+aggregator of prosumers in energy and secondary reserve markets. Appl. Energy
+238, 1361–1372.
+Jafarizadeh, Babak, Bratvold, Reidar Brumer, 2009. Taking real options into the
+real world: asset valuation through option simulation. In: SPE Annual Technical
+Conference and Exhibition?. SPE, pp. SPE–124488.
+Janczura, Joanna, Trück, Stefan, Weron, Rafał, Wolff, Rodney C., 2013. Identifying
+spikes and seasonal components in electricity spot price data: A guide to robust
+modeling. Energy Econ. 38, 96–110.
+Janczura, Joanna, Weron, Rafal, 2010. An empirical comparison of alternate
+regime-switching models for electricity spot prices. Energy Econ. 32 (5),
+1059–1073.
+Janczura, Joanna, Weron, Rafal, 2012. Efficient estimation of Markov regime-switching
+models: An application to electricity spot prices. AStA Adv. Stat. Anal. 96, 385–407.
+Javanshir, Nima, Syri, Sanna, Tervo, Seela, Rosin, Argo, 2023. Operation of district
+heat network in electricity and balancing markets with the power-to-heat sector
+coupling. Energy 266, 126423.
+
+12
+
+

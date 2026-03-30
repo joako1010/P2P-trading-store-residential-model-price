@@ -1,0 +1,1947 @@
+Journal of Energy Storage 141 (2026) 119406
+
+Contents lists available at ScienceDirect
+
+Journal of Energy Storage
+journal homepage: www.elsevier.com/locate/est
+
+Research papers
+
+Powering sustainability: Analyzing local energy market equilibrium with
+energy storage and renewable resources in oligopolistic grids
+Hassan Geramifar , Majid Shahabi *, Taghi Barforoushi
+Faculty of Electrical and Computer Engineering, Babol Noshirvani University of Technology, Babol, 47148-71167, Iran
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+Energy storage systems
+Local energy markets
+Market power
+Oligopolistic competition
+Regulatory intervention
+Renewable energy sources
+
+Financial constraints, economic risks, and uncertain investment returns have led to the emergence of new players
+and local energy markets (LEMs) in distribution networks. However, the limited energy transmission capabilities
+of distribution networks and their inability to accommodate numerous players create conditions conducive to
+oligopolies, potentially impacting the performance of LEMs. This paper proposes a day-ahead planning frame­
+work for LEMs to address the competitive environment within distribution networks hosting distributed energy
+resources (DERs). The research focuses on achieving equilibrium among oligopolistic entities, including the
+distribution system operator (DSO). Simulation results on a sample network with energy storage systems (ESSs),
+renewable energy sources (RESs), conventional distributed generation, and demand response resources reveal
+that despite limited capacity, these resources can exert market power, leading to price fluctuations and dimin­
+ishing social welfare. Our findings suggest that regulators should encourage broader market participation rather
+than solely increasing renewable capacity to promote LEM sustainability and efficiency. Additionally, given the
+substantial disparity in profit distribution between monopolistic and competitive markets, regulators should
+consider implementing measures to protect intermediary players like energy storage systems, whose return on
+investment may be adversely affected by others' market power. This work provides valuable insights for poli­
+cymakers involved in developing and regulating sustainable energy systems equipped with ESSs.
+
+1. Introduction
+1.1. Background and motivation
+The main goal of the Paris Agreement in 2015 was to limit the rise in
+global temperatures to below 2 degrees Celsius for the entire current
+century. This was to be achieved through the use of renewable energy
+sources and improved energy efficiency. It is possible to achieve this
+goal from both a technical and theoretical standpoint, which will result
+in enhanced environmental and economic sustainability. A crucial
+aspect of this endeavor is the substantial transformation of current en­
+ergy systems, transitioning towards renewable sources and reducing
+reliance on fossil fuels. Some countries are presently embracing an
+approach known as the energy transition [1]. Despite the implementa­
+tion of numerous programs by different governments to achieve pollu­
+tion reduction, the progress in this process has been gradual. If the
+current policies and plans, which entail the continued utilization of
+fossil fuel resources, persist, the carbon dioxide gas quota for this cen­
+tury will be depleted in fewer than 20 years. Consequently, it is
+
+imperative to explore various angles about the development of renew­
+able energy sources and the enhancement of energy efficiency. The
+central pillar of the energy transition plan revolves around the concept
+of a decarbonized power system, necessitating innovative approaches in
+power system planning, operation, electricity markets, and public reg­
+ulations [2]. This necessitates attention across all stages of generation,
+transmission, and distribution of energy.
+In recent decades, decentralized energy sources have been increas­
+ingly integrated into distribution networks, leading to ongoing changes
+in economic frameworks for their involvement in energy provision.
+Nevertheless, in the present wholesale electricity markets, there are
+obstacles to the integration of these resources, including constraints in
+accommodating, intricacies in their management, and uncertainties in
+tariff determination, transaction costs, and more.
+So far, there is not a unified definition of the LEM, resulting in
+divergent viewpoints on its operational framework. Nonetheless, a
+prevailing concept in most literature is that the fundamental purpose of
+the LEM is to enable energy transactions at the local level, such as within
+distribution networks or microgrids [3]. The emergence of LEM in recent
+years has provided a solution to many challenges. These markets
+
+* Corresponding author.
+E-mail addresses: h.geramifar@nit.ac.ir (H. Geramifar), shahabi.m@nit.ac.ir (M. Shahabi), barforoshi@nit.ac.ir (T. Barforoushi).
+https://doi.org/10.1016/j.est.2025.119406
+Received 9 October 2024; Received in revised form 27 September 2025; Accepted 6 November 2025
+Available online 11 November 2025
+2352-152X/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+Nomenclature
+Sets
+F
+W
+N
+T
+
+Firms
+Branches
+Nodes
+Time
+
+Indices
+f
+t, tʹ
+i, j, k
+c
+g
+dso
+ess
+dg
+res
+ch, dch
+min, max
+cur, for
+loss
+dlc
+L
+
+Firms
+Hour
+Nodes
+Consumption
+Generation
+Distribution system operator
+Energy storage system
+Distributed Generation
+Renewable energy resource
+Charge, discharge
+Minimum, maximum
+Curtailed, forecasted
+Loss
+Direct load control
+Lagrangian function
+
+Parameters
+r, x
+Resistance, reactance
+a($/MWh) Intercept of the inverse demand curve
+b ($/MWh2) Slope of the inverse demand curve
+η
+Efficiency ratio
+mut, mdt(hour) Minimum uptime, minimum downtime
+cost($/MWh) Cost
+D(MWh) Hourly demand
+ζ
+Price elasticity of demand
+pf
+Power factor
+m(p)
+Price-demand fucntion
+h(p), g(p) Equality and inequality constraints
+Decision variables
+p, q
+Active power, reactive power
+l
+Square of current
+v
+Voltage
+V, U
+Charging, discharging state
+C
+State of charge
+X
+DERs commitment
+π($/MWh) Market clearing price
+Π
+Profit of firms
+λ, μ
+Langrangian multipliers
+
+facilitate the buying and selling of energy at the distribution network
+level, bringing together the operator, owners of DER, and end-users in a
+specific framework. This arrangement helps in achieving goals such as
+ensuring stability, improving reliability, and enhancing access to elec­
+trical energy. To accomplish these aims, it is essential for the regulatory
+framework of the system to go beyond top-down approaches and
+incorporate bottom-up strategies. This involves promoting increased
+participation and interaction between the DSO and other entities [4]. In
+energy markets, it is fundamental that transactions yield benefits for all
+involved parties, and the presence of multiple players fosters competi­
+tion and a pursuit of optimal outcomes. The process of bargaining to
+enhance the advantages derived from a power system's generation
+portfolio is a complex endeavor. However, this process has predomi­
+nantly satisfied the interests of prominent entities, thereby hindering the
+ability of smaller and medium-sized generation companies to capitalize
+on the advantages offered by a market model founded on perfect
+competition [5].
+It is important to acknowledge that the most effective strategy for
+these players to maximize their profits within the local market is still
+challenging. In broad terms, the behavior of market participants in
+power systems can be categorized into two types: strategic proposals and
+non-strategic proposals. Non-strategic bidding refers to the situation
+where market players solely focus on resolving their planning issues,
+without taking into account the variables of other players, and without
+impacting the market settlement price. Conversely, a strategic proposal
+entails a market participant's ability to exert influence on the market
+settlement prices by possessing a certain level of control over market
+behavior, thereby leading to a substantial increase in their earnings [6].
+Strategic producers, employ a range of strategies to exert their influence,
+resulting in the formation of a market with imperfect competition. These
+tactics include intentionally raising prices, purposeful reducing energy
+supply, exiting the market through the establishment of bilateral con­
+tracts, exploiting regulatory restrictions such as congestion in trans­
+mission and distribution lines and voltage fluctuations, as well as
+intentionally disconnecting cheaper units owned by them.
+As we move from simply integrating DERs to deploying LEM as a
+structured energy transaction platform, we begin to see how the stra­
+tegic behavior of these resources emerges as a critical factor in social
+
+welfare. While these topics may seem disparate at first glance, they
+provide a common thread and strong motivation for studying energy
+price manipulation in the early-stage LEM. Hence, this study synthesizes
+these concepts to offer a holistic perspective on the economic implica­
+tions of the transition phase in distribution grids. Our approach ad­
+dresses a significant gap in the existing literature, which has
+predominantly examined these topics in isolation, thereby limiting the
+potential for a comprehensive analysis. By integrating these key areas,
+we aim to elucidate the complex interplay of factors influencing eco­
+nomic outcomes during the transitional period in distribution grids.
+1.2. Literature review
+It is worth noting that the majority of imperfect competition studies
+have predominantly concentrated on wholesale markets. Nevertheless,
+despite the adverse impacts of market power on social welfare and the
+equitable distribution of income, there is a notable gap in examining this
+issue extensively at the LEM and distribution network levels. An
+example of this can be found in the investigation carried out in [7],
+where a bi-level model concentrating on the corporation that controls
+strategic ESS in the wholesale market was outlined. This model was
+employed to find the Stackelberg equilibrium and shows the utilization
+of market power through the escalation of prices. In [8,9], the authors
+developed a model to simulate the exert of market power by a strategic
+ESS entity through the reduction of supply capacity in the market.
+References [10–13] delve into the application of market power by
+various stakeholders in the wholesale market, focusing on modeling the
+constraints of the transmission network and its impact on diminishing
+social welfare. An economic model commonly employed to analyze
+markets characterized by imperfect competition is the Bertrand model
+[14]. Authors in [14], employ the price offer mechanism to determine
+the equilibrium point within the wholesale market of England and
+Wales. Notably, the Bertrand model does not consider any restrictions
+on the supply capacity of producers. In contrast, the Cournot model, as
+referenced in [15–18], introduces the concept of presenting proposed
+packages in terms of energy quantity rather than energy price. In com­
+parison to the Bertrand model, the Cournot model yields reasonable
+outcomes and aligns better with the structure of electricity markets by
+2
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+incorporating capacity restrictions. Some studies have emphasized the
+critical role of both aggregation strategies and distributed storage in
+advancing the sustainability of local energy systems. For instance, the
+authors in [19] propose a day-ahead optimization framework for
+renewable energy communities, where heterogeneous distributed stor­
+age systems are aggregated to maximize self-consumption and simul­
+taneously provide ancillary services to the grid. Complementing this
+perspective, in [20], a coordination framework for specialized energy
+aggregators is introduced, demonstrating how diverse flexible loads
+such as electric vehicle charging stations and thermoelectric refrigera­
+tion units can effectively supply balancing services under system oper­
+ator requirements.
+Table 1 provides a comprehensive list of the most relevant research
+[21–36] to the current study. The classification presented not only
+outlines the existing body of research but also highlights the research
+gaps that the present study aims to address.
+According to the review conducted, the literature mainly focused on
+perfect competitive or wholesale markets, rather than oligopolistic LEM
+at the distribution grid. Hence, the gaps and limitations of the previous
+work can be expressed as the following inquiries:
+
+• Providing policy advice for designing the DERs portfolio, concerning
+the scale and granularity of these resources, to increase the social
+welfare in the early-stage LEM.
+The subsequent sections have been divided into five parts. The pro­
+posed model setup is introduced in the second section. The third part
+focuses on the proposed mathematical model. The fourth part analyzes
+numerical results for diverse case studies, and the fifth section includes
+discussion, benchmarking and policy advice. Finally, the research
+summary is outlined in the conclusion.
+2. Model setup
+In essence, a distribution network, undergoing a shift from a con­
+ventional state to a restructured and decarbonized state in the transition
+phase, possesses a limited number of DERs. The capacity of each of these
+sources can be substantial when compared to the peak load level,
+thereby presenting an opportunity to exert market power in a localized
+energy market. Additionally, in this emerging situation, it is necessary to
+allocate a designated entity, commonly referred to as a market operator,
+for controlling and monitoring all energy exchanges, while also ensuring
+network security. Implementing such an environment is feasible through
+the utilization of the Community-Based Market (CBM) structure. The
+proposed structure of this market is visually represented in Fig. 1.
+Local energy resources are recognized as key players and price
+makers since they pose substantial capacity concerning the load level of
+the distribution network. On the contrary, the DSO is viewed as a nonstrategic and price-taker entity in comparison to the wholesale mar­
+ket, given the relatively small total demand of the distribution network
+compared to the volume of transactions in the wholesale market.
+However, the DSO in the CBM-based restructured environment aims to
+maximize its profit and will adopt a strategic behavior towards the
+consumers.
+The main objective of the proposed setup is to develop an appro­
+priate, effective, and precise framework for investigating concerns
+related to market clearing and energy transactions in the distribution
+network undergoing the transition phase. To achieve this goal, a
+representative distribution network including a limited number of
+strategic participants, all aiming to optimize their gains, will be thor­
+oughly examined and assessed.
+
+• What model is the most appropriate for analyzing LEM during
+transition periods as they shift towards a hosting platform from the
+perspective of a DSO?
+• Can DERs in LEM cause a purposeful deviation in the optimal equi­
+librium point and impact social welfare negatively?
+• How are price caps and potential price spikes determined in LEM
+incorporating strategically positioned DERs?
+1.3. Contributions and paper organization
+Based on the topics discussed about the specific condition of the
+distribution system in the transition phase, the research innovations and
+contributions will include:
+• Proposing an oligopolistic framework based on the Cournot model
+that is specifically tailored for analyzing the transition phase of earlystage LEM considering network constraints and from the perspective
+of all players.
+• Presenting a holistic methodology to evaluate the possible price caps
+and their correlation with the economic viability of market partici­
+pants in the early-stage LEM.
+Table 1
+Classification of previous research and scope of this study.
+Reference
+
+Model
+structure
+
+Strategic
+DSO
+
+Strategic
+RES
+
+Strategic
+ESS
+
+Price responsive
+demand
+
+LEM
+
+Equilibrium
+type
+
+Pricing mechanism
+
+AC power flow model
+
+[21]
+
+Bi-level
+
+No
+
+Yes
+
+Yes
+
+No
+
+Yes
+
+Stackleberg
+
+[22]
+[23]
+[24]
+[25]
+[26]
+[27]
+[28]
+[29]
+[30]
+
+Single-level
+Single-level
+Bi-level
+Bi-level
+Bi-level
+Single-level
+Bi-level
+Bi-level
+Bi-level
+
+No
+No
+Yes
+No
+No
+No
+Yes
+No
+Yes
+
+No
+No
+No
+Yes
+Yes
+Yes
+Yes
+Yes
+No
+
+Yes
+No
+No
+No
+No
+Yes
+Yes
+No
+No
+
+Yes
+No
+No
+No
+Yes
+Yes
+No
+Yes
+No
+
+No
+Yes
+No
+No
+No
+No
+No
+Yes
+Yes
+
+Second Second-order cone
+Programming (SOCP)
+No
+No
+SOCP
+No
+No
+No
+Yes
+No
+SOCP
+
+[31]
+
+Single-level
+
+Yes
+
+Yes
+
+Yes
+
+No
+
+Yes
+
+Zonal
+
+No
+
+[32]
+[33]
+
+Single-level
+Bi-level
+
+No
+No
+
+No
+Yes
+
+Yes
+No
+
+Yes
+No
+
+No
+No
+
+Demand curve
+Zonal
+
+No
+No
+
+[34]
+[35]
+[36]
+This
+study
+
+Single-level
+Bi-level
+Single-level
+Single-level
+
+No
+No
+No
+Yes
+
+Yes
+Yes
+Yes
+Yes
+
+No
+Yes
+Yes
+Yes
+
+Yes
+Yes
+Yes
+Yes
+
+Yes
+No
+Yes
+Yes
+
+Nash-Cournot
+Nash-Cournot
+Stackleberg
+Stackleberg
+Stackleberg
+Nash-Cournot
+Stackleberg
+Stackleberg
+Generalized
+Nash
+Generalized
+Nash
+Nash-Cournot
+StacklebergNash
+Nash-Cournot
+Stackleberg
+Nash-Cournot
+Nash-Cournot
+
+Locational Marginal
+Pricing (LMP)
+Demand curve
+Peer-to-Peer
+LMP
+LMP
+LMP
+Demand curve
+LMP
+Zonal
+LMP
+
+Demand curve
+LMP
+Demand curve
+Demand curve
+
+SOCP
+SOCP
+No
+SOCP
+
+3
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+Fig. 1. Proposed CBM structure in a transitioning distribution network.
+
+3. Mathematical formulation
+
+market clearing price,π, can be described by (1):
+
+π = a − bD
+
+Within this section, the problem is characterized by a mathematical
+model incorporating common equations from game theory. The under­
+lying premise of the ongoing study is that strategic players will employ a
+tactic of reducing energy supply intentionally to drive up prices [37].
+The analysis of the electricity market with strategic players reveals that
+the predominant frameworks are centered on three key game types:
+Bertrand, Cournot, and Stackelberg. It has been previously emphasized
+that the Cournot model is more appropriate for capturing the essence of
+electricity markets compared to the Bertrand model. The Cournot model
+assumes that the market power of various players is nearly equal, with
+no player being superior to others when it comes to strategy selection. In
+this model, all players make decisions simultaneously. This classification
+highlights the diverse levels of market power in the decision-making
+process. It is important to note that all three game categories
+mentioned are non-cooperative games. The symbols utilized in the
+mathematical model can be found in nomenclature.
+The resolution of market clearing problems through the application
+of game theory necessitates the evaluation of demand behavior and its
+reaction to price fluctuations. This study employs the linear inverse
+demand function, a widely accepted method in economic research [38].
+In Fig. 2. (a), the inverse demand curve illustrates the relationship be­
+tween demand behavior and price. The parameter a represents the
+maximum price that consumers are willing to pay, while the ratio a/b
+signifies the highest potential demand in the case of zero energy price.
+As it can be seen in Fig. 2. (b), firms consider their competitors' decisions
+as predetermined and exercise monopolistic control over the residual
+demand curve.
+As a result, the relation between the actual demand, D, and the
+
+(1)
+
+Given that the total supply of producers is equal to the realized de­
+mand in competitive markets, (1) can be restated as (2):
+∑
+π = a − bD = a − b pgf
+(2)
+f∈F
+
+3.1. DG owner's problem
+The DG owner, assumed as a strategic player, aims to optimize its
+profit. The optimization problem of this player can be stated by (3) and
+(4).
+(
+[(
+))
+]
+∑
+∑ g
+g
+g
+g
+̂
+Max. Profit =
+at − b
+pdg,t − costdg pdg,t
+(3)
+p fʹ,t + pdg,t
+t∈T
+
+fʹ∈{F− dg}
+
+st.
+
+g
+max
+pmin
+dg Xdg,t ≤ pdg,t ≤ pdg Xdg,t ; ∀t ∈ T
+
+(4)
+
+Eq. (3) denotes the profit for this player, which includes its income
+minus costs. This player uses its knowledge of demand behavior to guess
+g
+the strategies of others (̂
+p fʹ,t ) and makes optimal decisions accordingly. It
+
+is noteworthy that the strategies chosen by other actors are considered
+as parameters in the decision-making process of each individual.
+Moreover, (4) is utilized to represent the upper and lower limits of
+supply capacity for the small-scale resource in each time interval.
+
+Fig. 2. Inverse demand curves, (a) The original and residual curves, (b) The equilibrium and consumer surplus from perspective of firm f.
+4
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+3.2. RES owner problem
+
+t+mdt−
+∑1
+
+The proprietor of the RES, which is identified as a solar farm within
+the context of this research, is driven by the desire to maximize their
+profit. Furthermore, this stakeholder can potentially increase its benefit
+by intentionally decreasing the supply, with the ultimate goal of
+attaining higher clearing prices. The objectives and constraints that
+govern the decision-making process of this actor are defined in (5)–(7).
+[(
+))
+]
+(
+∑
+∑ g
+̂
+Max Profit =
+at − b
+pgres,t − costres pgres,t
+(5)
+p fʹ,t + pgres,t
+t∈T
+
+tʹ=t
+
+(6)
+
+0 ≤ pgres,t ≤ pg,for
+res,t ; ∀t ∈ T
+g,for
+g
+pg,cur
+res,t = pres,t − pres,t ; ∀t ∈ T
+
+(7)
+
+The objective function of the RES owner maintains a similar struc­
+ture to that of the previous actor. In the constraints section, the deter­
+mination of the supply limit and the intentional curtailment of energy to
+exercise market power can be computed through relations (6) and (7).
+
+3.4. DSO problem
+Responsible for tasks assigned to a market operator during the
+transition phase, the DSO pursues multiple goals. These objectives
+include promoting consumer surplus, maximizing profit, ensuring
+market clearing conditions, and supervising network technical re­
+strictions. The objective function and constraints of this player are
+presented in (17) to (28).
+The objective function of DSO comprises five distinct terms as
+modified social welfare (MSW). The initial term pertains to the surplus
+of customers. The second term involves revenue generated from energy
+sales, competing against other key players in the market. The remaining
+parts, from three to five, encompass expenses related to energy pro­
+curement from the wholesale market, losses, and load curtailment.
+
+3.3. ESS owner problem
+A strategic ESS can generate profits by engaging in arbitrage activ­
+ities between hours characterized by varying prices. As a result, it can
+significantly affect the non-cooperative competition. The objectives and
+limitations guiding the decision-making process of this entity are out­
+lined in (8)–(16).
+[(
+))
+]
+(
+∑
+∑ g
+g
+g
+g
+̂
+Max. Profit =
+at − b
+pess,t − costess pess,t
+p fʹ,t + pess,t
+t∈T
+
+fʹ∈{F− ess}
+
+(8)
+
+⎡⎛ (
+)2 ⎞ (
+))
+(
+∑
+∑
+∑ g
+1
+g
+⎣⎝ b
+̂
+pgdso,t −
+Max. MSW =
+pf,t ⎠ + at − b
+p fʹ,t + pgdso,t
+2
+t∈T
+f∈F
+f ʹ∈{F− dso}
+∑
+∑
+loss
+costdso,t pgdso,t −
+ploss
+−
+pdlc
+ij,t costt
+j,t costdlc
+i:i→j
+
+dch,max
+pdch,min
+Ut ≤ pdch
+Ut ; ∀t ∈ T
+ess
+ess,t ≤ pess
+
+(9)
+
+ch,max
+pch,min
+Vt ≤ pch
+Vt ; ∀t ∈ T
+ess
+ess,t ≤ pess
+
+(10)
+
+pgess,t = pdch
+ess,t −
+
+(11)
+
+pch
+ess,t ; ∀t ∈ T
+
+Ut + Vt ≤ 1; ∀t ∈ T
+pdch
+ess,t
+
+η
+
+tʹ =t
+
+st.
+
+pj,t = pgj,t − pcj,t ; ∀t ∈ T, ∀j ∈ N
+
+(12)
+pch
+ess,t ; ∀t ∈ T
+
++η
+
+max
+Cmin
+ess,t ≤ Cess,t ≤ Cess,t ; ∀t ∈ T
+t+mut−
+∑1
+
+(17)
+
+]
+
+j∈N
+
+st.
+
+Cess,t = Cess,t− 1 −
+
+(16)
+
+Eqs. (9) and (10) define the permissible range of charge and
+discharge states, setting the boundaries for the ESS device. By estab­
+lishing a connection between the state of charge and discharge, (11)
+represents the net power of the ESS device. Eq. (12) prohibits simulta­
+neous charging and discharging of the ESS. Additionally, (13) and (14)
+illustrate the state of charge of the ESS. Moreover, (15) and (16) are used
+to guarantee the lifetime of the ESS device by maintaining the charging
+or discharging state for specific consecutive hours. Within the frame­
+work of the presented model, the ESS device plays a strategic role as an
+actor in both charging and discharging modes. Its decision to discharge
+has a significant impact on the sale price of energy, while its choice to
+charge directly affects the purchase price. Moreover, this actor conducts
+energy buying and selling operations at the market clearing price.
+
+fʹ∈{F− res}
+
+st.
+
+Vtʹ ≥ mdt(Vt − Vt− 1 ); ∀t ∈ T
+
+Utʹ ≥ mut(Ut − Ut− 1 ); ∀t ∈ T
+
+(13)
+
+qj,t = qgj,t − qcj,t ; ∀t ∈ T, ∀j ∈ N
+
+(19)
+
+pgj,t = pgf,t ; ∀t ∈ T, ∀f ∈ F, ∀j ∈ N
+
+(20)
+
+qgj,t = qgf,t ; ∀t ∈ T, ∀f ∈ F, ∀j ∈ N
+
+(21)
+
+)
+∑
+∑(
+pij,t − rij lij,t ; ∀t ∈ T, ∀j ∈ N
+pj,t =
+pjk,t −
+
+(22)
+
+)
+∑(
+qij,t − xij lij,t ; ∀t ∈ T, ∀j ∈ N
+
+(23)
+
+) (
+)
+(
+v2j,t = v2i,t − 2 rij pij,t + xij qij,t + rij2 + x2ij lij,t ; ∀t ∈ T, ∀(i, j) ∈ W
+
+(24)
+
+i:i→j
+
+k:j→k
+
+(14)
+
+qj,t =
+
+(15)
+
+5
+
+(18)
+
+∑
+k:j→k
+
+qjk,t −
+
+i:i→j
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+Table 2
+Technical specifications of DERs.
+DG1
+Type
+Nominal power (kW)
+Min/max power (kW)
+Min charge/discharge time (h)
+Incremental cost($/MWh)
+Connected bus No.
+
+lij,t ≥
+
+v2i,t
+
+; ∀t ∈ T, ∀(i, j) ∈ W
+
+(26)
+
+lij,t ≤ lmax
+ij ; ∀t ∈ T, ∀(i, j) ∈ W
+
+(27)
+
+ploss
+ij,t = rij lij,t ; ∀t ∈ T, ∀(i, j) ∈ W
+
+(28)
+
+Load bus No.
+Maximum capacity for direct load control
+(percentage of total bus load)
+Contract price ($/MWh)
+
+3.5. Market clearing conditions
+The preceding sections provided a comprehensive explanation of the
+objectives associated with each participant in the market framework.
+Under imperfect competition, strategic players can manipulate the
+electricity price by leveraging knowledge of the demand curve. Conse­
+quently, within this particular market structure, the traditional concept
+of power balance is not applicable, and the demand observed is a result
+of producers' supply. Therefore, a set of constraints is necessary to link
+the different problems of participants to find the equilibrium. These
+equations, known as market clearing constraints, are outlined in (29)–
+(31).
+dlc
+pcj,t = Dmax
+j,t − ζ j π t − pj,t ; ∀t ∈ T, ∀j ∈ N
+
+(29)
+
+( ))
+(
+qcj,t = pcj,t tan cos− 1 pfj ; ∀t ∈ T, ∀j ∈ N
+
+(30)
+
+f∈F
+
+solar
+1000
+–
+–
+3.42
+30
+
+Li-Ion battery
+500 (5 MWh)
+50/500
+3/3
+10
+14
+
+7, 8, 25, and 32
+40
+50
+
+in Section 3.4 is necessary due to the dual role of the DSO as both a
+market operator and an energy provider. In order to enhance the model's
+simplicity and reflect real-world conditions, the proposed model adopts
+a demand curve-based zonal pricing approach, in which the energy price
+is solely dependent on time, rather than location. This particular
+modeling approach, which differs from the nodal pricing method, pro­
+vides a fairer solution for distribution networks where the positioning of
+consumers is a variable beyond their control. Through this method, the
+marginal costs resulting from losses, load interruptions, demand
+response implementation, and line congestion will be computed across
+all network nodes and considered as a unified price for all nodes during
+each period.
+
+As previously stated, it is crucial to take into account network con­
+straints. Hence, in this study, AC load flow equations have been
+formulated using second-order cone programming (SOCP). This partic­
+ular model not only enables the computation of node voltages but also
+facilitates the control of current flow across the lines. The mathematical
+representation of this approach is presented in (18)–(28).
+
+∑ g
+pf,t ; ∀t ∈ T
+
+ESS
+
+Table 3
+Bilateral contracts for direct load control in candidate load points.
+
+(25)
+
+v2min ≤ v2j,t ≤ v2max ; ∀t ∈ T, ∀j ∈ N
+
+π t = at − b
+
+conventional
+500
+400
+50/500
+50/400
+–
+–
+27.7
+39.1
+24
+20
+
+RES
+
+Fig. 4. Wholesale market price, renewable power, and maximum fore­
+casted demand.
+
+Fig. 3. Finding equilibrium among firms
+
+p2ij,t + q2ij,t
+
+DG2
+
+3.6. Finding the equilibrium point
+In markets where strategic players lack superiority or priority in
+strategy selection, the equilibrium is reached by concurrently addressing
+the problem of maximizing utility for all players, resembling the Cournot
+equilibrium. It is important to highlight that within game theory,
+Cournot's game outcomes yield the highest market clearing prices and
+the least social welfare. This setting is perceived as a fiercely competitive
+environment for exerting market power. To determine the Cournot
+equilibrium among various participants in this study, the approach in­
+volves replacing the optimization problem of each participant with their
+respective optimality conditions. The process, as illustrated in Fig. 3,
+applies the Karush-Kuhn-Tucker conditions to address the issue. The
+process of achieving equilibrium is well-known to be contingent upon
+the simultaneous resolution of numerous equations. The objective
+function and constraints of each participant are transformed into sta­
+tionary conditions, complementary slackness conditions, and primal and
+
+(31)
+
+The inclusion of market clearing constraints in the problem outlined
+6
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+dual feasibility. The simultaneous solution to this set of equations can be
+effectively obtained by employing commercial solvers such as CPLEX.
+
+Table 4
+The results of economic variables.
+
+4. Numerical results and case studies
+In this section, the proposed mathematical model is investigated on
+the IEEE 33-bus distribution network as a test system [39]. Table 2
+presents the technical specifications associated with the DERs.
+Fig. 4 displays the estimated power output from the solar energy
+source, the maximum forecasted network demand, and the energy price
+in the wholesale market. Additionally, the value of parameter b is
+assumed to be 0.01. The efficiency of the charging and discharging
+process of the ESS device is assumed to be 0.95, while the energy stored
+is constrained to a range of 20 % to 80 % of its rated capacity to prolong
+its useful life. The solar farm can provide a maximum of 7.124 MWh in
+24 h. The operational power factor for all resources is assumed to be
+maintained at one, and the hourly loss cost equals the energy price in the
+wholesale market. Additionally, a demand response program in the form
+of direct load control is considered. The specifications of bilateral con­
+tracts between candidate load points and the DSO are outlined in
+Table 3. Furthermore, the acceptable voltage range is between 0.95 and
+1.05 pu, while the voltage at the first bus is set to 1 pu.
+The proposed model is implemented through diverse case studies
+within the LEM of the test system and is solved using CPLEX 20.1 [40] on
+a personal computer with a 2.2GHz processor and 16GB of RAM.
+
+Decision Variable
+
+Value
+
+Decision Variable
+
+Value
+
+Consumer surplus
+Total energy consumed
+DG1 profit
+DG2 profit
+DSO profit
+
+$5553.4
+49.61 MWh
+$390.76
+$228.72
+$236.39
+
+ESS profit
+RES profit
+Demand response cost
+Total loss cost
+Social welfare
+
+$137.54
+$430.19
+$58.42
+$56.49
+$6977
+
+seeking to optimization. Fig. 5-(a) represents the allocation of power
+among DERs in this environment. Fig. 5-(b) depicts the volume of power
+procured and injected by the DSO into the distribution network,
+alongside the market clearing price. As can be seen, the market clearing
+price maintains an average of $60.97/MWh, with its fluctuations
+encompassing a range of [$16.06, $119.9]. As the supply of solar en­
+ergy, the most economical resource, increases during midday, the reli­
+ance on purchasing electricity from the upstream network diminishes.
+Hence, the market clearing price experiences a decline in response to
+the dynamics of supply and demand until noon. During this time frame,
+the ESS owner engages in the process of charging the device to supply
+electricity during peak hours when the price is higher. DG1 operates
+continuously due to its cost-effectiveness in terms of marginal cost.
+Additionally, DG2 contributes to the overall electricity generation by
+raising the market clearing price close to its marginal cost during the
+afternoon hours. As the LEM price reaches its maximum value during
+peak hours, the ESS is fully discharged. Additional information per­
+taining to these conditions can be found in Table 4.
+
+4.1. Case 1: perfect competition
+To gain a deeper insight into the economic effects of key players'
+dominance, it is crucial to analyze the network's fundamental case under
+perfect competition. An optimization problem is formulated, maxi­
+mizing the total profit of all participants subject to their operational
+constraints, thus transforming the research problem from equilibrium-
+
+4.2. Case 2: monopolistic behavior of DSO
+
+Fig. 5. Results of case 1, (a) Power allocation among DERs, (b) Market clearing
+price and power purchased from the upstream network.
+
+Fig. 6. The clearing price of the LEM and energy purchased from the upstream
+in case 2.
+
+In this case, the DSO endeavors to optimize its financial gains by
+operating as the only entity on the supply side, assuming the role of a
+monopolistic company. This situation reflects the conditions prevalent
+during the initial stages of the transition phase, characterized by the
+absence of investments in DERs within the network. Moreover, the DSO,
+as a retailer, carries out activities related to the grid and the sale of
+energy without any regulations.
+The DSO's revenue from energy sales in monopoly mode has reached
+$2969, surpassing the previous state by more than 12 times. The total
+energy supply is 25.76 MWh, which is nearly half of the previous
+quantity. Consumer surplus stands at $1464.4, marking a substantial
+decrease. Fig. 6 illustrates the obtained price of the LEM and the hourly
+energy purchase from the wholesale market.
+The market clearing price exhibits an average value of $163.66/
+MWh and experiences fluctuations within the range of [$87.40,
+$246.10]. Notably, the average price has increased by 2.5 times
+compared to the previous state, resulting in a significant decrease of
+approximately 50 % in the total demand. Furthermore, the cost associ­
+ated with network losses is $21.97, while the demand response cost
+
+7
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+4.4. Case 4: duopoly between DSO and RES owner with higher capacity
+This case aims to examine the impact of increasing RESs production
+capacity on the economic environment of the LEM. Unlike the previous
+case, the focus of this study is to maintain a constant number of
+monopolistic players and instead analyze the effects of investment in
+capacity. To achieve this, the installed capacity of the solar source is
+assumed to be 2 MW. The predicted power profile of this resource,
+depicted in Fig. 5, is also doubled. Following the investment in the
+renewable sector, the RES owner is expected to gain a profit of $2085.6,
+while the DSO's profit is estimated at $1315.5.
+As the capacity of the solar source rises, the DSO's profit is antici­
+pated to decrease by roughly 12 %, whereas the RES owner's profit is set
+to increase by about 48 %. The total energy supply is forecasted to reach
+30.94 MWh, indicating a slight increase compared to the previous state.
+Additionally, the consumer surplus is projected to rise up to $2149.3,
+reflecting a 15 % increase. The RES owner's substantial profit growth can
+be attributed to its competitive and economic advantages over its
+competitor. By seizing a larger share of the production portfolio, this
+actor boosts its profit significantly. The increase in supply, compared to
+the previous situation, is expected to drive prices down. Moreover, the
+RES owner deliberately withholds 3.88 MWh of available energy from
+the network during the hours of 7 am to 2 pm to exert market power.
+Fig. 8 displays the LEM clearing price and power allocation between the
+two actors.
+In this case, the average market price is $141.7/MWh and indicates a
+slight decrease, with fluctuations between $59.72 and $198.23. The
+analysis emphasizes:
+
+Fig. 7. Market clearing price and power allocation between players in case 3.
+
+reaches $18.64. Additionally, the 24-h average voltage magnitude at bus
+No. 18, which represents the deep point of the test system, is measured
+at 0.984 pu. The maximum voltage drop, approximately 3 %, occurs at
+17:00 on the aforementioned bus. From an economic standpoint, this
+case study is regarded as the most inefficient.
+4.3. Case 3: duopoly between DSO and RES owner
+In this case, it is assumed that both of these entities possess equal
+market power and decision-making authority. Examining this situation
+is crucial as it allows us to understand the consequences of introducing a
+new player, as well as the level of the RES owner's intention to curtail
+supply in the LEM, despite its remarkably low marginal cost. The DSO
+and the RES owner would achieve profits of $2365.1 and $895.1,
+respectively. The overall energy supply amounts to 29.25 MWh, repre­
+senting a 16 % increase compared to the monopoly. Consumers benefit
+from a surplus of $1873.6, demonstrating a growth of 28 %. Fig. 7
+provides a graphical representation of the resulting price in the LEM and
+the power shared between the two actors.
+In this case, the average market clearing price is recorded at
+$149.05/MWh, with fluctuations spanning in [$61.87, $213.14]. The
+values at the start and end of this range have experienced a decline.
+Furthermore, the cost of losses and the demand response program are
+determined to be $19.19 and $22.37, respectively. The RES owner
+deliberately refrains from injecting approximately 0.2 MWh of the
+anticipated energy into the grid between the hours of 9 to 11. This
+strategic decision is made to gain benefit from the lower wholesale
+market prices and the increasing demand. The case study yields two
+primary findings. First, the introduction of new competitors into a
+market leads to increased consumer surplus, reduced market equilib­
+rium prices, and improved social welfare. Second, the proprietor of the
+RES, despite possessing a competitive edge in marginal cost, may be
+motivated to decrease supply in order to boost profits and consequently
+elevate the settlement price.
+
+• Although increasing supply capacity at a lower cost reduces the LEM
+price, fluctuation range, and competitors' profits, it boosts social
+welfare.
+• Doubling installed capacity does not guarantee doubled profit.
+Therefore, investment strategies in energy markets with strategic
+players differ from perfect competition.
+4.5. Case 5: oligopoly among all players
+Within this scenario, all entities operating on the supply side attempt
+to maximize their profits through competition with other monopolistic
+firms. The Cournot equilibrium outlines the principles that govern this
+particular case. The graphical representation in Fig. 9 describes the
+respective contributions of each entity towards achieving equilibrium.
+It is evident that all the players are included in the generation
+portfolio. Unlike case 1, which illustrated a perfect competition struc­
+ture, units with higher marginal costs may remain competitive. More­
+over, during the process of charging and discharging, only a maximum
+of 57 % of the ESS capacity has been utilized. As depicted in Fig. 10, the
+RES owner decreases the power injection by 0.484 MWh between the
+
+Fig. 8. Market clearing price and power allocation between players in case 4.
+
+Fig. 9. Power allocation among firms in case 5.
+8
+
+Journal of Energy Storage 141 (2026) 119406
+
+H. Geramifar et al.
+
+benefit from this arrangement. The reason behind the ESS owner expe­
+riencing a decrease in profits compared to a perfectly competitive
+market lies in the higher costs associated with the charging process,
+which are influenced by elevated settlement prices. Consequently, as
+illustrated in Table 5, the planning strategy in the oligopolistic LEM for
+this firm will yield significantly different outcomes.
+4.6. Case 6: impact of strategic wind power producer on local market
+equilibrium
+To further demonstrate the flexibility of the proposed framework,
+this case study incorporates a strategic wind power producer into the
+local energy market. The mathematical formulation of this firm follows
+the same RES model introduced earlier, ensuring consistency with the
+overall framework. To enable a fair comparison with previous cases, the
+total penetration level of DERs in the network is kept constant. Specif­
+ically, the installed capacity of solar unit is reduced by half, and a 500
+kW wind farm with zero marginal cost is introduced as a new strategic
+firm. This setup allows the analysis of how wind generation, with its
+higher capacity factor and availability characteristics, affects the market
+clearing price, equilibrium strategies of competing firms, and the
+resulting welfare distribution. Fig. 12 depicts the forecasted power for
+the wind resource.
+In this case, the consumer surplus increases to $3517.8, representing
+an improvement of approximately $200 compared to the previous sce­
+nario. The total consumption rises to 39.83 MWh, corresponding to an
+increment of 1.32 MWh. As a result of halving the capacity share of the
+most dominant DER, the solar farm, this unit experiences the largest
+reduction in profit among the participating firms. Meanwhile, the entry
+of a new strategic producer leads to a total social welfare of $6630.8,
+highlighting the effect of increased competition on market outcomes, as
+presented in Table 6.
+In comparison with a solar farm of equal capacity, the wind power
+plant achieves up to 63 % higher profit, primarily due to its higher
+availability over the 24-h period. Furthermore, with the entry of the new
+firm, the average local market price decreases, resulting in an 8.4 %
+increase in the profit of the energy storage system (ESS).
+
+Fig. 10. The available and supplied renewable power in case 5.
+
+Fig. 11. Comparison of the market clearing price in cases 1 and 5.
+Table 5
+The results of economic variables in case 5.
+Decision variable
+
+Value
+
+Decision variable
+
+Value
+
+Consumer surplus
+Total energy consumed
+DG1 profit
+DG2 profit
+DSO profit
+
+$3319.1
+38.52 MWh
+$949.8
+$651.8
+$771.36
+
+ESS profit
+RES profit
+Demand response cost
+Total loss cost
+Social welfare
+
+$95.09
+$650.42
+$29.72
+$31.79
+$6437.6
+
+5. Discussion, benchmarking and policy advice
+
+hours of 9 and 12, increasing the market clearing price.
+Fig. 11 depicts the market price in comparison with case 1. The
+average of the market price stands at 109.57 $/MWh, with variations
+spanning from $57.23 to $154.12.
+The profit status of each firm in the network is evaluated using
+Table 5. Upon careful examination of the results, it becomes apparent
+that the introduction of an oligopoly mode in the network will result in a
+significant reduction of social welfare and a decline in the surplus of
+consumers. Except for the ESS owner, all oligopolistic suppliers will
+
+In this section, the scalability of the proposed model, the results of
+sensitivity analyses, and comparative discussions with respect to
+different market structures are presented. Furthermore, policy-oriented
+insights derived from the findings are provided to guide regulators and
+decision-makers in the design and implementation of LEMs.
+5.1. Proposed model scalability
+The scalability of the proposed model is evaluated from two per­
+spectives: (i) the impact of the number of strategic renewable players on
+the market equilibrium, and (ii) the computational efficiency of the
+framework. For this purpose, Case Study 6 is considered, while the
+overall penetration level of DERs is kept constant to enable a fair com­
+parison. Market performance is assessed using the Herfindahl–Hirsch­
+man Index (HHI), defined as [41]:
+Table 6
+Results of the economic variables in case 6.
+
+Fig. 12. Forecasted profile of the wind power producer.
+9
+
+Decision variable
+
+Value
+
+Decision variable
+
+Value
+
+Consumer surplus
+Total energy consumed
+DG1 profit
+DG2 profit
+DSO profit
+
+$3517.8
+39.83 MWh
+$882.9
+$598.6
+$599.2
+
+ESS profit
+Solar farm profit
+Wind plant profit
+Total loss cost
+Social welfare
+
+$102.98
+$353.6
+$575.75
+$29.1
+$6630.8
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+considered acceptable for day-ahead studies. It is worth noting that the
+market equilibrium in the perfect competition benchmark, represented
+by a single renewable firm, is obtained in 4.88 s with a total social
+welfare of $7040. As discussed previously, a comparable welfare
+outcome can also be achieved with at least 10 firms, requiring only 20.4
+s of computation time. These results confirm that the proposed model is
+scalable with respect to the number of strategic players while main­
+taining practical computational efficiency.
+Without loss of generality, the proposed model is also scalable with
+respect to the size of the network, as the entire problem is formulated as
+a convex optimization problem that can be efficiently solved in poly­
+nomial time. This characteristic ensures that the framework remains
+computationally tractable and practically applicable to a wide range of
+distribution networks, from local markets to larger systems.
+5.2. Sensitivity analysis
+Fig. 13. Number of renewable firms effects on the market outcome.
+
+HHI =
+
+Nf
+
+∑
+f∈F
+
+z2f
+
+In Case Study 4, the sensitivity of key economic variables was
+analyzed with respect to the capacity of RES, which represents a critical
+parameter in the operation of local markets. Another parameter of
+comparable importance is the slope of the inverse demand curve, as it
+directly influences consumer responsiveness and, consequently, the
+strategic behavior of firms. To capture these effects, sensitivity is eval­
+uated on case study 6 using the following expression:
+
+(32)
+
+where zf denotes the percentage market share of firm f, and Nf is the total
+number of firms. The capacity of each new firm is obtained by dividing
+the total RES capacity equally among participants. All firms are assumed
+to be solar-based resources and distributed in the grid. The outcomes of
+the scalability analysis are illustrated in Fig. 13.
+As observed from the results, increasing the number of renewable
+firms, thereby reducing the individual market share of each participant,
+leads to a decrease in the HHI while simultaneously improving social
+welfare. In the scenario with seven renewable firms present in the grid,
+the resulting HHI falls below 2000, which is commonly regarded as the
+threshold for highly concentrated markets. In other words, to effectively
+mitigate market power under a DER penetration level of approximately
+60 %, the total installed capacity should be distributed among at least
+ten DER units.
+On the other hand, reaching an equilibrium in markets with a large
+number of strategic firms can be computationally demanding. There­
+fore, the scalability of the proposed model must also be assessed in terms
+of computational burden and solution time. The computation times for
+different configuration setups with an increasing number of strategic
+renewable resources are presented in Fig. 14. With 7 RES, the social
+welfare reaches a saturation limit closed to the perfect competition case.
+By entering the strategic renewable firms from 1 to 25, the compu­
+tation time of the proposed model remains below 30 min, which is
+
+sx =
+
+∂Y X
+×
+∂X Y
+
+(33)
+
+where sx denotes the sensitivity of output Y with respect to parameter X.
+By employing this formulation, the influence of the demand curve slope
+on the overall performance of the LEM is systematically investigated and
+depicted in Fig. 15.
+The results indicate that daily energy consumption and consumer
+surplus exhibit an almost constant sensitivity to variations in the slope of
+the inverse demand curve. The average market price, as well as the
+profits of RES and DG1, display only mild sensitivity to this parameter,
+primarily due to their relatively low marginal costs. In contrast, the ESS,
+DG2, and the DSO emerge as the most sensitive participants in the local
+competition, reflecting their higher marginal costs. Notably, the DSO's
+profit becomes negative once the slope exceeds 0.013, as the firm loses
+its market power under more elastic demand conditions. Consequently,
+the sign of sensitivity for the DSO shifts from negative to positive,
+whereas, across the studied slope interval, all other firms consistently
+exhibit negative sensitivity.
+5.3. Benchmarking
+The focus of this section is to establish a comparative framework for
+understanding the concept of oligopoly within LEM, based on the cases
+examined. Table 7 illustrates a comparison of these cases.
+The presence of an oligopoly in the LEM, despite the limited capacity
+of DERs, results in a notable decline in social welfare. This decline was
+primarily caused by a decrease in the consumer surplus, while simul­
+taneously granting excessive profits to the energy producers. Addition­
+ally, the market clearing prices are influenced by the market power of
+participants, with a 2.5 times difference between a monopolistic market
+and a perfectly competitive one. The outcomes of case 4 reveal that as
+the capacity of RES grows, the equilibrium point shifts towards favoring
+these firms, leading to a substantial decrease in the supply of renewable
+energy. Cases 1 and 5 witnessed the highest level of energy consump­
+tion, as it is directly influenced by the market clearing price. Moreover,
+as the monopoly power strengthens, there is a notable spike in price
+fluctuations. Based on the findings from the study cases, it is recom­
+mended that policymakers in the market sector prioritize attracting
+more investors rather than solely concentrating on expanding the ca­
+pacity of renewable resources.
+
+Fig. 14. Model scalability with number of strategic renewable firms.
+10
+
+Journal of Energy Storage 141 (2026) 119406
+
+H. Geramifar et al.
+
+Fig. 15. Sensitivity analysis results.
+Table 7
+Comparison of different case studies.
+Variables
+
+Case 1
+
+Case 2
+
+Case3
+
+Case 4
+
+Case 5
+
+Case 6
+
+Social welfare ($)
+Consumer surplus ($)
+Average energy price ($/MWh)
+Minimum energy price ($)
+Maximum energy price ($)
+Energy price fluctuation range ($)
+Renewable curtailment (MWh)
+Consumed energy (MWh)
+Maximum daily voltage drop (%)
+HHI
+Computation time (s)
+
+7040.6
+5553.4
+60.97
+16.06
+119.99
+103.93
+0
+49.61
+5
+–
+4.88
+
+4433.7
+1464.4
+163.66
+87.40
+246.11
+158.71
+12.7
+25.76
+3
+10,000
+4.33
+
+5133.8
+1873.4
+149.05
+61.87
+213.14
+151.27
+0.2
+29.25
+2.9
+6065
+5.22
+
+5550.4
+2149.3
+141.7
+59.72
+198.23
+138.51
+3.88
+30.94
+2.9
+5029
+5.31
+
+6437.57
+3319.1
+109.57
+57.23
+154.12
+96.89
+0.484
+38.52
+4.6
+2455
+6.59
+
+6630.87
+3517.8
+104.45
+55.47
+162.08
+106.61
+0
+39.83
+3.2
+2093
+8.70
+
+5.4. Policy and regulatory insights
+This section explores potential regulatory pathways aimed at
+fostering efficiency and providing sustainability and competitiveness in
+LEMs. Following the detailed descriptions of three representative policy
+mechanisms, a quantitative evaluation of their effectiveness on the
+market performance is systematically performed through Case Study 6.
+A. Policy 1: price regulation through market caps
+The imposition of price caps on the local market equilibrium is a
+well-established regulatory mechanism to prevent excessive price fluc­
+tuations and to mitigate the potential exercise of market power. By
+limiting the maximum clearing price, this policy ensures affordability
+for consumers while maintaining a competitive balance among market
+participants. This policy introduces a more realistic representation of
+consumer behavior by effectively transforming the inverse demand
+curve into a piecewise linear function. This adjustment reflects the
+practical reality that consumers exhibit limited willingness to pay
+beyond a certain threshold, regardless of system conditions. To apply
+this strategy, a cap equal to 1.6 times the hourly wholesale market price
+is considered, which allows a servicing fee of up to 60 % above the
+wholesale price at the retail or local market level. Consequently, the
+incorporation of capped demand not only constrains excessive market
+prices but also enhances the ability of the model in capturing realistic
+market dynamics.
+
+Fig. 16. Resulted load profiles of different regulatory policies.
+
+C. Policy 3: constant daily energy consumption under RTP scheme
+Keeping the total daily energy consumption constant and equal to the
+perfect competition case, similar to Real-Time Pricing (RTP) schemes,
+represents another approach to stabilize local market outcomes. By
+constraining aggregate demand while allowing intra-day load shifting,
+this mechanism limits the ability of strategic firms to exploit demand
+elasticity, thereby reducing volatility in prices and enhancing social
+welfare. This strategy is performed by the DSO and the corresponding
+constraint is added to its mathematical model.
+D. Quantitative evaluation of the policies implementation
+
+B. Policy 2: regulatory enforcement of DSO
+
+A comparative analysis of the three proposed regulatory policies is
+conducted using the properties of case study 6. The impact of each policy
+on system operation is reflected in the resultant hourly load profiles,
+
+To ensure the DSO acts as a neutral and non-profit coordinator, this
+policy redefines its primary objective. Instead of seeking profit, the
+DSO's objective becomes the minimization of total operational costs
+while simultaneously maximizing consumer surplus. This dual goal is
+mathematically expressed as a single objective function; minimizing the
+difference between total costs and consumer surplus. Such a formulation
+confines the DSO's role to ensuring reliable system operation and effi­
+cient resource scheduling for the benefit of end-users, thereby prevent­
+ing potential conflicts of interest. This approach is congruent with
+prevailing regulatory models for electricity distribution worldwide.
+
+Table 8
+Economic impact of policies.
+
+11
+
+Variables
+
+Market cap
+
+Non-profit seeking DSO
+
+RTP scheme
+
+Social welfare ($)
+Consumer surplus ($)
+Total producers profit ($)
+Consumed energy (MWh)
+
+6783.7
+4520.9
+2262.85
+45.43
+
+6926.9
+5785.3
+1141.6
+50.91
+
+6876.8
+5387.2
+1489.6
+49.6
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+which are illustrated in Fig. 16.
+The RTP scheme effectively incentivizes temporal demand shifting
+from peak to off-peak periods, resulting in a smooth and economically
+efficient load profile. In contrast, the market cap policy enforces a more
+direct curtailment of demand, specifically during hours characterized by
+high prices. Finally, the non-profit DSO policy yields a load profile that
+closely approximates the benchmark scenario of the perfect
+competition.
+The economic impact of each regulatory policy is quantitatively
+summarized in Table 8.
+The non-profit DSO framework is shown to maximize key social
+metrics, yielding the highest social welfare, consumer surplus, and total
+energy consumption. However, this outcome concurrently minimizes
+the profit for generation firms. In contrast, the market cap policy results
+in the highest producer profit but at the expense of the lowest social
+welfare, consumer surplus, and energy consumption. The RTP scheme
+emerges as a median approach, establishing an effective trade-off be­
+tween the competing economic interests of consumers and producers
+within the local market.
+
+Time Pricing scheme emerges as a balanced, median approach,
+effectively using price signals to mediate the competing interests of
+producers and consumers.
+CRediT authorship contribution statement
+Hassan Geramifar: Writing – original draft, Software, Methodology.
+Majid Shahabi: Writing – review & editing, Visualization, Supervision,
+Conceptualization. Taghi Barforoushi: Writing – review & editing,
+Investigation, Conceptualization.
+Declaration of competing interest
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+Acknowledgment
+The authors acknowledge the funding support of Babol Noshirvani
+University of Technology through grant program no. BNUT/370445/
+403.
+
+6. Conclusion
+This paper introduces an effective framework for the comprehensive
+analysis and investigation of the LEM, with a specific emphasis on the
+transition phase of the distribution network from traditional to
+restructured states. The research methodology employed in this study is
+centered on the economic evaluation of various monopoly conditions
+prevalent in LEM, and how these conditions impact the profitability of
+the players present within the distribution network. In the proposed
+framework for short-term day-ahead planning, multiple entities
+including solar RES, ESS, small-scale DGs, demand response resources,
+and price-sensitive loads are taken into account. The outcomes obtained
+from this framework effectively depict the characteristics of a smart
+distribution grid during the transition phase. The equilibrium point of
+the problem is obtained using a strategy derived from the theory of noncooperative games. Furthermore, the proposed approach incorporates
+the consideration of technical limitations that govern the distribution
+network. Based on the findings of this research, the following policy
+recommendations are proposed for regulators:
+
+Data availability
+No data was used for the research described in the article.
+References
+[1] D. Gielen, F. Boshell, D. Saygin, M.D. Bazilian, N. Wagner, R. Gorini, The role of
+renewable energy in the global energy transformation, Energ. Strat. Rev. 24 (2019)
+38–50.
+[2] IEA, Secure Energy Transitions in the Power Sector, OECD, 2021.
+[3] R. Faia, F. Lezama, J. Soares, T. Pinto, Z. Vale, Local electricity markets: a review
+on benefits, barriers, current trends and future perspectives, Renew. Sust. Energ.
+Rev. 190 (2024) 114006.
+[4] T. Pinto, Z. Vale, S. Widergren, Local Electricity Markets, Academic Press, 2021.
+[5] C. Park, T. Yong, Comparative review and discussion on P2P electricity trading,
+Energy Procedia 128 (2017) 3–9.
+[6] C.A. Holt, Markets, Games, and Strategic Behavior: An Introduction to
+Experimental Economics, Princeton University Press, 2019.
+[7] E. Nasrolahpour, J. Kazempour, H. Zareipour, W.D. Rosehart, A bilevel model for
+participation of a storage system in energy and reserve markets, IEEE Trans.
+Sustain. Energ. 9 (2) (2017) 582–598.
+[8] Y. Ye, D. Papadaskalopoulos, R. Moreira, G. Strbac, Strategic capacity withholding
+by energy storage in electricity markets, in: 2017 IEEE Manchester PowerTech,
+IEEE, 2017, pp. 1–6.
+[9] O. Williams, R. Green, Electricity storage and market power, Energy Policy 164
+(2022) 112872.
+[10] R. Ferrero, S. Shahidehpour, V. Ramesh, Transaction analysis in deregulated power
+systems using game theory, IEEE Trans. Power Syst. 12 (3) (1997) 1340–1347.
+[11] B.F. Hobbs, C.B. Metzler, J.-S. Pang, Strategic gaming analysis for electric power
+systems: An MPEC approach, IEEE Trans. Power Syst. 15 (2) (2000) 638–645.
+[12] S.S. Oren, Economic inefficiency of passive transmission rights in congested
+electricity systems with competitive generation, Energy J. 18 (1) (1997) 63–83.
+[13] M. Vilim, A. Botterud, Wind power bidding in electricity markets with high wind
+penetration, Appl. Energy 118 (2014) 141–155.
+[14] D.W. Bunn, F.S. Oliveira, Evaluating individual market power in electricity
+markets via agent-based simulation, Ann. Oper. Res. 121 (2003) 57–77.
+[15] R. Tamaschke, G. Docwra, R. Stillman, Measuring market power in electricity
+generation: a long-term perspective using a programming model, Energy Econ. 27
+(2) (2005) 317–335.
+[16] A.R. Kian, J.B. Cruz, R.J. Thomas, Bidding strategies in oligopolistic dynamic
+electricity double-sided auctions, IEEE Trans. Power Syst. 20 (1) (2005) 50–58.
+[17] B. Willems, Modeling Cournot competition in an electricity market with
+transmission constraints, Energy J. 23 (3) (2002) 95–125.
+[18] S. Borenstein, J. Bushnell, An empirical analysis of the potential for market power
+in California’s electricity industry, J. Ind. Econ. 47 (3) (1999) 285–323.
+[19] G. Brusco, D. Menniti, A. Pinnarelli, N. Sorrentino, Renewable energy community
+with distributed storage optimization to provide energy sharing and additional
+ancillary services, Sustain. Energ. Grids Netw. 36 (2023) 101173.
+[20] C. Diaz-Londono, C.A. Correa-Florez, J. Vuelvas, A. Mazza, F. Ruiz, G. Chicco,
+Coordination of specialised energy aggregators for balancing service provision,
+Sustain. Energ. Grids Netw. 32 (2022) 100817.
+[21] M. Farrokhseresht, H. Slootweg, M. Gibescu, Strategic bidding of distributed
+energy resources in coupled local and central markets, Sustain. Energ. Grids Netw.
+24 (2020) 100390.
+
+• Encourage market entry: Regulators should implement policies that
+facilitate the entry of new participants in the energy supply sector, as
+increased competition has been shown to enhance social welfare and
+reduce market clearing prices.
+• Foster competition through legislation: To ensure that the benefits of
+increased competition are realized, policymakers should enact
+legislation that diversifies the generation portfolio, rather than rising
+RESs integration to the energy sector.
+• Monitor market power: Regulators should closely monitor the exer­
+cise of market power by DERs in the distribution network, as even
+small-scale resources can significantly influence the LEM clearing
+price. Measures should be put in place to prevent the abuse of market
+power.
+• Protect intermediary players: Given the substantial disparity in the
+distribution of profits and losses between monopolistic and
+competitive markets, regulators should consider implementing pre­
+cautions to protect the interests of intermediary players, such as ESS,
+whose return on investment may be adversely affected by the market
+power exerted by other players.
+• The investigation of regulatory frameworks reveals a distinct tradeoff between maximizing social welfare and producer profits. The
+non-profit DSO policy aligns market outcomes with the perfect
+competition benchmark, yielding the highest social welfare but
+minimizing producer surplus. Conversely, the market cap policy
+maximizes producer profits through strategic demand curtailment
+but at the cost of overall welfare and consumer benefits. The Real12
+
+H. Geramifar et al.
+
+Journal of Energy Storage 141 (2026) 119406
+
+[22] Q. Huang, Y. Xu, C.A. Courcoubetis, Strategic storage operation in wholesale
+electricity markets: a networked Cournot game analysis, IEEE Trans. Netw. Sci.
+Eng. 8 (2) (2021) 1789–1801.
+[23] M.F. Dynge, K. Berg, S. Bjarghov, Ü. Cali, Local electricity market pricing
+mechanisms’ impact on welfare distribution, privacy and transparency, Appl.
+Energy 341 (2023) 121112.
+[24] A. Ravi, L. Bai, V. Cecchi, F. Ding, Stochastic strategic participation of active
+distribution networks with high-penetration DERs in wholesale electricity markets,
+IEEE Trans. Smart Grid 14 (2) (2022) 1515–1527.
+[25] A.M. Alshamrani, A.F. Alrasheedi, K.A. Alnowibet, A game-theoretic model for
+wind farm planning problem: a bi-level stochastic optimization approach, Sustain.
+Energy Technol. Assess. 53 (2022) 102539.
+[26] H. Guo, Q. Chen, Q. Xia, C. Kang, Modeling strategic behaviors of renewable
+energy with joint consideration on energy and tradable green certificate markets,
+IEEE Trans. Power Syst. 35 (3) (2019) 1898–1910.
+[27] S. Ramyar, A.L. Liu, Y. Chen, Power market model in presence of strategic
+prosumers, IEEE Trans. Power Syst. 35 (2) (2020) 898–908.
+[28] Y. Mi, B. Tao, Y. Fu, X.-J. Su, P. Wang, A game bidding model of electricity and
+hydrogen sharing system considering uncertainty, IEEE Trans. Smart Grid 15 (3)
+(2024) 2751–2761.
+[29] Y. Wu, et al., Energy management for PV prosumers inside microgrids based on
+Stackelberg–Nash game considering demand response, Sustain. Energy Technol.
+Assess. 68 (2024) 103856.
+[30] W. Zhong, K. Xie, Y. Liu, S. Xie, L. Xie, Nash mechanisms for market design based
+on distribution locational marginal prices, IEEE Trans. Power Syst. 37 (6) (2022)
+4297–4309.
+
+[31] D. Thomas, J. Kazempour, A. Papakonstantinou, P. Pinson, O. Deblecker, C.
+S. Ioakimidis, A local market mechanism for physical storage rights, IEEE Trans.
+Power Syst. 35 (4) (2020) 3087–3099.
+[32] A. Suski, D. Chattopadhyay, Multicommodity Nash-Cournot market model with
+strategic storage operator, IEEE Trans. Energ. Market. Pol. Regulat. 1 (3) (2023)
+145–160.
+[33] Z. Xu, Y. Guo, H. Sun, Competitive pricing game of virtual power plants: models,
+strategies, and equilibria, IEEE Trans. Smart Grid 13 (6) (2022) 4583–4595.
+[34] X. Li, C. Li, G. Chen, Z.Y. Dong, A data-driven joint chance-constrained game for
+renewable energy aggregators in the local market, IEEE Trans. Smart Grid 14 (2)
+(2022) 1430–1440.
+[35] J. Wang, et al., Two-stage distributionally robust offering and pricing strategy for a
+price-maker virtual power plant, Appl. Energy 363 (2024) 123005.
+[36] Y. Zhang, C. Gu, X. Yan, F. Li, Cournot oligopoly game-based local energy trading
+considering renewable energy uncertainty costs, Renew. Energy 159 (2020)
+1117–1127.
+[37] Y. Yu, L. Chen, R. Liu, The source of wind power producers’ market power, Energy
+Policy 173 (2023) 113401.
+[38] D.S. Kirschen, G. Strbac, Fundamentals of Power System Economics, 2nd ed., John
+Wiley & Sons, 2018.
+[39] A. Alanazi, H. Lotfi, A. Khodaei, Coordinated AC/DC microgrid optimal scheduling,
+in: 2017 North American Power Symposium (NAPS), IEEE, 2017, pp. 1–6.
+[40] IBM, IBM ILOG CPLEX Optimization Studio CPLEX User's Manual [Online].
+Available: https://public.dhe.ibm.com/software/products/Decision_Optimizatio
+n/docs/pdf/usrcplex.pdf, 2013.
+[41] J. Wang, M. Shahidehpour, Z. Li, A. Botterud, Strategic generation capacity
+expansion planning with incomplete information, IEEE Trans. Power Syst. 24 (2)
+(2009) 1002–1010.
+
+13
+
+

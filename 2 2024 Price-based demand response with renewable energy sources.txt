@@ -1,0 +1,1777 @@
+Computers and Electrical Engineering 119 (2024) 109618
+
+Contents lists available at ScienceDirect
+
+Computers and Electrical Engineering
+journal homepage: www.elsevier.com/locate/compeleceng
+
+Price-based demand response with renewable energy sources and
+peer-to-peer trading for residential microgrid with electric vehicle
+uncertainty
+Dharmaraj Kanakadhurga, Natarajan Prabaharan ∗
+Department of EEE, School of Electrical & Electronics Engineering, SASTRA Deemed University, Thanjavur 613 401, Tamilnadu, India
+
+ARTICLE
+
+INFO
+
+Keywords:
+Smart home
+Demand response
+Peer-to-peer energy trading
+Renewable energy
+Battery
+Electric vehicle
+Binary dragonfly algorithm
+
+ABSTRACT
+This article deals with the impact of demand response (DR) with peer-to-peer (P2P) energy
+trading for a residential smart home consisting of smart appliances, an electric vehicle, a battery
+energy storage system (BESS), and renewable energy-based distributed generation (DG) such as
+solar PV and wind. The proposed work deals with two stages, such as DR implementation and
+P2P energy trading. The first stage of implementation deals with the optimal scheduling of smart
+appliances in a residential home using a Binary Dragonfly Algorithm (BDA). Each appliance in
+the smart home is scheduled based on the slab tariff, Time of Day (ToD), and Real-Time Pricing
+(RTP) with DR to identify the most economical tariff structure for the residential home. Five
+different cases are examined to identify the best smart home for effectively utilizing DGs by
+reducing grid dependency and electricity costs.The RTP tariff is proved to be more beneficial
+than the slab tariff and ToD tariff because the electricity cost of the smart home is very minimal
+for all the cases with RTP, especially in case 5 cost is reduced by |12.0613 than slab tariff and
+|8.414 than ToD. Hence, the RTP tariff is chosen as the optimal tariff structure for the next stage
+of the proposed work.The second stage of implementation deals with the P2P trading between
+the smart homes with a proposed enhanced bidding strategy to reduce the grid dependency
+and electricity cost of the individual smart homes. The proposed enhanced bidding strategy
+involves a double auction mechanism to determine the trading decision and trading cost for the
+benefit of both consumers and prosumers. The electricity cost reduction achieved by consumer
+1 and consumer 2 from the enhanced smart bidding strategy are |92.7615 and |15.1525,
+respectively. The results also proved that prosumer 1 and prosumer 2 obtained a profit of
+|78.2170 and |28.6970, respectively. The EV uncertainty analysis is also examined in smart
+homes to validate the effectiveness of the proposed bidding strategy. The simulation results
+proved that the proposed DR-based P2P trading with an enhanced bidding strategy reduces
+grid dependency and electricity costs, including EV uncertainty conditions.
+
+1. Introduction
+The advent of intelligent communication technologies and data handling tools in metering infrastructures have facilitated smart
+home consumers to implement the Demand Response (DR) [1]. DR is a demand-side management (DSM) technique that encourages
+consumers to modify their load patterns to minimize electricity costs. The residential sector is the second highest electricity
+consumer, with wider possibilities for implementing energy management strategies [2]. In [3], time-shiftable appliances (dishwasher,
+
+∗ Corresponding author.
+E-mail address: prabaharan.nataraj@gmail.com (N. Prabaharan).
+
+https://doi.org/10.1016/j.compeleceng.2024.109618
+Received 9 March 2024; Received in revised form 20 July 2024; Accepted 25 August 2024
+Available online 30 August 2024
+0045-7906/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Nomenclature
+𝑆𝐷𝑅1𝐶(𝑖) (𝑡)
+𝐵𝑖𝑑𝑐(𝑖)
+𝑑 (𝑡)
+𝑃𝑐(𝑖)
+
+FiT
+𝑃 𝐺𝑟𝑖𝑑 (𝑡)
+𝑔
+𝑃𝑊
+(𝑡)
+
+𝑃𝑏𝑑𝑖𝑠𝑐ℎ (𝑡)
+𝑃 𝑑 (𝑡)
+𝑚𝑎𝑥
+𝑃𝑏,𝑐ℎ
+
+𝑏
+𝑆𝑜𝐶𝑚𝑖𝑛
+
+𝑐𝑎𝑝𝑎𝑐𝑖𝑡𝑦𝑏
+T(t+1)
+𝑇𝑎𝑚𝑏
+P
+𝑚𝑐
+X(i,t)
+
+𝑇𝑠𝑡𝑎𝑟𝑡 (𝑖)
+cost
+𝐶𝑊 (𝑡)
+𝑃𝑡ℎ𝑒𝑟𝑚𝑎𝑙
+𝑡𝑑𝑒𝑝𝑎𝑟𝑡𝑢𝑟𝑒
+𝑆𝑜𝐶 𝑑𝑒𝑝𝑎𝑟𝑡𝑢𝑟𝑒
+
+SDR1 of consumer ‘𝑖’ at time slot
+‘𝑡’
+Bid value of consumer ‘𝑖’ at time
+slot ‘𝑡’
+Power demand of consumer ‘𝑖’ at
+time slot ‘𝑡’
+Feed-in tariff
+
+𝑆𝐷𝑅1𝑝(𝑗)
+
+power supplied by the grid at
+time ‘𝑡’
+Wind power availability at time
+‘𝑡’
+Power discharged from battery at
+time ‘𝑡’
+Power consumed by the
+appliances
+Maximum allowable charging
+power of battery at each time
+slot
+Minimum limit of state of charge
+of battery
+Total capacity of battery
+
+𝑃𝑃𝑔 𝑉 (𝑡)
+
+Temperature of thermal load at
+time ‘𝑡+1’
+Ambient temperature
+Power rating of the appliance
+Thermal mass
+Binary variable used to denote
+the on/off status of appliance ‘𝑖’
+at time ‘𝑡’
+Starting time of appliance ‘𝑖’ in
+hour
+Electricity cost at time ‘𝑡’
+
+𝜖
+
+Maximum limit of state of charge
+of battery
+Charging/ discharging efficiency
+of battery
+Heat transfer coefficient
+
+𝜂𝑡
+A
+𝛥𝑡
+𝑇𝑠𝑡𝑎𝑡𝑢𝑠 (𝑖)
+
+Heating/ cooling efficiency
+Thermal conductivity
+Duration of one time slot
+On/off status of appliance ‘𝑖’
+
+𝑇𝑓 𝑖𝑛𝑖𝑠ℎ (𝑖)
+
+𝐶𝑏,𝑑𝑖𝑠
+𝑡𝑎𝑟𝑟𝑖𝑣𝑎𝑙
+
+Ending time of appliance ‘𝑖’ in
+hour
+Maintenance cost of solar
+photovoltaic
+Maintenance cost of battery
+Arrival time of EV in smart home
+
+𝑆𝑜𝐶 𝑎𝑟𝑟𝑖𝑣𝑎𝑙
+
+SoC of EV at 𝑡𝑎𝑟𝑟𝑖𝑣𝑎𝑙
+
+𝑆𝑜𝐶𝑏 (𝑡)
+
+State of charge of battery at time
+‘𝑡’
+
+𝑄𝑢𝑜𝑡𝑒𝑝(𝑗) (𝑡)
+𝑖𝑛𝑗
+𝑃𝑝(𝑗)
+(𝑡)
+
+𝑇 𝑟𝑎𝑑𝑖𝑛𝑔_𝑡𝑎𝑟𝑖𝑓 𝑓𝑝(𝑗)
+
+𝑃𝑏𝑐ℎ (𝑡)
+𝑃 𝑖𝑛𝑗
+𝑃𝑔𝑚𝑎𝑥
+𝑚𝑎𝑥 (𝑡)
+𝑃𝑏,𝑑𝑖𝑠
+
+𝑏
+𝑆𝑜𝐶𝑚𝑎𝑥
+
+𝜂𝑏
+
+𝐶 𝑝𝑣 (𝑡)
+
+Maintenance cost of wind turbine
+Power demand of the thermal
+load
+Departure time of EV from smart
+home
+SoC of EV at 𝑡𝑑𝑒𝑝𝑎𝑟𝑡𝑢𝑟𝑒
+
+SDR1 of prosumer ‘𝑗’ at time slot
+‘𝑡’
+Quote value of prosumer ‘𝑗’ at
+time slot ‘𝑡’
+Excess power of prosumer ‘𝑗’ at
+time slot ‘𝑡’
+Tariff for the power traded from
+prosumer ‘𝑗’ at time slot ‘𝑡’
+Solar power availability at time
+‘𝑡’
+Power consumed by battery for
+charging at time ‘𝑡’
+Power injected to the grid at
+time ‘𝑡’
+Maximum allowable power
+supplied by the grid
+Maximum allowable discharge
+power of battery
+
+dryer, washing machine & electric vehicle (EV)) and other appliances have been scheduled based on RTP to minimize the electricity
+cost of the consumer. Similarly, a home energy management system (HEMS) has been framed by implementing RTP to minimize
+electricity costs without scheduling the distributed generation (DGs) [4]. In [4], the load shedding has also been done along with
+the load shifting that affects the user comfort. On the other hand, RTP-based DR has been implemented to minimize the electricity
+cost and improve user comfort using two-stage stochastic optimization models [5]. In [6], DR has been implemented to minimize
+operating costs and environmental emissions through demand reduction and distributed generation scheduling using differential
+evolution. Similarly, energy management for smart home has been suggested in [7] with the ToU tariff, where the DGs and thermal
+loads are not considered. At the same time, three appliances, such as all the non-shiftable appliances, are lumped as one, and
+the air conditioner and EV have been considered in [8]. It has focused on the peak demand minimization and maximization of
+self-consumption with a mixed integer linear programming model. However, the literature has not discussed the financial benefits
+for the consumers of participating in the DR program, and the number of controllable loads is a major limitation. Furthermore, a
+multi-objective energy scheduling strategy has been developed for off-grid microgrid operation using a utopia-tracking approach [9].
+An incentive-based DR program for energy demand reduction has been discussed. The impact of Distributed Generation (DGs) such
+2
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+as solar Photovoltaic (PV) & wind, battery, and EV have not been considered as the constraint for framing the objective function in
+the literature, as mentioned earlier.
+The benefits of DR have been enhanced by effectively using solar photovoltaic (PV) in [10–13]. In [10], Time of Use (ToU)
+tariff-based DR has been implemented with PV and battery energy storage systems (BESS) to minimize electricity costs and peak
+demand. Similarly, the DR implementation with PV and battery has been implemented for smart home, but the limited number of
+appliances have been considered, and the thermal loads have not been considered, which affects the user comfort [11]. However,
+temperature-based modeling of thermal loads has been considered for DR implementation in [12]. In [13], the DR implementation
+with variable PV penetration was analyzed, and the developed rule-based model was proved to minimize the electricity cost for
+both high and low penetrations of PV power. However, the cost minimization is comparatively higher for high PV penetration than
+for low PV penetration [13]. The RTP-based DR has been implemented in the smart home with DG and battery, along with the
+consideration of thermal load modeling to reduce electricity costs and improve user comfort [14]. In [15], solar panels have been
+included in the Residential Energy Hubs (REHs) to balance costs and energy efficiency. Additionally, the literature has focused on
+the integration of heat storage units in REHs to reduce solar energy losses without significantly increasing costs. However, the major
+limitation of the literature discussed above is the lack of better utilization of DG power and battery power for all the time slots. The
+electricity cost could be reduced further by effectively using the DGs and battery power by implementing P2P energy trading.
+P2P energy trading allows prosumers to trade the excess power available from their DGs after self-consumption with the
+neighboring consumers [16]. P2P energy trading provides many benefits to consumers and prosumers, such as encouraging the
+utilization of renewable-based DGs and improving economic welfare through the better utilization of DGs. Additionally, the utility
+grid also gets benefits, such as reduced peak demand, reduced cost of investment on peak power generation, and improved grid
+reliability [16]. In [17], prosumers with excess power due to high penetration of PV have traded the power to the consumers
+through a bidding strategy, where the aggregator decides the trading based on the bid and quoted values from the consumers and
+prosumers. The trading cost has been determined as the mean value of the bid and quote values. On the other hand, the prosumers
+were clustered using game theory based on the load profile and power availability, where trading was done between only prosumers,
+but the consumers were not considered in the system [18]. Similarly, prosumer-centric P2P trading has been suggested in [19] to
+improve the welfare of the prosumers by considering PV and Electric Vehicle (EV). In [19], the trading was done based on a double
+auction mechanism, while the trading tariff was determined at a mid-market rate. On the other hand, multi-agent Peer-to-Peer dairy
+farm energy simulator-extended (MAPDES) has been developed in [20] with auction-based energy trading to significantly reduce
+electricity costs, decrease peak demand, and increase energy sales for dairy farms participating in peer-to-peer markets. In [20], the
+DR implementation is not considered, which is a major limitation.
+The P2P trading framework, which considers the trading between prosumers and consumers, has been discussed in [21–24].
+The trading tariff was determined based on the levelized cost of electricity, whereas the trading decision was made by selecting the
+best combination from all the possible combinations of trading and trading tariffs between prosumers and consumers. At the same
+time, the same process becomes complex when the system is larger [21]. On the other hand, retailers have been considered along
+with the consumers and prosumers in [22]. The trading tariff has been calculated based on the individual prosumer’s cost equation
+based on the excess energy availability. Similarly, the cost function-based tariff determination based on the current and past values
+of energy and trading tariffs to improve the welfare of the prosumers and consumers has been discussed in [23]. In [24], the double
+auction mechanism based on P2P trading between prosumers and consumers has been developed. The trading decision was made
+by following the supply and demand equilibrium, where the aggregator matches the bid and quote values. The literature discussed
+above has focused on improving the welfare of prosumers and consumers, but the benefits could be further improved by considering
+DR and P2P trading. There is a need for DR with P2P energy trading to better utilize DGs and reap economic benefits [25].
+Mixed integer programming has been suggested for the RTP-based electricity market with renewable energy sources, storage
+systems, and electric vehicles for economic and environmental benefits [26]. It has been proved that the DR with RTP has
+significantly increased the retailer profit and energy supply security value as compared with fixed tariff pricing. But, the literature
+has not considered consumer behavior and user comfort. In [27], the RTP-based DR and P2P energy trading for the distribution
+network for the peak demand reduction is discussed. The trading tariff is considered the same as the feed-in tariff. In [27], the
+aggregator made the trading decision irrespective of the profit of the prosumer. The DR-based P2P trading is developed in [28] to
+improve the revenue of the prosumers and reduce the grid dependency. Self-sufficiency and self-consumption ratio are considered
+to prioritize the self-consumption of power from DGs over the P2P trading. But the trading framework considered prosumers alone
+neglecting the consumers. Likewise, the demand side load management and P2P trading between the prosumers is developed for the
+reduction in grid dependency and congestion in the grid in [29]. The market modeling is not done in [29]. The trading decision and
+tariff are decided so that the congestion is reduced. Hence, it is beneficial only to the grid and the prosumers are less benefitted. The
+DR-based P2P energy trading is implemented in a microgrid with prosumers and consumers for the electricity cost reduction and
+peak demand reduction [30]. The trading tariff is considered as fixed based on the incentive for the microgrid node. The literature
+discussed above considered the DR implementation by scheduling power demand instead of scheduling individual appliances. On
+the other hand, a two-stage trading framework is suggested in [31], where the first stage is appliance scheduling and the second
+stage is P2P trading. However, only three appliances are considered, and user comfort is not considered.
+Table 1 compares the most relevant literature with the proposed work. Table 1 proves that the existing literature either considered
+DR or P2P trading separately. Also, some of the literature that considered both DR and P2P trading focused on either appliance
+scheduling or market model of P2P trading. The proposed work considered both appliance scheduling and market model of P2P
+trading along with the consideration of user comfort. Additionally, enhanced bidding strategy is proposed in this work to improve
+the P2P energy trading.
+3
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+Table 1
+Comparison of existing literature with the proposed work.
+Ref. No
+
+Objective
+
+DR
+
+PV
+
+EV
+
+Battery
+
+User
+comfort
+
+P2P
+trading
+
+Trading
+tariff
+
+Uncertainty
+
+[32]
+
+Minimize electricity
+cost
+Minimize electricity
+cost
+Minimize electricity
+cost
+Minimize electricity
+cost
+Minimize electricity
+cost
+Minimize electricity
+cost
+Minimize the
+incurred cost
+Minimize the peak
+demand
+Minimize the power
+demand
+Maximize the profit
+
+RTP
+
+×
+
+×
+
+×
+
+✓
+
+×
+
+×
+
+×
+
+ToU
+
+✓
+
+✓
+
+✓
+
+✓
+
+×
+
+×
+
+×
+
+ToU
+
+✓
+
+×
+
+✓
+
+×
+
+×
+
+×
+
+×
+
+ToU
+
+✓
+
+×
+
+✓
+
+×
+
+×
+
+×
+
+×
+
+RTP
+
+✓
+
+×
+
+✓
+
+×
+
+×
+
+×
+
+×
+
+RTP
+
+✓
+
+×
+
+×
+
+×
+
+×
+
+×
+
+×
+
+RTP
+
+×
+
+×
+
+×
+
+✓
+
+×
+
+×
+
+✓
+
+DLC
+
+✓
+
+✓
+
+✓
+
+×
+
+×
+
+×
+
+✓
+
+On-site
+generation
+–
+
+✓
+
+✓
+
+×
+
+×
+
+×
+
+×
+
+×
+
+✓
+
+×
+
+✓
+
+×
+
+✓
+
+✓
+
+Minimize the
+operating cost
+Reduce the grid
+dependency
+
+–
+
+✓
+
+×
+
+✓
+
+×
+
+✓
+
+Mid-market
+rate
+Fixed tariff
+
+–
+
+✓
+
+×
+
+✓
+
+×
+
+✓
+
+FiT
+
+×
+
+Minimize the
+electricity cost and
+grid dependency
+
+RTP
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+Double auction
+mechanism
+
+✓
+
+[33]
+[34]
+[35]
+[36]
+[37]
+[38]
+[39]
+[40]
+[41]
+[42]
+[43]
+Proposed work
+
+✓
+
+1.1. Contributions of the proposed work
+From the detailed literature survey, the research gap is identified as the lack of proper scheduling of power demand by considering
+all categories of appliances, proper utilization of DG power to minimize the grid dependency, and optimal trading models for
+consumers. This proposed research work addresses these limitations by incorporating demand response (DR) and peer-to-peer (P2P)
+energy trading to minimize electricity cost and grid dependency using the Binary Dragonfly Algorithm (BDA) and an enhanced
+bidding strategy. The DR implementation focuses on minimizing electricity costs, while P2P energy trading aims to reduce grid
+dependency. Additionally, the DR implementation optimizes scheduling and enhances the utilization of DG power, while P2P energy
+trading, using an enhanced bidding strategy, aims to reduce grid dependency..
+The contributions of the proposed work are given below:
+1. The proposed work consists of two stages: The DR implementation for optimal scheduling of the appliances in prosumers
+and consumers as the first stage. Three different tariff structures, slab tariff, ToD, and RTP, are compared to find the most
+economical tariff structure.
+2. The smart appliances in the smart homes are scheduled using the BDA based on the RTP, status of DGs, battery & EV, and
+appliance operating constraints without affecting the user comfort. Smart appliances can be categorized as controllable and
+uncontrollable loads with electric/thermal loads.
+3. The excess power availability from the prosumers after their consumption can be traded to the neighboring consumer through
+P2P trading with the most economical tariff structure, which is the second stage of the proposed work.
+4. The trading decision is determined using the enhanced smart bidding strategy with the proposed double auction mechanism
+by considering the bidding and quote values of consumers and prosumers. The supply–demand ratio (SDR) and RTP tariff
+estimate the bidding and quote values.
+5. The trading tariff is determined based on the SDR (calculated based on the trading decision) and RTP tariff such that the
+proposed trading tariff is always less than the grid tariff at all time slots.
+The remaining sections of the article are organized as follows: Section 2 describes the proposed system for DR and bidding-based
+P2P trading with DR implementation, Section 3 explains the mathematical modeling of DR, Peer-to-peer trading using enhanced
+bidding strategy, and BDA for DR implementation, Section 4 discusses the simulation results obtained from the proposed system
+with EV uncertainty analysis and Section 5 ends with the conclusion.
+2. Proposed P2P trading with enhanced bidding strategy
+The proposed residential microgrid considers four smart homes wherein two are prosumers and the remaining are consumers.
+The proposed work is categorized into two stages, where the appliance scheduling of smart home with DR using BDA considers as a
+4
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 1. Smart home for DR implementation.
+
+first stage of implementation. The second stage of implementation considers the available excess power after their self-consumption
+in the smart home can be traded to the neighboring smart home using P2P energy trading with double auction mechanism.
+2.1. Demand response
+In the first stage of implementation, only one smart home is considered from the proposed residential microgrid which is
+portrayed in Fig. 1. Five different cases are formulated for the smart home based on the availability of DGs, battery power and
+EV battery power to identify the optimal electricity reduction of the smart home and minimum grid dependency. Case 1 considers
+the smart home without DGs and EV battery, case 2 considers the smart home with PV and EV battery, case 3 considers the smart
+home with PV, Battery and EV battery, case 4 considers the smart home with PV, wind, and EV battery and case 5 considers the
+smart home with PV, wind, battery, and EV battery. The scheduling of appliances in the smart home is carried out by considering the
+user-preferred appliance operation time with DR implementation. The time window and duration of each appliance are framed based
+on the usage pattern of each appliance. The operating time slot of the appliances without affecting the user comfort is determined
+using BDA algorithm by considering the grid tariff, available power form solar photovoltaic (PV), wind power generation, battery,
+and EV battery in the proposed smart home to minimize grid dependency and electricity costs. The EV battery acts as storage device
+during its idle period. Also, three different tariff structures are considered to decide the most economical tariff for the smart home.
+Due to the availability of DGs, excess power may be available in some time slots after their self-consumption which is injected into
+the grid with feed-in-tariff. In order to improve the profit for the smart home, the available excess power which is traded to the
+neighboring smart homes using P2P energy trading, which is the second stage of the proposed work.
+2.2. Peer-to-peer trading
+In the second stage of implementation, a proposed residential microgrid consisting of four smart homes is considered for P2P
+trading. Fig. 2 illustrates the residential microgrid considered in the proposed work. Smart home 1 and smart home 2 are considered
+as the prosumer1 and prosumer 2 whereas smart home 3 and smart home 4 are considered as consumer 1 and consumer 2. Prosumer
+1 is considered the eighteen different appliances along with the different power sources like case 5. Prosumer 2 is considered the
+fifteen different appliances along with the different power sources like case 2. On the other hand, consumer 1 is similar to case 1,
+where EV battery is alone considered with the absences of DGs. Consumer 2 is considered only 15 different smart appliances alone.
+The power demand of the prosumers & consumers is determined with DR implementation on each smart home appliance with the
+most economical tariff structure. The DGs power from the prosumers may be excess after their self-consumption, which can be traded
+to the neighboring consumers based on the double-auction mechanism. The double-auction mechanism allows the prosumers and
+consumers to submit their quote and bid values. The quote and bid values are calculated based on the supply–demand ratio (SDR)
+of individual homes and grid tariff. The trading decision is finalized based on the calculated bid and quote values. For instance, the
+highest bid value of the consumer and least quote value of the prosumer are prioritized for the trading process. The next higher
+values are considered for the subsequent trading process. After the trading decision is made, the trading tariff for prosumers is
+calculated based on the SDR, grid tariff and feed-in-tariff.
+3. Mathematical modeling of the proposed residential microgrid for P2P trading
+3.1. Appliance scheduling using binary dragon fly algorithm
+The smart appliance of the individual residential smart home is scheduled by considering user comfort time window operation of
+the appliances along with the available power and grid tariff. The power is obtained from the availability of solar PV, wind, battery
+and EV battery. The battery acts as a source during discharge and as a load during charging. At the same time, the discharging of EV
+battery may be considered as EV driving mode or vehicle to home power transfer mode depending on the SoC level, user comfort
+and tariff. The Eqs. (2)–(11) for DR implementation of smart home are obtained from [44].
+5
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 2. Residential microgrid for P2P energy trading.
+
+3.1.1. Objective function
+The objective function of the model is to minimize the electricity cost of a grid-connected smart home as follows:
+min 𝑐𝑜𝑠𝑡 =
+
+24
+∑
+[𝑃 𝐺𝑟𝑖𝑑 (𝑡) × 𝐶𝑔𝑟𝑖𝑑 (𝑡)] + [𝑃𝑃 𝑉 (𝑡) × 𝐶 𝑝𝑣 ] + [𝑃𝑊 (𝑡) × 𝐶𝑊 ] + [𝑃𝑏𝑑𝑖𝑠𝑐ℎ (𝑡) × 𝐶𝑏𝑑𝑖𝑠𝑐ℎ ]
+𝑑𝑖𝑠𝑐ℎ (𝑡) × 𝐶 𝑑𝑖𝑠𝑐ℎ ] − [𝑃 𝑖𝑛𝑗 (𝑡) × 𝐶
++[𝑃𝑒𝑣
+𝑖𝑛𝑗𝑒𝑐𝑡 ]
+𝑒𝑣
+𝑡=1
+
+(1)
+
+3.1.2. Constraints
+Power balance constraints
+𝑔
+𝑑𝑖𝑠𝑐ℎ
+𝑐ℎ
+𝑃 𝑔 (𝑡) + 𝑃𝑃𝑔 𝑉 (𝑡) + 𝑃𝑊
+(𝑡) + 𝑃𝑏𝑑𝑖𝑠𝑐ℎ (𝑡) + 𝑃𝑒𝑣
+= 𝑃𝑑 (𝑡) + 𝑃𝑏𝑐ℎ (𝑡) + 𝑃𝑒𝑣
+(𝑡) − 𝑃 𝑖𝑛𝑗 (𝑡)
+
+(2)
+
+Grid power limit.
+0 ≤ 𝑃g (𝑡) ≤ 𝑃gmax
+
+(3)
+
+Appliance operation constraints. Electrically controllable appliances:
+{
+𝑉 (𝑖, 𝑡) = 0
+if 𝑡 ≤ 𝑇start (𝑖) 𝑎𝑛𝑑𝑡 ≥ 𝑇f inish (𝑖)
+𝑉 (𝑖, 𝑡) = 𝑇treat (𝑖) if 𝑡 ≥ 𝑇start (𝑖) and 𝑡 ≤ 𝑇f inish (𝑖)
+Thermostatically controllable appliances:
+)
+(
+𝑃
+𝑇 (𝑡 + 1) = 𝜀(𝑇 (𝑡) − 𝑇𝑎𝑚𝑏 ) + 𝑇𝑎𝑚𝑏 − 𝜂 (1 − 𝜀)
+𝐴
+
+(4)
+
+(5)
+
+Battery charge/discharge constraints
+𝑃𝑏𝑐ℎ (𝑡) ≤ 𝑃𝑏𝐶 max
+
+(6)
+
+𝑃𝑏disch (𝑡) ≤ 𝑃𝑏𝐷 max
+
+(7)
+
+where, 𝑃𝑏,𝑐ℎ max and 𝑃𝑏,𝑑𝑖𝑠 max are the maximum charging and discharging limit respectively. Initial state of battery
+( 𝑐ℎ
+)
+𝑃𝑏 (1)
+int
+disch
+Nom𝐵 × 𝑆𝑂𝐶𝑏 (1) = Nom𝐵 +
+− 𝑒𝑑 × 𝑃𝑏 (1)
+𝑒𝑐
+( 𝑐ℎ
+)
+𝑃𝑏 (𝑡)
+int
+disch
+𝑁𝑜𝑚𝐵 × 𝑆𝑂𝐶𝑏 (𝑡) = Nom𝐵 × 𝑆𝑂𝐶𝑏 (𝑡 − 1) +
+− 𝑒𝑑 × 𝑃𝑏 (𝑡)
+𝑒𝑐
+6
+
+(8)
+
+(9)
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+The upper and lower limit of the state of charge should be within the prespecified limits as follows:
+𝑆𝑂𝐶𝑏𝑚𝑖𝑛 ≤ 𝑆𝑂𝐶𝑏 ≤ 0.9
+
+(
+
+𝑃𝑏𝑐ℎ
+𝑒𝑐
+
+(10)
+
+) + (𝑁𝑜𝑚𝑏 × 𝑆𝑜𝐶𝑏 (𝑡 − 1)) ≤ 𝑁𝑜𝑚𝑏
+
+(11)
+
+Electric vehicle charge/ discharge constraints Electric vehicle charge/ discharge constraints: The EV is modeled like battery
+during its charging and discharging. Hence, it follows the same constraints and SoC updation like battery. Additionally, the limit of
+SoC check is performed at 5:00 h to maintain the required level for the next trip before discharging.
+
+3.2. Peer-to-peer trading using enhanced bidding strategy
+In the proposed work, the P2P energy trading is done by enhanced bidding strategy. The energy management system of the
+individual smart home decides the power requirement, or availability of excess power after their self-consumption which can be
+communicated to the neighboring smart homes. In case of power requirement of the smart home, it receives the power from the
+grid or trading based on the grid tariff or trading tariff. In case of excess power available, it provides the quote value to decide the
+trading and its trading tariff. The trading process follows the enhanced bidding strategy that involves double-auction mechanism
+to decide the trading decision and trading tariff. The proposed enhanced bidding strategy involves the calculation of SDR in two
+different phases. The first SDR calculation decides the trading decision based on the bid and quote values by considering the total
+power availability from the prosumers for trading and power demand requirement on the consumers. The second SDR decides the
+trading tariff by considering the energy trading between the prosumers to consumers based on their requirements. The SDR1 of the
+consumers and prosumers for the quote and bid value calculation is given below,
+∑𝑚
+𝑖𝑛𝑗
+𝑗=1 𝑃𝑝(𝑗) (𝑡)
+𝑆𝐷𝑅1𝐶(𝑖) (𝑡) =
+(12)
+𝑑 (𝑡)
+𝑃𝑐(𝑖)
+𝑖𝑛𝑗
+𝑃𝑝(𝑗)
+(𝑡)
+𝑆𝐷𝑅1𝑝(𝑗) (𝑡) = ∑𝑛
+𝑑
+𝑖=1 𝑃𝑐(𝑖) (𝑡)
+
+(13)
+
+Bid and quote calculation for consumers and prosumers based on the initial SDRs are given below,
+𝐵𝑖𝑑𝑐(𝑖) (𝑡) =
+
+𝑅𝑇 𝑃 (𝑡)
+𝑆𝐷𝑅1𝑐(𝑖) (𝑡)
+
+𝑄𝑢𝑜𝑡𝑒𝑝(𝑗) (𝑗) =
+
+(14)
+
+𝑅𝑇 𝑃 (𝑡)
+𝑆𝐷𝑅1𝑝(𝑗) (𝑡)
+
+(15)
+
+The trading decision is made based on the bid and quote values provided by each consumer and prosumer. The second SDR (SDR2)
+is calculated for each prosumer based on the trading decision by considering the excess power availability to determine the trading
+tariff. The SDR2 of each prosumer is given by,
+𝑖𝑛𝑗
+(𝑡)
+⎧ 𝑃𝑝(𝑗)
+⎪ 𝑃 𝑑 (𝑡) ; If trading is enabled between 𝑗th prosumer and 𝑖th consumer
+⎪ 𝑐(𝑖)
+𝑖𝑛𝑗
+⎪ 𝑃𝑝(𝑗) (𝑡)
+⎪ 𝑃 𝑑 (𝑡) ; If trading is enabled between 𝑗th prosumer and (𝑖 + 1)th consumer
+⎪ 𝑐(𝑖+1)
+𝑆𝐷𝑅2𝑝(𝑗) (𝑡) = ⎨ .
+⎪ .
+⎪
+⎪ . 𝑖𝑛𝑗
+⎪ 𝑃𝑝(𝑗) (𝑡)
+⎪ 𝑃 𝑑 (𝑡) ; If trading is enabled between 𝑗th prosumer and 𝑛th consumer
+⎩ 𝑐(𝑛)
+
+(16)
+
+The trading tariff calculation for P2P energy trading from prosumers to consumers is given below:
+⎧ (𝑆𝐷𝑅2 (𝑡) ∗ 𝐹 𝑖𝑇 ) + ((1 − 𝑆𝐷𝑅2 (𝑡)) ∗ 𝑅𝑇 𝑃 (𝑡)); if 0 <𝑆𝐷𝑅2 (𝑡) < 1
+𝑝(𝑗)
+𝑝(𝑗)
+𝑝(𝑗)
+⎪
+𝑇 𝑟𝑎𝑑𝑖𝑛𝑔_𝑡𝑎𝑟𝑖𝑓 𝑓𝑝(𝑗) (𝑡) = ⎨
+𝐹 𝑖𝑇 ; if𝑆𝐷𝑅2𝑝(𝑗) (𝑡) >= 1
+⎪
+𝑅𝑇 𝑃 ; if𝑆𝐷𝑅2𝑝(𝑗) (𝑡) = 0
+⎩
+
+(17)
+
+The trading tariff of the enhanced bidding strategy is determined based on the SDR, RTP and feed-in tariff. The calculated trading
+tariff is always less than the RTP and greater than the feed-in tariff so that both consumers and prosumers benefit. Therefore, the
+implementation of enhanced bidding strategy in smart homes provides a better electricity cost reduction for both consumers and
+prosumers.
+7
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 3. Flowchart of binary dragonfly algorithm for DR implementation.
+
+3.3. Binary dragonfly algorithm
+Dragonfly Algorithm (DA) is a swarm intelligence technique developed by Dr. Syedali Mirjalili. In [45], DA algorithm has been
+utilized for binary and continuous variables and it has been utilized for single and multiple objective optimization problems. The
+binary dragonfly algorithm is utilized in the proposed work for scheduling the smart appliances in the smart home. The scheduling
+of appliances either turn-on or turn-off without affecting the user comfort. BDA is operated based on the behavior of dragonflies
+for food searching and keeping away from enemies. It has been achieved by three movements such as separation, alignment and
+cohesion. The process of swarm behavior of the dragonfly is portrayed in Fig. 3. Each particle of the swarm is modeled as the
+appliance operation status (‘0’ represents off or ‘1’ represents on) following the three parameters to determine the most economical
+appliance scheduling of the smart home. The hyperparameters and initialization conditions for the BDA are: Number of particles =
+50, Maximum number of iterations = 100, Inertia weight (w) = 0.9–0.2, Swarming factors: separation (s) = 0.1, Attraction (a) =
+0.1, Cohesion (c) = 0.7, Food search (f) = 1
+The process of BDA optimization follows the steps of separation, alignment, cohesion, and food searching, which are provided
+in Eqs. (18)–(20), and (21), respectively [45].
+𝑆𝑒𝑝𝑎𝑟𝑎𝑡𝑖𝑜𝑛𝑖 = −
+
+𝑀
+∑
+
+(18)
+
+𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛 − 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑗
+
+𝑗−1
+
+∑𝑀
+𝐴𝑙𝑖𝑔𝑛𝑖 =
+
+𝑗−1 𝑉 𝑒𝑙𝑜𝑐𝑖𝑡𝑦𝑗
+
+(19)
+
+𝑀
+∑𝑀
+
+𝐶𝑜ℎ𝑒𝑠𝑖𝑜𝑛𝑖 =
+
+𝑗−1 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑗
+
+𝑀
+
+(20)
+
+− 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛
+
+(21)
+
+𝐹 𝑜𝑜𝑑𝑖 = 𝐹 𝑜𝑜𝑑p − 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛
+
+Then, the position of the dragonfly, i.e., the scheduling of the appliances, is to be updated based on the four processes such as
+separation, alignment, cohesion, and food searching [45].
+𝛥𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡+1
+= (𝑠𝑆𝑒𝑝𝑒𝑟𝑎𝑡𝑖𝑜𝑛𝑖 + 𝑎𝐴𝑙𝑖𝑔𝑛𝑖 + 𝑐𝐶𝑜ℎ𝑒𝑠𝑖𝑜𝑛𝑖 + 𝑓 𝐹 𝑜𝑜𝑑𝑖 ) + 𝜔𝛥𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡𝑖
+𝑖
+
+(22)
+
+𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡+1
+= 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡𝑖 + 𝛥𝑃𝑖𝑡+1
+𝑖
+
+(23)
+8
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+Table 2
+Appliance operation data.
+Sl.No
+
+Appliances
+
+Power rating
+(kW)
+
+Duration of operation
+(hours)
+
+Starting time
+(hours)
+
+Ending time
+(hours)
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+
+Dish washer
+Washing machine
+Dryer
+Refrigerator
+Oven
+Cooker hood
+Microwave
+Water heater
+TV
+Laptop
+Desktop
+Vacuum cleaner
+Sensors
+Radio player
+AC
+Iron
+Illumination
+Other occasional loads
+
+1.7
+1.8
+2.5
+0.175
+2.5
+0.2
+1.7
+1.7
+0.3
+0.1
+0.3
+2
+0.01
+0.2
+1.15
+2.7
+0.5
+3
+
+1
+2
+1
+24
+2
+1
+1
+2
+5
+3
+5
+1
+24
+1
+12
+2
+5
+5
+
+9
+9
+13
+0
+15
+17
+7
+0
+19
+14
+14
+7
+0
+7
+12
+5
+19
+0
+
+17
+12
+18
+24
+19
+19
+9
+24
+24
+24
+24
+20
+24
+8
+24
+20
+24
+24
+
+The positions of the particles are updated based on the neighboring particles within the same swarm (local best) which is given
+by [45],
+𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡+1
+= 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡𝑖 + Levy(𝑑) × 𝑃 𝑜𝑠𝑖𝑡𝑖𝑜𝑛𝑡𝑖
+𝑖
+Levy(𝑑) = 0.01 ×
+
+(24)
+
+𝑟1 × 𝜎
+(25)
+
+1
+
+|𝑟2 | 𝛽
+
+The appliance scheduling decided by the BDA provide the power demand and excess power availability at the end of DR
+implementation which is the input to the P2P trading
+4. Simulation results
+4.1. Demand response
+In this section, the simulation results of single smart home with DR implementation for five different cases are discussed along
+with three different tariff structures such as slab tariff, ToD tariff and RTP tariff. The five different cases are considered based on
+the available resources and storage devices. The optimal scheduling of different appliances using BDF algorithm for a 24- hour
+time slots by considering the user comfort, DG power, battery and EV battery to reduce the cost of electricity is done in MATLAB
+2022. The maintenance cost for PV, wind and battery is considered as 1 |/kwh, whereas the feed in tariff for the power injected
+into the grid is considered as 2 |/kwh. The power rating, operation time window and its duration of the different appliances is
+tabulated in Table 2. The specifications of the battery and EV battery considered in this work are listed in Table 3. The different
+cases with different tariff structures are examined in the proposed smart home and results are obtained. The RTP for hourly electricity
+tariff is obtained from [46], which is listed in Table 4. The smart home demand is continuously varying for 24-hours due to their
+power consumption by the appliances, which depends on the operating time duration and time window. In this work, the primary
+importance is given to fulfill the smart home demand due to power consumed by the appliances. When the power is only available
+from DG in the smart home, it is utilized for the smart home demand and in case the excess power available after fulfilling the smart
+home demand, which shall be injected into the grid. On the other hand, the battery is considered along with DG, the charging and
+discharging of the battery is determined on the available SoC, power demand of the smart home and availability of DG power. If
+the SoC of the battery is less than a minimum limit, the battery is charged. When the SoC of battery is greater than a maximum
+limit, the battery is discharged. At the same time, the battery SoC level is within the maximum and minimum limits, the battery
+charging /discharging is determined based on the power demand of the smart home and electricity tariff at the time slot.
+4.1.1. Case 1: Appliance scheduling with EV battery
+The first case considers only 18 appliances in the smart home and EV battery, where DG or storage devices are not considered.
+The BDF algorithm is utilized for scheduling the appliances in the smart home based on the utilized tariff by satisfying the operation
+constraints such as operation time window and duration. Three different tariffs such as RTP, ToD and slab tariff are considered and
+compared the electricity cost to finalize the least electricity cost. Fig. 4(a) shows the hourly power consumption and electricity cost
+of case 1 with Indian residential slab tariff. From the figure, it is evident that the maximum power consumed from the grid occurs
+at 21:00 due to EV charging. It is also shown that the electricity cost follows the same pattern of power demand which insists that
+the electricity cost does not depend on the peak or off-peak conditions.
+9
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+Table 3
+Specifications of battery and EV.
+
+Total capacity (kWh)
+Charging and discharging efficiency
+Minimum SoC
+Maximum SoC
+Maximum charging/discharging limit (kW)
+Duration of travel/trip (hours)
+Number of trips/day
+Arrival time (hour)
+Departure time (hour)
+
+Battery
+
+EV
+
+10
+95%
+0.3
+0.9
+1
+–
+–
+–
+–
+
+24
+90%
+0.3
+0.9
+8.8
+2
+2
+19:00
+07:00
+
+Table 4
+Hourly electricity tariff as per Indian Energy Exchange [46].
+Hour
+
+Electricity price
+
+Hour
+
+Electricity price
+
+Hour
+
+Electricity price
+
+Hour
+
+Electricity price
+
+1
+2
+3
+4
+5
+6
+
+3.26
+3.08
+2.9
+2.68
+2.62
+2.61
+
+7
+8
+9
+10
+11
+12
+
+2.56
+2.52
+2.3
+2.47
+2.32
+2.3
+
+13
+14
+15
+16
+17
+18
+
+2.05
+2.1
+2.41
+2.51
+2.45
+2.33
+
+19
+20
+21
+22
+23
+24
+
+2.48
+3.14
+3.5
+4.6
+5.5
+5.06
+
+Fig. 4. Case 1: Appliance scheduling of smart home without DGs.
+
+Fig. 4(b) illustrates the power consumption and electricity cost of case 1 with ToD tariff. From the figure, it is evident that the
+power consumed from the grid is maximum at 21:00 due to the EV charging. From Fig. 2(b), it is clearly visible that the electricity
+cost pattern is different from power consumption pattern. The power consumption is minimum at 07:00, but the electricity cost
+during the time slot 07:00 is much higher as compared with 06:00. So, the total cost of case1 with the ToD tariff is comparatively
+minimum than case1 with the slab tariff.
+Fig. 4(c) portrays the power consumption and electricity cost of case1 with RTP tariff. From the figure, it is proved that the
+power consumed from the grid is minimum by considering the effective scheduling of appliances. The maximum demand occurs
+at 21.00 in the slab and TOD tariff structures whereas the maximum power demand is shifted from 21:00 to 24:00 by utilizing
+the RTP tariff to minimize the electricity cost without affecting the user comfort. The electricity cost of case 1 with RTP tariff is
+comparatively less than the slab and ToD tariffs.
+4.1.2. Case 2: Appliance scheduling with PV and EV battery
+The second case considers 18 different appliances with solar PV and EV battery. The BDF algorithm is utilized for scheduling
+the appliances based on the utilized tariff and the availability of solar power without affecting the user comfort (operating time
+and duration). Three different tariffs such as RTP, ToD and slab tariff are considered and compared the electricity cost to finalize
+the least electricity cost. Fig. 5(a) shows the hourly power consumption and electricity cost for case 2 with Indian residential slab
+tariff. From the figure, it is evident that the maximum power consumed from the grid occurs at 03:00. The power consumed from
+the grid becomes zero from 07:00 to 19:00 due to the solar PV power availability and EV battery discharges the power due to their
+trip condition and it becomes idle once reaches the destination. Fig. 5(b) illustrates the power consumption and electricity cost for
+case 2 with ToD tariff. From the figure, it is evident that the power consumed from grid is maximum at 23:00. From 07:00 to 19:00,
+the power consumed from grid becomes zero due to the availability of solar power. The total electricity cost of case 2 with ToD is
+comparatively minimum than case 1 with slab tariff. Fig. 5(c) portrays the power consumption and electricity cost for case 2 with
+RTP tariff. From the figure, it is proved that the net power consumed from the grid is minimum. The maximum demand occurs at
+05:00, the electricity tariff is low at the same interval. The power consumed from the grid and electricity cost are comparatively
+minimum than the slab tariff and ToD tariff.
+10
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 5. Case 2: Appliance scheduling of smart home with PV and EV.
+
+Fig. 6. Case 3: Appliance scheduling of smart home with PV, EV and battery.
+
+4.1.3. Case 3: Appliance scheduling with PV, EV battery and bess
+The third case considers the solar PV, a battery energy storage system (BESS) along with 18 different appliances. The
+BDF algorithm is utilized for scheduling the appliances based on the utilized tariff and the availability of solar PV power,
+charging/discharging constraint of BESS and EV battery without affecting the user comfort (operating time and duration). Three
+different tariffs such as RTP, ToD and slab tariff are considered and compared the electricity cost to finalize the least electricity cost.
+Fig. 6(a) shows the hourly power consumption from the grid, charging/discharging power of BESS and EV battery, power injected
+into the grid and electricity cost for case 3 with Indian residential slab tariff. From the figure, it is evident that the maximum power
+consumed from the grid occurs at 24:00. During 06:00 to 08:00 and 10:00 to 15:00, the power consumed from grid becomes zero
+due to the availability of solar PV power and BESS discharge power. After self-consumption, the excess power is injected into the
+grid with a feed-in-tariff during the same slots. Fig. 6(b) shows the hourly power consumption from the grid, charging/discharging
+power of BESS and EV battery, power injected into the grid and electricity cost for case 3 with ToD tariff. From the figure, it is
+evident that the power consumed from the grid is maximum at 05:00. The power consumed from grid becomes zero from 10:00 to
+16:00 due to the availability of solar PV power and BESS discharge power. After self-consumption, the excess power is injected into
+the grid with a feed-in-tariff during the same slots. The total electricity cost of case 3 with ToD is comparatively minimum than the
+slab tariff. Fig. 6(c) shows the hourly power consumption from the grid, charging/discharging power of BESS and EV battery, power
+injected into the grid and electricity cost for case 3 with RTP tariff. From the figure, it is proved that the power consumed from the
+grid is zero from 08:00 to 16:00 when solar PV power is available. Due to BESS discharging at the same time slot, the excess power
+after consumption is injected into the grid with a feed-in-tariff. The maximum demand occurs at 05:00 when the electricity tariff is
+minimum. The power consumed from the grid and electricity cost are comparatively minimum than the slab tariff and ToD tariff.
+4.1.4. Case 4: Appliance scheduling with PV, wind and EV battery
+The fourth case considers the DGs solar PV and wind turbine, EV battery. The BESS is not considered in this case. The BDF
+algorithm is utilized for scheduling the appliances based on the tariff utilized and the availability of solar PV power, wind power,
+and charging/discharging constraint of EV battery without affecting the user comfort (operating time and duration). Three different
+tariffs such as RTP, ToD and slab tariff are considered and compared the electricity cost to finalize the least electricity cost. Fig. 7(a)
+shows the hourly power consumption from the grid, charging/discharging power of EV battery, power injected into the grid and
+electricity cost for case 4 with Indian residential slab tariff. From the figure, it is evident that the maximum power consumed from
+the grid occurs at 23:00. In this case, power consumed from the grid is zero at 01:00 to 04:00 and 09:00 to 17:00 due to the
+availability of solar PV and wind power. Fig. 7(b) illustrates the hourly power consumption from the grid, charging/discharging
+power of EV battery, power injected into the grid and electricity cost for case 4 with ToD tariff. From the figure, it is evident that
+the power consumed from the grid is maximum at 23.00. Even though the maximum demand occurs at 23.00, the ToD tariff is less
+11
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 7. Case 4: Appliance scheduling of smart home with PV, wind and EV.
+
+Fig. 8. Case 5: Appliance scheduling of smart home with PV,wind, EV and battery.
+
+at the same time slot than other time slots. The total cost of case 4 with ToD is comparatively minimum than case 4 with slab tariff.
+Fig. 7(c) portrays the hourly power consumption from the grid, charging/discharging power of EV battery, power injected into the
+grid and electricity cost for case 4 with RTP tariff. From the figure, it is proved that the power consumed from grid is minimum
+and also the power injected into the grid is maximum after its self-consumption due to the availability of both solar PV and wind
+power. The maximum demand of case 4 with RTP tariff occurs at 20:00 due to the charging of EV after the round trip. The total
+power consumed from the grid is comparatively minimum than the slab and ToD tariffs. The electricity cost for a slab, TOD and
+RTP tariffs are |93.79, |89.0217, and |81.5629, respectively. From the results, it is evident that RTP tariff is more beneficial than
+slab tariff and ToD tariffs.
+4.1.5. Case 5: Appliance scheduling with PV, wind and battery
+The fifth case considers two DGs such as solar and wind, EV battery and BESS. By proper scheduling of this case, the grid
+dependency could be reduced. The BDF algorithm is utilized for scheduling the appliances based on the tariff utilized and the
+availability of solar PV power, wind power, and charging/discharging constraint of EV battery and BESS without affecting the user
+comfort (operating time and duration). Three different tariffs such as RTP, ToD and slab tariff are considered and compared the
+electricity cost to finalize the least electricity cost. The smart home depends on the grid only for a few hours per day in this case.
+Fig. 8(a) shows the hourly power consumption from the grid, charging/discharging power of EV battery and BESS, power injected
+into the grid and electricity cost for case 5 with Indian residential slab tariff. From the figure, it is evident that the maximum power
+consumed from the grid occurs at 05:00 due to the charging of BESS. Fig. 8(b) illustrates the hourly power consumption from the
+grid, charging/discharging power of EV battery and BESS, power injected into the grid and electricity cost for case 5 with ToD tariff.
+From the figure, it is evident that the power consumed from the grid is maximum at 05:00 due to the charging of EV battery and
+BESS. Due to the availability of power from DGs and BESS discharging power, more excess power is available after self-consumption
+which is injected into the grid except at 01:00. 03:00, 05:00 16:00, 19:00 to 21:00 and 23:00. Hence, the total cost of case 5 with
+ToD is comparatively less than slab tariff. Fig. 8(c) illustrates the hourly power consumption from the grid, charging/discharging
+power of EV battery and BESS, power injected into the grid and electricity cost for case 5 with RTP tariff. From the figure, it is
+evident that the power consumed from the grid is maximum at 05:00 due to the charging of EV battery and BESS. Due to the RTP
+tariff, the electricity cost is reduced at 05:00 even though it is maximum demand at the time slot. Also, the power injected into the
+grid is maximum at 15:00 due to more excess power after self-consumption. Hence, the total cost of case 5 with RTP is comparatively
+less than case5 with ToD and slab tariffs.
+Table 5 compares the power consumed from the grid and its electricity cost per day for all five cases with three different tariffs.
+In the first case, the power consumed from the grid remains same (64.74 kWh) with all three tariffs; the cost of consumed electrical
+energy is higher in the slab tariff, i.e. |143.53 than the other two tariffs. The cost for ToD and RTP tariffs are |133.2799 and
+12
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+Table 5
+Cost and power comparison.
+
+Case 1
+Case 2
+Case 3
+Case 4
+Case 5
+
+Power consumedfrom grid (kW) ↓
+Electricity cost (|) ↓
+Power consumedfrom grid (kW) ↓
+Electricity cost (|) ↓
+Power consumedfrom grid (kW) ↓
+Electricity cost (|) ↓
+Power consumedfrom grid (kW) ↓
+Electricity cost (|) ↓
+Power consumedfrom grid (kW) ↓
+Electricity cost (|) ↓
+
+Slab tariff
+
+Time of day
+
+Real time
+pricing
+
+64.74
+154.453
+50.39
+133.8764
+46.20984
+101.3771
+38.17308
+93.79476
+37.70033
+86.481
+
+64.74
+143.2799
+41.34
+109.4655
+37.40984
+91.81104
+30.20733
+89.0217
+30.7213
+82.8611
+
+64.74
+136.2546
+48.74
+94.8722
+31.305
+89.6511
+26.41205
+81.5629
+21.68619
+74.4197
+
+Fig. 9. Convergence curve of case 5 with RTP tariff at 05:00 h.
+
+|96.2546, respectively. In case 2, the power consumed from the grid is minimum for ToD tariff (41.34 kWh) than the other two
+tariffs. However, the electricity cost is minimum for RTP tariff (|94.8722) than the other two tariffs. In cases 3, 4 and 5, both power
+consumed from the grid and its electricity cost are minimum for RTP tariff than the other two tariff structure. For case 3, the power
+consumed from the grid and its electricity cost with RTP tariff are 31.305 kWh and |89.6511, respectively. For case 4, the power
+consumed from the grid and its electricity cost with RTP tariff are 26.412 kWh and |81.5629, respectively. For case 5, the power
+consumed from the grid and its electricity cost with RTP tariff are 21.68619 kWh and |74.4197, respectively. From this comparison
+table, the RTP tariff is the most economical one than the other two tariffs for a residential smart home.
+Fig. 9 illustrates the convergence curve of case 5 with RTP tariff at the time slot of 05:00 h. The figure indicates that the local
+best (𝑃𝑏𝑒𝑠𝑡 ) and global best (𝐺𝑏𝑒𝑠𝑡 ) values converge from the initial value of |28.598 to reach the optimal electricity cost of |12.1913.
+The algorithm continues to explore and exploit in search of the best solution, and it reaches the most optimal point of |12.193 at
+the 45th iteration.
+4.2. P2P energy trading with prosumer to consumer power transfer
+Recently, P2P energy trading has become very popular in reducing grid dependency. Therefore, peer-to-peer energy trading with
+RTP tariff is done between four smart homes to examine the reduction of grid dependency and electricity cost of the individual smart
+home. The two smart homes are prosumers, where the first prosumer consists of 18 different smart appliances, solar PV, wind, BESS,
+EV battery, and the second prosumer consists of only 15 different smart appliances, solar PV and EV battery. The difference between
+smart homes is considered to showcase real-time scenarios. On the other hand, the remaining two smart homes are consumers
+where the first consumer consists of only 18 different smart appliances and EV battery, and the second consumer consists of only
+15 different smart appliances. The power demand of the prosumers and consumers is determined by the DR based on the economic
+tariff structure. After self-consumption, the excess power available to the prosumers is traded to the neighboring prosumers and
+consumers based on a double-auction mechanism. Fig. 10 illustrates the power demand of the prosumers and consumers with
+excess power availability of prosumers in the residential microgrid. The negative values of first and second prosumers show the
+excess power availability after self-consumption of power demand. The positive values of first and second prosumers show the grid
+power consumption. Consumers only have power demand, so they do not obtain negative values due to the non-availability of DGs.
+Excessive power from prosumers is traded with consumers using an enhanced bidding strategy.
+13
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 10. Power demand of the prosumer and consumer with excess power availability of the prosumers.
+
+Fig. 11. (a) P2P power transfer (b) Electricity cost for P2P trading.
+
+Fig. 11(a) illustrates the P2P power transfer between the prosumers and consumers. Fig. 11(a) shows that power is traded from
+the first prosumer to the first consumer at 02:00 to 05:00, 07:00, 09:00 to 18:00, and 20:00 to 24:00 due to the high bid value
+of the first consumer. The second consumer provides less bid value than the first consumer. Hence, the trading between the first
+prosumer and the first consumer is done at 03:00, 05:00, 09:00, 12:00, 14:00 to 15:00, 20:00, and 24:00. On the other hand, the
+second prosumer provides high quote value so that the consumers prefer the second prosumer only when the first prosumer does
+not have sufficient power to the power demand of the respective time slots. In addition, the second prosumer consists of only PV
+power, so trading is possible only when the PV power is available in excess after self-consumption. The second prosumer trades the
+excess power to the first consumer at 08:00, 10:00, 11:00, 13:00, and 17:00. Also, the second prosumer trades the power to the
+second consumer at 11:00 and 13:00. Fig. 11(b) portrays the electricity cost for P2P power transfer. From Fig. 11(b), it is evident
+that the trading cost of the consumers is less during the time slots other than 23:00 and 24:00 as the high trading tariff due to low
+SDR value and high RTP but less than grid tariff.
+Fig. 12 illustrates the grid power consumption and net electricity cost of the prosumers and consumers in the residential consumer
+after P2P trading. From Fig. 12(a), it is clearly visible that the grid dependency of the residential microgrid becomes zero from 09:00
+to 12:00, 14:00, and 15:00. Additionally, negative values in Fig. 12(b) show the profit achieved by the first and second prosumers
+due to P2P trading. From Fig. 12(b), it is evident that the electricity costs of the first and second consumers are minimum at 09:00
+to 17:00 due to the trading of power from prosumers instead of consuming the power from the grid. Therefore, Figs. 12(a) and
+12(b) prove the reduction of grid dependency and electricity costs for consumers. Also, it is worth mentioning that both prosumers
+and consumers are profited due to P2P trading with an enhanced bidding strategy.
+After self-consumption of the prosumers consumers, the power consumed from the grid, power traded by the prosumers, and
+power consumed by the consumers with their electricity costs are provided in Table 6. Table 6 shows the electricity bill of the
+first prosumer |16.7419 for the power consumption of 6.3732 kW. Grid power consumption and the electricity cost of the second
+prosumer are 29.1769 kW and |110.0415. Similarly, the power consumed by the first and second consumers from the grid after
+self-consumption is 14.6016 kW and 10.8401 kW, respectively. The excess power available in the first and second prosumers is
+32.3861 kW and 9.2433 kW. The first and second consumers receive power from the prosumers by 34.9295 kW and 6.6999 kW
+due to the P2P trading with an enhanced bidding strategy. On the other hand, the first and second prosumers achieve the profit of
+|78.2170 and |28.6970.
+14
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 12. Grid power consumption and electricity cost of prosumers and consumers after P2P trading.
+
+Table 6
+Power consumption and cost for prosumers and consumers in a day.
+
+Prosumer 1
+Prosumer 2
+Consumer 1
+Consumer 2
+
+Power from
+grid (kW) ↓
+
+Electricity cost for
+grid power (|) ↓
+
+Power shared from
+Prosumers (kW) ↑
+
+Cost for power from
+prosumers (|) ↓
+
+Power shared to
+consumers (kW) ↑
+
+Cost for power to
+consumers (|) ↑
+
+6.3732
+29.1769
+14.6016
+10.8401
+
+16.7419
+110.0415
+42.4315
+31.8264
+
+–
+–
+34.9295
+6.6999
+
+–
+–
+92.7615
+15.1525
+
+32.3861
+9.2433
+–
+–
+
+78.2170
+28.6970
+–
+–
+
+Table 7
+Peer-to-peer trading power and cost.
+To
+
+Consumer 1
+
+From
+
+Power (kW) ↑
+
+Cost (|) ↑
+
+Power (kW) ↑
+
+Consumer 2
+Cost (|) ↑
+
+Prosumer 1
+Prosumer 2
+
+27.9011
+7.0284
+
+68.9059
+23.8556
+
+4.4850
+2.2149
+
+9.3111
+5.8414
+
+Table 7 shows the power traded from the prosumers to the consumers with their electricity cost. Table 7 shows that the first
+prosumer shares the power of 27.9011 kW with the first consumer, who receives the trading cost of |68.9059. The second prosumer
+shares the power of 7.0284 kW with the first consumer and receives the trading cost of |23.8556. The first prosumer shares the
+power of 4.4850 kW with the second consumer and receives the trading cost of |9.3111. The second prosumer shares the power of
+2.2149 kW with the second consumer and receives the trading cost of |5.8414.
+4.2.1. P2P trading with prosumer to consumer power transfer under EV uncertainty
+This section analyzes the impact of uncertain EV behavior in P2P trading to examine the effectiveness of the enhanced bidding
+strategy. This work executes the EV uncertainty by increasing the EV driving range by 100 km. Due to the increment of driving
+range, the EV operation in driving mode is extended by 2 h, i.e., arrival time is shifted from 19:00 to 21:00. Due to the increase in
+EV discharge power due to extended driving range, the SoC level of the EV battery is reduced. Hence, the EV needs to be charged
+immediately after returning from the trip to maintain the minimum required SoC level of the EV battery. The extended driving
+range of the battery EV is considered for the first consumer and first prosumer. The EV uncertainty in the first consumer increases
+power demand due to EV charging. On the other hand, EV uncertainty in the first prosumer reduces the excess power availability
+for P2P trading due to the increased power demand of the first prosumer.
+Fig. 13 portrays the P2P power transfer, the trading cost for the P2P transfer, grid power consumption, and the net electricity
+of the prosumers and consumers after P2P trading under EV uncertainty. Figs. 13(a) and 13(b) show that the P2P trading from the
+first prosumer to the consumers decreases to zero at 23:00 compared to normal conditions. Also, the power traded is reduced at
+21:00 & 24:00 due to the EV battery charging of the first prosumer due to EV uncertainty compared to the normal condition. From
+Fig. 13(c), it is clearly visible that the grid power consumption of the first consumer may increase during the time slot of 22:00
+to 24:00 due to the EV charging and lack of excess power for P2P trading from the first prosumer compared to normal conditions.
+Also, the first prosumer consumes power from the grid at 23:00 due to the demand for EV charging. Figure 17(d) illustrates the
+net electricity cost of the prosumers and consumers after P2P trading under EV uncertainty. Fig. 13(d) shows the electricity cost of
+the consumers, where it achieves a minimum from the time slot of 09:00 to 16:00 due to the P2P trading. Also, the first prosumer
+achieves profit by trading the power to the first consumer at 22:00 due to battery discharging despite EV uncertainty.
+15
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 13. EV uncertainty in prosumer 1 and consumer 1 (a) P2P power transfer, (b) P2P trading cost, (c) Grid power consumption and (d) Net electricity cost.
+
+4.3. P2P energy trading with power transfer
+This section describes the results of P2P energy trading in the residential consumer. Energy trading is done between prosumers
+and consumers, as well as prosumers to prosumers, based on the power demand requirements. Fig. 14 illustrates the P2P power
+transfer, P2P trading electricity cost, grid power consumption, and net electricity cost for individual prosumers and consumers.
+From Fig. 14(a), it is evident that the excess power is traded from the first prosumer to first consumer at 02:00, 04:00, 09:00,
+12:00 to 18:00, 21:00 and 24:00. Likewise, the first prosumer trades the excess power to second prosumer at 03:00, 05:00 and
+20:00 to 24:00. The power traded from first prosumer to second consumer become zero due to the trading of first prosumer to
+second prosumer, which has high bid value than the second consumer. On the other hand, the second prosumer trades the excess
+power to the first consumer at 08:00, 10:00, 11:00, 13:00, and 17:00. Also, the second prosumer trades the excess power to the
+second consumer at 09:00, 11:00 to 15:00 and 17:00. From the results, it clearly shows that the second prosumer trades power
+to the consumers only when the PV power is available. On the other hand, the first prosumer may trade the power to the other
+prosumers and consumers throughout the day due to wind power and BESS availability. Fig. 14(b) portrays the trading cost of the
+consumers due to the effective P2P from the prosumers. The trading cost is provided to the respective prosumers based on the P2P
+energy trading. Figs. 14(c) and 14(d) illustrate the grid power consumption and net electricity cost of the prosumers and consumers
+after the P2P trading. From Fig. 14(c), it is clearly evident that the grid dependency of the residential microgrid becomes zero
+from 09:00 to 16:00. The grid power consumption of the second prosumer is greatly reduced at 05:00, 20:00 and 22:00 due to
+the power traded from the first prosumer. Additionally, negative values in Figure 18(d) show the profit achieved by the first and
+second prosumers due to excess power trading to the consumers. From Fig. 14(d), it is evident that the electricity costs of the first
+and second consumers are minimum at time slots 09:00 to 17:00 due to the trading of power from prosumers instead of getting the
+power from the grid. Therefore, Figs. 14(c) and 14(d) prove the reduction of grid dependency and electricity costs for consumers.
+Also, it is worth mentioning that both prosumers and consumers are profited due to P2P trading with an enhanced bidding strategy.
+4.3.1. P2P energy trading with EV uncertainty conditions
+This section analyzes the impact of uncertain EV behavior in P2P energy trading to examine the effectiveness of the enhanced
+bidding strategy. This EV uncertainty is executed for the first prosumer and first consumer by increasing the EV driving range by 100
+km. Fig. 15 portrays the P2P power transfer, the trading cost for the P2P transfer, grid power consumption, and the net electricity
+16
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 14. P2P energy trading (a) P2P power transfer, (b) P2P trading cost, (c) Grid power consumption and (d) Net electricity cost.
+
+of the prosumers and consumers after P2P trading with EV uncertainty conditions. Figs. 15(a) and 15(b) show the power trading
+between prosumers and consumers and its electricity cost. Due to EV uncertainty in the first prosumer, it is worth mentioning that
+the traded power of the first prosumer is reduced at 22:00 to 24:00 as compared with EV normal conditions. Also, the first prosumer
+consumes power from the grid at 22:00 due to the demand for EV charging. Based on the enhanced bidding strategy, excess power
+is traded from the first prosumer to the first consumer based on consumer demand and the lower bid value of the first consumer.
+In this case, the second prosumer provides the next least bid value. Therefore, the second consumer does not receive any power
+from the first prosumer at any time durations. From Fig. 15(c), it is clearly visible that the grid power consumption of the first
+consumer is increased from 22:00 to 24:00 time slots due to the EV charging and lack of P2P trading from the first prosumer due
+to EV uncertainty conditions. Fig. 15(d) illustrates the net electricity cost of the prosumers and consumers after P2P trading under
+EV uncertainty. The first prosumer achieves profit by trading the power to the second prosumer at 21.00 to 24:00, and the first
+prosumer to first consumer trading is done at 21:00 and 24:00 due to battery discharging despite EV uncertainty.
+5. Conclusion
+In this article, the impact of DR implementation and P2P energy trading in residential smart homes to reduce electricity costs and
+grid dependency has been examined. The proposed enhanced bidding strategy has been implemented to decide the trading decision
+and trading cost for P2P energy trading. The proposed work has been done in two different stages. The first stage of the proposed
+work represents the implementation of demand response with three different tariffs to schedule the smart appliances optimally in
+the residential smart home using BDA optimization. Based on the simulation results of five cases in a smart home, the RTP tariff
+has been identified as the most optimal tariff structure among the slab, ToD, and RTP tariffs in all the five cases. The electricity
+cost of cases 1, 2, 3, 4, and 5 are reduced as compared with a slab tariff are 13.35%, 41.11%, 13.079%, 14.99% and 16.21%,
+respectively. Similarly, the electricity cost reduction with the RTP tariff as compared with ToD is 5.156%, 13.079%, 14.99%, and
+16.2074%, respectively. Hence, the electricity cost of the smart home has been reduced with the optimal scheduling of residential
+appliances, PV, wind, BESS, and EV battery. The excess power available after the self-consumption has been injected into the grid
+with a feed-in tariff. The second stage of the proposed work represents the implementation of P2P energy trading to reduce the grid
+dependency further for smart homes and improve the profit for the smart home by reducing the electricity costs. Therefore, the
+excess power available from the prosumers has been traded to neighboring consumers or prosumers with the proposed enhanced
+bidding strategy instead of injected into the grid based on the power requirement. The electricity cost of the smart home is reduced
+17
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+Fig. 15. P2P energy trading under EV uncertainty in prosumer 1 and consumer 1 (a) P2P power transfer, (b) P2P trading cost, (c) Grid power consumption
+and (d) Net electricity cost.
+
+by utilizing P2P energy trading with an enhanced bidding strategy. Also, the grid dependency has been reduced in many time slots
+throughout the day. The grid dependency of consumer 1 is reduced by 70.52% and consumer 2 is 38.2% using the proposed P2P
+trading framework with enhanced bidding strategy. The EV uncertainty condition has been analyzed in the P2P energy trading to
+prove the effectiveness of the proposed enhanced bidding strategy.. From the simulation results, the proposed enhanced bidding
+strategy has proved that P2P with RTP tariff minimizes the electricity cost and grid dependency of prosumers and consumers in the
+smart home during normal and EV uncertainty conditions.
+Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared
+to influence the work reported in this paper.
+Data availability
+No data was used for the research described in the article.
+Acknowledgment
+The authors would like to thank the management of SASTRA Deemed University, Thanjavur, for providing the support to carry
+out this work.
+Funding
+The authors thank the Science and Engineering Research Board (SERB) for the research grant to perform this work through the
+SERB-SURE (SUR/2022/004451) scheme.
+18
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+References
+[1] Avancini Danielly B, Rodrigues Joel JPC, Martins Simion GB, Rabêlo Ricardo AL, Al-Muhtadi Jalal, Solic Petar. Energy meters evolution in smart grids:
+A review. J Clean Prod 2019;217:702–15.
+[2] Garg D, Maheshwari A, Mahapatra J. Energy conservation and commercialization in gujarat. Technical report, 2009.
+[3] Sharma Harpreet, Mishra Sachin. Techno-economic analysis of solar grid-based virtual power plant in Indian power sector: A case study. Int Trans Electr
+Energy Syst 2020;30(1):1–19.
+[4] Jamil Majid, Mittal Sonam. Hourly load shifting approach for demand side management in smart grid using grasshopper optimisation algorithm. IET
+Gener Transm Distrib 2020;14(5):808–15.
+[5] He12 Shan, Liebman Ariel, Rendl12 Andrea, Wallace12 Mark, Wilson Campbell. Modelling rtp-based residential load scheduling for demand response in
+smart grids. 2014.
+[6] Dixit Shishir, Singh Pushpendra, Ogale Jyotsna, Bansal Praveen, Sawle Yashwant. Energy management in microgrids with renewable energy sources and
+demand response. Comput Electr Eng 2023;110:108848.
+[7] Zhao Renlu, Zheng Weiyong. Efficient operation of combined residential and commercial energy hubs incorporating load management and two-point
+approximation for uncertainty modeling. Comput Electr Eng 2024;116:109197.
+[8] Felicetti Riccardo, Ferracuti Francesco, Iarlori Sabrina, Monteriù Andrea. Peak shaving and self-consumption maximization in home energy management
+systems: A combined integer programming and reinforcement learning approach. Comput Electr Eng 2024;117:109283.
+[9] Harsh Pratik, Das Debapriya. A multi-objective energy scheduling of the reconfigurable off-grid microgrid with electric vehicles using demand response
+program. Comput Electr Eng 2024;117:109275.
+[10] Philipo Godiana Hagile, Jande Yusufu Abeid Chande, Kivevele Thomas. Demand-side management of solar microgrid operation: Effect of time-of-use pricing
+and incentives. J Renew Energy 2020;2020.
+[11] Ali Sajjad, Khan Imran, Jan Sadaqat, Hafeez Ghulam. An optimization based power usage scheduling strategy using photovoltaic-battery system for
+demand-side management in smart grid. Energies 2021;14(8):2201.
+[12] Huang Yantai, Tian Hongjun, Wang Lei. Demand response for home energy management system. Int J Electr Power Energy Syst 2015;73:448–55.
+[13] Rampelli Manojkumar, Kumar Chandan, Ganguly Sanjib. Optimal demand response in a residential pv storage system using energy pricing limits. IEEE
+Trans Ind Inf 2021.
+[14] Xu Da, Zhong Feili, Bai Ziyi, Wu Zhibin, Yang Xiaodong, Gao Menglu. Real-time multi-energy demand response for high-renewable buildings. Energy
+Build 2023;281:112764.
+[15] Shi Yan, Zhao Qinggang. Innovative decision-making for solar photovoltaic system installation in residential energy hubs: A probabilistic dynamic planning
+approach. Comput Electr Eng 2024;117:109272.
+[16] Soto Esteban A, Bosman Lisa B, Wollega Ebisa, Leon-Salas Walter D. Peer-to-peer energy trading: A review of the literature. Appl Energy 2021;283:116268.
+[17] Li Zhenpeng, Ma Tao. Peer-to-peer electricity trading in grid-connected residential communities with household distributed photovoltaic. Appl Energy
+2020;278:115670.
+[18] Tushar Wayes, Saha Tapan Kumar, Yuen Chau, Azim M Imran, Morstyn Thomas, Poor H Vincent, et al. A coalition formation game framework for
+peer-to-peer energy trading. Appl Energy 2020;261:114436.
+[19] Hoque Md Murshadul, Khorasany Mohsen, Azim M Imran, Razzaghi Reza, Jalili Mahdi. A framework for prosumer-centric peer-to-peer energy trading
+using network-secure export–import limits. Appl Energy 2024;361:122906.
+[20] Shah Mian Ibad Ali, Wahid Abdul, Barrett Enda, Mason Karl. Peer-to-peer energy trading in dairy farms using multi-agent systems. Comput Electr Eng
+2024;118:109437.
+[21] An Jongbaek, Lee Minhyun, Yeom Seungkeun, Hong Taehoon. Determining the peer-to-peer electricity trading price and strategy for energy prosumers
+and consumers within a microgrid. Appl Energy 2020;261:114335.
+[22] Mehdinejad Mehdi, Shayanfar Heidarali, Mohammadi-Ivatloo Behnam. Peer-to-peer decentralized energy trading framework for retailers and prosumers.
+Appl Energy 2022;308:118310.
+[23] Zahraoui Younes, Korõtko Tarmo, Rosin Argo, Zidane Tekai Eddine Khalil, Mekhilef Saad. A real-time simulation for p2p energy trading using a distributed
+algorithm. IEEE Access 2024.
+[24] Leelasantitham Adisorn, Wongsamerchue Thammavich, Sukamongkol Yod. Economic pricing in peer-to-peer electrical trading for a sustainable electricity
+supply chain industry in thailand. Energies 2024;17(5):1220.
+[25] Guerrero Jaysson, Gebbran Daniel, Mhanna Sleiman, Chapman Archie C, Verbič Gregor. Towards a transactive energy system for integration of distributed
+energy resources: Home energy management, distributed optimal power flow, and peer-to-peer energy trading. Renew Sustain Energy Rev 2020;132:110000.
+[26] Kong Chunhua, Wei Jiatong, Zhao Zihan. A pool-based electricity retail markets integrating renewable energy sources and electric vehicles in the presence
+of demand response program and conditional value at risk to enhance energy security. Comput Electr Eng 2024;118:109421.
+[27] Tiwari Abhishek, Jha Bablesh K, Pindoriya Naran M. Multi-objective optimization based demand response program with network aware peer-to-peer energy
+sharing. Int J Electr Power Energy Syst 2024;157:109887.
+[28] Yu Xiaojun, Pan Deng, Zhou Yuekuan. A stackelberg game-based peer-to-peer energy trading market with energy management and pricing mechanism: A
+case study in guangzhou. Sol Energy 2024;270:112388.
+[29] Aminlou Ali, Mohammadi-Ivatloo Behnam, Zare Kazem, Razzaghi Reza, Anvari-Moghaddam Amjad. Activating demand side flexibility market in a fully
+decentralized p2p transactive energy trading framework using admm algorithm. Sustainable Cities Soc 2024;100:105021.
+[30] Hussain Jawad, Huang Qi, Li Jian, Zhang Zhenyuan, Hussain Fazal, Ahmed Syed Adrees, et al. Optimization of social welfare in p2p community microgrid
+with efficient decentralized energy management and communication-efficient power trading. J Energy Storage 2024;81:110458.
+[31] Neves Diana, Scott Ian, Silva Carlos A. Peer-to-peer energy trading potential: An assessment for the residential sector under different technology and tariff
+availabilities. Energy 2020;205:118023.
+[32] Jadhav Pradnya, More DS. Price-based demand response for residential load scheduling. In: 2022 2nd international conference on power electronics & IoT
+applications in renewable energy and its control. IEEE; 2022, p. 1–5.
+[33] Albogamy Fahad R, Khan Sajjad Ali, Hafeez Ghulam, Murawwat Sadia, Khan Sheraz, Haider Syed Irtaza, et al. Real-time energy management and load
+scheduling with renewable energy integration in smart grid. Sustainability 2022;14(3):1792.
+[34] El Sayed F Tantawy, Amer Ghada M, Fayez Hanaa M. Scheduling home appliances with integration of hybrid energy sources using intelligent algorithms.
+Ain Shams Eng J 2022;13(4):101676.
+[35] Mahmood Zafar, Cheng Benmao, Butt Naveed Anwer, Rehman Ghani Ur, Zubair Muhammad, Badshah Afzal, et al. Efficient scheduling of home energy
+management controller (hemc) using heuristic optimization techniques. Sustainability 2023;15(2):1378.
+[36] Rasheed Muhammad Babar, R-Moreno María D. Minimizing pricing policies based on user load profiles and residential demand responses in smart grids.
+Appl Energy 2022;310:118492.
+[37] Alsokhiry Fahad, Siano Pierluigi, Annuk Andres, Mohamed Mohamed A. A novel time-of-use pricing based energy management system for smart home
+appliances: Cost-effective method. Sustainability 2022;14(21):14556.
+19
+
+Computers and Electrical Engineering 119 (2024) 109618
+
+D. Kanakadhurga and N. Prabaharan
+
+[38] Alahyari Arman, Jooshaki Mohammad. Fast energy management approach for the aggregated residential load and storage under uncertainty. J Energy
+Storage 2023;62:106848.
+[39] Tostado-Véliz Marcos, Arévalo Paul, Kamel Salah, Zawbaa Hossam M, Jurado Francisco. Home energy management system considering effective demand
+response strategies and uncertainties. Energy Rep 2022;8:5256–71.
+[40] Slama Sami Ben. Design and implementation of home energy management system using vehicle to home (h2v) approach. J Cleaner Prod 2021;312:127792.
+[41] Vincent F Yu, Le Thi Huynh Anh, Gupta Jatinder ND. Sustainable microgrid design with multiple demand areas and peer-to-peer energy trading involving
+seasonal factors and uncertainties. Renew Sustain Energy Rev 2022;161:112342.
+[42] Wang Luhao, Wang Zhuo, Li Zhengmao, Yang Ming, Cheng Xingong. Distributed optimization for network-constrained peer-to-peer energy trading among
+multiple microgrids under uncertainty. Int J Electr Power Energy Syst 2023;149:109065.
+[43] Zheng Boshen, Wei Wei, Chen Yue, Wu Qiuwei, Mei Shengwei. A peer-to-peer energy trading market embedded with residential shared energy storage
+units. Appl Energy 2022;308:118400.
+[44] Kanakadhurga Dharmaraj, Prabaharan Natarajan. Smart home energy management using demand response with uncertainty analysis of electric vehicle in
+the presence of renewable energy sources. Appl Energy 2024;364:123062.
+[45] Mirjalili Seyedali. Dragonfly algorithm : a new meta-heuristic optimization technique for solving single-objective, discrete, and multi-objective problems.
+Neural Comput Appl 2016;27(4):1053–73.
+[46] Indianenergyexchange. Real time pricing. 2021.
+
+20
+
+

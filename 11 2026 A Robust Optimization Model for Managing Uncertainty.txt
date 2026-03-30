@@ -1,0 +1,1944 @@
+IEEE POWER & ENERGY SOCIETY SECTION
+
+Received 8 December 2025, accepted 26 December 2025, date of publication 26 January 2026, date of current version 10 February 2026.
+Digital Object Identifier 10.1109/ACCESS.2026.3650837
+
+A Robust Optimization Model for Managing
+Uncertainty in Local Electricity Market Prices for
+Peer-to-Peer Energy Trading
+SAHAR SEYYEDEH-BARHAGH
+
+AND MEHDI ABAPOUR , (Member, IEEE)
+
+Faculty of Electrical and Computer Engineering, University of Tabriz, Tabriz 51666-16471, Iran
+
+Corresponding author: Mehdi Abapour (abapour@tabrizu.ac.ir)
+
+ABSTRACT The integration of distributed energy resources (DER), such as solar photovoltaic (PV)
+panels and electric vehicle (EV) parking facilities, has significantly improved power grid flexibility and
+efficiency. These resources not only enhance grid management but also enable consumers to reduce costs
+and generate additional income by trading surplus energy through peer-to-peer (P2P) energy trading.
+However, the effective utilization of these resources requires adopted and developed optimization strategies
+to manage operational uncertainties, particularly the variability of renewable energy production, which
+directly influences electricity market prices. This paper presents an optimization approach for managing
+risks posed by various uncertain parameters such as the renewable energy-based consumer systems, the
+availability of EVs in the parking lots, and market prices. In this paper, the uncertainties posed from the
+renewable resources and EV availability in the parking lots addressed through stochastic programming while
+the electricity market prices are managed by robust optimization. Electricity prices, as uncertain parameters,
+can significantly impact decision variables. Since consumers are price-takers rather than price-makers, they
+have no direct control over market prices, making it crucial for risk-averse decision-makers to address price
+volatility effectively. By analyzing uncertainties and modeling various scenarios, the proposed approach
+ensures optimal decision-making under different risk conditions. To evaluate its effectiveness, the model is
+validated on a case study and also on through a factorial sensitivity analysis with 27 scenarios in a microgrid
+with multiple households. The optimal configuration (10 homes, 150% PV, 200% ESS) achieves a 38.3%
+cost reduction compared to the baseline This study provides a comprehensive analysis of the simulation
+outcomes and real-world implementation, offering valuable insights into improving P2P energy trading in
+the face of price fluctuations.
+INDEX TERMS Electricity market, energy storage, peer-to-peer energy trading, renewable energy resources,
+robust optimization, uncertainty.
+
+P wind
+t,k,h
+
+NOMENCLATURE
+
+t
+k
+h
+NT
+NH
+SE
+
+Time period index.
+Scenario index.
+Household index.
+Number of time periods in the planning horizon.
+Number of households in the microgrid.
+Number of scenarios.
+
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Xiangqi Zhu.
+VOLUME 14, 2026
+
+pv
+
+P t,k,h
+P ch,BS
+t,k
+P dis,BS
+t,k
+P Lt,h
+
+Output power from wind turbine of
+household h at time t in scenario k [kW].
+Output power from PV panels of household h at time t in scenario k [kW].
+Charging power of centralized ESS at
+time t in scenario k [kW].
+Discharging power of centralized ESS at
+time t in scenario k [kW].
+The power demand of household h during time period t [kW].
+
+2026 The Authors. This work is licensed under a Creative Commons Attribution 4.0 License.
+For more information, see https://creativecommons.org/licenses/by/4.0/
+
+19877
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+EBS
+t,k,h
+ch,par
+
+P t,k
+
+dis,par
+
+/P t,k
+
+5k
+λnet
+t
+λtrade
+t
+λst
+t
+λwind
+t
+pv
+
+λt
+
+ηch,BS /ηdis,BS
+BS
+EBS
+Min /EMax
+Ch,BS
+
+Ch,BS
+
+P Min /P Max
+ηch,par /ηdis,par
+par
+
+SOC Min
+par
+
+SOC Max
+ch,par
+
+P Max
+
+dis,par
+
+P Max
+
+par
+
+1SOC max
+0
+C Total
+P net
+t,k,h
+P in
+t,k,h
+P out
+t,k,h
+par
+
+SOC t,k
+Ch,par
+
+P t,k
+
+dis,par
+
+P t,k
+
+ch,par
+
+9 t,k
+
+19878
+
+Energy stored in ESS at time t in scenario k [kWh].
+Charging/Discharging power of EVs in
+parking at time t, scenario k [kW].
+Probability of scenario k.
+Expected electricity price of the grid at
+time t [$/kWh].
+Unit price for P2P energy trading at time
+t [$/kWh].
+Operational cost coefficient of ESS at
+time t [$/kWh].
+The cost of wind power produced at time
+t [$/kWh].
+The cost of PV power produced at time
+t [$/kWh].
+Charging/discharging efficiency of ESS
+storage.
+Min/Max energy level of centralized
+ESS [kWh].
+Min/Max charging power of ESS [kW].
+Charging/Discharging efficiency of centralized EV parking.
+Minimum energy level of EV parking lot
+[kWh].
+Maximum energy level of EV parking
+lot [kWh].
+Maximum charging power of EV parking lot [kW].
+Maximum discharging power of EV
+parking lot [kW].
+Maximum allowable change in EV parking SoC between two consecutive hours
+[kWh].
+Budget of uncertainty for electricity
+market prices.
+Total operational cost over the planning
+horizon [$].
+Power imported from upstream grid for
+household h at time t in scenario k [kW].
+Power received by household h from
+peers via P2P trading at time t in scenario k [kW].
+Power supplied by household h to peers
+via P2P trading at time t in scenario k
+[kW].
+State of charge of the EV parking lot at
+time t in scenario k [kWh].
+Total charging power of EV parking lot
+at time t in scenario k [kW].
+Total discharging power of EV parking
+lot at time t in scenario k [kW].
+Binary variable, 1 if EV is charging
+in parking lot at time t in scenario k;
+0 otherwise.
+
+dis,par
+
+9 t,k
+Qt
+
+ch,BS
+
+ϒt,k
+
+dis,BS
+ϒt,k
+
+Binary variable, 1 if EV is discharging
+in parking lot at time t in scenario
+k; 0 otherwise.
+Binary variable, 1 if EVs are present
+in the centralized parking lot at time t
+in scenario k; 0 otherwise.
+Binary variable to determine whether
+the centralized battery is in a charging
+mode.
+Binary variable to determine whether
+the centralized battery is in a discharging mode.
+
+Abbreviation
+CBS
+DER
+EV
+ESS
+LEM
+P2P
+PV
+SoC
+
+Definition
+Centralized Battery Storage.
+Distributed Energy Resource.
+Electric Vehicle.
+Energy Storage System.
+Local Electricity Market.
+Peer-to-peer (energy trading).
+Photovoltaic.
+State of Charge.
+
+I. INTRODUCTION
+
+In recent years, concerns over air pollution, primarily driven
+by fossil fuel-based power generation and the increasing accumulation of greenhouse gases, have encouraged
+many consumers to seek energy self-sufficiency. To achieve
+this goal, they are increasingly turning to DERs as a
+means of meeting their electricity demands while promoting a cleaner environment [1]. However, integrating these
+resources presents significant challenges, particularly in managing excess energy production. For example, renewable
+energy sources such as rooftop PV panels and wind turbines may generate surplus electricity during periods of low
+demand. Due to factors such as the absence of adequate
+battery storage or limited storage capacity, this excess energy
+often remains underutilized or is wasted. Consequently, these
+inefficiencies lead to increased energy losses and reduced
+overall system performance [2].
+One of the most significant advancements in the energy
+sector is the adoption of peer-to-peer (P2P) energy trading,
+which offers an effective solution to the challenges associated with surplus energy management. This approach enables
+individuals to sell excess electricity to households with
+higher energy demands, thereby improving energy efficiency.
+By facilitating localized energy exchanges, P2P trading also
+contributes to environmental sustainability by decreasing
+reliance on fossil fuel-based power generation and lowering
+greenhouse gas emissions [3]. Additionally, it promotes a
+more decentralized and resilient energy system while providing financial benefits to prosumers who generate surplus
+electricity. It is worthwhile to mention that prosumer is a
+household that both consumes electricity and is equipped
+with local generation and/or storage (e.g., PV and EV), and
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+can therefore act as both a buyer and a seller in the P2P trading
+scheme.
+On the other hand, another transformative development in
+the energy sector is the rapid expansion of electric vehicle
+(EV) technology. In 2023 alone, global sales of EVs surpassed 13.7 million units, reflecting the increasing adoption
+of sustainable transportation solutions [4]. The declining cost
+of EVs, driven by technological advancements and market
+competition, has been a key factor in accelerating this transition. As EVs become more affordable and efficient, they
+present new opportunities for integrating renewable energy
+sources into transportation, further enhancing the sustainability of modern energy systems.
+Despite the potential benefits that the power grid can derive
+from the large-scale deployment of solar energy systems
+and EVs, the incentives provided by electricity markets and
+utility companies to promote the growth of these technologies
+remain insufficiently encouraging. Thus, P2P energy trading
+has emerged as a next-generation energy management technique for power grids. This approach empowers consumers
+to actively participate in the energy market in two key paths:
+by selling their surplus energy or by reducing their energy
+demand. The significance of the P2P energy trading model
+has been clearly emphasized in a recent study referenced
+in [5]. This study develops an optimization model based on
+P2P energy trading to evaluate the role of this approach in
+reducing carbon emissions in Finland by 2050. The central hypothesis assumes that each of the 278 municipalities
+considered will establish an energy community comprising
+four competitive sectors, each acting as distinct stakeholders. These four sectors play a crucial role in determining
+energy production and consumption levels, energy transfer,
+and carbon emission reductions. Through P2P energy trading, these sectors are enabled to exchange energy and share
+resources, fostering more effective energy management and
+sustainability.
+In this section, we aim to provide a comprehensive review
+of recent studies and advancements in the field of P2P energy
+trading. One notable study introduces a novel framework for
+P2P energy trading markets, built on a multi-sided economic
+distribution model. This innovative framework, presented
+in [6], leverages a relaxed consensus approach combined with
+innovative techniques to address the studied challenges and
+enhance market performance. In practice, this new market
+model innovatively transforms energy trading by enabling
+direct interactions between consumers and producers based
+on their preferences. It facilitates more efficient utilization of
+energy resources while simultaneously enhancing social welfare. This research not only contributes to improving energy
+market performance but also reduces reliance on traditional
+energy sources and helps lower greenhouse gas emissions.
+These findings highlight that recent advancements in P2P
+energy trading are driving significant changes in the energy
+industry. In [7], a game theory-based approach is explored
+and applied within the context of P2P energy trading in a
+smart grid. This method is designed to achieve objectives
+VOLUME 14, 2026
+
+such as reducing greenhouse gas emissions and minimizing
+energy-related costs. By incentivizing and encouraging users
+to actively participate in P2P energy trading, this approach
+aims to enhance the performance of smart grids and improve
+energy efficiency. The study demonstrates that employing
+motivational game theory in energy trading can facilitate the
+design of dynamic and flexible smart grids, advancing sustainable energy and environmental goals. Such approaches,
+by integrating economic and environmental factors, increase
+user engagement and contribute to improving the energy
+balance of the country.
+In addition, a centralized system is highlighted for its
+capability to assist in reducing electricity demand during
+peak hours in [8]. Specifically, this study implements a P2P
+energy trading scheme using a cooperative Stackelberg game
+formulation. This approach enables the power system to
+achieve greater efficiency by managing electricity demand
+during peak times, thereby alleviating stress on the grid
+and improving overall system performance. To address the
+challenge of reducing power demand during critical periods,
+studies in [9] propose a subscription-based tariff structure.
+This tariff model aims to optimize energy consumption by
+improving efficiency and better managing demand, thereby
+reducing the power load on the energy distribution system
+during critical times. In another study, a two-stage strategy
+for energy sharing among buildings has been developed to
+resolve the energy-sharing issue. This strategy operates in
+two phases and focuses on enhancing economic benefits for
+energy-consuming buildings. The proposed energy-sharing
+approach not only ensures more efficient utilization of shared
+energy resources but also provides economic advantages to
+building owners and residents [10]. Hahnel et al. in [11]
+focused on customer preferences in the context of P2P energy
+trading. This research aimed to provide a clearer understanding of homeowner behavior and the factors influencing their
+decisions within P2P energy trading systems. The primary
+objective of the study was to enhance transaction volumes in
+decentralized energy systems. Through the analysis of data
+collected from homeowners in Germany, the results revealed
+that key factors influencing their trading behavior included
+the state of charge in private storage units and the electricity
+prices within the community. These factors play a significant
+role in shaping customer decisions and increasing their trading activities in P2P energy markets.
+Additionally, in [12], the authors propose a novel approach
+to enhance end-user consumption by aggregating and developing rules aimed at reducing system costs. This innovative
+method plays a crucial role in optimizing and minimizing
+system-related expenses, contributing significantly to achieving improved outcomes for end-users. In [13], an entirely
+decentralized and innovative market mechanism is introduced
+that respects the preferences and needs of buyers. This mechanism considers critical factors such as buyers’ preferences
+for participating in renewable energy trading, the reputation
+of their trading partners, and their position within the network. By doing so, consumers are allowed to participate
+19879
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+independently and directly in the energy market while maintaining their privacy. This approach not only empowers
+buyers with greater control over their energy-related decisions but also fosters the growth of P2P energy markets
+and promotes increased competition within them. Meanwhile
+in [14], a combination of uncertainty management and energy
+trading is incorporated into the local P2P electricity market
+model. This integration results in a more accurate and adaptive market system that aligns with real-world conditions.
+In [15], a three-stage stochastic market clearing model is
+proposed to enhance participation in the reserve market. This
+model effectively clears real-time markets and day-ahead
+internal markets while accurately accounting for uncertainties
+related to load and reserve activation during the process.
+The integration of P2P energy sharing with demand management is discussed in [16], to enhance energy management
+efficiency. This approach is designed to enable equitable
+participation for all households in P2P energy sharing while
+providing access to solar-generated electricity at an affordable cost. The objective is achieved through a unified pricing
+mechanism and fair energy allocation based on the supplyto-demand ratio. A multi-objective optimization model is
+employed to determine the scheduling of flexible loads during
+P2P energy sharing activities within the community. The
+model also considers uncertainties and the utilization of electric vehicles in its framework.
+Furthermore, the authors in [17] presented a P2P energy
+trading mechanism that incorporates two types of final pricing: a preferred final price and an uncertain local final price.
+While the study accounts for uncertainties in renewable
+energy sources during the initial stage, it does not consider
+uncertainties in load consumption. Through this mechanism,
+participants in P2P energy trading can choose and accept
+suitable prices for buying and selling energy, enabling them
+to achieve greater efficiency in managing renewable energy.
+This approach improves the performance of P2P energy
+trading markets by addressing price uncertainties and accommodating participants’ preferences. In [18], a centralized
+optimization algorithm is employed in the context of P2P
+energy trading, focusing on pricing factors and the charging
+and discharging behaviors of electric vehicles to encourage
+participation in the market. While the primary focus is on
+electric vehicles and their management, renewable energy
+sources are not comprehensively integrated into the model,
+and the uncertainties associated with these sources are also
+not accounted for in this framework. This algorithm can promote improved performance in P2P energy trading markets;
+however, further development and refinement are needed
+to incorporate additional factors, such as renewable energy
+sources and market uncertainties.
+According to [19], a local network system has been
+designed and modeled to include 50 households, each
+equipped with electric vehicles and solar panels for electricity
+generation. These households are interconnected through a
+P2P energy trading platform. The authors of this study utilize the concept of bidirectional chargers to facilitate energy
+19880
+
+transfer. These chargers enable the flow of energy between
+electric vehicles and homes, allowing the energy stored in
+vehicle batteries to be discharged back into homes or the
+grid. Additionally, energy storage capabilities are incorporated into the model. However, the primary limitation of
+this model is its inability to account for the uncertainties
+associated with user energy consumption. In other words, the
+model cannot manage variations arising from the instability
+of user energy demand. This uncertainty could significantly
+impact decision-making strategies within the model, highlighting the need for modifications to enhance its accuracy
+and efficiency. In article [20], a P2P energy trading platform is introduced as a generalized game. This platform is
+designed for buyers, with a network operator responsible for
+enforcing system operational constraints. Additionally, the
+study employs a distributed market clearing mechanism to
+manage energy transactions and provide buyers with access
+to energy. However, critical factors such as electric vehicles,
+photovoltaic systems, and uncertainties were not considered
+in the development and design of this model. This omission
+could significantly affect the model’s accuracy and performance. Therefore, to enhance the precision and efficiency of
+this model, it is essential to incorporate these factors as fundamental elements in future analyses and modeling efforts.
+In addition, the authors in [21] examined a P2P energy
+trading scheme for multiple microgrids operating under
+uncertainty, accompanied by the proposal of a bi-level optimization framework. This framework facilitates interactions
+between P2P transactions under uncertain conditions and
+power flows managed by distribution system operators.
+To enhance operational security and reduce power losses
+within local energy distribution networks, an optimal power
+flow model is developed at the upper level, designed to
+align power flows optimally and minimize energy losses.
+At the lower level, a stochastic programming-based P2P
+trading model is implemented to address trading within multiple microgrids. To solve the proposed framework, a nested
+two-level distributed algorithm, integrated with a cascading algorithm, is utilized. This approach ensures distributed
+solutions while maintaining consistency in decision-making
+across both levels and between microgrids. However, the
+framework does not account for renewable energy sources,
+which could greatly improve the flexibility and adaptability
+of P2P trading. This limitation highlights the need for integrating renewable energy sources to enhance the efficiency
+and effectiveness of P2P energy trading models.
+The authors in [22] proposed an energy management system for a hypothetical community equipped with all the
+necessary components for P2P energy trading. These components include consumers with renewable energy generation
+units, a centralized energy storage facility, and a regional
+power grid system. The study introduces two key optimization frameworks for managing the distribution of surplus
+energy produced locally. The first framework is based on a
+decision-making game theory model, enabling optimal utilization by consumers at a lower level and shared storage
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+facilities at the higher level to maximize revenue. The second
+framework focuses on optimizing the interaction between
+energy buyers and sellers to maximize the utilization of
+surplus energy production. These optimization frameworks
+aim to enhance performance and efficiency in energy management and P2P energy trading. One of the significant
+distinctions between this study and our research lies in its
+exclusion of EVs and the lack of consideration for market
+electricity price uncertainties. These differences highlight
+opportunities for further analysis and improvement in energy
+management, as well as increased flexibility within the P2P
+energy trading framework. Based on the review of existing
+studies, P2P energy trading appears to have the potential to
+enhance the efficiency and performance of energy systems.
+However, this trading model also faces specific challenges.
+In such systems, buyers are expected to obtain the energy they
+require directly and independently from peer suppliers. This
+introduces significant uncertainty into the P2P energy trading
+process.
+One of the primary challenges in this domain is motivating and encouraging buyers and consumers to actively
+participate in such an environment, despite the uncertainties
+associated with fluctuating demand in P2P energy transactions. Therefore, it is essential to carefully address these
+challenges in the modeling of P2P energy trading systems.
+This focus is necessary not only for the optimal management
+of risks related to demand uncertainties but also to reduce
+the overall operational costs associated with P2P trading
+platforms. Consequently, these considerations highlight the
+importance of accurately addressing these challenges in the
+design and modeling of P2P energy trading. By doing so,
+greater efficiency and flexibility can be achieved in this
+emerging field. In P2P energy trading platforms, uncertainty
+is one of the most critical and challenging issues. This uncertainty becomes particularly significant when it pertains to
+fluctuations in electricity market prices for end users, as it
+can greatly impact the efficiency and performance of such
+platforms. For instance, sudden and unexpected changes in
+energy demand can lead to instability and operational issues
+within these systems. Unfortunately, studies such as [16],
+[20], and [23] have overlooked this type of uncertainty and
+its implications. Future research must give greater attention to
+this matter, aiming to improve models and methods for managing such uncertainties. Addressing this issue effectively
+could enhance the efficiency and stability of P2P energy trading platforms while providing better solutions for handling
+sudden changes in energy demand. Additionally, incorporating electric vehicles into energy systems could offer greater
+flexibility for end users. This flexibility would allow them to
+participate more actively in P2P trading activities that might
+have been previously neglected or deemed impractical. This
+highlights the importance of managing and utilizing electric energy resources in P2P trading systems, as emphasized
+in [20] and [24]. Such an approach can contribute to the
+development of more adaptable and resilient energy trading
+frameworks. However, it is important to note that while there
+VOLUME 14, 2026
+
+are several models that consider uncertainty in managing
+P2P frameworks, no efficient strategies have been proposed
+for handling system operations under demand uncertainty.
+Implementing a precise risk management model to address
+uncertainties arising from participant demand can potentially
+reduce the overall framework costs. In fact, optimal operational strategies are needed to effectively respond to this
+type of uncertainty. Furthermore, analyzing the sources of
+uncertainty within the P2P framework from various perspectives is another crucial aspect. This analysis provides
+decision-makers with better insights to select the most effective strategies for dealing with uncertainties in electricity
+market prices. A taxonomy table is presented in Table 1
+summarizing the similar recent works.
+TABLE 1. Summary of related works and comparison with the proposed
+model.
+
+To address the challenges identified in the reviewed
+studies, this paper develops a hybrid uncertainty modeling
+framework for P2P energy trading in local microgrids. Robust
+optimization is applied to address electricity market price
+uncertainty, while scenario-based stochastic modeling is used
+to capture the intermittency of renewable generation from PV
+and wind. The framework provides strategies that balance
+risk-averse decision-making, extending prior studies that usually consider only one type of uncertainty.
+The main contributions of this paper are as follows:
+• We model a local microgrid with several prosumers
+comprehensively, each equipped with PV, wind generation and EVs, together with a centralized energy storage
+19881
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+system and an upstream grid connection. A local aggregator coordinates P2P energy trading, storage operation
+and grid exchanges.
+• In addition, we propose a hybrid framework that treats
+different sources of uncertainty with suitable risk measures based on the characteristics of the uncertain
+parameters: PV, wind generation and EV charging availability are represented through scenario-based stochastic
+programming, while electricity market price uncertainty is handled by robust optimization. This allows
+the decision-maker to apply different risk management
+measures to different uncertainties based on the characteristics of the uncertain parameter.
+• A factorial sensitivity analysis over has been done to
+show the impact of design choices and demonstrates
+that the approach remains computationally tractable and
+scalable to be implemented in larger microgrids.
+The remainder of this paper is structured as follows:
+Section II presents the mathematical formulation of the proposed robust optimization model. Section III discusses the
+implementation of the model and analyzes the simulation
+results under different scenarios. Finally, Section IV summarizes the key findings and concludes the paper.
+
+FIGURE 1. The framework of the proposed P2P energy trading in a
+microgrid.
+
+of electricity purchased from the upstream grid, revenues
+and costs related to P2P energy transactions, the use of local
+renewable energy sources, and the operation of centralized
+energy storage. The cost of energy storage is divided into
+charging and discharging, where the net difference (discharge
+minus charge) is considered in the total cost. The mathematical formulation of the objective function is expressed as:
+Obj. Func. :
+
+II. THE MODEL AND MATHEMATICAL PROBLEM
+FORMULATION
+
+In this section, we present the model and the mathematical
+formulation of the local aggregator’s decision-making process in the presence of electricity market price uncertainties.
+As illustrated in Fig. 1, inside the microgrid, there are several
+households which are considered as prosumers that are connected to the upstream network and a central energy storage
+unit. Moreover, each household has PV, small-scale wind turbine and EV. The operator plays a critical role in coordinating
+energy transactions and optimizing resource allocation within
+a localized energy network.
+Considering the stochastic nature of market prices and
+the intermittency of renewable energy generation, and availability of EVs in the parking lot, we adopt a hybrid
+stochastic-robust uncertainty modeling approach. In the proposed formulation, robust optimization is applied to the
+uncertainty of electricity market prices, while the variability of renewable generation from PV and wind, as well
+as the available capacity of the EV parking lot, is represented through a set of scenarios, each with an associated
+probability. This hybrid treatment enhances the operator’s
+decision-making process and ensures operational feasibility
+and economic efficiency under uncertainty. By explicitly
+modeling these uncertainties, the framework allows the
+decision-maker to adapt to fluctuating market conditions,
+mitigate financial risks, and maintain a reliable energy supply
+for participants in the P2P trading environment.
+A. OBJECTIVE FUNCTION
+
+The objective function minimizes the total cost of local consumers by considering various terms. These include the cost
+19882
+
+Min CostTotal
+
+
+P2P Trading
+Grid Consumtion z
+}|
+{
+
+
+ z net}| net{
+
+in
+out
+trade 
+ P
+λ
++
+P
+−
+P
+t,k,h t
+t,k,h
+t,k,h λt
+
+
+SE
+NH
+NT
+
+
+XXX
+
+
+wind,sp
+wind
+wind
+
+P
+−
+P
+λ
+5k 
+=
+sp
+t,k,h
+t,k,h
+
+
+
++  pv
+
+
+t=1 h=1 k=1
+pv,sp
+pv
+
+
++ Pt,k,h − Pt,k,h λsp
+
+
+{z
+}
+|
+Re newable Energy Re sources
+
+Battery disch arg ing Battery ch arg ing
+z }| {
+z }| {
+SE
+NT X
+X
+
+ st
+5k 
++
+Pdis,BS
+−
+Pch,BS
+ λt
+t,k
+t,k
+t=1 k=1
+
+(1)
+where Obj represents the objective function, Cost expected
+denotes the total operational cost for local consumers, SE
+is the number of scenarios, k is the scenario index, NH is
+the number of households, h is the household index, NT
+is the planning horizon, t represents the time period, Pnet
+t,k,h
+is the power imported from the upstream grid, and λnet
+sp is
+the price of the imported electricity. It should be noted that
+the formulation is developed for a generic number of households. Increasing the community size only enlarges the index
+sets, and the structure of the optimization problem remains
+unchanged.
+out
+Additionally, Pin
+t,k,h and Pt,k,h represent the input and output power of each household during P2P trading, respectively,
+and λtrade
+is the cost of P2P trading. It is important to mention
+t
+pv
+that Pwind
+t,k,h and Pt,k,h refer to the power output from wind
+turbines and solar panels. To ensure realistic results, power
+losses from these sources are considered in the objective
+wind,sp
+function, denoted as Pt,k,h for wind turbine losses and
+pv,sp
+Pt,k,h for solar panel losses.
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+Furthermore, Pdis,BS
+and Pch,BS
+represent the discharge
+t,k
+t,k
+and charge power of the centralized storage battery, λst
+t is
+the operational cost of the centralized storage battery, and N
+denotes the planning horizon.
+B. CONSTRAINTS
+
+The energy balance constraint ensures that the total energy
+generated, imported, and stored within the system is equal
+to the total energy consumed and exported from the system. This constraint is essential for maintaining the system’s
+stability and efficiency. In other words, the energy balance
+must guarantee that the power required by each household,
+the charging power of the centralized storage battery, and
+the energy consumed by EVs in parking lots are equal to the
+energy received from various sources. These sources include
+the output power from rooftop PV panels, small-scale wind
+turbines, power traded from other households in P2P scheme,
+power imported from the upstream grid, and the discharged
+power from the centralized storage battery and EVs in the
+parking lots. This constraint is presented in Eq. (2).
+ch,par
+
+out
+PLt,h + Pch,B
+t,k,h + Pt,k,h + Pt,k,h
+
+pv,sp
+wind,sp
+dis,par
+in
+= Pnet
++ Pdis,B
+t,k,h + Pt,k,h + Pt,k,h
+t,k,h + Pt,k,h + Pt,k,h
+
+(2)
+In this equation PLt,h represents the power demand of
+household h during time period t. Pch,B
+t,k,h denotes the charging
+power of the centralized storage battery during time t by the
+ch,park
+households. Pt,k,h indicates the charging power of EVs in
+the parking lot for household h during time t.
+In this scheme, this design operates based on a system
+with shared energy storage, controlled by specific rules [34].
+In this system, prosumers (producer-consumers) and consumers can locally trade power using dynamic pricing. There
+is only one large energy storage unit, centrally located and
+owned by the microgrid. The microgrid is responsible for
+managing not only the input and output of each household but
+also their energy production. The charging and discharging
+of electric vehicles in the parking lot are also managed by the
+microgrid. Battery charging is restricted to energy generated
+from renewable sources by prosumers and electric vehicle
+parking facilities. Discharging, however, is available to all
+prosumers, consumers, and vehicles in the parking lot at a
+slightly higher rate than the charging rate. The constraints
+for centralized energy storage are described as follows: The
+state of charge (SoC) of a centralized storage battery unit is
+determined by Equation (3). This level of energy depends not
+only on the previous SoC and discharge but also on the rate
+and amount of charging and discharging. This constraint is
+expressed in Equation (4).
+BS
+BS
+ch,BS
+Et,k,h
+= Et−1,k,h
++ Pch,BS
+−
+t,k η
+
+Pdis,BS
+t,k
+ηdis,BS
+
+(3)
+
+BS
+BS
+BS
+Emin
+≤ Et,k,h
+≤ EMax
+(4)
+ch,BS
+dis,BS
+In Equation (3), η
+and η
+represent the charg-
+
+ing and discharging efficiency of the centralized battery,
+VOLUME 14, 2026
+
+respectively. The energy stored in the storage unit must
+remain within a predefined range to prevent damage. Thus,
+BS (maximum energy capacity) or drop
+it cannot exceed Emax
+BS
+below Emin (minimum energy capacity), as defined in
+Equation (4).
+The charging and discharging power of the centralized
+battery is further constrained by Equations (5) - (6).
+ch,BS
+ch,BS
+Pch,BS
+≤ Pch,BS
+≤ Pch,BS
+min ϒt,k
+t,k
+Max ϒt,k
+
+(5)
+
+dis,BS
+dis,BS
+Pdis,BS
+≤ Pdis,BS
+≤ Pdis,BS
+min ϒt,k
+t,k
+Max ϒt,k
+
+(6)
+
+dis,BS represent the minimum and maxwhere Pch,BS
+min and Pmax
+imum charging and discharging power of the centralized
+ch,BS
+dis,BS
+battery, respectively. Additionally, ϒt,k
+and ϒt,k
+are
+binary indicators used to determine whether the centralized
+battery is in a charging or discharging mode. To ensure that
+the battery storage does not charge and discharge simultaneously, Eq. (7) is enforced.
+ch,BS
+dis,BS
+ϒt,k
++ ϒt,k
+≤1
+
+(7)
+
+The total power delivered to the battery storage for charging must be equal to the total power provided by the
+households to the centralized storage unit across all hours and
+scenarios, which is indicated by Eq. (8).
+Pch,BS
+=
+t,k
+
+NH
+X
+
+Pch,B
+t,k,h
+
+(8)
+
+h=1
+
+This condition must also be satisfied during discharge
+of the centralized storage unit as well; in other words, the
+discharge power of the CBS must equal the total discharge
+power delivered to the households.
+Pdis,BS
+=
+t,k
+
+NH
+X
+
+Pdis,BS
+t,k,h
+
+(9)
+
+h=1
+
+Most of the time, the centralized EV parking facility, like
+other components, operates under specific conditions and
+constraints which are formulated in this section [35].
+The SoC of the centralized EV parking facility, similar
+to the centralized battery storage, depends on the previous
+SoC, as well as the amount and efficiency of charging and
+discharging in the current time interval. Since EV availability
+is uncertain, these quantities are indexed by the scenario
+index k, thus the state of charge and power limits may differ
+across scenarios. Additionally, the SoC of the centralized EV
+parking must remain within its technical limits, which are
+mathematically formulated in Equations (10) and (11).
+dis,par
+Pt,k
+par
+par
+ch,par ch,par
+SOCt,k = SOCt−1,k + Pt,k η
+− dis,par
+
+(10)
+
+par
+par
+par
+SOCmin ≤ SOCt,k ≤ SOCMax
+
+(11)
+
+η
+
+par
+
+where SOCt,k represents the state of charge of the EV
+parking lot. ηch,par /ηdis,par denotes the charging/discharging
+efficiency of the EV parking lot. Moreover, the changes in the
+19883
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+SoC of the parking lot between two consecutive time intervals
+is controlled by (12).
+par
+
+par
+
+par
+
+par
+
+−1SOCMax ≤ SOCt,k − SOCt−1,k ≤ +1SOCMax
+
+(12)
+
+par
+
+where 1SOCmax represents the maximum allowable difference in the SoC between two consecutive hours. The total
+power of the EV parking lot must remain below a specified
+maximum limit for the parking facility. Additionally, EVs
+must be present in the parking facility and in a charging state,
+which is indicated by Eq. (13).
+NH
+X
+
+ch,par
+
+ch,par
+
+Pt,k,h ≤ Pt,k
+
+ch,par
+
+ch,par
+
+≤ PMax Qt 9t,k
+
+(13)
+
+h=1
+ch,par
+
+where Pmax is the maximum charging power that the EV
+parking lot can handle. Qt is a binary variable that equals
+one if an EV is present in the parking lot and 0 otherch,par
+wise. Moreover, 9t,k
+is a binary variable indicating the
+charging status of the parking. The total power delivered to
+the households must be less than the total discharge power
+of the EV parking lot, which is mathematically formulated
+through (14).
+NH
+X
+
+dis,park
+dis,par
+dis,par
+Pt,k,h ≤ PMax Qt 9t,k
+
+(14)
+
+h=1
+dis,par
+where Pt,k
+represents the total discharging power of the
+dis,par
+EV parking lot; 9t,k
+is a binary variable indicating the
+
+discharging status of the parking lot. This condition only
+occurs when EVs are present in the parking lot, as defined
+by the binary variable Qt . Additionally, the parking lot cannot simultaneously charge and discharge. This constraint is
+formulated in (15), provided that an EV is parked in the
+centralized parking facility.
+ch,par
+
+9t,k
+
+dis,par
+
++ 9t,k
+
+≤ Qt
+
+(15)
+
+The network constraints and distributed generation limitations should also be taken into account to have a realistic
+optimization framework. Since the distributed generation
+units of households and the local aggregator may not always
+meet the energy demands of consumers, the upstream grid can
+be utilized to ensure a reliable supply of power to the loads.
+It is important to note that the amount of power purchased
+from the upstream grid cannot exceed a specified limit, which
+is expressed (16).
+net
+0 ≤ Pnet
+t,k,h ≤ PMax
+
+(16)
+
+where Pnet
+Max represents the maximum power that can be
+imported from the upstream grid.
+The power generated by both wind turbine systems and
+solar PV panels must remain within specified limits [36].
+wind,sp
+
+≤ Pwind
+t,k,h
+
+(17)
+
+pv,sp
+Pt,k,h ≤ PPV
+t,k,h
+
+(18)
+
+Pt,k,h
+
+19884
+
+wind,sp
+
+In (17) and (18), Pt,k,h represents the value of the power
+loss from the wind turbine, Pwind
+t,k,h denotes the output power of
+pv,sp
+the wind turbine, Pt,k,h indicates the power loss value from
+the PV panel, and PPV
+t,k,h refers to the power generated by the
+PV panels.
+In this part, we present the framework utilized for P2P
+energy trading, where households directly exchange surplus
+electricity within the microgrid. This trading mechanism
+allows participants to optimize their energy usage by reducing reliance on the upstream grid and making better use of
+locally generated renewable energy resources. The power
+transactions between households through P2P energy trading
+is defined by Eqs. (19) - (26). According to these equations,
+the power received or delivered by each household is a combination of the power sent or received by other households.
+O2→1
+PIn1
++ PO3→1
++ PO4→1
+t,k = Pt,k
+t,k
+t,k
+
+(19)
+
+O1→2
+PIn2
++ PO3→2
++ PO4→2
+t,k = Pt,k
+t,k
+t,k
+O1→3
+O2→3
+O4→3
+PIn3
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+O1→4
+O2→4
+O3→4
+PIn4
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+In1→2
+In1→3
+In1→4
+PO1
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+In2→1
+In2→3
+In2→4
+PO2
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+In3→1
+In3→2
+In3→4
+PO3
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+In4→1
+In4→2
+In4→3
+PO4
+=
+P
++
+P
++
+P
+t,k
+t,k
+t,k
+t,k
+
+(20)
+(21)
+(22)
+(23)
+(24)
+(25)
+(26)
+
+For example, in Equation (19), the P2P input power
+received by Household 1 is equal to the total P2P output
+power supplied by other households in the microgrid to
+Household 1.
+As shown in Fig. 1, the energy flows inside the microgrid
+are determined endogenously by the optimization problem.
+The energy balance constraint in (2) enforces that, at each
+time period and for each scenario, the total demand of households, storage charging, and EV charging is supplied by
+local PV and wind generation, discharging of the centralized
+storage and EV parking, P2P exchanges among households,
+and power imported from the upstream grid. The operation
+of the centralized battery storage is defined by constraints
+(3)-(9), which determine when it is charged or discharged
+based on prices, renewable availability, and its technical limits. The centralized EV parking facility follows a similar
+structure given in (10)-(15). P2P trading is activated through
+out
+the variables Pin
+t,k,h and Pt,k,h and constraints (19)-(26), which
+ensure that power exported by one prosumer is imported
+by others. When local resources and P2P exchanges are not
+sufficient or not economical, the model imports power from
+the upstream grid subject to the limit in (16).
+C. ROBUST OPTIMIZATION MODEL
+
+As discussed earlier, uncertainty is a fundamental challenge
+in power system operation, particularly in DERs where
+renewable generation and market dynamics introduce significant variability. Accurate planning is challenging due to
+fluctuating electricity prices and the intermittent nature of
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+renewable sources such as solar irradiance and wind speed.
+The risks associated from the renewables and the availability
+of EVs in the parking lots are addressed though the stochastic
+programming, where multiple scenarios with specific probabilities for the uncertain parameters are generated.
+For modeling another source of uncertainty, electricity
+market price, a robust optimization model is employed [37].
+This method evaluates various scenarios, to determine an
+optimal strategy for the decision-makers in different levels of conservatism. This study utilizes a combination of
+stochastic programming and robust optimization (hybrid
+robust-stochastic) to handle uncertainties in renewable energy
+generation, the availabilities of EVs in the parking lots
+and electricity market prices. While stochastic programming
+creates multiple possible scenarios based on probability distributions, robust optimization ensures that decisions remain
+feasible even in the most unfavorable conditions. Thus, this
+approach enhances the stability and economic efficiency of
+the system.
+The mathematical problem formulation of the robust optimization model can be expressed as:
+
+
+ net net,min
+Pt,k,h
+λt
+
+
+
+
+
+
+
+trade 
+
+SE
+NH X
+NT X
+
+ + Pin
+X
+− Pout
+t,k,h λt
+
+  t,k,h
+5k 
+Min
+
+wind,sp
+wind
+wind
+
+
++
+P
+−
+P
+λ
+
+sp 
+t,k,h 
+t=1 h=1 k=1
+
+  t,k,h
+
+
+
+pv
+pv,sp
+pv
+
++ Pt,k,h − Pt,k,h λsp
+
+
+
+NT P
+SE
+P
+
+dis,BS
+ch,BS
+st
+
++
+5k Pt,k − Pt,k
+λt
+
+
+t=1 k=1
+(
+) N
+
+
+P
+
+
++ P
+Max
+λnet,max
+−λnet,min
+yt χ 
+
+t
+t
+{
+
+χ ≤0,0≤χ≤1,χ≤yt } t,h,k
+
+TABLE 2. Centralized energy storage parameters.
+
+theory is applied, leading to the introduction of dual variables
+z and ζt . Thus, the robust optimization objective function then
+becomes:
+
+ net net,min
+
+Pt,k,h
+λt
+
+
+
+
+
+
+
+trade 
+
+SE
+NH X
+NT X
+ + Pin
+
+X
+− Pout
+t,k,h λt
+  t,k,h
+
+5k 
+Min
+
+wind,sp
+wind
+wind
+
+
++
+P
+−
+P
+λ
+
+sp 
+t,k,h 
+t=1 h=1 k=1
+
+  t,k,h
+
+
+
+pv
+pv,sp
+pv
+
++ Pt,k,h − Pt,k,h λsp
+)
+NT X
+SE
+
+
+X
+X
+dis,BS
+ch,BS
++
+5k Pt,k − Pt,k
+λst
+ζt N
+t + z0 +
+t
+
+t=1 k=1
+
+(28)
+z + ζt ≥
+
+
+
+λnet,max
+− λnet,min
+t
+t
+
+X
+
+net,min
+Pnet
+t,k,h λt
+
+(29)
+
+h,k
+
+z≥0
+ζt ≥ 0
+Constraints (2)-(26)
+
+(30)
+(31)
+(32)
+
+(27)
+In this model, the electricity market price λnet
+t
+
+is considered an uncertain parameter
+within
+a
+known
+bounded
+h
+i
+interval, i.e., λnet
+∈
+λnet,min
+, λnet,Max
+. The uncert
+t
+t
+tain term in (1) is decomposed into a nominal comnet λnet,min and a deviation component,
+ponent, i.e.,
+nP Pt,k,h
+ t
+
+o
+net,max
+net,min
+i.e., Max
+λ
+−
+λ
+y
+χ
+. Note that to
+t
+t
+t
+t,h,k
+develop a robust optimization model, it is crucial to introduce
+the parameter 0 (budget of uncertainty), which serves as
+an important factor to control the conservatism level in the
+final solution. This parameter is defined as an integer within
+the range [0, NT ], where NT represents the total number of
+uncertain parameters, which is the electricity market prices
+in each time slot. When 0 = 0, the formulation assumes
+that no uncertainty affects the objective function, resulting in
+risk-neutral solution that does not account for potential electricity market deviations. In contrast, setting 0 = NT reflects
+a fully conservative approach, where uncertainty in all time
+slots is considered, ensuring maximum protection against
+the worst-case electricity market price impacts. To make the
+robust model computationally tractable, auxiliary variables
+yt and χ are used to handle the complexity of the problem
+formulation. For linearizing the inner maximization, duality
+VOLUME 14, 2026
+
+In the objective function above, the cost associated with the
+uncertainty of electricity prices purchased from the upstream
+grid is separated from other costs to implement the price
+uncertainty model. Accordingly, the operator’s goal is to find
+the best response to the worst-case scenario of the problem.
+III. SIMULATION RESULTS AND DISSCUSIONS
+
+In this section, the proposed method is implemented on a
+microgrid system, and the results are presented and discussed.
+The data used for the implementation of the proposed model
+is adopted from [23]. The robust optimization model is simulated using GAMS, and the results are shown for different
+levels of uncertainty of the electricity market prices [38].
+The 4-home configuration is used as a base case for illustrating operational behavior, and additional sensitivity analyses
+are carried out for 8- and 10-home communities. While the
+numerical results in this paper are based on the load, renewable generation, EV and price data from [23], [35], [36],
+and [34] the formulation is not tied to a specific region and
+can be directly applied to other microgrids by replacing these
+input profiles with local data. The main technical parameters
+of the centralized ESS and renewable generation systems
+used in the case study are summarized in Tables 2 and 3.
+19885
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+TABLE 3. Renewable generation system parameters.
+
+FIGURE 3. Robustness cost of the proposed model for robustness level.
+
+FIGURE 2. Electricity price purchased from the upstream grid and the
+upper and lower bounds of price variations.
+
+Figure 2 presents the electricity market prices along
+with their corresponding variation range over a 24-hour
+period. As illustrated, electricity prices are subject to a ±5%
+tolerance, meaning that they fluctuate within the interval
+net,Max
+λnet,min
+≤ λnet
+. In this study, the lower and upper
+t
+t ≤λt
+net,Max
+bounds are assumed to be λnet,min
+= 0.95λnet
+=
+t
+t and λt
+net
+1.05λt , respectively. As observed in the figure, electricity
+prices peak during two distinct periods: from 7:00 AM to
+2:00 PM and again from 5:00 PM to 10:00 PM, corresponding
+to high demand hours. Conversely, prices are lower during
+off-peak periods, when market demand is reduced, offering
+more affordable electricity during those hours.
+Figure 3 illustrates the cost of robustness against various
+levels of electricity market price uncertainty under different
+conditions. In the proposed robust optimization model, the
+budget of uncertainty 0 represents the level of conservatism
+of the decision maker with respect to electricity market price
+deviations. As depicted in this figure, a low uncertainty
+budget corresponds to 0 = 1, which means that minimum
+19886
+
+deviation from the expected market prices is considered. This
+case is equivalent to the model is minimum robust and almost
+ignores price uncertainty.
+In contrast, the medium robustness case corresponds to
+0 = 6, which means that in 6 out of studied time
+slots, the market price is considered to deviate unfavorably from its expected value. The high robustness case in
+our simulation results corresponds to 0 = 11, where the
+decision maker assumes that the electricity market price
+may deviate unfavorably in 11 time slots and therefore
+adopts mostly conservative, which is suitable for a high riskaverse strategy. While this ensures maximum robustness,
+the decision-maker faces significantly higher costs. In other
+words, the decision-maker must choose between low costs
+with limited robustness and higher costs with stronger protection against the uncertainty posed from the electricity market
+prices.
+In order to analysis the simulation results better, we are
+considering three different scenarios based on different levels
+of price uncertainty as follows:
+Low uncertainty budget (Min-robust): Represents a scenario with limited consideration of market price deviations,
+resulting in a less conservative but more cost-efficient strategy. Medium uncertainty budget (Mid-robust): Reflects a balanced approach, incorporating moderate robustness against
+price fluctuations. High uncertainty budget (Max-robust):
+Applies the maximum level of conservatism, ensuring that
+the plan is fully protected against worst-case price deviations.
+Therefore, the main trade off is between risk protection and
+economic performance. The decision maker must choose the
+desired robustness level by balancing the acceptable exposure
+to price risk and the additional cost of operating the system in
+a more conservative manner. We have added this explanation
+to Section III where the three cases are discussed.
+In addition, the hourly power purchased from the upstream
+grid by each of the four households in the microgrid over
+a 24-hour horizon is depicted in Fig. 4. It can be seen that
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+across all scenarios, power is consistently purchased during
+two key periods: early morning (midnight to 8 AM) and
+evening (6 PM to midnight), indicating a common pattern
+of dependency on the upstream grid during high demand
+or low generation hours. While this behavior is consistent among households, some scenario-specific differences
+emerge. For instance, in Household 3, power is purchased
+from the upstream grid between 2 PM and 3 PM only in
+the most robust case, while no such purchase occurs in the
+neutral or least robust scenarios. This suggests that, under
+higher uncertainty, the system prioritizes energy security by
+purchasing grid power during mid-day hours that are typically
+riskier due to potential price volatility. This decision-making
+strategy highlights the trade-off between cost and robustness
+when facing uncertain market conditions.
+Figure 7 presents the renewable energy generation profiles
+for each household in the microgrid over a 24-hour period.
+As described in the mathematical formulation, both rooftop
+solar panels and small-scale wind turbines are included as
+sources of renewable energy. As expected, the highest generation levels occur around midday, corresponding to peak solar
+irradiance. Additionally, notable wind power generation is
+observed during the early morning hours, when wind speeds
+tend to be higher. This locally generated renewable energy
+plays an important role in meeting household demand within
+the microgrid. Beyond direct consumption, the surplus energy
+can be stored in residential battery systems or shared with
+other users through P2P trading mechanisms. The ability to
+generate and exchange renewable energy not only reduces
+dependence on the upstream grid but also supports the implementation of robust and decentralized energy management
+strategies within the proposed model.
+As described in the mathematical formulation section, the
+proposed model assumes that there is a central ESS which
+charges or discharges to each households within the microgrid. Figure 5 presents the charging power of this storage
+system for each household across three planning scenarios:
+min robust, mid-robust, and max robust.
+A comparison between the charging profiles and the electricity prices reveals that the operation of the storage system
+is primarily influenced by two factors: the electricity market
+price and the availability of surplus renewable energy. For
+instance, Household 1 begins charging the central storage
+during periods of low electricity prices. Similarly, during
+midday hours (when solar generation is typically high) the
+excess energy produced by rooftop panels is stored for later
+use during periods of peak demand or elevated market prices.
+Rather than purchasing costly electricity from the upstream
+grid during these hours, the stored energy is utilized. This
+pattern is generally consistent across all households, emphasizing the value of electrical storage systems in the microgrid
+in minimizing reliance on the upstream grid and enabling
+more efficient and cost-effective energy management strategies at the household level.
+As previously discussed, the inclusion of a central storage
+system in the proposed model serves two key purposes: to
+VOLUME 14, 2026
+
+FIGURE 4. Power purchased from the upstream grid for each household
+under different scenarios.
+
+FIGURE 5. Renewable energy generation for each household in the
+studied microgrid.
+
+store energy during periods of low electricity prices and to
+capture surplus energy generated from renewables. Figure 6
+illustrates the discharge power of the storage system to each
+household in the microgrid over a 24-hour horizon. As shown,
+the storage unit begins discharging during the evening peak
+hours, particularly after 4:00 PM, when electricity demand
+typically increases. This strategy allows households to rely
+on the central storage energy instead of purchasing power
+from the upstream grid, thus contributing to overall cost
+optimization in the microgrid. Notably, in the min-robust
+scenario, Household 1 exhibits a more aggressive discharge
+behavior. This is attributed to the fact that, under low uncertainty budgets, the optimization model assumes less robust
+against the electricity market prices. As a result, the system
+is more willing to discharge stored energy without concern for
+potential price volatility, reflecting a risk-accepting approach
+to electricity market prices.
+19887
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+FIGURE 6. Power charged in the ESS for each household under various
+levels of uncertainties.
+
+FIGURE 8. The input P2P energy transactions in each home in the studied
+microgrid.
+
+FIGURE 7. Power discharged from the ESS unit for each household in the
+studied microgrid.
+
+FIGURE 9. The output P2P energy transactions in each home in the
+studied microgrid.
+
+Finally, Figs. 8 and 9 present the results of P2P energy
+trading in the microgrid, showing the amount of energy each
+household receives (input) and supplies (output). As shown
+in Fig. 8, the highest levels of P2P energy input occur primarily in the mid-robust scenario, where the system balances
+cost efficiency with moderate protection against market price
+fluctuations. Among all prosumers, Household 3 receives
+the largest amount of P2P energy, suggesting a relatively
+higher energy demand or lower self-generation capacity during those hours. In contrast, Households 2 and 4 receive very
+small amounts of P2P energy, indicating that their demand is
+likely met through the upstream network, local generation or
+storage.
+Figure 9 shows the corresponding P2P energy output.
+It can be seen that Household 1 stands out as the prosumer
+with highest energy transactions, consistently providing
+power to others across all scenarios, especially under higher
+
+uncertainty. This implies that Household 1 has surplus generation in the microgrid, enabling it to support others through
+energy trading. Moreover, despite being the largest P2P
+energy receiver, Household 3 contributes very little in terms
+of output, highlighting a one-sided exchange pattern that
+may result from its consumption profile or limited generation
+capability.
+Therefore, these results demonstrate the efficiency of the
+proposed optimization model for P2P trading framework.
+Under different robustness levels, households dynamically
+adjust their trading behavior to manage risk, maximize energy
+use, and reducing their dependency to the upstream grid. This
+highlights the importance of robust optimization in enabling
+decentralized and adaptive energy management within a
+microgrid environment.
+To examine the scalability of the proposed framework and
+the impact of design parameters on economic performance,
+
+19888
+
+VOLUME 14, 2026
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+TABLE 4. Scenario matrix for the sensitivity analysis.
+
+FIGURE 10. Sensitivity analysis of different PV and ESS and prosumers.
+
+a factorial sensitivity analysis is performed. Three dimensions are varied simultaneously: number of prosumers (4, 8,
+and 10 homes), PV penetration (50 %, 100 %, and 150 %
+of the baseline 3.3 kW per home), and ESS capacity (50 %,
+100 %, and 200 % of the baseline 13.2 kWh). This yields
+27 scenarios, summarized in Table 4, where each scenario
+si corresponds to a unique combination of community size,
+PV penetration, and ESS capacity. For each scenario, the optimisation model is solved with the same uncertainty settings,
+and the resulting annual cost per home is recorded.
+Figure 10 depicts the resulting cost surface as a function
+of PV penetration and ESS capacity for the three community sizes. Two main trends can be observed. First, for a
+fixed number of homes, increasing PV penetration and ESS
+capacity systematically reduces the annual cost per home,
+with the largest savings obtained when both PV and ESS
+are at 150 % and 200 % of their baseline values. Second,
+for a fixed PV/ESS configuration, increasing the number of
+participating homes from 4 to 8 and 10 reduces the cost per
+home, revealing clear economies of scale in cooperative P2P
+operation. The three colored planes in Fig. 10 are almost
+parallel, indicating that the marginal benefit of PV and ESS
+remains similar as the community grows, while the overall
+cost level shifts downward when more prosumers participate
+in the P2P trading scheme.
+IV. CONCLUSION
+
+This paper proposed a stochastic-robust optimization strategy to support decision-making in renewable energy-based
+VOLUME 14, 2026
+
+consumer (prosumers), with a particular focus on robust
+optimization on the electricity price uncertainty. Given that
+end-users typically act as price-takers and cannot influence
+market prices directly, managing this uncertainty becomes
+critical. The model developed in this work allows risk-averse
+consumers to handle market price fluctuations more effectively, helping to protect their operational decisions against
+volatile market conditions.
+The primary objective was to minimize the total costs
+while considering the uncertainty posed by the electricity
+market prices. To manage market price uncertainty, a robust
+optimization approach was employed, incorporating various levels of uncertainty. The results demonstrate that as
+the uncertainty budget increases, the operational cost of the
+proposed system also rises. However, the robustness of the
+system against upstream grid price uncertainties improves
+with the implementation of the robust strategy. Thus, the
+microgrid decision-maker must balance the trade-off between
+the robustness of the optimization plan and its associated
+costs.
+In future work, the framework can be extended from a centrally coordinated microgrid to decentralized or distributed
+P2P energy management schemes and to settings where a
+local aggregator coordinates several neighboring microgrids
+and participates in external markets (e.g. wholesale energy or
+flexibility markets). We also plan to investigate a combined
+IGDT-robust-stochastic risk management scheme to better
+capture the impact of increasing renewable penetration.
+REFERENCES
+[1] M. Haugen, P. L. Blaisdell-Pijuan, A. Botterud, T. Levin, Z. Zhou,
+M. Belsnes, M. Korpås, and A. Somani, ‘‘Power market models
+for the clean energy transition: State of the art and future research
+needs,’’ Appl. Energy, vol. 357, Mar. 2024, Art. no. 122495, doi:
+10.1016/j.apenergy.2023.122495.
+[2] S. Solaymani, ‘‘A review on energy and renewable energy policies
+in Iran,’’ Sustainability, vol. 13, no. 13, p. 7328, Jun. 2021, doi:
+10.3390/su13137328.
+[3] S. Suthar, S. H. C. Cherukuri, and N. M. Pindoriya, ‘‘Peer-to-peer energy
+trading in smart grid: Frameworks, implementation methodologies, and
+demonstration projects,’’ Electr. Power Syst. Res., vol. 214, Jan. 2023,
+Art. no. 108907, doi: 10.1016/j.epsr.2022.108907.
+[4] Electric Car Sales, 2012–2024—Charts—Data & Statistics—IEA.
+Accessed: May 7, 2025. [Online]. Available: https://www.iea.org/dataand-statistics/charts/electric-car-sales-2012-2024
+[5] J. Espadinha, P. Baptista, and D. Neves, ‘‘Assessing P2P energy markets
+contribution for 2050 decarbonization goals,’’ Sustain. Cities Soc., vol. 92,
+May 2023, Art. no. 104495, doi: 10.1016/j.scs.2023.104495.
+[6] P. Siano, G. De Marco, A. Rolan, and V. Loia, ‘‘A survey and evaluation of
+the potentials of distributed ledger technology for peer-to-peer transactive
+energy exchanges in local energy markets,’’ IEEE Syst. J., vol. 13, no. 3,
+pp. 3454–3466, Sep. 2019, doi: 10.1109/JSYST.2019.2903172.
+[7] D. Papadaskalopoulos and G. Strbac, ‘‘Decentralized participation of flexible demand in electricity markets—Part I: Market mechanism,’’ IEEE
+Trans. Power Syst., vol. 28, no. 4, pp. 3658–3666, Nov. 2013, doi:
+10.1109/TPWRS.2013.2245686.
+[8] W. Tushar, T. K. Saha, C. Yuen, T. Morstyn, Nahid-Al-Masood, H. V. Poor,
+and R. Bean, ‘‘Grid influenced peer-to-peer energy trading,’’ IEEE
+Trans. Smart Grid, vol. 11, no. 2, pp. 1407–1418, Mar. 2020, doi:
+10.1109/TSG.2019.2937981.
+[9] S. Cui, Y.-W. Wang, and J.-W. Xiao, ‘‘Peer-to-peer energy sharing among smart energy buildings by distributed transaction,’’ IEEE
+Trans. Smart Grid, vol. 10, no. 6, pp. 6491–6501, Nov. 2019, doi:
+10.1109/TSG.2019.2906059.
+19889
+
+S. Seyyedeh-Barhagh, M. Abapour: Robust Optimization Model for Managing Uncertainty in LEM Prices
+
+[10] K. A. Melendez, V. Subramanian, T. K. Das, and C. Kwon, ‘‘Empowering end-use consumers of electricity to aggregate for demand-side
+participation,’’ Appl. Energy, vol. 248, pp. 372–382, Aug. 2019, doi:
+10.1016/j.apenergy.2019.04.092.
+[11] U. J. J. Hahnel, M. Herberz, A. Pena-Bello, D. Parra, and T. Brosch,
+‘‘Becoming prosumer: Revealing trading preferences and decision-making
+strategies in peer-to-peer energy communities,’’ Energy Policy, vol. 137,
+Feb. 2020, Art. no. 111098, doi: 10.1016/j.enpol.2019.111098.
+[12] S. Nguyen, W. Peng, P. Sokolowski, D. Alahakoon, and X. Yu, ‘‘Optimizing rooftop photovoltaic distributed generation with battery storage
+for peer-to-peer energy trading,’’ Appl. Energy, vol. 228, pp. 2567–2580,
+Oct. 2018, doi: 10.1016/j.apenergy.2018.07.042.
+[13] A Three-Stage Stochastic Peer-to-Peer Market Clearing Model With
+Real-Time Reserve Activation | Request PDF. Accessed: May 7, 2025.
+[Online]. Available: https://www.researchgate.net/publication/336796732
+_A_Three-Stage_Stochastic_Peer-to-Peer_Market_Clearing_Model_with
+_Real-Time_Reserve_Activation
+[14] Z. Zhang, R. Li, and F. Li, ‘‘A novel peer-to-peer local electricity market for
+joint trading of energy and uncertainty,’’ IEEE Trans. Smart Grid, vol. 11,
+no. 2, pp. 1205–1215, Mar. 2020, doi: 10.1109/TSG.2019.2933574.
+[15] F. Zhao, Z. Li, D. Wang, and T. Ma, ‘‘Peer-to-peer energy sharing with
+demand-side management for fair revenue distribution and stable grid
+interaction in the photovoltaic community,’’ J. Cleaner Prod., vol. 383,
+Jan. 2023, Art. no. 135271, doi: 10.1016/j.jclepro.2022.135271.
+[16] Y. Xia, Q. Xu, Y. Huang, and P. Du, ‘‘Peer-to-peer energy trading market considering renewable energy uncertainty and participants’ individual
+preferences,’’ Int. J. Electr. Power Energy Syst., vol. 148, Jun. 2023,
+Art. no. 108931, doi: 10.1016/j.ijepes.2022.108931.
+[17] S. Haider, R. E. Z. Rizvi, J. Walewski, and P. Schegner, ‘‘Investigating peer-to-peer power transactions for reducing EV induced network congestion,’’ Energy, vol. 254, Sep. 2022, Art. no. 124317, doi:
+10.1016/j.energy.2022.124317.
+[18] T. D. Hutty, A. Pena-Bello, S. Dong, D. Parra, R. Rothman, and
+S. Brown, ‘‘Peer-to-peer electricity trading as an enabler of increased
+PV and EV ownership,’’ Energy Convers. Manage., vol. 245, Oct. 2021,
+Art. no. 114634, doi: 10.1016/j.enconman.2021.114634.
+[19] G. Belgioioso, W. Ananduta, S. Grammatico, and C. Ocampo-Martinez,
+‘‘Operationally-safe peer-to-peer energy trading in distribution grids: A
+game-theoretic market-clearing mechanism,’’ in Proc. IEEE PES Innov.
+Smart Grid Technol. Conf. Eur. (ISGT-Eur.), Oct. 2022, pp. 1–1, doi:
+10.1109/ISGT-EUROPE54678.2022.9960400.
+[20] Y. Yang, Y. Chen, G. Hu, and C. J. Spanos, ‘‘Optimal network
+charge for peer-to-peer energy trading: A grid perspective,’’ IEEE
+Trans. Power Syst., vol. 38, no. 3, pp. 2398–2410, May 2023, doi:
+10.1109/TPWRS.2022.3185585.
+[21] E. Fernandez, M. J. Hossain, K. Mahmud, M. S. H. Nizami, and M. Kashif,
+‘‘A bi-level optimization-based community energy management system
+for optimal energy sharing and trading among peers,’’ J. Cleaner Prod.,
+vol. 279, Jan. 2021, Art. no. 123254, doi: 10.1016/j.jclepro.2020.123254.
+[22] Y. Zhou and P. D. Lund, ‘‘Peer-to-peer energy sharing and trading
+of renewable energy in smart communities—Trading pricing models,
+decision-making and agent-based collaboration,’’ Renew. Energy, vol. 207,
+pp. 177–193, May 2023, doi: 10.1016/j.renene.2023.02.125.
+[23] S. Seyyedeh-Barhagh, M. Abapour, B. Mohammadi-Ivatloo, and
+M. Shafie-khah, ‘‘Risk-based peer-to-peer energy trading with info-gap
+approach in the presence of electric vehicles,’’ Sustain. Cities Soc., vol. 99,
+Dec. 2023, Art. no. 104948, doi: 10.1016/j.scs.2023.104948.
+[24] X. Liu, X. Chen, T. Jin, Z. Liu, Y. Liu, M. Su, C. Li, and Q. Wu,
+‘‘Network-constrained peer-to-peer energy trading for multiple microgrids
+considering zoning pricing,’’ Int. J. Electr. Power Energy Syst., vol. 147,
+May 2023, Art. no. 108837, doi: 10.1016/j.ijepes.2022.108837.
+[25] L. Wang, Y. Zhang, W. Song, and Q. Li, ‘‘Stochastic cooperative bidding
+strategy for multiple microgrids with peer-to-peer energy trading,’’ IEEE
+Trans. Ind. Informat., vol. 18, no. 3, pp. 1447–1457, Mar. 2022, doi:
+10.1109/TII.2021.3094274.
+[26] K. Zhou, Y. Chu, and R. Hu, ‘‘Energy supply-demand interaction
+model integrating uncertainty forecasting and peer-to-peer energy
+trading,’’ Energy, vol. 285, Dec. 2023, Art. no. 129436, doi:
+10.1016/j.energy.2023.129436.
+[27] Y. Zou, Y. Xu, and J. Li, ‘‘Aggregator-network coordinated peer-topeer multi-energy trading via adaptive robust stochastic optimization,’’
+IEEE Trans. Power Syst., vol. 39, no. 6, pp. 7124–7137, Nov. 2024, doi:
+10.1109/TPWRS.2024.3376808.
+19890
+
+[28] M. Khorasany, A. S. Gazafroudi, R. Razzaghi, T. Morstyn, and
+M. Shafie-khah, ‘‘A framework for participation of prosumers in peerto-peer energy trading and flexibility markets,’’ Appl. Energy, vol. 314,
+May 2022, Art. no. 118907, doi: 10.1016/j.apenergy.2022.118907.
+[29] H. Hou, Z. Wang, B. Zhao, L. Zhang, Y. Shi, C. Xie, Z. Dong, and K. Yu,
+‘‘Distributed optimization for joint peer-to-peer electricity and carbon
+trading among multi-energy microgrids considering renewable generation
+uncertainty,’’ Energy Convers. Econ., vol. 5, no. 2, pp. 116–131, Apr. 2024,
+doi: 10.1049/enc2.12110.
+[30] J. Wu, P. Zhao, L. Li, F. Shi, and B. Li, ‘‘Multi-microgrids distributed peerto-peer energy trading in distribution system considering uncertainty risk,’’
+Int. J. Electr. Power Energy Syst., vol. 152, Oct. 2023, Art. no. 109234, doi:
+10.1016/j.ijepes.2023.109234.
+[31] M. A. Mohamed, A. Hajjiah, K. A. Alnowibet, A. F. Alrasheedi,
+E. M. Awwad, and S. M. Muyeen, ‘‘A secured advanced management
+architecture in peer-to-peer energy trading for multi-microgrid in the
+stochastic environment,’’ IEEE Access, vol. 9, pp. 92083–92100, 2021,
+doi: 10.1109/ACCESS.2021.3092834.
+[32] J. Liu, Y. Zhou, H. Yang, and H. Wu, ‘‘Uncertainty energy planning of
+net-zero energy communities with peer-to-peer energy trading and green
+vehicle storage considering climate changes by 2050 with machine learning methods,’’ Appl. Energy, vol. 321, Sep. 2022, Art. no. 119394, doi:
+10.1016/j.apenergy.2022.119394.
+[33] Y. Jia, C. Wan, W. Cui, Y. Song, and P. Ju, ‘‘Peer-to-peer energy trading using prediction intervals of renewable energy generation,’’ IEEE
+Trans. Smart Grid, vol. 14, no. 2, pp. 1454–1465, Mar. 2023, doi:
+10.1109/TSG.2022.3168150.
+[34] B. P. Numbi and S. J. Malinga, ‘‘Optimal energy cost and economic
+analysis of a residential grid-interactive solar PV system- case of eThekwini municipality in South Africa,’’ Appl. Energy, vol. 186, pp. 28–45,
+Jan. 2017, doi: 10.1016/j.apenergy.2016.10.048.
+[35] S. S. Barhagh, A. M. Shotorbani, B. Mohammadi-Ivatloo, K. Zare,
+and A. Farzamnia, ‘‘Robust operation of microgrid energy system
+under uncertainties and demand response program,’’ Indonesian J.
+Electr. Eng. Comput. Sci., vol. 17, no. 2, p. 1005, Feb. 2020, doi:
+10.11591/ijeecs.v17.i2.pp1005-1013.
+[36] J. Jannati and D. Nazarpour, ‘‘Optimal energy management of the smart
+parking lot under demand response program in the presence of the electrolyser and fuel cell as hydrogen storage system,’’ Energy Convers. Manage.,
+vol. 138, pp. 659–669, Apr. 2017, doi: 10.1016/j.enconman.2017.02.030.
+[37] M. Vahid-Ghavidel, M. S. Javadi, S. F. Santos, M. Gough, M. Shafie-Khah,
+and J. P. S. Catalão, ‘‘Energy storage system impact on the operation of
+a demand response aggregator,’’ J. Energy Storage, vol. 64, Aug. 2023,
+Art. no. 107222, doi: 10.1016/j.est.2023.107222.
+[38] GAMS—Cutting Edge Modeling. Accessed: May 11, 2025. [Online].
+Available: https://www.gams.com/
+
+SAHAR SEYYEDEH-BARHAGH was born in
+Tabriz, Iran. She received the B.Sc. degree in electrical engineering-power systems from Azarbaijan
+Shahid Madani University, Tabriz, in 2015, and
+the degree in electrical engineering-power systems
+from the University of Tabriz, Tabriz, in 2018. Her
+research interests include optimization of power
+systems, risk management, and electricity markets.
+
+MEHDI ABAPOUR (Member, IEEE) received the
+B.Sc. and M.Sc. degrees in electrical engineering from the University of Tabriz, Tabriz, Iran, in
+2005 and 2007, respectively, and the Ph.D. degree
+in electrical engineering from Tarbiat Modares
+University, Tehran, Iran, in 2013. He is currently
+a Full Professor with the Faculty of Electrical and
+Computer Engineering, University of Tabriz. His
+research interests include reliability, energy management, demand response, and power electronics.
+
+VOLUME 14, 2026
+
+

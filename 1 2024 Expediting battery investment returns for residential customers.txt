@@ -1,0 +1,1798 @@
+Energy 306 (2024) 132458
+
+Contents lists available at ScienceDirect
+
+Energy
+journal homepage: www.elsevier.com/locate/energy
+
+Expediting battery investment returns for residential customers utilising
+spot price-aware local energy exchanges
+Liaqat Ali a , M. Imran Azim b,*, Jan Peters c , Ehsan Pashajavid a
+a
+
+Curtin University, Bentley Campus, WA 6102, Australia
+Monash University, Clayton, VIC, 3800, Australia
+c
+University of Technology and Economics, Berlin, 10318, Germany
+b
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Handling editor: Henrik Lund
+
+This paper presents a local energy exchange mechanism to benefit residential customers and retailers under
+variable wholesale market spot prices. To do so, a peer-to-peer (P2P) trading-enabled local energy market (LEM)
+is proposed to facilitate frequent energy transactions among participants. The proposed LEM mechanism considers market operational constraints and maximises electricity cost reductions. Further, the proposed LEM
+optimises the customers’ investment return for battery energy storage systems (BESSs) and minimises retailers’
+financial losses during higher spot prices in the wholesale market. Finally, a case study is demonstrated using
+real-world Australian data in which P2P trading is performed between interested buyers and sellers. Two scenarios with high and low wholesale market spot prices are analysed comprehensively considering five metrics
+such as solar-to-spot (STS); solar-to-load (STL); forward buy contract (FBC)-to-load (FBC-L); spot-to-load (Short);
+and FBC-to-spot (Long). The simulation results reveal that the customers reap substantial benefits from the
+proposed LEM in contrast with business-as-usual (BAU), allowing them to expedite BESS investment returns.
+Also, the proposed LEM helps a retailer decrease the effect of higher spot prices by reducing its unexpected
+financial losses while improving self-consumption and self-sufficiency in the local energy network.
+
+Keywords:
+Local energy market
+Peer-to-peer trading
+Battery investment returns
+Spot prices
+Retailer
+
+1. Introduction
+The advent of the local energy market (LEM) model has encouraged
+consumers, retailers, and network operators to refine the existing poolempowered demand and supply matching mechanism to facilitate them
+buying and selling clean energy at their favoured prices at electricity
+distribution levels [1]. This can also lead to the flow of clean energy,
+mobilised by distributed energy resources (DERs), to the electricity
+network, following respective operational constraints. Due to its flexible
+and decentralised functioning facets, LEM is a potential substitute for
+the feed-in-tariff (FiT) scheme [2]. Any unmet volumes in the LEM can
+also be fed back into the electricity network via FiT. Some manifest
+upsides of LEM include bilateral settlements among customers, adjustable market operation, protected and unequivocal transaction execution, incorporating the interests of retailers and operators, electricity
+expense reduction, export/import abatement to/from the distribution
+grid, and strengthening social bonding among customers [3].
+Peer-to-peer (P2P) trading is one of the incredible attributes of a LEM
+that essentially permits consumers (customers without local generation)
+
+and prosumers (customers with local generation) to negotiate their energy quantities and prices in a decentralised fashion, incorporating retailers and network operators [4]. Since P2P energy trading in the LEM is
+governed by exchanging necessary information to organise the trading
+platform setup and decision-forming strategy, a decentralised,
+privacy-preserving, and protected information-sharing platform can
+find its application in the framework, as discussed in Ref. [5].
+Electricity cost savings is one of the primary focuses of P2P trading
+decisions, as it can motivate customers to join the LEM framework [6].
+This fact is admitted in Ref. [7], which proposes a robust P2P strategic
+mechanism to guarantee a reduction in electricity costs. The arrangement of P2P trading prices between time-of-use (ToU) and FiT rates to
+benefit LEM customers significantly is suggested in Ref. [8]. A detailed
+understanding of the pricing model to arrange P2P transactions is
+demonstrated in Ref. [9]. Innovative decision-making, a P2P trading
+pricing model, and agent-based collaboration are reported in Ref. [10].
+A similar model is also proposed in Ref. [11], considering different
+market structures and tariff systems. Besides, a cost-benefit analysis of
+participating customers is conducted in Ref. [12] to promote P2P
+
+* Corresponding author.
+E-mail address: imran.azim@monash.edu (M.I. Azim).
+https://doi.org/10.1016/j.energy.2024.132458
+Received 13 December 2023; Received in revised form 28 May 2024; Accepted 13 July 2024
+Available online 17 July 2024
+0360-5442/© 2024 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+c. Technical and infrastructure issues
+
+exchanges. A P2P market operating strategy is proposed in Ref. [13] to
+organise cost reduction and profit maximisation for customers. A predictive optimisation-assisted P2P trading decision technique is also
+developed in Ref. [14] to reduce the energy bills of LEM customers by
+formulating P2P trading. Finally, the authors in Ref. [15] assess the cost
+reduction through P2P trading from a social point of view.
+The adoption of battery energy storage systems (BESSs) in LEM
+models is also noticeable to bring flexibility and spur the proliferation of
+electricity cost savings. To this end, several studies also incorporate
+BESSs while formulating local energy exchanges. For instance, combined solar photovoltaic (PV) system- and BESS-managed P2P trading is
+proposed in Ref. [16]. A price mechanism, by dint of robust optimisation, is developed in Ref. [17] to organise P2P trading. The beneficial
+aspect of using BESS as a backup supply during P2P trading is also
+investigated in Ref. [18]. In addition, the authors in Ref. [19] formulate
+a trading market embedded with a shared BESS to support P2P trading.
+A similar market is proposed in Ref. [20], complying with the transactive market policy. A shared BESS is also utilised in Ref. [21] to design
+a bargaining-based P2P trading model. Finally, multi-stage BESS-incorporated P2P energy management is proposed in Ref. [22], which cuts
+down on the electricity costs of LEM customers.
+Some recent studies have also discussed the scope of integrating
+retailers and network operators in the LEM while P2P trading choices
+are executed to buy and sell energy. Such schemes are vital because they
+are an essential part of the energy market, and thus, a practical LEM
+model should consider their financial interests [23]. The authors in
+Ref. [24] propose a win-win LEM strategy to benefit customers, retailers,
+and network operators exercising P2P energy exchanges. Aggregated
+prosumers-based retailer transition is proposed in Ref. [25] for futuristic
+trading markets. A utility service provider-aware P2P trading strategy is
+structured in Ref. [26], considering market elasticity. Regulated
+utility-governed P2P trading is developed on a cloud-based platform in
+Ref. [27] by ensuring transparency. A dual-stage P2P trading model is
+designed in Ref. [28] with the participation of the utility. Finally, an
+active network operator’s management-integrated P2P trading is
+modelled in Ref. [29].
+
+Need for bidirectional flows: LEMs require electricity and information to flow in both directions, unlike the current unidirectional flow
+model, necessitating significant changes to network operations and
+infrastructure.
+Immature and costly technologies: The technologies essential for
+LEMs, such as smart meters and other DERs, are still developing and
+expensive to deploy on a large scale.
+Interoperability and communication: Ensuring that different systems can work together seamlessly and managing numerous communication points are critical challenges that demand a robust information
+and communication technology (ICT) infrastructure.
+d. Integration with Existing Markets
+Integrating LEMs with existing market structures, such as wholesale
+and ancillary services markets, is complex. This involves harmonising
+the decentralised nature of LEMs with the centralised operations of
+wholesale markets, enabling LEMs to provide necessary support services
+like frequency regulation and dealing with the variability of renewable
+energy sources. Additionally, there are concerns about market power
+imbalances and potential abuses, as well as the need for extensive coordination among various stakeholders, including grid operators, regulatory bodies, market participants, and technology providers, to ensure
+smooth operations and regulatory adherence.
+e. Social and Behavioural Barriers
+Resistance from end-users: The success of LEMs depends heavily
+on active participation from end-users, many of whom are resistant to
+change due to distrust or a lack of awareness.
+Community involvement: Securing the support of local stakeholders and communities is vital for overcoming resistance and ensuring
+the successful implementation of LEMs.
+f. Data Privacy and Security
+
+1.1. Limitation and drawbacks
+
+The deployment of LEMs involves substantial data exchange among
+various participants, including consumers, producers, and grid operators. This exchange includes sensitive information such as energy usage
+patterns, pricing details, personal consumer information, and grid
+operation data. This data’s large volume and sensitivity create significant concerns regarding data privacy and cybersecurity. These challenges underscore the complexity of implementing LEMs, necessitating
+coordinated efforts across regulatory, technical, economic, and social
+dimensions to achieve successful and broad adoption. Addressing such
+gaps properly requires conducting extensive research studies.
+
+Several limitations and drawbacks of current approaches are highlighted in the existing literature, as reported in Refs. [30–38], in regard
+to implementing and operating LEMs. The key limitations and drawbacks are outlined as follows.
+a. Economic Barriers
+High initial costs: The financial outlay required for the technologies
+enabling end-user participation in LEMs is substantial, primarily due to
+their current immaturity.
+Market limitations: High initial capital requirements, perceived
+risks, and low profitability margins present significant economic obstacles to the development of LEMs.
+
+1.2. Identified approaches and mechanisms
+Several approaches and mechanisms based on recent studies are
+summarised current research and practices as follows [39–44].
+
+b. Regulatory and policy challenges
+
+a. Incentive Programs
+
+Lack of specific legislation: There is a notable absence of legislation and regulatory frameworks tailored to the roles and activities of
+distribution system operators (DSOs) in the context of LEMs, which
+poses significant implementation hurdles.
+Misalignment with existing frameworks: Current regulatory systems are primarily designed for large, centralised electricity providers,
+making it difficult to adapt them to the decentralised nature of LEMs.
+Adjusting these frameworks is a complex and lengthy process.
+Unclear roles and responsibilities: The present regulatory landscape does not clearly define the roles and responsibilities of the various
+stakeholders, leading to uncertainty and increased risk.
+
+Demand Response Programs: Customers are incentivised to reduce
+or shift their energy usage during peak times, receiving financial benefits or credits in return.
+Renewable Energy Incentives: Subsidies or rebates for installing
+renewable energy systems, which can help lower-income customers
+afford these technologies and participate more fully in the LEM.
+b. Dynamic Pricing Models
+ToU Pricing: Encourages customers to shift their consumption to off2
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+Fig. 1. Proposed LEM trading model with set of customers.
+
+1.3. Contributions
+
+peak times when electricity is cheaper, benefiting those who can be
+flexible with their energy usage.
+Real-time Pricing (RTP): Prices are adjusted based on real-time
+demand and supply, allowing consumers to benefit from lower prices
+during periods of low demand.
+P2P Trading Platforms: These platforms enable direct energy
+trading between consumers and prosumers, allowing those with excess
+generation capacity (like rooftop solar PV panels) to sell electricity to
+others, promoting equitable financial benefits.
+Aggregation Services (Virtual Power Plants): Aggregate the capacity of multiple small-scale energy producers and consumers, allowing
+them to participate in the energy market as a single entity, thus sharing
+the economic benefits more evenly among participants.
+
+Despite the significance of the above-mentioned studies, they are
+either customer-centric (mostly) or retailer/network operator-centric
+(comparatively few), which opens the room for possible extension. As
+such, this paper proposes a spot price-aware local energy exchange
+model to simultaneously integrate customers, retailers, and network
+operators in the LEM. This is especially critical in nations like Australia,
+where the wholesale national electricity market (NEM) spot prices have
+experienced extreme volatility in recent years [45], which could hamper
+retailers’ ability to make profits from customers and has led to many
+cases of insolvencies, specifically amongst smaller retailers, thereby
+reducing competition [46]. In addition, this paper assesses the LEM by
+taking BESS investment returns into account to make sure that the P2P
+uses of BESS do not degrade their life cycles contrasting to
+business-as-usual (BAU). To this end, the primary contributions of this
+paper are listed as follows.
+
+c. Equity-Based Participation Models
+Tiered Participation Levels: Different entry points for participation
+are based on customer profiles, ensuring that low-income or less technologically equipped households can still benefit from the LEM.
+Community Energy Projects: Collective ownership models where a
+community invests in shared renewable energy projects and distributes
+the benefits among all members, including those without their own
+energy assets.
+
+● A LEM framework is developed to facilitate P2P trading amongst
+customers in the presence of a network operator, and a retailer with
+the purpose of providing cost savings to customers without jeopardising stakeholders’ margins.
+● The impact of the proposed trading scheme on the retailer’s energy
+exchange in an unstable wholesale market is also examined. The
+energy exchange of the retailer is rationalised based on five metrics
+to mimic the Australian market strategy, which consist of solar-tospot (STS); solar-to-load (STL); forward buy contract (FBC)-to-load
+(FBC-L); spot-to-load (Short); and FBC-to-spot (Long).
+● Finally, a thorough analysis is conducted to figure out the economic
+performance of the LEM with regard to expediting battery investment returns compared to BAU.
+
+d. Policy and Regulatory Support
+Regulatory Measures: Policies that mandate fair access to LEMs and
+require market operators to design mechanisms that ensure equity, such
+as minimum participation quotas for low-income households or subsidised rates for vulnerable populations.
+e. Technological Solutions
+
+The remaining part of this paper is organised as follows. The system
+model of the LEM is briefly described in Section 2. Energy procurement
+scenarios for retailers and BESS investment metrics are reviewed in
+Section 3 and Section 4, respectively. The market solution methodology
+is formulated in the following section (Section 5). Section 6 illustrates
+the results and analysis. Finally, the paper is concluded in Section 7.
+
+Smart Metering and Advanced Analytics: Enable precise tracking
+of consumption and generation, allowing for tailored pricing and incentives that reflect individual customer profiles and usage patterns.
+Blockchain Technology: Ensures transparent and secure transactions within the LEM, enabling trust and equitable benefit distribution
+through immutable and verifiable records.
+3
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+where all the customers are connected through two feeders under a
+single distribution substation.
+Furthermore, the following assumptions are used to analyse the
+economic performance of solar PV and BESS: 3.3 kW/12 kWh BESS with
+an investment cost of AU$13,000, 6 kW solar PV systems at the cost of
+AU$5,500, 17 kWh daily loads, 24.78 % cycle and calendar degradation
+of BESS at a 12 year period, 2 % annual rise of the grid electricity buy
+rate, and battery installation at an AU$3,500 rebate.
+2.1.2. P2P trading framework
+An illustration of P2P energy exchange, for a given trading slot,
+among a consumer and two prosumers using such a market platform is
+shown in Fig. 2. Records of P2P transactions and data information are
+kept permanently on the platform and can be retrieved at any time to
+finalise financial deals. LEM enables customers to declare their sell and
+buy offers repeatedly. For sellers and buyers to attain monetary gains,
+they are advised to announce their energy exchange rates between FiT
+and ToU prices. Also, customers are assumed to be provided with the
+opportunity to hold their preferred trading rates before deciding to
+replace them with updated ones. The energy exchange can be executed
+in two steps: 1) trading with solar PV customers and consumers; 2)
+trading with solar PV customers and BESS customers (if excess generation) or trading with consumers and BESS customers (if unmet demand).
+Note that five sequential processes can be involved while using the energy produced by a solar PV system: 1) feeding behind-the-meter demand; 2) charging behind-the-meter BESS; 3) feeding front-of-meter of
+other customers’ demand from excess solar; 4) charging front-of-meter
+other customers’ BESSs; and 5) selling back to the grid. Nevertheless,
+all customers (both solar PV customers and consumers) are assumed to
+be registered with a single retailer, who is assumed to be connected with
+the network operator to comply with electricity distribution rules and
+regulations for billing purposes.
+
+Fig. 2. An example of P2P trading in the LEM.
+
+2. System model
+In the proposed model, PV systems and residential BESSs are utilised
+as the primary sources of renewable energy. Solar PV panels were
+chosen for their efficiency in converting sunlight into electricity, making
+them an ideal solution for residential energy generation. These PV systems were installed in residential settings to harness solar power
+throughout the day. Additionally, we integrated residential BESSs to
+complement the solar PVs. These BESSs store excess energy generated
+during peak sunlight hours, allowing for energy use during non-sunny
+periods or peak demand times. This combination not only enhances
+energy self-sufficiency for residential customers but also facilitates energy trading by enabling the storage and subsequent distribution of
+surplus energy. The use of solar PVs and residential batteries in our
+study highlights a sustainable approach to energy management, reduces
+reliance on non-renewable energy sources, and supports the transition to
+a more resilient and decentralised energy grid.
+
+2.1.3. Tariff parameters for trading
+The LEM model’s tariff structure includes energy price, FiT, network
+fee, renewable energy taxes, and retailer margin in the Australian
+context [48]. Table 1 displays the tariff rates (ToU) for the network
+operator, retailer, cost of the LEM platform, and energy sell and buy
+prices for both BAU and LEM. The P2P transaction charge ensures that
+participants gain the most possible benefit by being applied each time
+P2P trading is done. In BAU, the energy price is assumed to be fixed,
+while in P2P trading, the price varies and is determined by the sell and
+buy attempts made by each customer. Table I displays a P2P energy
+trading example with tariff rates. The LEM platform charges 0.75 c/kWh
+as an operational cost.
+ToU tariffs are applied to maximise the advantages of P2P trading. In
+BAU, the energy price is assumed to be fixed, while in P2P trading, the
+energy price varies and is determined by the selling and buying orders
+made by the customers. Specially, in the LEM, the tariff’s energy price
+component is optimised to lower the per-unit cost, allowing customers to
+profit financially without jeopardising the margins of the retailer and
+the network operator. Although the LEM platform involves P2P transaction charge, the total cost is always lower than in BAU. Because of the
+soaring energy price relative to the lower FiT rate during peak and
+shoulder times, LEM customers are expected to receive greater benefits.
+Upon the completion of all transactions in the LEM, the retailer is
+notified to settle periodic billings.
+
+2.1. Model key assumptions & parameters
+2.1.1. Trading group assumptions
+The LEM system contains consumers, prosumers, a retailer, and a
+network operator. Energy demand, solar PV production, and storage
+status of LEM customers are assumed to be forecasted and continuously
+tracked by a forward-facing market platform. The system comprises a set
+of 100 residential customers, comprising 60 consumers, 20 prosumers
+with solar PV systems and BESSs, and 20 prosumers with only solar PV
+systems. The trading mechanism uses the imposed tariff rates of a
+retailer and is assumed to be managed by a network operator under a
+distribution substation. The case study, demonstrated in Section VI,
+considers real load and solar PV profiles for all 100 customers over a
+course of 24 h. The meter import and export data utilised for the
+simulation is sourced from real-world prosumers and consumers. The
+data set has been published by AusGrid, the distribution network
+operator in Sydney and other parts of New South Wales, Australia [47].
+This approach ensures the simulation is based on realistic energy requirements for Australian residents and actual rooftop solar PV generation curves in New South Wales. The system model is shown in Fig. 1,
+
+3. Energy procurement of retailers
+Retailers can be at risk of wholesale price increases due to inconsistent evening peak demand brought on by household consumption and
+the decreasing output of solar PV. As more high-power and smart devices are electrified, it is getting increasingly challenging to estimate
+residential demand. Retailers must consequently buy energy on the spot
+market to handle peak loads, which can have undesirable results as
+
+Fig. 3. Business as usual energy supply process in the NEM.
+4
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+swap, a fixed strike price is agreed upon, usually the estimated middle
+value of spot prices. In this instance, if the wholesale spot price outpaces
+the CFD strike price, the difference is compensated by the generator to
+the retailer. If the wholesale spot price is lower than the CFD strike price,
+the retailer recommends the difference to the generator. The retailer
+agrees with customers to supply energy at a fixed price and to buy the
+entire energy exported by the DERs at an invariable FiT rate [49].
+Uncertainty in residential demand can result in periods of inaccurate
+hedging, which are classified as short and long periods. Short periods
+occur when not enough energy has not been procured in FBCs with a
+view to satisfying the actual demand, whereas lengthy periods happen
+when the retailer has bought too much energy. To handle fluctuations in
+spot prices, most of the energy is bought through FBCs. The remaining
+energy is bought and sold at the wholesale spot market, which can
+experience high prices during any investigation period. In addition, a
+retailer also buys energy at a FiT rate and sells it to customers at an
+increased value. The return of the FiT is typically passed on to prosumers. Nonetheless, with high energy prices and low FiT rates, a
+retailer attains monetary gains from buying at FiT and selling at higher
+prices to consumers [50].
+Five different metrics have been defined in the scope of this paper to
+analyse the retailer’s energy trading position to capture the possible
+impacts of volatile and elevated spot prices. The study cases are as follows: a) STL: Solar PV energy bought at the FiT rate and sold within the
+community at the ToU rate; b) STS: Solar PV energy bought at the FiT
+rate and sold to the spot market if the community does not consume the
+energy; c) FBC-L: energy locked-in under FBCs, and sold at the ToU rate
+to LEM customers; d) Long: energy locked-in under FBCs, and sold to the
+wholesale spot market if the community does not consume as much
+energy as predicted; e) Short: Energy is to be bought from the spot
+market to meet part of community demand that could not be covered by
+FBCs. The financial impact of the different positions is presented in
+Table 2. Together, these five metrics and their scenarios summarise all
+expenses and incomes the retailer has from trading energy. The impact
+of the LEM is specifically strong on the long and short periods which can
+have a substantial financial impact on the retailer depending on the
+applicable spot prices.
+This paper considers the performance of the retailer’s hedging strategies in wholesale markets over two seven-day periods before the
+beginning of elevated prices in Q1 2022 and during price fluctuations
+that the NEM experienced in Winter 2022 before the NEM suspension on
+June 15, 2022 [51]. Using the average of quarter 1 (Q1) prices from
+AEMO’s quarterly energy dynamics (QED), forward purchasing contract
+prices are considered. AEMO has released spot prices for New South
+Wales for the periods under investigation. Spot prices for a week from
+March 12, 2022 to March 19, 2022 are utilised for modelling the first
+study under low spot prices. The medians of the studied futures and spot
+prices are 94.8 AU$/MWh and 131 AU$/MWh, respectively. Spot prices
+for a week from June 7, 2022 to June 13, 2022, before the NEM suspension, are utilised for modelling the study under high spot prices. The
+entire of quarter 2 (Q2) 2022 experienced an elevation in futures prices.
+The medians of the studied futures and spot prices are 202 AU$/MWh
+and 518.6 AU$/MWh, respectively [52].
+
+Table 1
+Tariff rates.
+Retailer [48]
+Daily supply (c/day)
+FiT (c/kWh)
+Network fee (c/kWh) [26]
+RET (c/kWh) [28]
+Retailer margin (c/kWh) [28]
+Platform cost (c/kWh)
+Energy/P2P price (c/kWh)
+Tariff (c/kWh)
+
+Peak (4pm–8pm)
+
+Off-peak (8pm–4pm)
+
+BAU
+
+LEM
+
+BAU
+
+LEM
+
+106.97
+5.00
+21.30
+1.50
+1.50
+0
+16.55
+41.10
+
+21.30
+1.50
+1.50
+0.75
+14.98
+40.28
+
+7.28
+1.50
+1.00
+0
+11.17
+20.95
+
+7.28
+1.50
+1.00
+0.75
+10.00
+20.53
+
+Table 2
+Financial positions of retailer.
+Metrics
+
+Buying
+price
+
+Selling
+price
+
+Scenario
+
+Financial
+Impact
+
+Comment
+
+STL
+
+FiT
+
+Usual case
+
+FiT
+
+FiT lower
+than grid buy
+rate
+Spot price
+lower than
+FiT (STS
+(Low Spot))
+
+Positive
+
+STS
+
+Grid
+buy
+rate
+Spot
+price
+
+Negative
+
+Spot price
+higher than
+FiT (STS
+(High Spot))
+FBC price
+higher than
+grid buy rate
+(FBC-L (High
+FBC))
+FBC price
+lower than
+grid buy rate
+(FBC-L (Low
+FBC))
+Spot price
+higher than
+grid buy rate
+(Short (High
+Spot))
+Spot price
+lower than
+grid buy rate
+(Short (Low
+Spot))
+Spot price
+lower than
+FBC price
+(Long (Low
+Spot))
+Spot price
+higher than
+FBC price
+(Long (High
+Spot))
+
+Positive
+
+Frequent, as low
+spot prices
+coincide with
+high solar
+surplus
+Infrequent as
+spot price mostly
+low when solar
+surplus available
+Infrequent, FBC
+prices are
+normally lower
+than grid buy
+rates
+Usual case
+
+FBC-L
+
+Short
+
+Long
+
+FBC
+Price
+
+Spot
+Price
+
+FBC
+Price
+
+Grid
+buy
+rate
+
+Grid
+buy
+rate
+
+Spot
+price
+
+Negative
+
+Positive
+
+Negative
+
+Frequent, as high
+spot prices often
+coincide with
+high demand
+
+Positive
+
+Less frequent, as
+low spot prices
+rarely coincide
+with high
+demand
+Frequent, as low
+spot prices often
+coincide with
+low demand
+
+Negative
+
+Positive
+
+Infrequent, as
+high spot prices
+rarely coincide
+with low demand
+
+4. BESS investment metrics
+
+experienced during Q2 2022 in the Australian NEM. The high spot prices
+during this period resulted from several important reasons, including
+unpredicted demand caused by cold temperatures, reduced fossil fuelbased generation, high fuel prices, interconnection insufficiency, and
+occasionally dropped renewable generations. Typically, retailers acquire most of their energy from generators through FBCs and act as a
+mediator between generators and consumers, as displayed in Fig. 3. The
+wholesale energy market serves as an alternative option in order to
+harmonise any unexpected export or import of energy that deviates from
+the forecasted volume. The retailer and generator enter into a contract
+for difference (CFD), referring to either a cap or swap contract. CFD
+creates price stability over the contract period for both parties. Under a
+
+BESS forms an integral part of the LEM, unlocking flexibility in
+supply and demand. Their ability to be remotely controlled and react to
+changes within milliseconds enables LEM operators to balance demand
+and supply effectively whilst increasing the use of local renewable energy. Challenges associated with their integration can be experienced
+through technological hurdles such as different communication protocols used by different BESS manufactures and LEM platform operators,
+as well as the economic viability of BESS. In this paper, the profitability
+of residential BESS investments is determined using four different metrics of capital budgeting, namely the internal rate of return (IRR), net
+5
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+present value (NPV), payback period (PBP), and return on investment
+(ROI) [53–56]. The definitions are as follows.
+
+s.t.: price, power, BESS, and retailer constraints, as illustrated in (9-31)
+buy
+
+where Cn (|T|) and Csell
+n (|T|) are defined as:
+
+4.1. Net present value (NPV)
+The net present cost of a BESS refers to the present value or the
+distinctness between all the costs and revenues across the lifetime of a
+BESS. The NPV of the investment considering the BESS’s lifetime is
+determined as follows:
+NPV =
+
+T
+∑
+
+Ct
+t − C0 , ∀t ∈ T
+t=1 (1 + t)
+
+Cbuy
+n (|T|) =
+
+|T| (
+)
+∑
+buy
+cbuy
+n,t × Pn,t × Δt ; ∀n ∈ N
+
+(4)
+
+Csell
+n (|T|) =
+
+|T| (
+)
+∑
+sell
+csell
+n,t × Pn,t × Δt ; ∀n ∈ N
+
+(5)
+
+t=1
+
+t=1
+
+buy
+
+In (4) and (5), cn,t ,n ∈ Y, and csell
+n,t ,n ∈ E, symbolise unit trading costs —
+expressed in c/kWh. Besides, the buyers’ and sellers’ sets are indicated
+by Y⊂N and E⊂N, respectively. In addition, purchasing and selling
+
+(1)
+
+where Ct is the cash flow over the course of t, and C0 is the commencing
+investment. The discount rate i is assumed to be 10 %. The cash flow Ct
+comprises the cost of operations and maintenance, BESS charging from
+P2P trading, opportunity selling FiT, the income by BESS to LEM discharging, and the own load offsetting.
+
+buy
+
+amounts are represented by Pn,t , n ∈ Y, and Psell
+n,t , n ∈ E, respectively.
+These are computed for each time slot t ∈ T in (6) and (7), respectively.
+dis(a)
+lo
+PV
++ Pcha(b)
+; ∀n ∈ Y, ∀t ∈ T
+Pbuy
+n,t
+n,t = Pn,t − Pn,t − Pn,t
+cha(a)
+
+PV
+lo
+Psell
+n,t = Pn,t − Pn,t − Pn,t
+
+4.2. Internal rate of return (IRR)
+
+(6)
+
+dis(b)
+
++ Pn,t ; ∀n ∈ E, ∀t ∈ T
+
+(7)
+
+PV
+where Plo
+n,t and Pn,t indicate load demand and PV power of customer
+
+The discount rate, which causes a void (zero) NPV after the BESS has
+reached the end of its lifetime, is called the IRR. The IRR is calculated by
+setting the NPV to zero and solving the discount rate, i.
+
+PV
+PV
+lo
+n ∈ N. In (6), Plo
+n,t > Pn,t ,∀t ∈ T. In contrast, Pn,t > Pn,t , ∀t ∈ T in (7). SelfBESS-charged power and peer BESS-charged power are symbolised by
+cha(o)
+
+cha(p)
+
+dis(a)
+
+dis(b)
+
+Pn,t
+and Pn,t , respectively. Whereas Pn,t and Pn,t refer to self
+BESS-discharged power and peer BESS-discharged power, respectively.
+
+4.3. BESS payback period (PBP)
+
+5.1. Trading price constraints
+
+PBP refers to the period necessary to recoup the initial cash investment made for BESS.
+
+fit
+
+Let cn,t and ctou
+n,t — both are expressed in c/kWh — be FiT and ToU
+
+4.4. Return on investment (ROI)
+
+fit
+
+tou
+prices respectively, where cn,t < ctou
+n,t . Note that cn,t comprises energy
+eng
+cn,t ,
+
+nop
+price
+retailer margin cret
+n,t , network operator margin cn,t , and
+tar
+renewable energy price cn,t (if applicable), such that:
+
+ROI for BESS is calculated by subtracting the ongoing and initial
+investment costs from the cash inflows expected over BESS’s lifetime.
+The resulting figure is then divided by the initial investment. In this
+context, each customer is indexed by n, where N represents the entire set
+of customers.
+xbat − cbat
+ROIn = n bat n , ∀n ∈ N
+cn
+
+eng
+ret
+nop
+tar
+ctou
+n,t = cn,t + cn,t + cn,t + cn,t ; ∀n ∈ N, ∀t ∈ T
+
+(8)
+
+These ToU cost components are paid by each LEM customer n ∈ N as
+
+sell
+per BAU. Now, cbuy
+n,t and cn,t are constrained in the LEM as described in (9)
+and (10) to benefit both sellers and buyers at each time slot t ∈ T.
+
+(2)
+
+eng
+tou
+cbuy
+n,t < cn,t < cn,t ; ∀n ∈ N, ∀t ∈ T
+
+bat
+where xbat
+n is the saving throughout the lifetime of a BESS, and cn is the
+BESS cost, (e.g, capital and operational expenditures) incurred for each
+customer n ∈ N.
+
+(9)
+
+fit
+csell
+n,t > cn,t ; ∀n ∈ N, ∀t ∈ T
+
+(10)
+
+In order to incorporate the retailer and network operator in the LEM,
+
+5. Proposed trading methodology
+
+ret(l)
+
+their LEM margins — denoted by cn,t
+
+nop(l)
+
+and cn,t
+
+, respectively — should
+
+nop
+also be equal to/more than BAU margins cret
+n,t and cn,t , respectively, such
+
+The primary goal of the proposed LEM is to motivate residential
+customers by adjusting the prices for buying and selling energy, which
+will enable them to increase their return on investment. At the same
+time, the system helps a retailer to minimise its financial losses in the
+face of fluctuating spot prices in the market. It should be noted that
+variable spot prices during certain periods can force retailers to buy
+energy from the wholesale electricity market at a high rate, while still
+selling to residential customers at the same fixed prices, resulting in
+serious financial losses. The buying and selling costs of each LEM
+
+that:
+ret(l)
+
+cn,t ≥ cret
+n,t ; ∀n ∈ N, ∀t ∈ T
+
+(11)
+
+nop(l)
+
+(12)
+
+cn,t
+
+≥ cnop
+n,t ; ∀n ∈ N, ∀t ∈ T
+
+5.2. Quantity trading constraints
+buy(max)
+
+buy
+
+Let Pt
+
+customer n ∈ N for a given period |T| are given by Cn (|T|) and Csell
+n (|T|),
+respectively. The ROI for |T| is denoted by ROIn (l, |T|). Also, let’s
+consider Lret (l, |T|) be the financial losses of a retailer under a volatile
+spot price in the electricity market, which is the difference between the
+retailer’s total buying cost Cbuy− ret(tot) (l, |T|) and total selling cost
+Csell− ret(tot) (l, |T|). Nevertheless, the objective function is expressed as
+follows:
+{ sell
+}
+ret
+Cn (|T|) − Cbuy
+(3)
+n (|T|) + {ROIn (l, |T|)} − {L (l, |T|)} ; ∀n ∈ N
+
+sell(min)
+
+and Pt
+
+be maximum buying and selling power
+buy
+
+limits defined for each time slot t ∈ T in the LEM. As such, Pn,t and Psell
+n,t of
+each LEM customer n ∈ N are bounded as follows:
+buy(max)
+
+Pbuy
+n,t ≤ Pt
+
+; ∀n ∈ N, ∀t ∈ T
+
+(13)
+
+sell(max)
+Psell
+; ∀n ∈ N, ∀t ∈ T
+n,t ≤ Pt
+
+(14)
+
+For a given time slot t ∈ T, buying and selling amounts of LEM are
+matched in (15). Any unmet amount is settled at either ToU price
+6
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+Fig. 4. a) Self sufficiency and b) self-consumption of LEM.
+
+(greater buying amount) or FiT price (greater selling amount) outside
+the LEM. The outside LEM settlements are also abided by the total
+buy(tot)
+
+buying and selling market amounts — signified by Pt
+as captured in (16) and (17), respectively.
+|Y|
+∑
+n=a
+
+Pbuy
+n,t =
+
+( |Y|
+∑
+n=a
+
+( |Y|
+∑
+n=a
+
+|E|
+∑
+n=a
+
+Pbuy
+n,t −
+
+Psell
+n,t −
+
+Psell
+n,t ; ∀t ∈ T
+
+|E|
+∑
+n=a
+|E|
+∑
+n=a
+
+sell(tot)
+
+and Pt
+
+dis
+respectively. Besides, Pdis
+n,t (b) is limited by peer-discharging rate Mn,t and
+dis(ca)
+
+(15)
+
+)
+Psell
+n,t
+
+buy(tot)
+
+< Pt
+
+; ∀t ∈ T
+
+(16)
+
+)
+Pbuy
+n,t
+
+sell(tot)
+
+< Pt
+
+; ∀t ∈ T
+
+(17)
+
+fncha and fndis indicate BESS charging and discharging efficiencies,
+cha(max)
+
+and Mn
+
+be minimum and maximum
+dis(min)
+Mn
+
+dis(max)
+Mn
+
+BESS charging capacities, respectively. Also,
+and
+represent minimum and maximum BESS discharging capacities,
+respectively. Self-BESS constraints are as demonstrated in (18)-(21):
+))
+(( dis
+))
+( (
+Pn,t (a) × Δt
+Sn,t = Sn,t− 1 + fncha Pcha
+; ∀n ∈ N, ∀t ∈ T
+−
+n,t (a) × Δt
+fndis
+max
+Smin
+; ∀n ∈ N, ∀t ∈ T
+n ≤ Sn,t ≤ Sn
+
+(19)
+
+(
+)
+cha(max)
+Mcha(min)
+≤ Pcha
+n
+n,t (a) × Δt ≤ Mn
+
+(20)
+
+(
+)
+dis(max)
+Mdis(min)
+≤ Pdis
+; ∀n ∈ N, ∀t ∈ T
+n
+n,t (a) × Δt ≤ Mn
+
+(21)
+
+(24)
+
+(
+) (
+)
+dis(max)
+Mdis
+× fndis − Pdis
+n,t = En,t
+n,t (a) × Δt ; ∀n ∈ N, ∀t ∈ T
+
+(25)
+
+bat
+xbat
+n (l, |T|) > xn (|T|) ; ∀n ∈ N
+
+(26)
+
+ROIn (l, |T|) > ROIn (|T|) ; ∀n ∈ N
+
+(27)
+
+buy− ret
+
+Let Pw,t
+
+buy− ret
+
+buy− ret
+
+, Pf,t
+
+, and Pfit,t
+
+buy− ret
+
+, FBC price cf,t
+
+be the power a retailer buys from the
+
+wholesale market, through the FBC, and from the residential customers
+at spot price cw,t
+
+buy− ret
+
+Cbuy− ret(tot) (|T|) =
+
+buy− ret
+
+, respectively
+
+buy− ret(tot)
+
+(|T|) is calcu-
+
+, and FiT rate cn,t
+
+at a given time slot t ∈ t. The total buying cost C
+lated as:
+
+|T| [(
+) (
+)
+∑
+ret
+ret
+ret
+ret
+cbuy−
+× Pbuy−
+× Δt + cbuy−
+× Pbuy−
+× Δt
+w,t
+w,t
+f ,t
+f,t
+t=1
+
+(
+)]
+buy− ret
++ cfit
+× Δt
+n,t × Pfit,t
+(28)
+
+5.4. Peer BESS constraints
+
+Similarly, the total selling cost Csell− ret(tot) (|T|) is calculated as:
+
+cha(ca)
+cha
+Let peer-charging rate be Mcha
+n,t , which limits Pn,t (b). Also, let Mn,t
+PV(pk)
+
+}
+{
+dis(ca)
+dis
+Pdis
+; ∀n ∈ N, ∀t ∈ T
+n,t (b) × Δt = Mn,t , Mn,t
+
+5.6. Retailer constraints
+
+(18)
+
+and Pn,t
+
+(23)
+
+Let xbat
+n (l, |T|) be the saving of each LEM customer n ∈ N for a given
+time period |T| over the BESS lifetime. xbat
+n (l, |T|) and ROIn (l, |T|) are
+required to be higher than xbat
+(|T|)
+and
+ROI
+n (|T|), such that:
+n
+
+Let Sn,t be the state-of-charge (SOC) of BESS — which is limited by
+max
+minimum and maximum SOCs denoted by Smin
+n,t and Sn,t , respectively.
+cha(min)
+
+) (
+)
+(
+cha(max)
+Mcha
+× fncha − Pcha
+n,t = Mn,t
+n,t (a) × Δt ; ∀n ∈ N, ∀t ∈ T
+
+5.5. BESS ROI constraints
+
+5.3. Self BESS constraints
+
+respectively. Also, let Mn
+
+lo(pk)
+
+BESS discharging capacity Mn,t . Pn,t indicates the peak time power
+demand. Peer BESS constraints are captured in (22)-(25).
+}
+{
+cha(ca)
+cha
+; ∀n ∈ N, ∀t ∈ T
+(22)
+Pcha
+n,s (b) × Δt = Mn,t , Mn,t
+
+—
+
+be available BESS charging capacity and solar PV power,
+7
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+Fig. 5. Energy volume from a) & b) solar generation, and c) & d) FBC & spot.
+
+Csell− ret(tot) (|T|) =
+
+requirement, with the remaining 75.0 % of the demand being supplied
+by the grid. In the LEM with P2P trading, the group’s self-sufficiency has
+increased to 28.6 %, with the remaining 71.5 % being backed by the
+grid. The increase of 3.5 % in self-sufficiency is achieved through BESS
+charging and discharging beyond their connection point to exchange
+electricity with peers. The increase is achieved purely through optimised
+utilisation of the BESS capacities without an increase in generation
+infrastructure. The BESS charges on peers’ solar excess through the grid
+during solar generation times if the own solar system does not generate
+enough energy to fully charge the BESS. This ensures all BESS in the LEM
+charge to the maximum energy level, which is set at 90 % of capacity, on
+as many days as possible. Further, the BESS discharges to the grid
+beyond its own load requirements during peak demand times to trade
+with peers. The charge and discharge times are communicated to the
+BESS via the LEM platform. Additional solar PV and BESS systems could
+elevate self-sufficiency, further lowering dependence on the grid. The
+increase in self-sufficiency lowers the emissions of greenhouse gases
+related to electricity consumption due to the reliance of grid energy on
+fossil-based sources.
+Fig. 4b illustrates the community’s self-consumption, which is the
+portion of total generated and consumed energy in relation to the overall
+energy generated. In a scenario without LEM and including STL, the
+community’s self-consumption is 80.9 %, with the remaining 19.1 %
+being sent back to the grid. However, the LEM implementation has
+raised the self-consumption of the LEM to 92.1 %, with about 7.9 %
+exported back to the grid. The findings regarding elevated selfsufficiency and self-consumption have been achieved in the specific
+context set in this paper. The employed strategies for BESS control will
+automatically lead to a reduced dependency on the grid and higher use
+of local energy, however, the achieved difference from a scenario
+without LEM may differ in different market contexts. In summary, the
+
+|T| [(
+) (
+)]
+∑
+ret
+ret
+sell− ret
+× Psell−
+× Δt + ctou
+× Δt
+csell−
+f ,t
+f,t
+n,t × Ptou,t
+t=1
+
+(29)
+
+ret
+ret
+where the retailer sells Psell−
+at csell−
+price through the FBC at a given
+f,t
+f ,t
+
+ret
+time slot t ∈ T while Psell−
+implies power sold via ToU price ctou
+tou,t
+n,t to
+residential customers.
+buy− ret
+
+Under volatile spot market, cw,t
+
+becomes much higher than the
+
+buy− ret
+fit
+ret
+usual price while cf ,t
+, csell−
+, cn,t , and ctou
+n,t remain the same. This can
+f,t
+ret
+
+result in a financial loss L (|T|) over a period of |T|, which can be
+determined from (30) and (31) as follows:
+Lret (|T|) = Cbuy− ret(tot) (|T|) − Csell− ret(tot) (|T|)
+
+(30)
+
+The proposed local energy trading aims at lowering Lret (|T|) such
+that:
+Lret (l, |T|) < Lret (|T|)
+
+(31)
+
+6. Results and discussions
+6.1. Self-sufficiency in LEM
+The LEM can enhance the trading group’s self-sufficiency by allowing energy to be exchanged between peers, as shown in Fig. 4a. Selfsufficiency refers to the energy generated and used in proportion to
+the total energy demand. Customers with solar PV systems and BESS can
+contribute to the community’s self-sufficiency beyond their own consumption level. The BAU scenario displayed in Table 1 shows that,
+including STL, DERs altogether contribute 25.0 % to meet the load
+8
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+Fig. 6. Case A (low spot prices): Comparison of BAU with LEM income out of
+energy procurement in the NEM.
+
+Fig. 7. Case B (high spot prices): Comparison of BAU with LEM income out of
+energy procurement in the NEM.
+
+results of the proposed LEM system enhance understanding of strategies
+for achieving high levels of self-sufficiency and self-consumption. This is
+achieved by providing quantitative evidence and demonstrating economic benefits through the optimised use of existing DERs, specifically
+via solar PV- and BESS-facilitated P2P trading. Furthermore, the LEM
+contributes to an increase in the retailer’s ability to reduce risks, especially during periods of high spot prices.
+
+price to the seller at a 5 % margin retained by the retailer. Furthermore,
+the LEM reduces the amount of solar PV surplus sold to the wholesale
+energy market. But this has a lower effect on the income of the retailer
+because of low spot prices. With spot prices going negative on several
+occasions in areas with high solar PV penetration, this could even be
+advantageous to the retailer. With the BESSs serving some of the demand of peers, there is a slight drop in the energy FBCs supplied, which
+is instead sold to the wholesale market (the procured energy at the futures market is too much for the actual demand, leading to a long position). Low spot prices, however, result in a low income from long
+positions sold on the wholesale market. The quantity of short positions
+(the procured energy at the futures market is too little) reduces due to
+the BESS discharge, which means that the retailer procures less energy
+from the wholesale market. Altogether, these effects slightly reduce income in Case A, where spot prices are lower than the energy price
+offered by customers.
+The retailer’s energy procurement expenses have been positively
+impacted by the LEM throughout the elevated spot price week. Fig. 7
+illustrates a reduction in income from trading surplus solar PV rather
+than purchasing and selling at the FiT and grid buy rates, respectively.
+Also, there is a reduction in solar PV excess offered to the wholesale
+market, which reduces the retailer’s income further. The reason for this
+is that the spot prices are mostly beyond the FiT rate of 5 c/kWh, even
+for supply intervals, therefore resulting in a benefit for the retailer from
+arbitraging between the FiT rate and spot price. In comparison to BAU,
+there is a marginal drop in the amount of energy delivered by FBCs in
+LEM that causes a positive impact since the average FBC prices in Q2
+2022 have also experienced a rise above the energy price that can be
+recovered from customers via the grid buy rate. High spot prices can
+justify selling long positions in the spot market to benefit retailers, as
+seen in Fig. 7. Spot prices are elevated further during evening peak
+periods when long positions in LEM mostly take place because of BESS
+discharge to peers, which reduces the load requirement of the community, thereby leading to a substantial gain for the retailer.
+In Case B, the primary advantage for a retailer stems from the cost
+savings achieved by procuring extra energy from the spot market during
+brief intervals. This is facilitated by the decreased load peak in the
+evening, achieved by discharging energy from the BESS. By mitigating
+the retailer’s vulnerability to fluctuating wholesale market prices, the
+BESS also diminishes the occasional substantial losses incurred during
+high spot price periods, such as demonstrated in Case B. This serves to
+counterbalance the adverse effects of predominantly trading solar PV
+energy through P2P mechanisms, which transfer the buyer’s pricing to
+the seller and subsequently reduce the quantity of solar PV energy sold
+at elevated wholesale market’s prices.
+
+6.2. LEM helps retailer in uncertain wholesale market
+The retailer trades energy under the different metrics outlined in
+Table 2. The average daily energy volumes in BAU, including spot prices, FBC price, FiT price and grid buy rate are displayed in Fig. 5.
+Generally, the retailer procures energy from three different sources,
+namely customers’ solar PV via FiT (Fig. 5a and b), from FBCs and from
+the spot market (Fig. 5c and d) and sells it to customers via the grid buy
+rate or to the wholesale market. Fig. 5a and b shows the energy from
+solar PV. The retailer has an obligation to procure the whole export of
+prosumers via FiT, which can then be sold at a profit to other customers
+as the buying price (FiT) lays below the sell price (grid buy rate) (SLT).
+The remainder, which is not consumed by the retailer’s portfolio, is sold
+to the wholesale spot market. In both scenarios (lower and higher spot
+prices), this is done at a profit for the retailer even though the low spot
+prices are greater than the FiT rate of 5 c/kWh. The net load after STL is
+sourced from FBCs (FBC-L), with the remainder being balanced by the
+spot market (Short and Long) (Fig. 5c and d). In the low spot scenario,
+FBC-L is done at a profit for the retailer as the average FBC price is lower
+than the grid buy rate. This is not the case in the high-spot scenario, due
+to elevated FBC prices (20.2 c/kWh), which rose above the grid buy rate,
+leading to a substantial loss for retailers. In the low spot scenario, the
+retailer benefits financially during short periods, as the average spot
+prices are lower than grid buy rates. The low spot prices lead to a
+disadvantage during long periods due to the selling price (spot) being
+slightly lower than the buying price (FBC). Both cases are reversed in the
+high-spot scenario, as the retailer has to buy energy at costly spot prices
+during short periods but can sell at beneficial rates during long periods.
+The specific financial implications in all cases, as well as the impact of
+the LEM, are discussed below.
+During the week when the wholesale spot prices are low, the LEM
+causes a decrease in retailer’s income from buying energy via FiT, FBCs,
+and the wholesale spot market and then selling it to consumers. Typically, at low spot prices, retailers can profit by buying energy at low
+market prices and selling it at higher rates to end customers. However,
+considering LEM, the reduction in income is due to the limited amount
+of energy that is available for the retailer to procure at the FiT rate of 5
+c/kWh and sell higher to customers (in the range between 15.25 c/kWh
+and 17.76 c/kWh). Fig. 6 shows that most of the energy previously
+bought at FiT is sold through P2P in LEM, passing the bought energy
+9
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+Fig. 9. BAU vs. LEM: BESS PBP.
+
+Fig. 8. BAU vs. LEM: Customers % electricity cost reduction.
+Table 3
+Investment returns metrics for BESS.
+Investment returns metrics
+
+BAU
+
+LEM
+
+PBP (Years)
+ROI (%)
+NPV (AU$)
+IRR (%)
+
+9.38
+20.2
+− 2,595
+4.9
+
+8.14
+34.6
+− 989
+8.1
+
+6.3. Residential customers bill reduction
+
+Fig. 10. BAU vs. LEM – Annual cash flow for Solar PV and BESS.
+
+All customers in LEM trading experience positive benefits such as
+lower energy bills and increased use of renewable energy. Fig. 8 shows a
+significant reduction of 13.3 % in energy consumption cost for those
+with BESS and solar PVs, a 9.9 % reduction for those with only solar PVs,
+and a 3.1 % reduction even for those without any assets. The LEM is
+designed to benefit those who own a BESS the most because they
+contribute the most to the community by sharing their BESS capacity.
+The cost reductions observed are achieved without changing network
+fees or reducing current retailer margins.
+
+reason to invest in a BESS in addition to reducing their electricity costs.
+Fig. 9 displays the investment cost for solar PV and BESS in comparison to BAU and LEM by reducing the initial and annual investments
+by the annual cash inflow (positive income). The additional LEM income
+leads to a steeper decline in remaining asset costs until break-even is
+reached. The difference in profit accumulation between BAU and LEM is
+accelerated over time due to the increase in profit per kWh traded P2P
+vs. sold to the grid. This is achieved by only focusing on P2P trading as
+an additional income stream.
+The annual average cash flow of LEM vs. BAU cases is shown in
+Fig. 10. Cash outflows comprise operational expenditure (OpEx) due to
+maintenance for solar PV and BESS. The yearly incoming cash comprises
+mainly earnings derived from balancing the energy acquired from the
+electricity grid with self-produced energy, along with surplus energy
+sold to the retailer at the FiT price, which represents the BAU scenario
+for DERs. In the LEM scenario, there is extra income acquired from energy sold via P2P within the LEM. The revenue generated by the battery
+is decreased due to the opportunity cost of selling solar PV energy
+through the FiT mechanism instead of using it to charge the BESS. An
+additional expense arises from battery charging using peer-provided
+energy and disbursing at a P2P buying rate. Over time, the annual
+cash flow diminishes due to the gradual deterioration of the BESS and
+solar PV systems, resulting in a decrease in energy production. However,
+the benefit per unit of electricity absorbed internally, as opposed to
+being sourced from the grid, improves with rising prices. This helps
+counterbalance the energy output reduction caused by degradation. To
+be more specific, the solar PV system experiences minor annual degradation of about 0.5 %, yet it generates substantial annual cash inflows.
+Moreover, a decrease in the FiT rate amplifies the value of selling excess
+solar PV and battery energy via P2P transactions instead of using the FiT
+rate. This is because the divergence between P2P and FiT selling prices
+becomes more significant.
+While LEMs offer promising opportunities for decentralised energy
+trading, grid management, and participant revenue streams, several
+obstacles may arise, including regulatory barriers, market design complexities, and technological integration challenges. To maximise the
+positive impacts of LEMs, it is crucial to conduct comprehensive feasibility studies that consider the specific market context and identify
+
+6.4. BESS return of investment in LEM
+The decrease in energy bills assists in shortening the PBP of investing
+in solar PV and BESS. As shown in Table 3, the PBP of a combined BESS
+and PV system in the LEM scenario is reduced by 1.25 years, achieving
+break-even three years before the end of the system’s lifetime. In
+contrast, in a BAU, the break-even point is achieved closer to the end of
+the lifetime, i.e., 9.38 years. This leads to a higher ROI of 34.6 % after
+the LEM-operated battery lifetime, in comparison to 20.2 % without the
+LEM, showing a greater yield on investment, as can be seen in Table 3. It
+is worth noting that a BESS often operates beyond its nominal lifetime,
+albeit with compromised capacity. LEM presents a remarkable revenueacquisition stream through P2P-based energy exchanges with other
+customers. With rising electricity and declining BESS costs, the PBP
+could be shortened further, encouraging the adoption of higher-capacity
+BESS, which would in turn further enhance the economic and network
+benefits of P2P trading.
+Although the NPV of solar PV and BESS over their lifetimes is
+negative with the discount rate selected under BAU and LEM, the LEM
+option can improve the NPV by over 50 %, resulting in a NPV with a
+positive value if the PV and BESS operate beyond 12 years. The IRR for a
+battery utilised under LEM shows that it achieves a break-even NPV in
+its lifetime, incurring an interest at a rate of 8.1 %, which exceeds the
+BAU by 3 % but is still lower than the standard discount rate (10 %)
+employed for NPV. Although the investment may not be financially
+attractive at the low IRRs, it is worthy to mention that a BESS can offer
+additional services beyond self-consumption and P2P trading, such as
+ancillary and flexibility services. Moreover, for BESS-owning prosumers,
+the opportunity to increase their self-generated energy supply is a key
+10
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+
+CRediT authorship contribution statement
+Liaqat Ali: Writing – original draft, Visualization, Validation, Supervision, Resources, Project administration, Methodology, Investigation, Funding acquisition, Formal analysis, Data curation,
+Conceptualization. M. Imran Azim: Writing – review & editing, Writing
+– original draft, Methodology, Investigation, Formal analysis, Conceptualization. Jan Peters: Writing – original draft, Visualization, Validation, Investigation, Formal analysis. Ehsan Pashajavid: Writing –
+review & editing, Supervision, Formal analysis.
+Declaration of competing interest
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+
+Fig. 11. Comparison of self-sufficiency and self-consumption with [57].
+
+Data availability
+
+potential hurdles. Strategies for overcoming these challenges may
+include regulatory reforms to accommodate LEMs, standardisation of
+market rules and protocols, and the development of interoperable
+technologies. Additionally, stakeholder engagement and public awareness campaigns can help build trust and support for LEM initiatives,
+ultimately leading to a more sustainable and resilient energy system for
+all participants.
+
+The data that has been used is confidential.
+References
+[1] Sahebi A, Jadid S. A robust model of local energy market under a security
+constraint-based approach for distribution system operator and multi-energy
+microgrids. Elec Power Syst Res Feb. 2023;217:109164: 1–14.
+[2] Suthar S, Cherukuri SHC, Pindoriya NM. Peer-to-peer energy trading in smart grid:
+frameworks, implementation methodologies, and demonstration projects. Elec
+Power Syst Res Jan. 2023;214:108907:1–20.
+[3] Azim MI, Tushar W, Saha TK, Yuen C, Smith D. Peer-to-peer kilowatt and negawatt
+trading: a review of challenges and recent advances in distribution networks.
+Renew Sustain Energy Rev Nov. 2022;169:112908: 1–23.
+[4] Ali L, et al. A win-win local energy market for participants, retailers, and the
+network operator : a peer-to-peer trading-driven case study. 2022 IEEE 20th
+International Conference on Industrial Informatics (INDIN), Perth, Australia 2022:
+175–9. https://doi.org/10.1109/INDIN51773.2022.9976167.
+[5] Xia Y, Xu Q, Tao S, Du P, Ding Y, Fang J. Preserving operation privacy of peer-topeer energy transaction based on enhanced benders decomposition considering
+uncertainty of renewable energy generations. Energy Jul. 2022;250:123567: 1–14.
+[6] Kirchhoff H, Strunz K. Key drivers for successful development of peer-to-peer
+microgrids for swarm electrification. Appl Energy Jun. 2019;244:46–62.
+[7] An J, Hong T, Lee M. Determining the optimal trading price of electricity for energy
+consumers and prosumers. Renew Sustain Energy Rev Feb. 2022;154:111851:
+1–17.
+[8] Liu Y, Wu L, Li J. A two-stage peer-to-peer energy trading model for distribution
+systems with the participation of the utility. CSEE Journal of Power and Energy
+Systems Sep. 2021;7(5):893–902.
+[9] Kim HJ, Chung YS, Kim SJ, Kim HT, Jin YG, Yoon YT. Pricing mechanisms for peerto-peer energy trading: towards an integrated understanding of energy and
+network service pricing mechanisms. Renew Sustain Energy Rev Sep. 2023;183:
+113435: 1–19.
+[10] Zhou Y, Lund PD. Peer-to-peer energy sharing and trading of renewable energy in
+smart communities trading pricing models, decision-making and agent-based
+collaboration. Renew Energy May 2023;207:177–93.
+[11] Zhang R, Lee M, Zhao D, Kang H, Hong T. Peer-to-peer trading price and strategy
+optimization considering different electricity market types, tariff systems, and
+pricing models. Energy Build Dec. 2023;200:113645: 1–22.
+[12] Azim MI, Ali L, Peters J, Shawon MH, Tatari FR, Muyeen SM, et al. A proportional
+power sharing method through a local control for a low-voltage islanded
+microgrid. Energy Rep Dec. 2022;8:51–9.
+[13] Mochi P, Pandya KS, Faia R, Dabhi D, Soares J, Vale Z. Empowering customers in
+local electricity market: a prosumer segmentation and operating envelope strategy
+for joint cost reduction and profit maximization. Elec Power Syst Res Jan. 2024;
+226:109908: 1–11.
+[14] Ali L, Bhandari V, Peters J, Tushar W, Nizami S, Menon A, Tiwari V, Green J,
+Saha T. Discover how you can save money and help the environment with local
+energy markets: an Australian case study. Smart Energy Council, Industry Updates,
+Press Releases; 2023. p. 1–4.
+[15] Chau SC-K, Xu J, Bow W, Elbassioni K. Peer-to-peer energy sharing: effective costsharing mechanisms and social efficiency. In: Proc. Of the international conference
+on future energy systems. USA: New York; Jun. 2019. p. 215–25.
+[16] Ali L, Azim MI, Peters J, Pashajavid E, Bhandari V, Menon A, Tiwari V, Green J.
+Local energy markets improve investment returns of residential BESS by arbitrage
+opportunities. In: Proc. Of the IEEE sustainable power and energy conference.
+Australia: Perth; Dec. 2022. p. 1–5.
+[17] Khodoomi M, Sahebi H. Robust optimization and pricing of peer-to-peer energy
+trading considering battery storage. Comput Ind Eng May 2023;179. 109210: 1–14.
+
+6.5. Comparative analysis
+Fig. 11 shows the comparison between the proposed LEM and a
+residential precinct utilising thermal storage for energy sharing discussed in Ref. [57]. The analyses demonstrated in Ref. [57] result in a
+self-consumption of 77 % whilst achieving a self-sufficiency of 20 %. In
+contrast, the LEM proposed in this paper achieves a self-sufficiency of
+29 % and a self-consumption of 92 %, thereby surpassing the results of
+[57].
+7. Conclusion
+This paper has examined the implication of the wholesale market’s
+volatile spot prices on a retailer’s income and evaluated the advantages
+of using a P2P trading-oriented LEM in comparison to the current BAU
+scenarios. The study has analysed high and low spot price scenarios and
+found that lower spot prices can cause more benefits for retailers. To this
+end, the LEM helps to decrease the effect of higher wholesale spot prices
+by providing more flexible demand and minimising the energy volume
+bought at high spot prices during peak demand intervals. This is
+particularly beneficial for small-sized retailers or those retailers who
+cannot secure sufficient energy in future markets to withstand periods of
+highly inflated prices. Furthermore, it has been shown that LEM can
+enhance self-sufficiency by enabling energy sharing among peers and
+expanding the role of DERs. Additionally, the community has increased
+the usage of locally generated energy through greater self-consumption
+of DERs. This study has explored the advantages of a P2P tradingoriented LEM in comparison to BAU, for the economic viability of
+solar PV systems and BESSs. It is illustrated that sharing P2P energy by
+customers at a higher rate than the declining and marginal FiT can
+reduce the PBP of the BESS. Considering prosumers with solar PV systems and BESSs, the investment returns of BESSs have been improved as
+the LEM minimises the total energy cost significantly.
+Future work will incorporate the technical constraints of distribution
+networks to improve the performance of the proposed LEM. Further, the
+findings of this study will be vetted through an analysis of additional
+market contexts. Also, advanced algorithms can be developed to secure
+the local energy exchanges.
+
+11
+
+L. Ali et al.
+
+Energy 306 (2024) 132458
+[38] Esmaeili Aliabadi D, Kaya M, Sahin G. Competition, risk and learning in electricity
+markets: an agent-based simulation study. Appl Energy 2017;195:1000–11.
+https://doi.org/10.1016/j.apenergy.2017.03.121.
+[39] Haider S, Walewski J, Schegner P. Investigating peer-to-peer power transactions
+for reducing EV induced network congestion. Energy 2022;254:124317.
+[40] Gjorgievski VZ, Cundeva S, Markovska N, Georghiou GE. Virtual net-billing: a fair
+energy sharing method for collective self-consumption. Energy 2022;254:124246.
+[41] Huang Z, Wang F, Lu Y, Chen X, Wu Q. Optimization model for home energy
+management system of rural dwelling. Energy 2023;283:129039.
+[42] How local energy markets benefit distribution utilities. Powerledger, White Paper
+Rev. 2023;1. https://doi.org/10.13140/RG.2.2.23163.69925 [Online]. Available: .
+[Accessed 20 May 2024].
+[43] TradeRES - new market model for 100% renewable power systems.”[Online].
+Available: https://traderes.eu/, (Accessed: May 20, 2024).
+[44] Ali L, Azim MI, Peters J, Ojha Nabin B, Simoes MG, Muyeen SM. DERs
+orchestration and Gen3 blockchain integration in P2P trading based distribution
+network. In: The 2024 International Workshop on Artificial Intelligence and
+Machine Learning for Energy Transformation (AIE), Vaasa, Finland, May 20-22;
+2024. p. 1–6.
+[45] “Inquiry into the national electricity market May 2022. [Online]. Available: https
+://www.accc.gov.au/system/files/Inquiry%20into%20the%20National%
+20Electricity%20Market%20-%20May%202022%20report%2813880615.1%29.
+pdf. [Accessed 20 May 2024].
+[46] “Review into the aggreements for failed retailers’ electricity and gas contracts”, pp.
+1-85 [Online]. Available: https://www.aemc.gov.au/sites/default/files/2022-10
+/RPR0016%20-%20consultation%20paper%20-%2020221013.pdf, (Accessed:
+May 20, 2024).
+[47] “AusGrid residential data Dec 2013 [Online]. Available: https://www.ausgrid.com.
+au/Industry/Our-Research/Data-to-share/Solar-home-electricity-data. [Accessed
+20 May 2024].
+[48] Retail tariff source,” [Online]. Available: https://www.energymadeeasy.gov.au/?
+postcode=2765, (Accessed: May 20, 2024).
+[49] Forward contracts in electricity markets: The Australian experience,” [Online].
+Available: https://www.ceem.unsw.edu.au/sites/default/files/uploads/publicat
+ions/contractsurvey_short_May2006.pdf, (Accessed: May 20, 2024).
+[50] “How retailers use contracts to hedge customers, [Online]. Available: https://wattc
+larity.com.au/articles/2019/10/how-retailers-use-contracts-to-hedge-customers/,
+(Accessed: May 20, 2024).
+[51] “Quarterly energy dynamics Q2 2022 [Online]. Available: https://aemo.com.au/-/
+media/files/major-publications/qed/2022/qed-q2-2022.pdf?la=en&hash=73D
+C1623997128E30EB3F6EBFD2E5AAC. [Accessed 20 May 2024].
+[52] “Aggregated price and demand data [Online]. Available: https://aemo.com.
+au/energy-systems/electricity/national-electricity-market-nem/data-nem/aggr
+egated-data, (Accessed: May 20, 2024).
+[53] “What is net present value (NPV)? [Online]. Available: https://www.investopedia.
+com/terms/n/npv.asp#:~:text=Net%20present%20value%20(NPV)%20is,a%20
+projected%20investment%20or%20project, (Accessed: May 20, 2024).
+[54] “Internal rate of return (IRR) rule: Definition and example [Online]. Available:
+https://www.investopedia.com/terms/i/irr.asp, (Accessed: May 20, 2024).
+[55] “Payback period explained, with the formula and how to calculate it [Online].
+Available: https://www.investopedia.com/terms/p/paybackperiod.asp, (Accessed:
+May 20, 2024).
+[56] “How to calculate return on investment (ROI) [Online]. Available: https://www.in
+vestopedia.com/articles/basics/10/guide-to-calculating-roi.asp, (Accessed: May
+20, 2024).
+[57] Huang P, Lovati M, Zhang X, Bales C, Hallbeck S, Becker A, Bergqvist H, Hedberg J,
+Maturi L. Transforming a residential building cluster into electricity prosumers in
+Sweden: optimal design of a coupled PV-heat pump-thermal storage-electric
+vehicle system. Appl Energy 2019;255. Dec. 2019, p.113864: 1-17.
+
+[18] Sahebi H, Khodoomi M, Seif M, Pishvaee M, Hanne T. The benefits of peer-to-peer
+renewable energy trading and battery storage backup for local grid. J Energy
+Storage Jul. 2023;63. 106970: 1–11.
+[19] Zheng B, Wei W, Chen Y, Wu Q, Mei S. A peer-to-peer energy trading market
+embedded with residential shared energy storage units. Appl Energy Feb. 2022;
+308. 118400: 1–13.
+[20] Zhang WY, Zheng B, Wei W, Chen L, Mei S. Peer-to-peer transactive mechanism for
+residential shared energy storage. Energy May 2022;246. 123204: 1–12.
+[21] Chen Y, Pei W, Ma T, Xiao H. Asymmetric Nash bargaining model for peer-to-peer
+energy transactions combined with shared energy storage. Energy Sep. 2023;278.
+127980: 1–13.
+[22] Ali L, Azim MI, Peters J, Bhandari V, Menon A, Tiwari V, et al. BESS-facilitated
+local energy market: a case study on typical Australian consumers. Proc. IAEE Int.
+Conf. Jul./Aug. 2022:1–2.
+[23] Ali L, Peters J, Azim MI, Pashajavid E, Bhandari V, Menon A, Tiwari V, Ghosh A,
+Green J. How P2P trading helps an electricity retailer exposed to volatile spot
+prices: a case study. In: Proc. Of the IEEE sustainable power and energy conference.
+Australia: Perth; Dec. 2022. p. 1–5.
+[24] Ali L, Azim MI, Peters J, Padmanaban S, Bhandari V, Menon A, Green J, Muyeen S.
+Singapore local energy market development using blockchain enabled P2P trading.
+In: Proc. Of the IEEE international conference on power electronics and drive
+systems. Canada: Montreal; Aug. 2023. p. 1–6.
+[25] Xiao Y, Wang X, Pinson P, Wang X. Transactive energy based aggregation of
+prosumers as a retailer. IEEE Trans Smart Grid Jul. 2020;11(4):3302–12.
+[26] Wang Z, Yu X, Mu Y, Jia H, Jiang Q, Wang X. Peer-to-peer energy trading strategy
+for energy balance service provider (EBSP) considering market elasticity in
+community microgrid. Appl Energy Dec. 2021;303. 117596: 1–12.
+[27] Lopez HK, Zilouchian A. Peer-to-peer energy trading for photovoltaic prosumers.
+Energy Jan. 2023;263. 125563: 1–15.
+[28] Ali L, et al. P2P as a smarter way of energy trading: a game theoretic case study for
+multi-microgrids. 2022 10th International Conference on Smart Grid
+(icSmartGrid), Istanbul, Turkey 2022:285–9. https://doi.org/10.1109/
+icSmartGrid55722.2022.9848556.
+[29] Ruan H, Gao H, Gooi HB, Liu J. Active distribution network operation management
+integrated with P2P trading. Appl Energy Oct. 2022;323. 119632: 1–11.
+[30] Neves D, Scott I, Silva CA. Peer-to-peer energy trading potential: an assessment for
+the residential sector under different technology and tariff availabilities. Energy
+2020;205:118023.
+[31] Bian Y, Xie L, Ye J, Ma L, Cui C. Peer-to-peer energy sharing model considering
+multi-objective optimal allocation of shared energy storage in a multi-microgrid
+system. Energy 2024;288:129864.
+[32] Ali L, Azim MI, Ojha NB, Peters J, Bhandari V, Menon A, Tiwari V, Green J,
+Muyeen S. Balancing usage profiles and benefitting end users through blockchain
+based local energy trading: a German case study. Energies Aug. 2023;16(17). 6315:
+1–18.
+[33] Long C, Wu J, Zhou Y, Jenkins N. Aggregated battery control for peer-to-peer
+energy sharing in a community Microgrid with PV battery systems. Energy Proc
+2018;145:522–7. https://doi.org/10.1016/j.egypro.2018.04.076.
+[34] Iria J, Soares F, Matos M. Optimal supply and demand bidding strategy for an
+aggregator of small prosumers. Appl Energy 2018;213:658–69. https://doi.org/
+10.1016/j.apenergy.2017.09.002.
+[35] Ali L, et al. Integrating forecasting service and Gen2 blockchain into a local energy
+trading platform to promote sustainability goals. IEEE Access 2024;12:2941–64.
+https://doi.org/10.1109/ACCESS.2023.3347432.
+[36] Han L, Morstyn T, McCulloch MD. Chapter 6 - peer-to-peer energy platforms. In:
+Pinto T, Vale Z, Widergren S, editors. Local electricity markets. Academic Press;
+2021. p. 91–105. https://doi.org/10.1016/B978-0-12-820074-2.00012-5.
+[37] Olivella-Rosell P, et al. Local flexibility market design for aggregators providing
+multiple flexibility services at distribution network level. Energies 2018;11(4).
+https://doi.org/10.3390/en11040822.
+
+12
+
+

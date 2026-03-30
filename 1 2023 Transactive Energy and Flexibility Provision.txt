@@ -1,0 +1,874 @@
+CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023                                                                         505
+
+
+
+
+       Transactive Energy and Flexibility Provision in
+         Multi-microgrids Using Stackelberg Game
+   Weiqi Hua , Member, IEEE, Hao Xiao , Member, IEEE, Wei Pei, Member, IEEE, Wei-Yu Chiu, Senior
+  Member, IEEE, Jing Jiang, Senior Member, IEEE, Hongjian Sun, Senior Member, IEEE, and Peter Matthews
+
+
+
+   Abstract—Aggregating demand side flexibility is essential to               the liberalized electricity markets, such as the Great Britain
+complementing the inflexible and variable renewable energy                    (GB) electricity market [3], electricity generation and supply
+supply in achieving low carbon energy systems. Sources of                     are decoupled, resulting in competitive wholesale markets
+demand side flexibility, e.g., dispatchable generators, storage,
+and flexible loads, can be structured in a form of microgrids                 and retail markets. Multiple suppliers buy electricity from
+and collectively provided to utility grids through transactive                generators in the wholesale markets in order to satisfy the
+energy in local energy markets. This paper proposes a framework               electricity demand of their consumers in the retail markets.
+of local energy markets to manage this transactive energy                     The operation of power grids is distinct from the generation,
+and facilitate the flexibility provision. The distribution system             leading to independent transmission system operators (TSOs)
+operator aims to achieve local energy balance by scheduling the
+operation of multi-microgrids and determining the imbalance                   and distribution system operators (DSOs) [4].
+prices. Multiple microgrid traders aim to maximize profits                       Regulations for decarbonizing power systems support the
+for their prosumers through dispatching flexibility sources and               integration of distributed renewable energy sources (DRESs),
+participating in localised energy trading. The decision making                such as the roof-top solar panels. Conventional consumers
+and interactions between a distribution system operator and                   are able to actively produce, consume, and store energy
+multiple microgrid traders are formulated as the Stackelberg
+game-theoretic problem. Case studies using the IEEE 69-bus                    using these DRESs, advanced information and communication
+distribution system demonstrate the effectiveness of the developed            technologies, and storage devices, giving them a new role as
+model in terms of facilitating local energy balance and reducing              prosumers [5]. In local energy markets, prosumers are able to
+dependency on the utility grids.                                              exchange electricity between each other and provide flexibility
+                                                                              to the utility grids, which brings additional revenues to pro-
+  Index Terms—Demand side flexibility, game theory, multi-
+                                                                              sumers [6], improves local energy balance [7], and reduces
+microgrid, prosumer, smart grid, transactive energy.
+                                                                              the needs for reinforcing power system infrastructures [8].
+                                                                              Nonetheless, accommodating the role of prosumers requires
+                                                                              flexible architectures of local energy markets.
+                      I. I NTRODUCTION                                           Microgrids, as a self-sufficient energy system interconnect-
+                                                                              ing to distribution networks [9], [10], provide a solution to the
+      ONVENTIONAL electricity systems are vertically inte-
+C     grated architecture in which the electricity generation,
+transmission, and distribution are managed by centralized
+                                                                              reliable integration of prosumers. The innovation of transactive
+                                                                              energy [11] in local electricity markets enables prosumers
+                                                                              to exchange both energy and capital between each other
+authorities [1]. The deregulation of electricity systems enables
+                                                                              within the same geographical region. To facilitate commercial
+the transition towards liberalized electricity markets [2]. In
+                                                                              relations between microgrids and local energy markets, a
+   Manuscript received June 16, 2021; revised August 31, 2021; accepted       virtual entity, microgrid trader [12], was designed to manage
+October 8, 2021. Date of online publication May 6, 2022; date of current      the resource dispatch and energy trading for a microgrid. As a
+version December 10, 2022. This work was supported by National Key
+Research and Development Program of China (2019YFE0123600), National          neutral facilitator, the microgrid trader encourages and aggre-
+Natural Science Foundation of China (U2066211, 52177124), in part by the      gates the demand side flexibility from dispatchable generators,
+Institute of Electrical Engineering, CAS (E155610101), the Youth Innovation   storage devices, and flexible loads [13] of its prosumers. These
+Promotion Association of CAS (No. 2019143), and in part by the Ministry of
+Science and Technology of Chinese Taiwan under Grant MOST 109-2221-E-         sources of demand side flexibility can be aggregated and
+007-020.                                                                      subsequently provided to the utility grids for complementing
+   W. Q. Hua (ORCID: https://orcid.org/0000-0002-6616-6797) is with the       the inflexible and variable renewable energy sources on the
+Department of Engineering Science, University of Oxford, Oxford OX1 3PJ,
+UK.                                                                           generation side.
+   H. Xiao (corresponding author, email: xiaohao09@mail.iee.ac.cn; ORCID:        Managing transactive energy and providing flexibility from
+https://orcid.org/0000-0002-9368-1495) and W. Pei are with the Institute of   distribution networks have been well documented in literature.
+Electrical Engineering, Chinese Academy of Sciences, Beijing 100190, China.
+   W. Y. Chiu is with the MOCaRL Lab, Department of Electrical Engineering,   Typical approaches for managing the operations of power
+National Tsing Hua University, Hsinchu 300044, Chinese Taiwan.                systems and energy markets, e.g., energy dispatch, demand
+   J. Jiang is with the Department of Mathematics, Physics and Electrical     side management, state estimation, and energy trading, include
+Engineering, University of Northumbria, Newcastle, NE1 8ST, UK.
+   H. J. Sun and P. Matthews are with the Department of Engineering, Durham   the optimization [14], [15], agent-based model [16], [17],
+University, Durham, DH1 3LE, UK.                                              game theory [18]–[24], or combination of these approaches.
+   DOI: 10.17775/CSEEJPES.2021.04370                                          The optimization approach assists the stakeholders in power
+                                                                2096-0042 © 2021 CSEE
+506                                                             CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023
+
+
+
+systems or energy markets to find optimal decisions in achiev-      of local energy balance for the DSO and profit maximization
+ing certain targets, e.g., operational profits maximization and     for individual microgrid traders and their prosumers. The
+power losses minimization. Marzband et al. [14] proposed            Stackelberg game-theoretic approach can precisely capture
+a smart transactive energy framework to dispatch flexibility        this sequential action process. For this reason, our research
+sources and allocate profits among microgrids using the devel-      modeled the decision making and interactions between the
+oped optimization approach, through which microgrids formed         DSO and multiple microgrid traders as a Stackelberg game.
+a coalition to improve their competitiveness. Wang et al. [15]         Although extensive studies have been conducted, there exist
+designed a bi-level optimization framework to coordinate            three primary research gaps as follows.
+the transactive energy of microgrids with the operation of             • Designing a structure of the local energy market to align
+distribution systems. The agent-based model simulates the                the interests of individual prosumers, e.g., their gener-
+actions and interactions of stakeholders in power systems or             ating profits, with the benefits of power systems, e.g.,
+energy markets, in order to analyse the behaviors of these               flexible operation and local energy balance, is necessary,
+stakeholders and corresponding impacts on the whole systems.             but missing in the literature.
+Nunna and Srinivasan [16] proposed an agent-based approach             • How the DSO exploits the market innovation of trans-
+for managing the transactive energy, through which the surplus           active energy to facilitate the flexibility provision from
+energy supply or residual energy demand could be traded                  prosumers has not been investigated.
+in a transactive market. As flexibility sources, the flexible          • When multiple microgrids in the same distribution net-
+demand and storage systems in microgrids were incorporated               work exchange energy with each other, a pricing and
+into the operation of power systems to address the energy                clearing mechanism needs to be designed.
+imbalance. Janko and Johnson [17] developed a general multi-           By addressing these research gaps, this paper offers the
+agent method to assist energy trading between microgrids            following contributions:
+when they connect to the utility grids, for the purpose of             • A novel structure of a local energy market is designed to
+reducing operational costs of microgrids.                                manage the transactive energy and facilitate the flexibility
+   Game-theoretic approaches have drawn increasing attention
+                                                                         provision from prosumers in microgrids.
+for analyzing the decision making and interactions of stake-
+                                                                       • How the DSO facilitates the flexibility provision through
+holders in local energy markets. The cooperative game enables
+                                                                         the transactive energy among multiple microgrid traders
+every stakeholder to gain benefits through participating in the
+                                                                         is analyzed by a Stackelberg game-theoretic model. The
+game rather than acting independently [25]. Du et al. [18]
+                                                                         DSO seeks for local energy balance by scheduling the
+implemented a cooperative game-theoretic approach to model
+                                                                         operation of microgrids and determining the imbalance
+coordination among multiple microgrids in distribution net-
+                                                                         prices, and individual microgrid traders seek for maxi-
+works through forming one grand coalition. To improve the
+                                                                         mizing the profits of their prosumers through dispatching
+reliability and operational efficiency of distribution networks,
+                                                                         flexibility sources and energy trading.
+researchers in [19] developed a coalitional game to incen-
+                                                                       • Case studies testify the benefits of the developed model in
+tivize the localized energy transactions of microgrids. With
+                                                                         terms of facilitating the transactive energy and flexibility
+respect to the non-cooperative game, each stakeholder seeks
+                                                                         provision of microgrids, achieving local energy balance,
+to maximize its own benefits and all stakeholders would
+                                                                         and reducing dependency on utility grids.
+reach an equilibrium outcome, from which no stakeholder
+                                                                       The rest of this paper is organized as follows. Section II
+wants to deviate [26]. In [20], generators, consumers, and
+                                                                    formulates the framework of local energy markets by ana-
+retailers were modeled as players by a non-cooperative game
+                                                                    lyzing the objectives and decisions of the DSO and multiple
+approach to analyse interactions between distribution networks
+                                                                    microgrid traders. The interactions between these stakeholders
+and microgrids. Fu et al. [21] formulated a bi-level optimiza-
+                                                                    are modeled as the Stackelberg game-theoretic problem in
+tion problem using the non-cooperative game, by which the
+                                                                    Section III. Results of case studies to show the effectiveness
+hybrid AC/DC distribution network was at the higher level to
+                                                                    of the designed framework are provided in Section IV, and
+control power flows and multiple microgrids were at the lower
+                                                                    Section V draws the conclusion and discusses future works.
+level to manage the energy storage systems. The Stackelberg
+game-theoretic model features a sequential decision-making
+problem [22]. A leader at a higher level initially determines its         II. F RAMEWORK OF L OCAL E NERGY M ARKETS
+strategies. Followers at the lower level subsequently formulate        Figure 1 shows the strategical decision making and inter-
+their responding strategies. Liu et al. [23] implemented the        actions between the DSO and multiple microgrid traders. The
+Stackelberg game to manage energy sharing considering the           DSO aims to achieve local energy balance through scheduling
+stakeholders of microgrid operator at the leader level and          the operation of multi-microgrids and determining imbalance
+prosumers at the follower level. In [24], a framework for power     prices. Each microgrid trader aims to maximize profits for its
+system scheduling was designed using the Stackelberg game           ensemble of prosumers through aggregating surplus flexibility
+theory to facilitate the penetration of renewable generation and    sources from its prosumers and participating in the transactive
+carbon reduction in energy consumption.                             energy to trade with other microgrid traders. This research
+   In the context of our proposed research, the DSO announces       focuses on the day-ahead electricity markets.
+the required flexibility prioritizing the dispatch and responses       Figure 2 presents the relationship between power sys-
+of multiple microgrid traders, in order to achieve the target       tems and local energy markets. A group of geographically
+HUA et al.: TRANSACTIVE ENERGY AND FLEXIBILITY PROVISION IN MULTI-MICROGRIDS USING STACKELBERG GAME                                                  507
+
+
+
+                         Distribution System Operator                               this surplus energy can be either exported/imported to/from
+                         Technical         Security of                              the utility grids, or curtailed/unsatisfied. From the prosumer
+                         Constraints         Supply                                 level, they negotiate the prices of energy sharing between
+      Surplus Supply                                      Surplus Demand            each other under predefined auction mechanisms. Both the
+                                                                                    power system level and prosumer level are beyond the scope
+                                                                                    of this research, since this research focuses on the roles and
+    Microgrid Trader 1                                   Microgrid Trader m+1       relationship between the DSO and microgrid traders.
+         (Seller)                                              (buyer)
+                                                                                      Let N represent the set of buses, i.e., prosumers, within a
+                                                                                    microgrid, indexed by n ∈ N , and M represent the set of
+    Microgrid Trader 2          Transactive              Microgrid Trader m+2       microgrids, indexed by m ∈ M. The total numbers of buses
+         (Seller)                 Energy                       (buyer)
+                                                                                    and microgrids are denoted by |N | and |M|, respectively.
+             Ă                                                   Ă
+                                                                                    A. The Role of Microgrid Trader
+    Microgrid Trader m                                   Microgrid Trader |M|
+         (Seller)                                              (Seller)                A microgrid trader seeks to maximize the profits for its
+                                                                                    prosumers through providing three functions: 1) helping its
+Fig. 1. Strategical decision making and interactions between the distribution       sellers and buyers within the same microgrid match with each
+system operator and microgrid traders.                                              other, 2) helping the DSO balance local energy by facilitating
+                                                                                    the flexibility sources, and 3) aggregating surplus generation
+connected prosumers (denoted by dots) forms a microgrid.                            or consumption to trade with other microgrids. First, the costs
+The prosumers include residential, commercial, and industrial                       of operating flexibility sources by individual prosumers are
+consumers who are able to produce energy on-site. Meanwhile,                        modeled as follows:
+individual prosumers own their flexibility sources including                        1) Dispatchable generators
+dispatchable generators, electric vehicles, storage systems,                           Operational costs of a dispatchable generator can be mod-
+and flexible loads. First, prosumers belonging to the same                          eled as follows [28]:
+microgrid can share their flexibility sources with each other                                                         2
+at agreed prices. Second, after internal energy sharing among                             cDG,n,t = αDG,n (pDG,n,t ) + βDG,n pDG,n,t + γDG,n         (1)
+prosumers, a microgrid trader helps its prosumers aggregate
+                                                                                    where cDG,n,t is the operational costs of a dispatchable gener-
+surplus energy supply or demand, and exchange with other
+                                                                                    ator connected to the bus n at the scheduling time t, pDG,n,t is
+microgrids. A microgrid can either connect to the utility
+                                                                                    the power output of a dispatchable generator connected to the
+grids or disconnect and operate independently in an islanded
+                                                                                    bus n at the scheduling time t, and αDG,n , βDG,n , and γDG,n are
+mode [27]. In the context of our research, only the connected
+                                                                                    the cost coefficients of a dispatchable generator connected to
+mode is considered for the purpose of flexibility provision to
+                                                                                    the bus n. The operation of a dispatchable generator is subject
+the distribution networks or transmission networks.
+                                                                                    to the power output constraint as
+Remark 1. From the power system level, if a microgrid
+still has surplus supply/demand after the transactive energy,                                                pDG,n,t ≤ pmax
+                                                                                                                        DG,n                         (2)
+
+
+
+                                     Generator                               Generator                         Generator
+
+
+
+                                   Transmission                            Transmission                      Transmission
+                                     Network                                 Network         Ă                 Network
+
+
+                                   Distribution                            Distribution                      Distribution
+                                    Network                                 Network                           Network
+            Microgrid          Microgrid            Microgrid           Microgrid            Microgrid    Microgrid         Local Energy Market
+                                                                                                                            Prosumer
+                                                                                                                            Microgrid Connection
+                                                                                                                            Power Grids
+            Microgrid          Microgrid            Microgrid           Microgrid            Microgrid    Microgrid         Residential Load
+                                                                                                                            Commercial Load
+                                               Ă                                         Ă                                  Industrial Load
+                                                                                                                            Electricity Vehicle
+            Microgrid          Microgrid            Microgrid           Microgrid            Microgrid    Microgrid         Dispatchable Generator
+                                                                                                                            Solar Panel
+                                                                                                                            Storage System
+
+
+Fig. 2.   Schematic illustration of the relation between power systems and local energy markets.
+508                                                           CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023
+
+
+
+where pmax
+         DG,n is the maximum power output of a dispatchable       curtailed consumption in the bus n at the scheduling time t,
+generator connected to the bus n.                                 and αDSM,n , βDSM,n , and γDSM,n are the cost coefficients of
+2) Electric vehicles                                              the demand side management in the bus n.
+   A prosumer who owns an electric vehicle is able to sell          For the load curtailment, we have
+electricity to the power grids when the electric vehicle is
+                                                                                        X
+                                                                                            ∆dn,t ∆t > 0                    (9)
+inactive. The costs of the vehicle-to-grid can be modeled as                               t∈T
+follows according to [28]:
+                                                                    For the load shifting, we have
+                                 2
+      cEV,n,t = αEV,n (pEV,n,t ) + βEV,n pEV,n,t + γEV,n    (3)                         X
+                                                                                            ∆dn,t ∆t = 0                        (10)
+where cEV,n,t is the costs of the vehicle-to-grid connected to                             t∈T
+the bus n at the scheduling time t, pEV,n,t is the power ex-      where T is the scheduling horizon. For the time interval of
+ported from the electric vehicle to the bus n at the scheduling   0.5 h, we have (∆t, |T |) = (0.5, 48).
+time t, and αEV,n , βEV,n , and γEV,n are the cost coefficients      Next, a microgrid trader aggregates the flexible power to
+of the vehicle-to-grid connected to the bus n. Considering        meet local demand of its prosumers. The aggregate flexible
+the capacity limit of power grids, the constraint of maximum      power can be described as
+power exported from an electric vehicle holds as                               X
+                                                                     pFL,m,t =     pDG,n,t + pEV,n,t − ∆pS,n,t + ∆dn,t (11)
+                       pEV,n,t ≤ pmax
+                                  EV,n                      (4)                 n∈N
+
+where pmax
+        EV,n is the maximum power exported from an electric
+                                                                  where pFL,m,t is the aggregated flexible power of the microgrid
+vehicle connected to the bus n.                                   m at the scheduling time t.
+3) Storage system                                                    Let pn,t denote the power generation from non-dispatchable
+  Let eS,n,t denote the state of charge of a storage system       sources, e.g., solar, of the bus n at the scheduling time t, and
+of the bus n at the scheduling time t, and ∆pS,n,t denote         dn,t denote the power demand of the bus n at the scheduling
+the charging or discharging rate of the storage system of the     time t. The net power of a microgrid after meeting local
+bus n at the scheduling time t. The positive value of ∆pS,n,t     demand of its prosumers can be described as
+                                                                                                     X
+indicates power is charged to the storage system, and the                     pNET,m,t = pFL,m,t +        (pn,t − dn,t )      (12)
+negative value of ∆pS,n,t indicates power is discharged from                                          n∈N
+the storage system. We have
+                                                                  where pNET,m,t is the net power of the microgrid m at the
+                ∆pS,n,t ∆t = eS,n,t − eS,n,t−1              (5)   scheduling time t after meeting local demand of its prosumers.
+                                                                  A positive value of pNET,m,t indicates the microgrid m has
+where ∆t is the scheduling interval.                              surplus power to be sold to other microgrids as an electricity
+   The state of charge should be restricted by the capacity       seller; A negative value of pNET,m,t indicates the microgrid
+limit as                                                          m has surplus demand to be met by other microgrids as an
+                      0 ≤ eS,n,t ≤ emax                     (6)   electricity buyer.
+                                    S
+                                                                     The profits of a microgrid are the difference between the
+where emax
+       S    is the maximum storage capacity.                      revenues and costs of the flexibility provision, which can be
+  The charging or discharging rate of the storage system          described as
+should be limited by the maximum value as                                      X
+                                                                       fp,m =        pNET,m,t · πFL,m,t ,
+                      |∆pS,n,t | ≤ ∆pmax
+                                     S                      (7)               t∈T
+                                                                                                                        
+      ∆pmax
+                                                                                   X
+where   S       is the maximum charge or discharge rate.                       −         (cDG,n,t + cEV,n,t + cDSM,n,t ) ∆t     (13)
+4) Demand side management                                                          n∈N
+   Approaches of the demand side management in the context        where fp,m is the objective function of profits of the microgrid
+of this research include load shifting and load curtailment.      m, and πFL,m,t is the selling price (when pNET,m,t > 0) or
+Load shifting aims to schedule the consumption period of          buying price (when pNET,m,t < 0) of the microgrid trader m
+shiftable loads while remaining total consumption during the      at the scheduling time t.
+scheduling horizon unchanged, in responding to dynamic retail        If all microgrids in the distribution network still have surplus
+electricity pricing signals [29]. Load curtailment reduces the    supply, they can sell this surplus supply to the DSO at a price
+total consumption level of curtailable loads [30]. Both load      lower than the selling prices between microgrids. This lower
+shifting and load curtailment would cause inconvenience for       price is defined as the system sell price (SSP). If all microgrids
+electricity consumers, which can be described by the disutility   in distribution networks still have surplus demand, they can
+function [28] in a monetary manner as:                            buy this surplus demand from the DSO at a price higher than
+                             2
+  cDSM,n,t = αDSM,n (∆dn,t ) + βDSM,n ∆dn,t + γDSM,n        (8)   the buying prices between microgrids. This higher price is
+                                                                  defined as the system buy price (SBP). Both the SSP and SBP
+where cDSM,n,t is the costs of demand side management in          determined by the DSO belong to the imbalance prices [31].
+the bus n at the scheduling time t, ∆dn,t is the shifted or       Hence, the selling or buying prices between microgrids are
+HUA et al.: TRANSACTIVE ENERGY AND FLEXIBILITY PROVISION IN MULTI-MICROGRIDS USING STACKELBERG GAME                                                             509
+
+
+
+not lower than the SSP and not higher than the SBP as shown           strategies of dispatching flexibility sources and energy trading
+in Eq. (14). Otherwise, a microgrid would prefer to exchange          as responses. The procedures of the Stackelberg game between
+with the DSO, driven by the objective of profit maximization.         the DSO and |M| microgrid traders are described as follows:
+                    πDSSP,t ≤ πFL,m,t ≤ πDSBP,t                (14)      P 1: The DSO publishes the required flexibility, denoted
+                                                                         Step
+                                                                      as m∈M p⋆NET,m,t by solving its optimization problem based
+where πDSSP,t is the SSP at the scheduling time t, and πDSBP,t        on the predicted generation and consumption.
+is the SBP at the scheduling time t.                                     Step 2: Receiving the information of required flexibility
+   Therefore, the problem profit maximization of a microgrid          from the DSO, each microgrid trader decides its responding
+through the flexibility provision and energy trading can be           strategies of dispatching flexibility sources for individual pro-
+described as                                                          sumers, through solving its optimization problem. The optimal
+                                                                      decisions of dispatching flexibility sources are denoted as
+                    max                        fp,m            (15)   {p⋆DG,n,t , p⋆EV,n,t , ∆p⋆S,n,t , ∆d⋆n,t }, ∀n ∈ N .
+   pDG,n,t ,pEV,n,t ,∆pS,n,t ,∆dn,t ,πFL,m,t
+                                                                         Step 3: Multiple microgrid traders help their prosumers
+   s.t. (2), (4), (5), (6), (7), (9), (10), (11), (12), and (14).
+                                                                      trade aggregated surplus supply or demand p⋆NET,m,t at the
+                                                                                                                           ⋆
+B. The Role of Distribution System Operator                           optimal selling or buying prices, denoted as πFL,m,t    , yielded
+                                                                      by solving their own optimization problems. The auction of
+  The DSO aims to achieve local energy balance through
+                                                                      microgrid traders is proceeded by the double auction mecha-
+scheduling the operation of microgrids and determining the
+                                                                      nism [33]. The selling prices are arranged in ascending order
+imbalance prices. First, the net power of the distribution
+                                                                      and the buying prices are arranged in the descending order,
+network can be described as
+                        X X                                           to generate the aggregated supply and demand curves. An
+                  fB =           pNET,m,t             (16)            example of the aggregated supply and demand curves is shown
+                              t∈T m∈M                                 in Fig. 3. The market clearing price of multiple microgrid
+where fB is the objective function of local energy balance of         traders is the intersection point of two curves. The microgrid
+the distribution network.                                             traders negotiate with each other by adjusting their selling or
+   The DSO also maintains system constraints including the            buying prices as shown in (19), until all unmatched supply or
+electric power balance, line flow constraints, apparent power         demand has been cleared, at which the Stackelberg equilibrium
+constraints, voltage constraints, voltage angle constraints, and      is reached.
+                                                                          (
+thermal power constraints as in [32].                                         ′
+                                                                            πFL,m,t    = πFL,m,t − ∆πFL,m,t if pNET,m,t > 0,
+   Next, the DSO determines the imbalance prices to trade sur-                ′
+                                                                                                                                   (19)
+                                                                            πFL,m,t = πFL,m,t + ∆πFL,m,t if pNET,m,t < 0,
+plus supply or demand with microgrid traders. The imbalance
+                                                                               ′
+prices are a linear function of the aggregated net power of all       where πFL,m,t  is the new selling or buying price of the mi-
+microgrids as                                                         crogrid trader m at the scheduling time t after the adjustment,
+ (              P                       P                             and ∆πFL,m,t is the adjusted amount of the selling or buying
+    πDSSP,t = ε m∈M pNET,m,t , if                pNET,m,t > 0,        price of the microgrid trader m at the scheduling time t.
+                 P                      Pm∈M
+    πDSBP,t = ε m∈M pNET,m,t , if          m∈M pNET,m,t < 0,
+                                                            (17)                                  60
+                                                                                                                            Microgrid Trader as Seller
+where ε is the coefficient of imbalance price.                                                                              Microgrid Trader as Buyer
+                                                                                                  50
+  Therefore, the problem of achieving local energy balance
+                                                                           Traded Energy (kW·h)
+
+
+
+
+of the DSO can be described as
+                                                                                                  40
+                                 min                |fB |      (18)
+                       pNET,m,t ,πDSSP,t ,πDSBP,t
+                                                                                                  30
+                       s.t. (17).
+                                                                                                  20
+    III. S TACKELBERG G AME -T HEORETIC A PPROACH
+  This section introduces the proposed Stackelberg game-                                          10
+                                                                                                          Market Clearing Price
+theoretic problem for modeling the interactions between the
+DSO and its multiple microgrid traders. A solution to the                                          0
+                                                                                                   0.06   0.07     0.08     0.09      0.10   0.11        0.12
+game-theoretic problem is subsequently developed based on                                                    Selling or Buying Price (GBP/kWh)
+the artificial immune system.
+                                                                      Fig. 3. Schematic illustration of how to determine the market clearing price
+A. Problem Formulation                                                for multiple microgrid traders through generating the curves of the aggregated
+                                                                      supply and demand. The selling prices are arranged in the ascending order.
+   The interactions between a DSO and multiple microgrid              The buying prices are arranged in the descending order.
+traders are formulated as a Stackelberg game-theoretic prob-
+lem, by which the DSO is at the leader level with strategies             Step 4: The DSO aggregates the surplus demand or supply
+of the operational scheduling for microgrids and imbalance            of all microgrid traders, and determines the imbalance prices,
+                                                                                   ⋆           ⋆
+prices, |M| microgrid traders are at the follower level with          denoted as πDSSP,t  or πDSBP,t , according to (17).
+510                                                                                CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023
+
+
+
+  The flowchart of the procedures for the proposed Stackel-                           Concept 2 (Clonal Process). To increase diversity of the anti-
+berg game-theoretic problem is shown in Fig. 4.                                       gens, the clonal process generates more antigens to represent
+                                                                                      the decision variables, according to the clonal rate rc as:
+                                                             P                                                       max 
+      Input: Leader (DSO)’s strategy: required flexibility       m∈M   p⋆NET,m,t                                     |A |
+                                                                                                              rc :=                               (25)
+                                                                                                                       |A|
+         Followers’ (microgrid traders) responding strategies dispatching             where |Amax | is the maximum size of the population, and ⌊·⌋
+      flexibility sources {p⋆DG,n,t , p⋆EV,n,t , ∆p⋆S,n,t , ∆d⋆n,t }, ∀n ∈ N
+                                                                                      is the operation to obtain the floor function.
+                                                                                         Using the clonal process, one antigen can be cloned by (rc −
+             Microgrid traders decide the amount and price of surplus                 1) additional antigens, forming the clonal population as
+                   supply or demand to trade with each other                                       n                                                      o
+                                                                                                                                                     c −1
+                                                                                             Ac = p11 , · · · , pr1c −1 , · · · , p1|A| , · · · , pr|A|     (26)
+                        No            Market
+                                      clearing
+                                                                                      where Ac is the set to denote the clonal population. Through
+                                                                                      the clonal process, the population of antigens increases to
+                                    Yes
+                                                    P       ⋆
+                                                                                      Amax = Ac ∪ A.
+        Output: Aggregated surplus supply or demand m∈M pNET,m,t
+                                          ⋆
+                   and imbalance prices πDSSP,t      ⋆
+                                                 or πDSBP,t                           Concept 3 (Pareto Dominance). For all f (pa ) ∈ f (pa ),
+                                                                                      f (pb ) ∈ f (pb ), if f (pa ) ≤ f (pb ) and it has at least one
+Fig. 4.   Flowchart of the procedures for the Stackelberg game-theoretic              strict inequality, we have f (pa ) dominates
+                                                                                                                                   f (pb ) within the
+problem between the leader (distribution system operator) and followers               feasible space of a decision variable p, p , in which f (pb )
+(microgrid traders).                                                                  is defined as the dominated antibody.
+                                                                                      Concept 4 (Pareto Optimality). If the objective function of
+B. Solution
+                                                                                      a decision variable dominates the objective function of any
+  To solve the Stackelberg game-theoretic problem, this re-                           other decision variable, this decision variable is defined as the
+search develops an artificial immune algorithm as proposed                            Pareto optimality, denoted as p∗ .
+by [34]. This algorithm is able to search the entire feasible
+                                                                                         The proposed algorithm is implemented to solve the op-
+spaces for decision variables, in order to find the global
+                                                                                      timization problems of both the DSO and multiple microgrid
+optimal solutions. To illustrate the proposed algorithm, first,
+                                                                                      traders over the horizon |T |. First, antigens are generated from
+decision variables and objective functions of the formulated
+                                                                                      the feasible space to represent potential values of decision
+optimization problems are defined as:
+                                                                                      variables. Second, each antigen is cloned to improve the diver-
+            pF = [pDG,n,t , pEV,n,t , ∆pS,n,t , ∆dn,t , πFL,m,t ]                     sity and cover more potential solutions. Third, the dominated
+                                                                                      antigens and antibodies are removed in every iteration, denoted
+                    ∀m ∈ M, n ∈ N                                            (20)
+                                                                                      as ιF and ιL for the leader and followers, respectively, so as
+            pL = [pNET,m,t , πDSSP,t , πDSBP,t ] , ∀m ∈ M                    (21)     to remain the non-dominated antigens and antibodies. Fourth,
+            fF = [−fp,m ] , ∀m ∈ M                                           (22)     until the maximum number of the iteration, denoted as ιmax     L
+            fL = [|fB |]                                                     (23)     and ιmax
+                                                                                            F   for the leader and followers, respectively, is reached,
+                                                                                      the remaining non-dominated antibodies become the Pareto
+where pF is the vector containing the decision variables a                            optimality. The details the developed algorithm is presented
+follower, pL is the vector containing the decision variables                          in Algorithm 1.
+from the leader, fF is the vector representing the objective
+function of a follower, and fL is the vector representing the                                              IV. C ASE S TUDIES
+objective function of the leader. In addition, the minimum and                           To demonstrate the effectiveness of the designed framework,
+maximum constraints of a follower are denoted by pF and                               case studies were performed using the modified IEEE 69-
+pF , respectively. The minimum and maximum constraints of                             bus distribution system as presented in Fig. 5. The system
+a leader are denoted by pL and pL , respectively.                                     was separated into 6 microgrids. 15 solar photovoltaics and 6
+   Key concepts with respect to the artificial immune sys-                            dispatchable generators are arbitrarily allocated to 69 buses.
+tem [35] are introduced as follows:                                                   Each bus is taken as a load and equipped with storage devices
+                                                                                      and an electric vehicle.
+Concept 1 (Antigen and Antibody). A vector which is ran-
+                                                                                         The profile of energy consumption was sourced from resi-
+domly generated  from the feasible space of a decision variable,
+                                                                                     dential consumers in England. The profile of solar generation
+i.e., p, p , is defined as an antigen, denoted as p. The value                        was sourced from Renewables.ninja [37] with the installed
+of objective function of this antigen is defined as an antibody,                      capacity of 1.5 kW for each prosumer. The cost coefficients
+denoted as f (p). A group of generated antigens forms the                             of the dispatchable generator, vehicle-to-grid, and demand side
+antigen population, denoted as                                                        management are provided in Table I. Other parameters were
+                           
+                      A = p1 , · · · , p|A|                  (24)                     set as pmax                max
+                                                                                               DG,n = 0.5 kW, pEV,n = 0.5 kW, ∆pS
+                                                                                                                                       max
+                                                                                                                                           = 0.2 kW,
+                                                                                       max
+                                                                                      eS    = 2.5 kW·h, and ε = 0.003. The simulations were
+where A is the set to denote the antigen population, and |A|                          programmed by the Matlab and performed on a computer with
+is the total number of the population set.                                            Intel(R) Core(TM) i7-4770HQ CPU at 2.20 GHz.
+HUA et al.: TRANSACTIVE ENERGY AND FLEXIBILITY PROVISION IN MULTI-MICROGRIDS USING STACKELBERG GAME                                              511
+
+
+
+   Algorithm 1: Solution algorithm to the Stackelberg game-theoretic problem
+    Input: predicted generation and consumption for all microgrids                                         h          i
+ 1 randomly initialise the population of antigens from the leader’s decision variable space                    pL , pL as
+              
+     AL (0) = pL,1 , · · · , pL,|AL |
+                max
+ 2 while ιL ≤ ιL    do
+ 3     implement the clonal operation as (26), to increase the population of antigens from                 |AL (ιL )| to |Amax
+                                                                                                                           L |
+ 4     remove dominated antigens and antibodies from the population
+ 5     while |AL (ιL )| > |AL | do
+ 6         remove antigens and antibodies with the smallest avidities as [36]
+ 7     end
+ 8     AL (ιL + 1) = AL (ιL ), ιL = ιL + 1
+ 9 end
+                              ⋆
+10 yield optimal solution pL as the input of followers’ optimization problems
+                                                                                               h      i
+11   randomly initialize the population of antigens from a follower’s decision variable space pF , pF as
+                
+      AF (0) = pF,1 , · · · , pF,|AF |
+12   while ιF ≤ ιmax
+                  F   do
+13      implement the clonal operation as (26), to increase the population of antigens from |AF (ιF )| to |Amax
+                                                                                                            F |
+14      remove dominated antigens and antibodies from the population
+15      while |AF (ιF )| > |AF | do
+16          remove antigens and antibodies with the smallest avidities as [36]
+17          AF (ιF + 1) = AF (ιF ) , ιF = ιF +1
+18          optimal solution p⋆F
+19      end
+20   end
+21   while the supply or demand of microgrid traders is not matched do
+22      adjust selling or buying price by Eq. (19)
+23   end
+     Output: aggregated surplus supply or demand m∈M p⋆NET,m,t and imbalance price πDSSP,t   ⋆          ⋆
+                                                     P
+                                                                                                   or πDSBP,t
+
+
+                                                                                      Microgrid 1                  Solar
+
+                                                  28 29 30 31 32 33 34 35                                          Dispatchable Generators
+
+                                                                                      Microgrid 2
+
+                                              59 60 61 62 63 64 65 66 67 68 69
+
+
+                          Microgrid 3                                                       Microgrid 4                     Microgrid 5
+                                                              40 41              57 58
+
+
+                               1   2    3 4   5   6   7   8   9   10      11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
+
+
+                                              36 37 38 39                     55 56
+                                                                                                                            Microgrid 6
+
+                                                                       42 43 44 45 46 47 48 49 50 51 52 53 54
+
+Fig. 5. Modified IEEE 69-bus distribution system. The system is separated into 6 microgrids. 15 solar photovoltaics and 6 dispatchable generators are
+arbitrarily allocated to 69 buses. Each bus is taken as a load and equipped with a storage devices and an electric vehicle.
+
+
+A. Local Energy Balance                                                      energy self-sufficiency for each microgrid, compared to solar
+   The aggregated inflexible power from solar generation,                    generation. The microgrid 2, microgrid 4 and microgrid 5
+flexible power from dispatchable generators, electric vehicles,              can not only meet the demand of its own prosumers, but
+storage systems, and demand side management and consump-                     also export surplus energy to other microgrids or utility grids.
+tion for each microgrid is presented in Fig. 6. It can be                    Negative flexible power is caused when the sum of power
+seen flexible power accounts for a majority portion of the                   charged to the storage systems and load shifting to this time
+512                                                                                        CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023
+
+
+                                           TABLE I                                                                                      Microgrid 1       Microgrid 5
+                 C OST C OEFFICIENTS OF THE D ISPATCHABLE G ENERATOR ,                                                                  Microgrid 3       Microgrid 6
+                  V EHICLE - TO - GRID , AND D EMAND S IDE M ANAGEMENT                                                                  Microgrid 4       Imbalance Price
+                                                                                                                                        Microgrid 2
+                                                                                                                         30                                                              0.08
+                                   Dispatchable                              Demand Side
+      Cost Coefficients                               Vehicle-to-Grid                                                                                             System Sell Price      0.06
+                                   Generators                                Management                                  20
+                                   7.0 × 10−3         5.5 × 10−3             2.8 × 10−3
+
+
+
+
+                                                                                                                                                                                                Imbalance Price (£/kW·h)
+      α (£/(kW·h)2 )                                                                                                                                                                     0.04
+      β (£/kW·h)                   1.8 × 10−3         1.6 × 10−3             1.6 × 10−3                                  10
+
+
+
+
+                                                                                                    Net Power (kW)
+      γ (£/h)                      0.1 × 10−4         0.2 × 10−4             0.3 × 10−4                                                                                                  0.02
+                                                                                                                          0                                                              0
+                              Microgrid 1                          Microgrid 4                                                                                                           0.02
+                30                                                                                                   −10
+                20                                            Solar Generation                                                                                                           0.04
+                                                                                                                     −20                                             System Buy Price
+                10                                                                                                                                                                       0.06
+                 0                                                                                                   −30
+               −10                                            Flexible Power                                                                                                             0.08
+                                                              Consumption
+               −20                                                                                                   −40                                                                 0.10
+                              Microgrid 2                       Microgrid 5                                                   1             12            24             36             48
+                30                                                                                                                                    Time (0.5 h)
+  Power (kW)
+
+
+
+
+                20
+                10                                                                            Fig. 7. The aggregated net power of the distribution network and imbalance
+                 0                                                                            price. The x-axis indicates the scheduling time. The positive value of left
+               −10                                                                            y-axis indicates the surplus supply and negative value of left y-axis indicates
+               −20                                                                            the surplus demand. The positive value of right y-axis indicates the system
+                              Microgrid 3                          Microgrid 6                sell price and negative value of right y-axis indicates the system buy price.
+                30
+                20
+                                                                                                                          3
+                10                                                                                                                                                             Microgrid 1
+                 0                                                                                                        2                                                    Microgrid 2
+                                                                                                                                                                               Microgrid 3
+               −10                                                                                                                                                             Microgrid 4
+               −20                                                                                                        1                                                    Microgrid 5
+                     1   12       24        36      48 1      12        24       36   48
+                                                                                                            Power (kW)
+                                                                                                                              Sell                                             Microgrid 6
+                                                 Time (0.5 h)                                                             0
+                                                                                                                                  Buy
+Fig. 6. The aggregated solar generation, flexible power, and consumption of                                              −1
+all prosumers for each microgrid. The x axes indicate the scheduling time.
+                                                                                                                         −2
+The y axes indicate the power.
+                                                                                                                         −3
+
+period is greater than the sum of dispatchable generation,                                                               −4
+                                                                                                                              0                  1             2              3                  4
+power discharged from the storage systems, power-to-grid of                                                                                                Iteration
+electric vehicles, load shifting away from this time period, and
+load curtailment.                                                                             Fig. 8. Unmatched power supply or demand for the transactive energy among
+   Figure 7 shows the aggregated net power of the distribution                                microgrid traders. The x-axis indicates the number of iteration. The y-axis
+                                                                                              indicates the unmatched power supply or demand.
+network and imbalance price. The SSP is proportional to
+the total net supply of the distribution network and SBP
+is proportional to the total net demand of the distribution                                   (microgrid 2 and microgrid 6) buy power from microgrid 3 at
+network. The net supply can be exported to the utility grids                                  the agreed price of £0.056/(kW·h). The supply of microgrid 3
+or curtailed. The net demand is satisfied by importing power                                  and demand of microgrid 6 are cleared. At the second iteration,
+from the utility grids.                                                                       the buyers (microgrid 2 and microgrid 4) buy power from
+                                                                                              microgrid 5 at the agreed price of £0.069/(kW·h). The supply
+B. Transactive Energy Among Microgrids                                                        of microgrid 5 and demand of microgrid 2 are cleared. At the
+                                                                                              third iteration, 1.05 kW of demand of microgrid 4 is further
+   The process of multiple microgrid traders cooperatively
+                                                                                              satisfied by the supply of microgrid 1 at the agreed price of
+trading energy with each other during the second scheduling
+                                                                                              £0.0642/(kW·h). The supply of microgrid 1 is cleared. The
+interval is presented in Fig. 8. During this time interval, the
+                                                                                              rest unmatched 1.32 kW of demand of microgrid 4 is imported
+microgrid 1, microgrid 3, and microgrid 5 become sellers,
+                                                                                              from the utility grid at the SBP.
+with the selling amount of 1.04 kW, 1.14 kW, and 2.10 kW,
+respectively. The microgrid 2, microgrid 4, and microgrid 6                                   C. Performance Evaluation
+become buyers, with the buying amount of 1.74 kW, 3.47 kW,
+                                                                                                 To evaluate the performance of the proposed model in terms
+and 0.40 kW, respectively. Since the total demand of buyers
+                                                                                              of achieving local energy balance, the following two models
+is higher than the total supply of sellers, when the unmatched
+                                                                                              are used as comparison:
+supply is cleared, the negotiation among microgrid traders
+completes. It can be seen the negotiation during this scheduling                              Comparison 1 (The Model Without Flexibility Provision). In
+interval converges within 3 iterations. The initial trading                                   this model, prosumers are only equipped with solar panels
+volumes and prices are obtained by solving the optimization                                   as the inflexible generation source, without the flexibility
+problem of each microgrid. At the first iteration, the buyers                                 provided by dispatchable generators, storage devices, electric
+HUA et al.: TRANSACTIVE ENERGY AND FLEXIBILITY PROVISION IN MULTI-MICROGRIDS USING STACKELBERG GAME                                                       513
+
+
+
+vehicles, and flexible loads. Other settings remained the same                 seek for maximizing the profits of their prosumers through
+as the proposed model.                                                         dispatching the flexibility sources and participating in the
+                                                                               transactive energy. Case studies show the proposed model
+Comparison 2 (The Model Without Transactive Energy).
+                                                                               is capable of achieving a better local energy balance and
+In this model, prosumers are unable to participate in the
+                                                                               reducing dependency on the utility grids. For future work, the
+transactive energy to exchange surplus supply or demand with
+                                                                               responsibilities of microgrid traders and prosumers, e.g., the
+each other. The only option is to import or export energy from
+                                                                               cost of using distribution networks, can be evaluated from the
+or to the utility grids. Other settings remained the same as the
+                                                                               regulatory perspective.
+proposed model.
+   The comparison of the net power of the distribution network
+                                                                                                             R EFERENCES
+under these three models is presented in Fig. 9. Compared
+to the model without the flexibility provision, our proposed                    [1] D. Bogdanov, J. Farfan, K. Sadovskaia, A. Aghahosseini, M. Child,
+model can not only reduce dependence on the utility grids,                          A. Gulagi, A. S. Oyewo, L. De Souza Noel Simas Barbosa, and C.
+                                                                                    Breyer, “Radical transformation pathway towards sustainable electricity
+but also export surplus power, whereas the model without                            via evolutionary steps,” Nature Communications, vol. 10, no. 1, pp. 1077,
+the flexibility provision has to rely on power import from the                      Mar. 2019.
+utility grids during the entire scheduling horizon. Compared to                 [2] I. Rutledge and P. Wright, UK Energy Policy and the End of Market
+                                                                                    fundamentalism, Oxford: Oxford University Press, 2011.
+the model without the transactive energy in which prosumers
+                                                                                [3] M. Grubb and D. Newbery, “UK electricity market reform and the energy
+can only import energy at the SBP higher than the price                             transition: Emerging lessons,” The Energy Journal, vol. 39, no. 6, pp. 1–
+determined by the transactive energy, and export energy at the                      26, Nov. 2018.
+SSP lower than the price determined by the transactive energy,                  [4] A. C. Wright, “Reform of power system governance in the context of
+                                                                                    system change,” IET Smart Grid, vol. 1, no. 1, pp. 19–23, Apr. 2018.
+our proposed model can achieve better local energy balance                      [5] Y. Parag and B. K. Sovacool, “Electricity market design for the prosumer
+during the entire scheduling horizon. Incentivized by the prices                    era,” Nature Energy, vol. 1, no. 4, pp. 16032, Mar. 2016.
+determined by the transactive energy, prosumers are willing                     [6] W. Q. Hua, “Smart grid enabling low carbon future power systems
+                                                                                    towards prosumers era,” Ph.D. dissertation, Department, Durham Uni-
+to increase the amount of flexibility provision during the
+                                                                                    versity, Durham, 2020.
+peak demand period from thirteenth to thirty-third scheduling                   [7] S. Saxena, H. E. Z. Farag, H. Turesson, and H. Kim, “Blockchain based
+intervals, whereas decrease the amount of flexibility provision                     transactive energy systems for voltage regulation in active distribution
+during the rest of the scheduling intervals.                                        networks,” IET Smart Grid, vol. 3, no. 5, pp. 646–656, Oct. 2020.
+                                                                                [8] W. Q. Hua, J. Jiang, H. J. Sun, and J. Z. Wu, “A blockchain based
+                                                                                    peer-to-peer trading framework integrating energy and carbon markets,”
+                        60
+                                                                                    Applied Energy, vol. 279, pp. 115539, Dec. 2020.
+                                                                                [9] R. H. Lasseter, “MicroGrids,” in 2002 IEEE Power Engineering Society
+                        40
+                                                                                    Winter Meeting. Conference Proceedings, 2002, pp. 305–308.
+                                                                               [10] A. P. S. Meliopoulos, “Challenges in simulation and design of µ grids,”
+                        20
+      Net Power (kW)
+
+
+
+
+                                                                                    in 2002 IEEE Power Engineering Society Winter Meeting. Conference
+                                                                                    Proceedings, 2002, pp. 309–314.
+                         0
+                                                                               [11] N. Atamturk and M. Zafar, “Transactive energy: a surreal vision or
+                       −20                                                          a necessary and feasible solution to grid problems,” California Public
+                                                                                    Utilities Commission Policy & Planning Division, 2014.
+                       −40                                                     [12] A. Pouttu, J. Haapola, P. Ahokangas, Y. Q. Xu, M. Kopsakangas-
+                                                                                    Savolainen, E. Porras, J. Matamoros, C. Kalalas, J. Alonso-Zarate, F.
+                                          Proposed Model                            D. Gallego, J. M. Martı́n, G. Deconinck, H. Almasalma, S. Clayes, J.
+                       −60                Without Flexibility Provision
+                                          Without Transactive Energy                Z. Wu, M. Cheng, F. R. Li, Z. P. Zhang, D. Rivas, and S. Casado, “P2P
+                       −80                                                          model for distributed energy trading, grid control and ICT for local smart
+                             1   12       24            36            48            grids,” in 2017 European Conference on Networks and Communications
+                                      Time (0.5 h)                                  (EuCNC), 2017, pp. 1–6.
+                                                                               [13] P. H. Li and S. Pye, “Assessing the benefits of demand-side flexibility
+Fig. 9.     Comparison of the net power of the distribution network for             in residential and transport sectors from an integrated energy systems
+the proposed model, the model without flexibility provision, and the model          perspective,” Applied Energy, vol. 228, pp. 965–979, Oct. 2018.
+without transactive energy. The x-axis indicates the scheduling time. The y-   [14] M. Marzband, F. Azarinejadian, M. Savaghebi, E. Pouresmaeil, J.
+axis indicates the net power.                                                       M. Guerrero, and G. Lightbody, “Smart transactive energy framework
+                                                                                    in grid-connected multiple home microgrids under independent and
+                                                                                    coalition operations,” Renewable Energy, vol. 126, pp. 95–106, Oct.
+                                                                                    2018.
+                                  V. C ONCLUSION                               [15] Y. F. Wang, Z. H. Huang, M. Shahidehpour, L. L. Lai, Z. Q. Wang,
+   This paper proposed a framework of local energy mar-                             and Q. S. Zhu, “Reconfigurable distribution network for managing
+                                                                                    transactive energy in a multi-microgrid system,” IEEE Transactions on
+kets to accommodate the emerging role of prosumers and                              Smart Grid, vol. 11, no. 2, pp. 1286–1295, Mar. 2020.
+their DRESs. An ensemble of prosumers is structured in                         [16] H. S. V. S. K. Nunna and D. Srinivasan, “Multiagent-based transactive
+the form of microgrids to collectively exchange energy with                         energy framework for distribution systems with smart microgrids,” IEEE
+                                                                                    Transactions on Industrial Informatics, vol. 13, no. 5, pp. 2241–2250,
+other microgrids and provide flexibility to the utility grids.                      Oct. 2017.
+The decision making and interactions between the DSO and                       [17] S. A. Janko and N. G. Johnson, “Scalable multi-agent microgrid ne-
+multiple microgrid traders are analyzed using a Stackelberg                         gotiations for a transactive energy market,” Applied Energy, vol. 229,
+                                                                                    pp. 715–727, Nov. 2018.
+game-theoretic approach, by which a DSO seeks local energy
+                                                                               [18] Y. Du, F. X. Li, X. Kou, and W. Pei, “Coordinating multi-microgrid
+balance by scheduling the operation of microgrids and deter-                        operation within distribution system: A cooperative game approach,” in
+mining the imbalance prices, and multiple microgrid traders                         2017 IEEE Power & Energy Society General Meeting, 2017, pp. 1–5.
+514                                                                          CSEE JOURNAL OF POWER AND ENERGY SYSTEMS, VOL. 9, NO. 2, MARCH 2023
+
+
+
+[19] J. Mei, C. Chen, J. H. Wang, and J. L. Kirtley, “Coalitional game                                     Xiao Hao (Member, IEEE) received the B.S. degree
+     theory based local power exchange algorithm for networked microgrids,”                                from Huazhong University of Science and Tech-
+     Applied Energy, vol. 239, pp. 133–141, Apr. 2019.                                                     nology in 2009, and the Ph.D. degree in Electrical
+[20] M. Marzband, M. Javadi, S. A. Pourmousavi, and G. Lightbody, “An                                      Engineering from the Chinese Academy of Sciences
+     advanced retail electricity market for active distribution systems and                                in 2015. He is currently an Associate Professor
+     home microgrid interoperability based on game theory,” Electric Power                                 with the Institute of Electrical Engineering, Chinese
+     Systems Research, vol. 157, pp. 187–199, Apr. 2018.                                                   Academy of Sciences. His research interests include
+[21] Y. Fu, Z. Q. Zhang, Z. K. Li, and Y. Mi, “Energy management for                                       optimal operation and planning of power systems
+     hybrid AC/DC distribution system with microgrid clusters using non-                                   and application of artificial intelligence in power
+     cooperative game theory and robust optimization,” IEEE Transactions                                   systems.
+     on Smart Grid, vol. 11, no. 2, pp. 1510–1525, Mar. 2020.
+[22] V. Ungureanu, Pareto-Nash-Stackelberg Game and Control Theory,
+     Springer, 2018.
+[23] N. Liu, X. H. Yu, C. Wang, and J. J. Wang, “Energy sharing management
+     for microgrids with PV prosumers: A stackelberg game approach,” IEEE                                  Wei-Yu Chiu (Senior Member, IEEE) received the
+     Transactions on Industrial Informatics, vol. 13, no. 3, pp. 1088–1098,                                Ph.D. degree in Communications Engineering from
+     Jun. 2017.                                                                                            the National Tsing Hua University (NTHU) in 2010.
+[24] W. Q. Hua, D. Li, H. J. Sun, and P. Matthews, “Stackelberg game-                                      He is currently an Associate Professor of electri-
+     theoretic model for low carbon energy market scheduling,” IET Smart                                   cal engineering with NTHU. His research interests
+     Grid, vol. 3, no. 1, pp. 31–41, Feb. 2020.                                                            include multiobjective optimization and reinforce-
+[25] R. Branzei, D. Dimitrov, and S. Tijs, Models in Cooperative Game                                      ment learning, and their applications to control
+     Theory, Berlin, Heidelberg: Springer, 2008.                                                           systems, robotics, and smart energy systems. He
+[26] J. F. Nash, Non-Cooperative Games, Princeton: Princeton University                                    was a recipient of the Youth Automatic Control
+     Press, 2016.                                                                                          Engineering Award bestowed by Chinese Automatic
+[27] M. Kumar, S. C. Srivastava, and S. N. Singh, “Control strategies of                                   Control Society, in 2016, the Outstanding Young
+     a DC microgrid for grid connected and islanded operations,” IEEE            Scholar Academic Award bestowed by Taiwan Association of Systems Science
+     Transactions on Smart Grid, vol. 6, no. 4, pp. 1588–1601, Jul. 2015.        and Engineering, in 2017, the Erasmus+Programme Fellowship funded by
+[28] N. Zhang, Z. G. Hu, D. H. Dai, S. P. Dang, M. T. Yao, and Y. H. Zhou,       European Union (staff mobility for teaching) in 2018, and the Outstanding
+     “Unit commitment model in smart grid environment considering carbon         Youth Electrical Engineer Award bestowed by Chinese Institute of Electrical
+     emissions trading,” IEEE Transactions on Smart Grid, vol. 7, no. 1,         Engineering in 2020. From 2015 to 2018, he had been serving as an Organizer
+     pp. 420–427, Jan. 2016.                                                     and the Chair for the International Workshop on Integrating Communications,
+[29] A. Middelberg, J. F. Zhang, and X. H. Xia, “An optimal control              Control, and Computing Technologies for Smart Grid (ICT4SG). He is a
+     model for load shifting–with application in the energy management of        Subject Editor of IET Smart Grid.
+     a colliery,” Applied Energy, vol. 86, no. 7–8, pp. 1266–1273, Jul./Aug.
+     2009.
+[30] R. Palma-Behnke, J. L. C. A, L. S. Vargas, and A. Jofré, “A distribution
+     company energy acquisition market model with integration of distributed                              Wei Pei (Member, IEEE) received the B.S. and
+     generation and load curtailment options,” IEEE Transactions on Power                                 M.S. degrees in Electrical Engineering from Tianjin
+     Systems, vol. 20, no. 4, pp. 1718–1727, Nov. 2005.                                                   University in 2002 and 2005, respectively, and the
+[31] [Online]. Available: https://www.elexon.co.uk/knowledgebase/what-is-t                                Ph.D. degree in Electrical Engineering from the In-
+     he-system-sell-price-and-the-system-buy-price/                                                       stitute of Electrical Engineering, Chinese Academy
+[32] H. Y. Wang, C. E. Murillo-Sanchez, R. D. Zimmerman, and R. J.                                        of Sciences in 2008. He is currently a Professor
+     Thomas, “On computational issues of market-based optimal power flow,”                                and the Director of the Distributed Generation and
+     IEEE Transactions on Power Systems, vol. 22, no. 3, pp. 1185–1193,                                   Power System Research Group, Institute of Electri-
+     Aug. 2007.                                                                                           cal Engineering, Chinese Academy of Sciences. His
+[33] W. Saad, Z. Han, H. V. Poor, and T. Başar, “A noncooperative game                                   research interests include the impact of integration of
+     for double auction-based energy trading between phevs and distribution                               renewable energy sources on the electricity grid and
+     grids,” in 2011 IEEE International Conference on Smart Grid Commu-          the development of the distribution grid for large-scale renewable integration,
+     nications (SmartGridComm), 2011, pp. 267–272.                               active distribution networks, and AC/DC microgrids. He has published over
+[34] W. Y. Chiu, H. J. Sun, and H. V. Poor, “A multiobjective approach           160 papers in peer reviewed journals and international conferences. He is
+     to multimicrogrid system design,” IEEE Transactions on Smart Grid,          Associate Editor of IET Smart Grid, IET Energy Systems Integration, also he
+     vol. 6, no. 5, pp. 2263–2272, Sep. 2015.                                    is the Young Subject Editor of CSEE Journal of Power and Energy Systems,
+[35] G. C. Luh, C. H. Chueh, and W. W. Liu, “MOIA: multi-objective               Power System Technology, and High Voltage Engineering.
+     immune algorithm,” Engineering Optimization, vol. 35, no. 2, pp. 143–
+     164, Apr. 2003.
+[36] R. H. Shang, L. C. Jiao, F. Liu, and W. P. Ma, “A novel immune
+     clonal algorithm for MO problems,” IEEE Transactions on Evolutionary                                 Jing Jiang (Senior Member, IEEE) received her
+     Computation, vol. 16, no. 1, pp. 35–50, Feb. 2012.                                                   Ph.D. degree in Electrical and Electronics Engineer-
+[37] [Online]. Available: https://www.renewables.ninja                                                    ing from the University of Edinburgh in 2011. From
+                                                                                                          2011 to 2018, she was a Research Fellow with
+                                                                                                          the Centre for Communication Systems Research,
+                                                                                                          University of Surrey, and then a Research Asso-
+                                                                                                          ciate with the Department of Engineering, Durham
+                                                                                                          University. In September 2018, she joined Northum-
+                         Weiqi Hua (Member, IEEE) received his M.Sc. and
+                                                                                                          bria University, Newcastle upon Tyne, where she is
+                         Ph.D. degrees in Engineering from the University
+                                                                                                          currently a Senior Lecturer with the Department of
+                         of Durham in 2017 and 2020, respectively, and
+                                                                                                          Mathematics, Physics, and Electrical Engineering.
+                         then took the postdoctoral position with Cardiff
+                                                                                 She has published more than 60 papers including more than 30 prestigious
+                         University in 2020. Since 2021, He has been with
+                                                                                 journal articles. Her current relevant research interests include smart local
+                         the University of Oxford as a Postdoc Researcher.
+                                                                                 energy systems, digital power grid, next generation wireless communications,
+                         His research interests include the energy system
+                                                                                 and cyber security in energy systems. She is now a Subject Editor of IET
+                         modelling, energy system digitalisation, and peer-to-
+                                                                                 Smart Grid Journal and an Associate Editor of EURASIP Journal on Wireless
+                         peer energy trading. He has served as an Editorial
+                                                                                 Communications and Networking. She also served as a Guest Editor of
+                         Board Member of Applied Energy, Guest Editor for
+                                                                                 Energies (2018) and an Associate Editor of IET Communications Journal
+                         IET Smart Grid and Water.
+                                                                                 (2019–2022).
+HUA et al.: TRANSACTIVE ENERGY AND FLEXIBILITY PROVISION IN MULTI-MICROGRIDS USING STACKELBERG GAME                                    515
+
+
+
+                          Hongjian Sun (Senior Member, IEEE) received                 Peter Matthews is an Associate Professor in Design
+                          his Ph.D. degree from the University of Edinburgh           Informatics at the Department of Engineering. His
+                          in 2011, and then took postdoctoral positions at            research in Design Informatics utilises data mining
+                          King’s College London and Princeton University.             and machine learning tools to critically appraise
+                          Since 2013, he has been with the University of              technical data sets, such as operational sensor data
+                          Durham as Professor (2020 till now), Reader (2017–          from wind turbines (typically from SCADA sys-
+                          2022), and Assistant Professor (2013–2017). His             tems). This research is primarily aimed at developing
+                          research mainly focuses on: (i) Smart grid: commu-          diagnostic and prognostic measures for individual
+                          nications and networking, (ii) Smart grid: demand           wind turbine health.
+                          side management and demand response, and (iii)
+                          Smart grid: renewable energy sources integration. He
+is the Editor-in-Chief for IET Smart Grid journal, and on the Editorial Board
+of the Journal of Communications and Networks. He also served as Guest
+Editor for IEEE Communication Magazine, etc. To date, he has published
+over 180 papers in refereed journals and international conferences. He has
+made contributions to and coauthored the IEEE 1900.6a-2014 Standard. He
+has published five book chapters, and edited two books: IET book “Smarter
+Energy: from Smart Metering to the Smart Grid” (ISBN: 978–1-78561-104-
+9), and CRC Book “From Internet of Things to Smart Cities: Enabling
+Technologies” (ISBN: 9781498773782).
+

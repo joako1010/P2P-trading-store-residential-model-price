@@ -1,0 +1,1953 @@
+6386
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+A Peer-to-Peer Joint Kilowatt and Negawatt Trading
+Framework Incorporating Battery
+Cycling Degradation
+Chenxi Zhang , Graduate Student Member, IEEE, Jing Qiu , Senior Member, IEEE,
+and Yi Yang , Graduate Student Member, IEEE
+
+Abstract—This paper presents a novel unified peer-to-peer (P2P)
+framework for both kilowatt (kW) and negawatt (nW) trading. The
+aim is to coordinate these two transaction types and maximize customer benefits, by reducing customers’ electricity bills and helping
+customers trade energy with their neighbors while also adhering
+to the physical limits of the electricity networks. An auction-based
+joint kW and nW P2P trading approach is proposed to enable prosumers to conduct the optimal strategy in switching their market
+roles between kW and nW trading and scheduling their demand.
+As such, in the virtual layer, the household energy management
+system (HEMS) models are formulated to determine the optimal
+market bidding strategy during each trading period. For the agent
+equipped with a battery energy storage system (BESS), the battery
+cycling degradation issue is also considered through the embedded
+battery cycle life model. A double-sided auction method with an
+average pricing market (APM) mechanism is performed in P2P kW
+and nW trading for market clearing. In the physical layer, voltage
+issues and line congestion management are considered through the
+distribution network models. The proposed formulation is tested
+on the modified IEEE 33-bus distribution system and simulation
+results demonstrate that the proposed framework outperforms the
+single trading mode.
+Index Terms—Peer-to-peer kilowatt and negawatt trading,
+electricity cost reduction, battery cycle life, double-sided auction.
+
+I. INTRODUCTION
+WING to the rising penetration of distributed energy
+resources (DERs), such as solar photovoltaic (PV), battery energy storage systems (BESSs), etc., along with recent
+advances in communication and control infrastructure at the
+residential level, traditional passive consumers are motivated
+to turn into prosumers (proactive consumers) by controlling
+their generation and demand [1], [2]. To facilitate local energy
+
+O
+
+Manuscript received 2 May 2023; revised 30 November 2023; accepted
+28 January 2024. Date of publication 31 January 2024; date of current version
+21 August 2024. This work was supported in part by the ARC Research Hub
+under Grant IH180100020, in part by the ARC Training Centre under Grant
+IC200100023, in part by the ARC linkage Project under Grant LP200100056,
+and in part by the ARC under Grant DP220103881. Paper no. TPWRS-006412023. (Corresponding author: Jing Qiu.)
+The authors are with the School of Electrical and Information Engineering,
+The University of Sydney, Sydney, NSW 2006, Australia (e-mail: czha2586@
+uni.sydney.edu.au; qiujing0322@gmail.com; yyan9454@uni.sydney.edu.au).
+Color versions of one or more figures in this article are available at
+https://doi.org/10.1109/TPWRS.2024.3360606.
+Digital Object Identifier 10.1109/TPWRS.2024.3360606
+
+trading, dynamically balance supply and demand, and increase
+the financial benefit of emerging prosumers, peer-to-peer (P2P)
+trading has attracted widespread attention [3], [4].
+In terms of operation mode and dispatch flexibility, P2P
+trading can be classified into two categories, namely P2P kilowatt (kW) trading and P2P negawatt (nW) trading [5]. As a
+potential alternative to the feed-in-tariff (FiT) scheme, P2P kW
+trading is operated by surplus energy management, in which
+kW buyers purchase shortage of demand from kW sellers with
+redundant energy. The trading quantity and price are determined
+according to the market settlement on a virtual platform such as
+blockchain [6]. Thereafter, sellers should inject the agreed kW
+quantities into the low-voltage (LV) distribution network, and
+the corresponding kW amounts are consumed by buyers from
+the connected network [7].
+As a technique of energy management, the concept of nW was
+first introduced in 1985 and defined as an electricity customer’s
+right to buy energy [8]. During a shortage of supply, the energy
+saved by reducing electricity consumption is denoted by nW
+in this paper. An electricity consumer possesses the flexibility
+to either reschedule energy-related activities to another time or
+opt not to consume energy for certain activities. Subsequently,
+they could sell their right to purchase the saved energy to others
+within the network. P2P nW trading represents a trading mechanism wherein prosumers autonomously manage their energy
+consumption behaviors to enhance the energy balance within
+distribution networks. Demand response (DR) management is
+typically organized by the electricity grid during a power supply
+shortage. As a potential alternative to the DR strategy, P2P nW
+trading is operated by energy demand rescheduling. In contrast
+to the DR scheme, P2P nW trading empowers prosumers to
+engage in direct trading with one another through P2P platforms.
+Consequently, both sellers and buyers participating in P2P nW
+transactions are anticipated to realize greater financial benefits
+compared to the DR scheme. Based on the finalized quantities
+and prices on the virtual platform, nW sellers need to decrease
+their scheduled demand, and the excess demand is consumed by
+nW buyers from the connected network correspondingly [5].
+In the existing literature, P2P kW trading and nW trading
+are usually studied and analyzed separately. Hereinto, the more
+popular transaction form is P2P kW trading, in which various
+technical approaches have been proposed in three main P2P
+
+0885-8950 © 2024 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+market structures, namely, centralized [9], community [10],
+[11], and decentralized market [2], [12]. Game theory-based
+methods and auction-based methods are commonly used to
+design a P2P kW system [13]. For example, the non-cooperative
+game model in [14], [15] and the cooperative game model in [9]
+have been exploited to simulate the behavior and interaction
+of participants in the P2P market. In [16], a continuous double
+auction (CDA) market framework is proposed, in which prosumers submit bids based on optimized trading strategies. A
+double-auction mechanism is employed in [17] to promote the
+collaboration between the proposed P2P trading platform and
+DR schemes.
+Different from the conventional DR programs, the rules and
+decisions of which are mostly organized by the grid, nW trading
+enables participants to trade with others in a prosumer-centric
+way [18]. Owing to advantages in adjusting energy imbalance
+and earning higher monetary gains for prosumers compared with
+DR [19], a growing body of literature has investigated the design
+of the P2P nW trading framework recently. For example, a novel
+P2P nW trading transactive energy (TE) system is proposed in
+[20] to address the problem of the increasing need to reduce energy consumption. In [21], a voltage-constraints P2P nW trading
+framework applied in the LV distribution system is presented and
+the superior financial performance of the proposed framework is
+also proved compared with demand-side management (DSM). A
+coalition game model utilized in cooperative P2P nW trading in
+a grid-connected network is proposed in [22], in which the power
+loss and voltage issues are considered. The effect of diminishing
+electricity costs for prosumers has also been demonstrated to be
+better compared with the DR scheme.
+In the above literature, it can be found that either kW trading
+mode or nW trading mode is feasible in the residential P2P
+market to decrease energy costs and adjust the energy imbalance, hence, these two transaction types are able to exist in a
+community market at the same time. Besides, participants in
+the market without any DER who can merely act as buyers in
+kW transactions might also become sellers in nW trading due
+to the demand administration. However, there may be a lack of
+a unified framework for both P2P kW and nW trading in the
+distribution network to utilize the flexibility in both supply-side
+and demand-side of residential prosumers and gather the benefits
+of two trading types. Without the unified model, prosumers who
+wish to engage in both P2P kW and nW trading simultaneously
+may encounter significant challenges. These challenges arise
+from separated optimization models that may yield entirely
+different DERs scheduling plans and trading strategies, causing
+residents’ confusion, and impeding their optimal role selection.
+Furthermore, determining the appropriate bidding quantities in
+both markets can be complex. This, in turn, diminishes arbitrage
+opportunities and leads to profit losses of market participants as
+well. Therefore, the need for a unified framework and model is
+imperative to address these challenges.
+To fill these existing research gaps, this paper proposes a
+P2P joint kW and nW trading approach to coordinate two
+transaction modes. The proposed models in this paper are not
+a mere amalgamation of two existing standalone models, but
+rather optimize and update market roles switching schemes,
+
+6387
+
+and bidding strategies of prosumers through the current demand
+status assessment and market feedback signals to achieve net
+profit maximization. The battery cycling degradation issue and
+the impact on the physical network, for example, line congestion
+and overvoltage situation are considered in the proposed unified
+models as well. Compared to the existing frameworks, the major
+contributions of this paper are summarized as follows:
+1) We propose a unified P2P kW and nW trading framework
+that empowers all prosumers in the distribution system to
+participate in both kW and nW transactions during each
+trading interval. Each participant can switch their market
+roles between kW and nW trading based on the bidding
+strategy optimization results and the P2P market clearing
+information.
+2) We propose P2P joint kW and nW trading HEMS models
+for prosumers to help each agent conduct the optimal
+strategy in the following aspects: determining market roles
+i.e., acting as buyer or seller between kW and nW trading, submitting market bids(offers), and adjusting their
+demand. The battery cycle life model is embedded in
+the HEMS models of prosumers equipped with BESS to
+obtain the trade-off solution between price arbitrage by
+charge-discharge cycles and battery life degradation.
+3) A double-sided auction method with an APM mechanism
+is proposed to clear the P2P kW and nW markets. The
+effect of the trading results in the virtual layer on the
+physical network is considered through the distribution
+network models, for example, the voltage issue and power
+line congestion. From the case study results, the superior performance of the proposed framework regarding
+enlarging electricity consumption savings and easing the
+pressure of the grid at peak times compared with the single
+trading mode can be proved.
+II. PROPOSED UNIFIED P2P KW AND NW TRADING
+FRAMEWORK
+A unified P2P kW and nW trading framework in a community
+market is proposed in this paper to coordinate and improve the
+synergies of two P2P transaction types, which can be applied
+to a group of neighboring agents in a residential distribution
+network. At each transaction interval, there are coexisting both
+kW and nW trading modes in the P2P community market, the
+framework of which consists of the virtual layer and the physical
+layer, as shown in Fig. 1.
+The virtual layer mainly incorporates the HEMS and market
+operation process. It is assumed that all market participants
+possess a smart meter and a HEMS. The data containing generation, demand, traded quantity and price, etc. of each agent
+are recorded by the smart meter, which is linked with the
+HEMS [22]. The data will be delivered from the smart meter
+to the HEMS, which automatically handles the bid strategy
+optimization, market roles switch, battery cycling scheduling,
+and demand adjustment through an optimization algorithm. The
+optimization process depends on the recorded data from the
+smart meter, the informed market feedback signal, and the userpredefined objective. The market feedback signal includes the
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6388
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+formulated and discussed primarily, which are prosumers with
+PV panels, prosumers with PV panels and BESS, and prosumers
+without any DER.
+III. CONVENTIONAL P2P TRADING MODELS
+Let b be the index of each buyer, and s be the index of
+each seller. The set of all prosumers in the P2P kW market is
+represented by OkW , and OnW indicates the set of all prosumers
+in the P2P nW market. In the existing literature, the P2P energy
+trading models for kW and nW transactions are always formulated separately [5], [18], which are shown as follows:
+A. Conventional P2P kW Trading Models
+The basic P2P kW trading model is shown as follows [17].
+
+
+
+
+kW buy
+sell
+Ub (xb
+)−
+Cs (xkW
+)
+(1)
+max
+s
+b∈O kW
+
+
+
+sell
+xtot_kW
+=
+s
+
+s∈O kW
+
+b∈O kW
+
+Fig. 1.
+
+
+
+buy
+sell
+xkW
+; xtot_kW
+=
+s,b
+b
+
+buy
+xkW
+b,s
+
+s∈O kW
+
+(2)
+
+Proposed unified P2P kW and nW trading framework.
+tot_kW sell/buy
+
+buy
+sell
+= xkW
+; xs/b
+xkW
+s,b
+b,s
+
+dispatched quantities and market clearing price (MCP), which
+will be broadcast and informed to all market players at the end of
+each trading slot. Following the above market feedback signal,
+residential HEMS can respond correspondingly to reduce users’
+electricity costs. Hence, according to the optimization results
+from HEMS, each prosumer submits their bidding(offering)
+quantity and price to trade kW and/or nW in the double-sided
+auction at each trading slot and switch market roles freely at
+different transaction intervals. The market roles switch determination process will be depicted in the IV section. A double-sided
+auction method with an APM mechanism is exploited in this
+paper for market clearing at each decision horizon t, ∀ tT
+(typically one day). Different rounds of auctions can exist in
+a trading slot, and the updated market clearing information
+including dispatched quantities and MCP of the last round will
+be sent back to the HEMS for re-optimization and re-bidding in
+the next round. At the deadline of one trading horizon, the final
+market clearing results yield. The detailed HEMS models and
+market rules will be explained in Sections IV and V, respectively.
+The trading results settled in the virtual layer should avoid the
+infringement of constraints in the physical layer. The network
+state including power flow, power loss, and voltage situation is
+estimated by the community manager in each time slot t through
+the distribution system Distflow model, the formulation of which
+will be elaborated in Section V. According to the network
+estimation, the high-risk agents which may trigger voltage issues
+or line congestion will be blocked in time to maintain the power
+system operation security.
+It should be noted that a general P2P community market
+is considered in this paper, which means that kW and nW
+prosumers with or without different types of DERs can be
+covered without the need to modify the market mechanisms.
+Thereafter, three categories of market participants will be
+
+tot_kW sell/buy
+
+≤ xs/b
+
+tot_kW sell/buy
+
+≤ x̄s/b
+
+(3)
+
+buy
+Where Ub (xkW
+) represents the utility function to measure the
+b
+sell
+welfare of kW consumers; Cs (xkW
+) denotes the generation
+s
+sell
+to the kW marcosts of sellers for providing power xkW
+s
+buy
+ket. The total demand of consumers is described by xkW
+.
+b
+The total sold/purchased quantity of seller/buyer is denoted
+buy
+sell
+and xtot_kW
+, respectively. The traded power
+by xtot_kW
+s
+b
+buy
+sell
+between seller and buyer is signified by xkW
+and xkW
+;
+s,b
+b,s
+tot_kW sell/buy
+
+x− tot_kW sell/buy and x̄s/b
+
+denote the minimum and
+
+s/b
+
+maximum allowed trading quantity of prosumers, respectively.
+B. Conventional P2P nW Trading Models
+The basic P2P nW trading model is shown as follows [21].
+
+
+
+
+nW buy
+nW sell
+min
+Cb (xb
+)+
+Cs (xs
+)
+(4)
+b∈O nW
+
+s∈O nW
+
+buy
+sell
+) and Cs (xnW
+) depict
+Constraints (2)–(3) where Cb (xnW
+s
+b
+the electricity bills for the nW buyer and seller. The total reduced
+sell
+. The excess
+demand of nW sellers is represented by xnW
+s
+buy
+demand consumed by nW buyers is denoted by xnW
+. The
+b
+form of other constraints is the same as kW trading.
+There are several issues stemming from the conventional
+separate optimization of P2P kW and nW trading, for example,
+the interplay and synergy between two transaction types are
+invisible and the market roles switch optimization is missing,
+which may lead to suboptimal market roles choice and bidding
+strategy. Therefore, we propose a unified P2P kW and nW trading approach to coordinate these two transaction modes, which
+incorporates P2P joint kW and nW trading HEMS optimization
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+6389
+
+models, double-sided auction models, and distribution system
+models. The mathematical formulation will be elaborated in
+Sections IV and V.
+IV. PROPOSED P2P JOINT KW AND NW TRADING HEMS
+MODELS
+A. Market Roles Switch in kW and nW Trading
+Let N be the set of all prosumers in both the P2P kW and nW
+market, where OkW ∪ OnW = N . For each prosumer ∀n ∈ N
+total
+and GDER
+signify the total demand
+in the community, let Dn,t
+n,t
+and total DERs’ generation power of prosumer n at time t, ∀t ∈
+net
+of prosumer n can be calculated
+T . Hence, the net demand Dn,t
+as follows:
+net
+total
+= Dn,t
+− GDER
+Dn,t
+n,t , ∀n ∈ N, ∀t ∈ T
+
+(5)
+
+Assume that an electricity supply-restricted circumstance exists in the proposed community in this paper, i.e., a pre-defined
+threshold electricity procurement quantity in the retail market
+is specified for each prosumer. Note that imposing thresholds
+by retailers or utilities on the amount of electricity users can
+purchase in residential installations is very common. Let us
+assume that purchasing thresholds have been imposed in this
+paper. When a prosumer buys energy from the retail market, if
+the purchasing amount at time t is not greater than the threshold
+Dn,t , prosumer n can buy electricity in the retail market at
+the time-of-use (ToU) price, which is denoted by σtgbuy . For
+electricity consumption that exceeds the threshold, prosumer n
+needs to pay a higher price σthgbuy [23].
+Now, in the proposed unified P2P framework, kW, nW and
+retail markets coexist in the community at the same time. The
+concept of P2P kW trading empowers each prosumer n with energy deficiency to purchase electricity from other DER-equipped
+prosumers with surplus power. For the P2P nW trading, each
+prosumer n with power scarcity (more than the threshold) is
+entitled to buy the right of electricity procurement in the retail
+market (at ToU price) from other prosumers who are willing to
+reduce their demand. In this paper, we assume that all prosumers
+are rational, driven by self-interest, willing to comply with the
+trading strategies derived from the HEMS model, and nW sellers
+are willing to sacrifice comfort to reduce demand for cost savings. Those who own excess generation or self-sufficiency may
+lack the motivation and willingness to sacrifice their comforts
+to act as an nW seller, hence in this paper, the nW trading is
+mainly considered between prosumers with power deficiency at
+each trading interval.
+To reduce the energy bills, every prosumer should decide the
+optimal market roles and bidding strategy to trade kW and/or
+nW at each transaction slot depending on the power demand
+status and the market feedback signal. The unbalanced power
+needs to be traded in the retail market. The power selling price
+in the retail market is known as FiT, which is denoted by σtgsell .
+def
+sur
+and Dn,t
+indicate the surplus generation and power
+Let Dn,t
+deficiency for prosumer n at time t. The kW and nW trading
+kW buy
+nW buy
+and σn,t
+,
+prices for the buyer are represented by σn,t
+kW sell
+nW sell
+and σn,t
+.
+that prices for the seller are signified by σn,t
+
+Fig. 2.
+
+Market roles determination process.
+
+The market role determination process is illustrated in Fig. 2.
+If the net demand is less than zero, which means there is surplus
+generation needs to be sold to the kW P2P market (at the price
+kW sell
+) and/or retail market (at the price σtgsell ). If the net
+σn,t
+demand is equal to zero, self-sufficiency is achieved, and no
+trading is needed. If the net demand is greater than zero, i.e.,
+there is a power deficiency situation, at this time, prosumer
+n can choose to not only buy electricity but also decrease
+demand. When the shortage of demand is less than the threshold,
+kW buy
+)
+prosumer n can opt to become a kW buyer (at the price σn,t
+nW sell
+) [21], [22]. Prosumer
+and/or an nW seller (at the price σn,t
+n can also choose to buy electricity in the retail market (at
+the price σtgbuy ) if there is still a scarcity of power after P2P
+trading. However, when the shortage of demand is larger than the
+pre-defined threshold, prosumer n needs to switch market roles
+kW buy
+) and/or an nW buyer (at the
+to be a kW buyer (at the price σn,t
+nW buy
+price σn,t
++ σtgbuy ) [21], [22]. After P2P trading, it should
+be noticed that at this time if there is still a power deficiency that
+exceeds the threshold, much higher prices (σthgbuy ) need to be
+paid in the retail market.
+To better illustrate, let us examine a simple numerical case
+study. It is assumed that in the retail market, a 0.4 kW purchasing
+threshold is imposed on each prosumer. During each trading
+period, if a prosumer purchases electricity from the retailer
+not exceeding 0.4 kW, the retail price is set at 0.48 $/kWh.
+However, if a resident buys electricity exceeding 0.4 kW, the
+excess electricity incurs a much higher retail price 0.768 $/kWh.
+Considering a specific trading slot, assuming the trading price
+in the P2P kW market is 0.3 $/kW (if the P2P kW market
+exists) and the trading price in the P2P nW market is 0.15 $/nW
+(if the P2P nW market exists). At this trading slot, there is a
+prosumer who faces an energy deficit of 0.8 kWh. Dynamic
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6390
+
+market roles switch process can be explained by the following
+scenarios:
+1) No P2P market exists: The prosumer can only purchase the
+entire deficient energy from the retail market (Scenario 1),
+and the energy expense is 0.5064 $ (0.4∗0.48 + 0.4∗0.786
+= 0.2706).
+2) Only the P2P nW market exists: The optimal strategy is
+to buy 0.4 kWh from the retail market and 0.4 nW from
+the P2P nW market. If the prosumer successfully buys 0.4
+nW in the P2P nW market (Scenario 2), the total electricity
+purchasing cost is 0.444 $ (0.4∗0.48 + 0.4∗(0.48 + 0.15)
+= 0.444).
+3) Only the P2P kW market exists: The optimal strategy is
+to buy overall deficient electricity of 0.8 kWh from the
+P2P kW market. If the prosumer successfully buys 0.8
+kWh in the P2P kW market (Scenario 3-1), the electricity
+purchasing cost is 0.24 $ (0.8∗0.3 = 0.24).
+However, it is important to note that the final dispatched
+quantity of each bidding round may not necessarily align with
+the expectations of buyers and sellers. Therefore, flexible market
+role-switching strategies become especially crucial.
+For example, the allocated quantity of the prosumer after the
+kW market clearing maybe 0.2 kWh (Scenario 3-2) or 0.5 kWh
+(Scenario 3-3). For scenario 3-2, the remaining 0.6 kWh need
+to be purchased in the retail market (larger than the threshold),
+and the cost is 0.4092 $ (0.2∗0.3 + 0.4∗0.48 + 0.2∗0.786 =
+0.4092). For scenario 3-3, the remaining 0.3 kWh need to be
+purchased in the retail market (less than the threshold), and the
+cost is 0.294 $ (0.5∗0.3 + 0.3∗0.48 = 0.294).
+4) The P2P kW and nW markets coexist: The optimal strategy
+is still to buy 0.8 kWh from the P2P kW market. If the
+prosumer successfully buys 0.8 kWh in the P2P kW market
+(Scenario 4-1), the cost is 0.24 $ as well (same with
+Scenario 3-1). If the allocated quantity of the prosumer in
+the P2P kW market is 0.2 kWh (Scenario 4-2), the optimal
+purchasing scheme for the remaining deficient energy 0.6
+kWh would be purchasing 0.4 kWh in the retail market
+and purchasing 0.2 nW in the P2P nW market. The cost
+is 0.378 $ (0.2∗0.3 + 0.4∗0.48 + 0.2∗(0.48 + 0.15) =
+0.378). If the allocated quantity of the prosumer in the
+P2P kW market is 0.5 kWh (Scenario 4-3-1), the optimal
+scheduling strategy would change to sell 0.3 nW in the
+P2P nW market. The cost is 0.105 $ (0.5∗0.3 - 0.3∗0.15
+= 0.105).
+As previously mentioned, the successful sale of a total of 0.3
+nW in the P2P nW market cannot be guaranteed as well. If the
+dispatched quantity in the P2P nW market is 0.1 nW (Scenario
+4-3-2), and the dispatched quantity in the P2P kW market is still
+0.5 kWh, the remaining deficient energy of 0.2 kWh should be
+purchased in the retail market. The cost is 0.231 $ (0.5∗0.3 –
+0.1∗0.15 + 0.2∗0.48 = 0.231). The energy cost comparison for
+different scenarios is shown in Table I as follows.
+From Table I, it can be demonstrated that prosumers, by
+participating simultaneously in both P2P kW and nW markets,
+can achieve further reductions in electricity purchasing costs
+compared to the scenario where only one market exists.
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+TABLE I
+ENERGY COST COMPARISON FOR DIFFERENT SCENARIOS
+
+B. Proposed P2P Joint kW and nW Trading HEMS Models
+Based on the above market roles switch thread, P2P joint
+kW and nW trading HEMS models are formulated to schedule
+the demand based on the DER generation status and market
+feedback signal, optimize the participating market types (kW
+and/or nW) and market roles (buyer/seller), and provide appropriate bidding/offering quantity strategy to trade kW and/or nW
+when acting as concurrent different market roles. For prosumers
+equipped with BESS, the operation optimization of battery
+charge-discharge and the battery life cycle model are embedded
+in the HEMS models as well. For each prosumer ∀n ∈ N , the
+detailed HEMS mathematical models are formulated as follows.
+
+max
+t∈T
+
+⎧
+⎫
+kW buy
+buy
+kW sell
+sell
+⎪
+⎪
+σn,t
+· xkW
+− σn,t
+· xkW
+⎪
+⎪
+n,t
+n,t
+⎪
+⎪
+⎪
+nW buy
+gbuy
+nW buy ⎪
+nW sell
+nW sell
+⎪
+⎪
+· xn,t
+− (σn,t
++ σt ) · xn,t
+⎨+σn,t
+⎬
+gsell
+gsell
+gbuy
+gbuy
+(6)
++σt
+· xn,t − (1 − δn,t ) · σt
+· xn,t
+⎪
+⎪
+⎪
+⎪
+hgbuy
+gbuy
+gbuy
+⎪
+⎪
+−δ
+×
+[σ
+·
+(x
+−
+D̄
+)
++
+σ
+·
+D̄
+]
+⎪ n,t
+⎪
+n,t
+n,t
+t
+n,t
+t
+⎪
+⎪
+⎩
+⎭
+PV
+BESS
+− Cn,t
+−Cn,t
+(1 − δn,t ) · xgbuy
+n,t ≤ D̄n,t
+
+(7)
+
+xgbuy
+n,t > D̄n,t · δn,t
+
+(8)
+
+sell
+xnW
+· δn,t = 0, ∀t ∈ T
+n,t
+
+(9)
+
+buy
+buy
+sell
+sell
+xkW
+− xkW
++ xnW
++ xnW
++ xgbuy
+n,t
+n,t
+n,t
+n,t
+n,t
+gsell
+PV
+dis
+ch
+−xn,t + Gn,t + pn,t − pn,t
+total
+= Dn,t
+, ∀t ∈ T
+
+(10)
+
+f lex
+total
+base
+= Dn,t
++ Dn,t
+, ∀t ∈ T
+Dn,t
+
+(11)
+
+f lex
+sell
+≤ Dn,t
+, ∀t ∈ T
+0 ≤ xnW
+n,t
+
+(12)
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+hgbuy
+nW buy
+σn,t
+> σtgbuy + σn,t
+, ∀t ∈ T
+(13)
+
+
+
+x
+n,t ≤ x̄n,t · zn,t , ∀t ∈ T
+ ∈ {kW sell, kW buy, nW sell, nW buy, gsell, gbuy}
+(14)
+εbuy
+εsell
+zn,t
++ zn,t
+≤ 1, ∀t ∈ T, ε ∈ {kW, nW, g}
+
+(15)
+
+℘
+kW sell
+zn,t
++ zn,t
+≤ 1, ∀t ∈ T, ℘ ∈ {nW sell, nW buy}
+
+(16)
+
+gsell
+℘
++ zn,t
+≤ 1, ∀t ∈ T
+zn,t
+
+(17)
+
+x−
+
+
+n,t
+
+
+≤ x
+n,t ≤ x̄n,t , ∀t ∈ T
+
+(18)
+
+The objective function (6) is formulated to maximize the payoff of prosumer n, which is calculated by the profit of participating in the P2P kW, P2P nW, and retail markets minus the power
+buy
+buy
+sell
+sell
+generation costs; xkW
+, xkW
+, xnW
+, xnW
+, xgsell
+n,t
+n,t
+n,t
+n,t
+n,t
+and xgbuy
+n,t denote the sold and purchased power of prosumer n
+in the P2P kW, nW, and retail markets at time t, respectively.
+To be noted, those prosumers without DER cannot become kW
+sellers, the sold power in the kW market of them should be equal
+to zero. The hourly operation cost of PV and BESS is represented
+PV
+BESS
+and Cn,t
+. The introduced binary variable δn,t and
+by Cn,t
+constraints (7)–(8) are for the sake of sizing up whether the
+electricity procurement quantity in the retail market of prosumer
+n is greater than the predefined threshold. When δn,t is equal
+to 0, which reflects that the bought electricity from the grid is
+not larger than the threshold, the ToU price will be paid at this
+moment. Contrarily, when δn,t is equal to 1, the higher price
+σthgbuy will be paid for the excess power compared with the
+threshold. The market roles for acting as a buyer or seller in
+the nW market are restricted by the constraint (9) through the
+introduced binary variable δn,t as well. The balance between
+supply and demand is restricted by equality (10), where pdis
+n,t ,
+PV
+and
+G
+indicate
+the
+discharge,
+charge
+power
+of
+the
+battery,
+pch
+n,t
+n,t
+and solar generation at time t. The total demand is divided by
+base
+and the flexible power demand
+the base power demand Dn,t
+f lex
+Dn,t , which consists of a few typical time-shiftable loads, such
+as washing machine, dryer, dishwasher, etc. The sold nW amount
+cannot be greater than the flexible demand, which is shown as
+(12). The electricity procurement price for the nW buyer should
+not be greater than that of the retail market, which is restricted by
+(13). The constraints (14)–(15) are utilized to ensure prosumer
+n cannot both buy and sell power in the same market at a trading
+ζ
+is the introduced binary variable for each trading
+slot, where zn,t
+type. The prosumer who owns surplus generation at time t would
+not trade nW, which is limited by (16)–(17). The maximum and
+minimum allowable trading amount of each transaction type is
+signified by x̄ζn,t and x− ζ , respectively.
+n,t
+
+It should be noticed that nonlinear terms are existing in the current mathematical model (6), (7), and (9), which are δn,t · xgbuy
+n,t
+sell
+and δn,t · xnW
+.
+The
+optimization
+problem-solving
+efficiency
+n,t
+will be impeded, so the big-M method is exploited in this paper
+to linearize the models and improve the solving speed. The
+big-M method has been widely used in the current literature
+for linearization by introducing an artificial variable M as a high
+
+6391
+
+penalty, which has no physical meaning and will be eliminated
+during the solving process as well [24], [25]. Therefore, besides
+a big parameter M being introduced, we introduce a continuous
+variable an,t to replace the nonlinear term δn,t · xgbuy
+n,t . The
+following linear restrictions are added as well.
+⎧ gbuy
+⎨xn,t ≥ an,t
+M · δn,t ≥ an,t
+(19)
+⎩ gbuy
+xn,t − M × (1 − δn,t ) ≤ an,t
+In addition, let the nonlinear objective function (6) convert
+to (20), the original nonlinear constraint (7) is recast as (21),
+and the initial nonlinear (9) should be replaced by (22), which
+is formulated as follows.
+
+max
+t∈T
+
+⎧
+⎫
+kW buy
+buy
+kW sell
+sell
+⎪
+⎪
+· xkW
+− σn,t
+· xkW
+⎪σn,t
+⎪
+n,t
+n,t
+⎪
+⎪
+⎪
+⎪
+nW buy
+gbuy
+nW buy
+nW sell
+nW sell
+⎪
+⎪
++σ
+·
+x
+−
+(σ
++
+σ
+)
+·
+x
+⎨ n,t
+⎬
+n,t
+t
+n,t
+n,t
+gsell
+gsell
+gbuy
+gbuy
++σt
+· xn,t − σt
+· xn,t
+⎪
+⎪
+⎪
+⎪
+⎪
++(σtgbuy − σthgbuy ) · an,t + (σthgbuy − σtgbuy ) · D̄n,t · δn,t ⎪
+⎪
+⎪
+⎪
+⎪
+⎩
+⎭
+PV
+BESS
+−Cn,t − Cn,t
+(20)
+xgbuy
+n,t − an,t ≤ D̄n,t
+
+(21)
+
+sell
+xnW
+− M × (1 − δn,t ) ≤ 0
+n,t
+
+(22)
+
+The irregular and frequent charge-discharge behavior will
+exacerbate battery degradation. It is short-sighted that leverage
+battery cycling frequently to conduct price arbitrage in the P2P
+market without considering the battery aging issue [26]. Thus,
+the battery cycle life models are embedded within HEMS models
+in this paper to optimize the charge and discharge behaviors of
+the battery, which are formulated as follows.
+BESS
+=
+SoCn,t
+
+BESS
+En,t
+× 100% , ∀t ∈ T
+EnR
+
+BESS
+BESS
+DoDn,t
+= 1 − SoCn,t
+
+
+BESS
+En,t
+= 1−
+× 100% , ∀t ∈ T
+EnR
+BESS
+BESS
+BESS
+ΔDoDn,t
+= DoDn,tend
+− DoDn,tbegin
+, ∀t ∈ T
+
+
+loss
+BESS kp
+eqNn,t
+≈ ΔDoDn,t
+
+
+
+BESS
+BESS kp
+= DoDn,tend
+− DoDn,tbegin
+, ∀t ∈ T
+
+kp
+loss
+BESS
+BESS 
+DoDn,tend
+=
+− DoDn,tbegin
+eqNn,daily
+
+(23)
+
+(24)
+(25)
+
+(26)
+(27)
+
+t∈T
+f ail
+
+BESS
+Tn,cycle
+= Nn
+
+loss
+365 · eqNn,daily
+
+BESScap
+BESS
+BESS
+Cn,t
+= Cn
+Tn,cycle
+· 365 · T
+
+(28)
+(29)
+
+t∈T
+
+BESS
+BESS
+BESS
+En,t+1
+= En,t
++ pch
+· Δt
+n,t · ηn,ch
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6392
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+
+dis
+− pn,t · Δt η BESS , ∀t ∈ T
+n,dis
+
+(30)
+
+BESS
+BESS
+BESS
+EnR × SoCn,min
+≤ En,t
+≤ EnR × SoCn,max
+, ∀t ∈ T
+(31)
+
+a double-sided auction with an APM mechanism. The reason
+for utilizing this method is that it can reduce computational
+complexity and offer increased flexibility, which are aligned with
+the requirements of P2P markets.
+In the P2P kW market, each buyer submits one price-demand
+kW buy
+buy
+, xkW
+) and each seller submits one pricebid pair (σb,t
+b,t
+kW sell
+sell
+, xkW
+). Likewise, in the P2P nW
+output offer pair (σs,t
+s,t
+nW buy
+buy
+market, each buyer bids (σb,t
+, xnW
+) and each seller
+b,t
+
+BESS
+BESS
+En,0
+= En,initial
+
+(32)
+
+ch
+ch
+pch
+n,t ≤ p̄n,t · zn,t , ∀t ∈ T
+
+(33)
+
+dis
+dis
+pdis
+n,t ≤ p̄n,t · zn,t , ∀t ∈ T
+
+(34)
+
+nW sell
+sell
+offers (σs,t
+, xnW
+), where σb/s,t
+s,t
+
+(35)
+
+kW buy/sell
+nW buy/sell
+xb/s,t
+and xb/s,t
+depict the bidding price and quan-
+
+ch
+dis
+zn,t
++ zn,t
+≤ 1, ∀t ∈ T
+
+The cycling dispatch results decided by HEMS depend on
+the hourly battery operation cost, which is mainly associated
+with the depth of discharge (DoD) and the number of battery
+cycles each day [27]. The DoD model is shown as (24), where
+BESS
+BESS
+, En,t
+and EnR denote the state of charge (SoC),
+SoCn,t
+the stored energy, and the rated energy capacity of the battery,
+BESS
+is
+respectively. In (25), the DoD rate difference ΔDoDn,t
+BESS
+calculated by the final DoD rate DoDn,tend minus the initial
+BESS
+of a specific battery operation interval t.
+DoD rate DoDn,tbegin
+In this paper, we deploy the Peukert Lifetime Energy Throughput
+loss
+(PLET) model in (26) to measure the battery life loss eqNn,t
+based on the DoD rate difference, the method of which is
+widely utilized in the current literature [26], [27]; the Peukert
+lifetime constant is represented by kp. Through accumulating
+the battery life loss of each hour, the daily battery life loss
+loss
+can be obtained as (27). The battery cycle life is
+eqNn,daily
+BESS
+signified by Tn,cycle
+; Nnf ail indicates the total cycling numbers
+before the battery failure. The daily battery operation cost can be
+calculated by (29), where CnBESScap symbolizes the capital cost
+of BESS. To be noted, the battery life cycle cost is associated
+with different kinds of costs containing the total capital cost,
+repurposing cost, fixed and variable operation and maintenance
+(O&M) cost, and so on [26]. For the sake of simplicity, only
+the capital cost of BESS is considered in this paper because the
+capital cost occupies a major part of those costs. The commonly
+used basic constraints of BESS are formulated as (30)–(35);
+BESS
+denotes the energy stored in the battery at time t. The
+En,t
+BESS
+charging and discharging efficiency are symbolized by ηn,ch
+BESS
+and ηn,dis . The maximum and minimum SoC is represented
+BESS
+BESS
+BESS
+and SoCn,min
+; En,0
+signifies the initial stored
+by SoCn,max
+energy. The constraints (33)–(35) are to ensure the discharge and
+charge behavior will not happen at the same time by introducing
+ch
+dis
+dis
+and zn,t
+; p̄ch
+binary variables zn,t
+n,t and p̄n,t denote the upper
+bound of the battery charge and discharge power at the battery
+operating time t.
+V. PROPOSED AUCTION-BASED P2P MARKET MECHANISMS
+AND DISTRIBUTION NETWORK MODELS
+A. Auction-Based P2P Market Mechanisms and Models
+The auction approach is widely utilized for trading in the
+recent literature related to the P2P market [28], [29]. In this paper, an appropriate auction method is proposed to clear both the
+P2P kW market and the nW market in the community, namely,
+
+kW buy/sell
+
+nW buy/sell
+
+, σb/s,t
+
+,
+
+tity of kW and nW prosumers respectively. The APM mechanism
+is deployed to derive the MCP through the weighted average
+price of all market participants, in which the bidding (offering)
+quantities are regarded as the weighting factors. Each buyer
+can buy kW and/or nW from multiple sellers and each seller
+can sell kW and/or nW to a few buyers as well. For ∀tT ,
+the double-sided auction rules and the matchmaking models are
+formulated as follows.
+
+
+ dbuy ∂buy
+
+dsell
+∂sell
+xb,t · σb,t −
+xs,t · σs,t
+,
+max
+b∈O ∂
+
+s∈O ∂
+
+∂ ∈ {kW, nW }
+ ∂sell ∂sell
+ ∂buy ∂buy
+xb,t · σb,t +
+xs,t · σs,t
+b∈O ∂
+s∈O ∂
+m̄t =
+ ∂sell
+ ∂buy
+xs,t +
+xb,t
+s∈O ∂
+
+(36)
+
+(37)
+
+b∈O ∂
+
+⎧
+∂buy
+⎪
+⎨if σb,t > m̄t , buyer b win the bidding
+∂buy
+∂buy
+∂buy
+(σb,t , xb,t ) if σb,t
+< m̄t , buyer b lose the bidding
+⎪
+⎩if σ ∂buy = m̄ , uncertain
+t
+b,t
+(38)
+⎧
+∂sell
+< m̄t , seller s win the bidding
+⎨if σs,t
+∂sell
+∂sell
+∂sell
+> m̄t , seller s lose the bidding
+(σs,t , xs,t ) if σs,t
+⎩
+∂sell
+if σs,t
+= m̄t , uncertain
+(39)
+ ∂buy
+∀σb,t < m̄t : xdbuy
+=0
+b,t
+(40)
+∂sell
+∀σs,t
+> m̄t : xdsell
+=0
+s,t
+ dbuy
+
+xb,t =
+xdsell
+(41)
+s,t
+b∈O ∂
+
+s∈O ∂
+
+0 ≤ xdbuy
+≤ x∂buy
+b,t
+b,t
+
+(42)
+
+0 ≤ xdsell
+≤ x∂sell
+s,t
+s,t
+
+(43)
+
+The objective function is to maximize the social welfare of
+all market players at each P2P nW/kW trading slot, which is
+and xdsell
+denote the dispatched quantity
+shown in (36); xdbuy
+s,t
+b,t
+of buyer b and seller s after the market clearing. Depending on
+the APM mechanism, the MCP m̄t is calculated by (37). The
+auction rules are demonstrated by (38)–(40). To win the auction,
+the bidding price of the buyer needs to be larger than the MCP,
+while the offering price of the seller should be smaller than the
+MCP. Contrarily, buyers whose bidding price is less than the
+MCP and sellers whose offering price is greater than the MCP
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+6393
+
+auction. The revised price cannot exceed the allowable range
+and the market will be re-cleared based on the re-bids/re-offers.
+The re-bidding process may happen multiple rounds before the
+deadline of the trading slot t, at which the final market-clearing
+information and efficacious matching results are released. After
+the deadline of a market trading interval, the ensuing submission
+of bids/offers is not permitted.
+For each trading slot, the double-sided auction bidding process can be summarized as follows:
+
+Fig. 3.
+
+Flow chart of the double-sided auction bidding process.
+
+will lose the auction, i.e., the dispatched quantity of them will
+be zero, as illustrated in (40). If the bidding/offering price is
+equal to the MCP, the dispatched quantity might be zero or not,
+which depends on the demand and supply equilibrium at the
+trading interval. The highest bid/offer will be dispatched first,
+subsequently, the lower one will be dispatched. The total amount
+of dispatched quantity for buyers and sellers should be the same
+at each trading slot, as (41). Moreover, the dispatched quantity
+for each prosumer should not be larger than the corresponding
+submitted bidding/offering quantity, shown as (42)–(43).
+In each proposed P2P market, the re-bidding process is allowed, which can be interpreted as the bidding strategy adjustment depending on the market feedback signal, i.e., the
+dispatched quantity and the MCP. The double-sided auction
+procedure is illustrated in Fig. 3. When the auction starts at
+the trading slot, the bids/offers of buyers and sellers need to
+be collected. Subsequently, P2P market clearing is conducted
+based on the auction models (36)–(43), and the market clearing
+information of the first-round bidding which consists of the
+allocated kW or nW quantity and MCP is obtained and needs to
+be released to the corresponding prosumers. Thereafter, the rebidding process begins, and market participants can change the
+bidding strategy through the re-optimization of HEMS models
+according to the informed market information. Buyers/sellers
+who lose the auction or do not acquire the desirable dispatched
+quantity at the last round need to increase/decrease their bidding/offering price by a step length Δb,t /Δs,t for the next round
+
+Step 1: Each prosumer receives the ToU prices, higher prices,
+and FiT, and their HEMS determines their net demand, BESS
+scheduling plan, bids (offers) strategy, and market roles by
+solving problems (8) and (10)–(35).
+Step 2: The bids/offers and market roles of each prosumer are
+collected, and the community manager clears the P2P kW
+and nW market at the same time based on the double-sided
+auction rules with the APM mechanism by solving problems
+(36)–(43).
+Step 3: The P2P kW and nW market clearing information of the
+first-round bidding including the allocated kW/nW quantities
+and MCP are released to each prosumer.
+Step 4: The re-bidding process begins, based on the informed
+market feedback signal of the first-round bidding, the reoptimization of each prosumer’s HEMS is conducted by
+re-solving problems (8) and (10)–(35).
+Step 5: The updated bids/offers and market roles of each prosumer are collected, and the community manager conducts
+the auction and informs the market clearing results again by
+re-solving problems (36)–(43).
+Step 6: The re-bidding process continues until the deadline of
+the trading slot, the final market clearing information, and
+matching results are broadcast to all prosumers.
+
+B. Distribution Network Models
+In this paper, to model a distribution network, a tree graph
+G(N\ , N ) is utilized, which consists of a set of distribution
+nodes N\ and a set of distribution lines N . The nodes are
+indexed by i ∈ N\ , which are connected by the lines indexed by
+l ∈ N . It is assumed that each node accommodates one agent in
+the community market. The distribution sub-station of a radial
+distribution network is represented by the node i = 1. The line
+that connects the buses i, j ∈ N\ is denoted by lij ∈ N , where
+j is closer to node 1. Denote the child set of j as Nj . The complex
+power required at node i is symbolized as Si = Pi + jQi , where
+Pi , Qi ∈ R represent the active and reactive power injections
+of the node i respectively. The complex voltage at node i
+is symbolized as Vi = |Vi | ejθ and its magnitude squared is
+represented by vi . The impedance of the line lij is symbolized
+as Zij = Rij + jXij , where Rij , Xij ∈ R are resistance and
+reactance of the line lij respectively; Pij and Qij are the real
+and reactive power flow through this line. Let Iij be the line
+current flow and its magnitude squared is represented by ij . The
+well-known Distflow model for a radial distribution network at
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6394
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+Fig. 4.
+
+Schematic illustration of the proposed community network.
+
+time t ∈ T is shown as follows [30].
+
+Pj,t = − Pij,t +
+(Pjk,t + Rjk jk,t )
+
+(44)
+
+k∈Nj
+
+Qj,t = − Qij,t +
+
+
+
+(Qjk,t + Xjk jk,t )
+
+(45)
+
+k∈Nj
+2
+2
++ Xij
+)
+vi,t = vj,t + 2(Pij,t Rij + Qij,t Xij ) − ij,t (Rij
+(46)
+2
+Pij,t
++ Q2ij,t = ij,t vij,t
+
+(47)
+
+The active power loss from node j to i and the total power
+loss in the network at time t ∈ T can be represented as follows.
+
+
+ Vj,t − Vi,t 2
+ × R(Zij )
+
+Lossji,t = 
+(48)
+
+Zij
+
+Lossji,t
+(49)
+Losstotal,t =
+j,i∈Nn
+
+The voltage constraints and complex power constraints are
+shown as follows.
+2
+2
+≤ vi,t ≤ Vi,max
+Vi,min
+2
+2
++ Q2ij,t ≤ Sij,max
+Pij,t
+
+(50)
+(51)
+
+where Vi,min and Vi,max are the minimum and maximum voltage
+magnitude limit at node i, respectively; Sij,max denotes the
+maximum complex power of the line lij .
+VI. CASE STUDY
+In this paper, an iterative mixed-integer linear programming
+is used to solve the proposed problem. The simulations were
+conducted on a 64-bit laptop with a 2.80 GHz Intel Core
+i7-1165G7 CPU and 16GB RAM. There are 11184 variables,
+14160 inequality constraints, and 2376 equality constraints in
+total. The optimization models are programmed and solved by
+SCIP of OPTI toolbox in MATLAB. The benefit of utilizing
+this solver lies in its remarkable capability to rapidly identify
+feasible solutions.
+A. Simulation Setup
+1) Test System: The proposed P2P joint kW and nW trading
+method is applied to a radial 33-node community network
+modified based on the IEEE 33-bus distribution test feeder.
+The network topology and layouts of agents and DERs are
+illustrated in Fig. 4. There are 33 prosumers accommodated
+
+in the community, 16 of them are outfitted with PV panels,
+4 of them are equipped with PV panels and BESS, and the
+remaining 13 prosumers are without any DER. Each household
+is connected to one node.
+2) Parameters Settings: The simulations are performed with
+33 agents in total, T = 24 hours, each trading slot t = 1
+hour. The historical load data is obtained from the Australia
+Energy Market Operator (AEMO) and the historical PV generation profiles are procured from pvoutput.org. To handle the
+uncertainty issue, a stochastic scenarios uncertainty prediction
+method is utilized which has been described in detail in our past
+work [31], in which generative adversarial networks (GANs)
+are applied to generate future scenarios according to historical
+data. Based on the generated scenario, the total energy demand
+of the test community is 330kWh for one day with a peak
+load of 25kW. Assume that the flexible power demand of each
+prosumer accounts for 20% of the total demand, which can be
+used for nW trading. The capital cost of BESS is 350$/kWh
+and the rated energy capacity of the battery is 8.5 kWh. The
+charging and discharging efficiency of the battery is 95% and
+98%. The upper and lower bound of the SoC is 90% and 20%.
+The maximum charging or discharging power is 1.5kW. The
+total cycling numbers of the battery are 5000 times [31]. The
+Peukert lifetime constant kp is set as 1. Based on the residential
+ToU price in New South Wales (NSW), Australia, the peak
+price is 48 cents/kWh, the shoulder price is 19.5 cents/kWh,
+and the off-peak price is 12 cents/kWh. It is assumed that for
+each prosumer, the purchase threshold from the retail market is
+0.4 kW per hour, which is set by the community manager in
+order to manage demand and avoid congestion. If the electricity
+consumption of the prosumer is beyond the defined threshold,
+1.6 times prices need to be paid compared with the ToU price
+[22]. The FiT is selected as 4 cents/kWh depending on the
+FiT schemes provided by retailers in NSW [32]. These power
+transaction prices are reflected in Fig. 5. The secure voltage
+range of all nodes is set to be [0.95 p.u., 1.05 p.u] [33].
+3) Case Settings: In this paper, to verify the feasibility and
+the effectiveness of the proposed P2P joint kW and nW trading
+approach, 4 cases are established and specified as follows.
+Base Case: The proposed unified P2P kW and nW trading
+framework is utilized.
+Case 1: Only P2P kW trading is considered in the community.
+Case 2: Only P2P nW trading is considered in the community.
+Case 3:The proposed unified P2P kW and nW trading framework is applied, however, the battery degradation model is
+not embedded and used.
+The establishment of cases 1 and 2 is aimed at comparing the
+performance between the proposed trading framework and the
+single trading mode. To be noted, the battery life cycle models
+are all considered in the base case and cases 1 and 2. Case 3 is
+to investigate the impact of ignoring battery life degradation.
+B. Simulation Results and Cases Comparison
+1) Base Case Simulation Results Analysis: The transaction
+prices and the energy exchange profiles in the community of
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+Fig. 5.
+
+Transaction prices and power exchange profiles of the base case.
+
+Fig. 6.
+
+Line chart of nodal voltages and active power flow of the base case.
+
+the base case are illustrated in Fig. 5. The active power flow
+and the voltage at each node are shown in Fig. 6. Prosumers
+participate in the P2P kW trading actively when there is excess
+PV generation from 8:00 to 20:00. The kW trading prices are
+between the residential ToU prices and the FiT so that kW buyers
+can save their electricity expenditure and kW sellers can earn
+higher profit through selling the surplus power in the P2P kW
+market. The P2P nW trading mainly occurs at the peak hour
+from 15:00 to 20:00 since the power demand of nW buyers at
+these times is greater than the threshold and they give priority
+to the P2P nW market to reduce the energy bills rather than
+pay a higher price at the retail market. The total kW trading
+quantity is higher than that of the nW trading, the reason for
+that is attributed to the predefined threshold. In this paper, we
+consider the supply-restricted situation concentratedly happens
+at peak hours so that there is no nW transaction at other times.
+Owing to the P2P kW and nW trading, the power bought from
+the grid is much less than the total demand, especially at shoulder
+and peak times, thereby the supply pressure of the grid can be
+mitigated effectively.
+
+6395
+
+Fig. 7. Trading quantities and market roles switch results in the P2P kW market
+of the base case
+
+Fig. 8. Trading quantities and market roles switch results in the P2P nW market
+of the base case.
+
+From Fig. 6, a majority of nodal voltage values fluctuate
+around 1 p.u., and no overvoltage situation happens. Besides, due
+to the community size, the active power flow of all transmission
+lines is maintained at a relatively low level as well. It can be
+verified that the proposed P2P joint kW and nW trading approach
+can guarantee voltage security and line congestion management
+well in the community.
+The market roles switch results and trading quantities of the
+base case for all trading slots are illustrated in Figs. 7 and 8. In
+both P2P kW and nW markets, one-to-many trading situations
+exist, for example, the agent connected to node 21 sells surplus
+power at 17:00 to several buyers located at nodes 2, 3, 6, 8,
+and so on. At the same trading interval, a market player can
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6396
+
+act in different market roles depending on the demand status
+and the market feedback signal. For example, the participant
+who connected to node 1 is not only a kW buyer but also an
+nW seller at 18:00. Besides, it can be reflected that based on the
+proposed HEMS models, market players can switch their market
+roles freely at different trading periods as well. For instance, at
+16:00, the agent at node 2 opts to act as kW buyer and nW
+seller but turns into the nW buyer at 20:00. From Fig. 7, in the
+P2P kW market, only those households equipped with DERs
+can sell excess power to buyers with energy deficiency. Agents
+with no DER can solely play a role as energy buyers in the P2P
+kW market. However, from Fig. 8, no matter with or without
+DERs prosumers can become nW sellers so long as they consent to sacrifice their comforts to reschedule the energy-related
+activities from peak time to another time. Different transaction
+types can also stimulate the participation willingness of peers
+in the P2P community market. Those agents outfitted with PV
+panels and BESS who are located at nodes 7, 17, 21, and 32 trade
+larger quantities and earn higher profits due to the energy storage
+ability of batteries, especially in the kW market. At 20:00, the
+PV output is almost zero because of low solar radiation, while
+the ToU price is high at this time. Hence, only those agents
+equipped with batteries can discharge to sell power in the kW
+market for price arbitrage.
+From the above simulation results of the base case, the feasibility of the proposed models in market role switching and
+demand management can be verified. In addition, efficacious
+matching can be achieved based on the proposed P2P market
+rules and mechanisms. It can be validated that the trading results
+settled in the virtual layer comply with the limits in the physical
+network as well.
+2) Comparison Between Base Case and Cases 1 and 2: De
+facto, the advantages of P2P trading such as adjusting the energy
+supply and demand balance, enlarging the monetary gains of
+participants, peak hour supply pressure abatement, and so on
+have been verified well in the existing literature [5]. However,
+the comparison between the unified P2P kW and nW trading
+and the single trading mode has not been done yet. Therefore, in
+this paper, we devise cases 1 and 2 to analyze the performance
+in terms of the above aspects of the proposed unified framework
+compared with only P2P kW trading or nW trading. The comparison results between different cases are illustrated in Fig. 9.
+The daily electricity consumption cost in Fig. 9 is calculated
+by the total power procurement bills and DERs’ generation
+cost minus the revenue from trading in the P2P kW and nW
+market and the retail market. If there is no P2P market in the
+community, the electricity purchasing cost for each household
+is the highest. In case 2, only P2P nW trading exists, and the
+power consumption cost for those who participate in the P2P
+nW market is reduced. Since a supply-restricted circumstance
+is considered in the proposed community, prosumers prefer to
+trade in the P2P nW market rather than purchasing the deficient
+demand at a much higher price from the grid. In case 1, there is
+only P2P kW trading in the proposed community, the electricity
+consumption cost for most prosumers can be further decreased
+compared with case 2 due to the higher trading quantity in the
+kW market. Nonetheless, in the base case, the proposed P2P
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+Fig. 9. Electricity consumption costs and peak demand procurement quantity
+comparison between different cases.
+
+joint kW and nW trading is applied in the community market, it
+can be reflected that the power expenditure cost for a majority of
+prosumers is the lowest compared with cases 1 and 2. Therefore,
+it can be verified that both P2P kW and nW trading coexisting
+in the community can effectively enlarge the monetary gains of
+prosumers compared with the single trading mode.
+In the past, the increasing peak load needs to be satisfied with
+additional operational reserve and generation capacity, which
+may cause large investments [34]. Utilizing the flexibility of
+active residential consumers is a cost-effective way to solve this
+issue, for example, the P2P trading method. Therefore, in this
+paper, a supply-restricted situation is considered. From Fig. 9, it
+is illustrated that compared with case 1, the purchasing energy
+from the grid at peak hours for each prosumer in the base case is
+lower obviously. Hence, the better performance of the proposed
+unified P2P kW and nW trading method in curbing the peak time
+supply pressure of the grid is also validated.
+3) Comparison Between Base Case and Case 3: The irregular and frequent charge-discharge cycles will degrade the
+lifetime of batteries. In this paper, the battery cycle life models
+are systematically considered and embedded in the proposed
+HEMS models. To verify the necessity of considering the battery
+degradation issue, we design case 3 to compare with the base
+case. The simulation result is demonstrated in Fig. 10.
+From Fig. 10, in the base case, the battery prefers to charge for
+storing the energy when solar radiation is strong and discharge
+at peak times when the market price is high to earn more profit.
+No frequent charge-discharge transfer process is shown in the
+base case since the hourly battery operational cost is considered
+in the objective function of the proposed HEMS models, which
+has an affinity with the DoD and the daily battery cycle numbers.
+However, in case 3, battery degradation is not considered. The
+frequent charge and discharge conversion occurs especially at
+peak hours, which may exacerbate the battery aging. Focusing
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+ZHANG et al.: PEER-TO-PEER JOINT KILOWATT AND NEGAWATT TRADING FRAMEWORK INCORPORATING BATTERY CYCLING DEGRADATION
+
+Fig. 10. Charge and discharge power profile comparison between the base
+case and case 3.
+
+on the monetary gains but neglecting the battery degradation
+would be myopic. Therefore, it is necessary to incorporate the
+battery cycle life consideration in the P2P trading market to seek
+a trade-off solution between battery aging and price arbitrage.
+VII. CONCLUSION
+This paper proposes a novel unified P2P kW and nW trading framework to coordinate these two transaction types, in
+which the P2P joint kW and nW trading HEMS models, the
+double-sided auction models with APM mechanisms, and the
+distribution network Distflow models are utilized. The battery
+cycle life model is embedded in the proposed HEMS models
+as well. The novel unified framework can effectively integrate
+the generation-side and demand-side of both prosumers and
+consumers, considering market price signals, the generation
+condition of DERs, and the demand status. This coordination
+allows all market participants to adapt their trading roles in each
+market, freely engage in the retail market, P2P kW, and nW
+markets, and further unleash residential flexibility.
+The presented method is tested through the case study, and
+its superiority is verified in terms of the following aspects: (1)
+The market roles switch and demand schedule of prosumers can
+be optimized; (2) The transaction results settled in the virtual
+layer can comply with the restrictions in the physical layer; (3)
+The compromised solution can be found to balance the battery
+degradation and price arbitrage by charge-discharge cycles for
+the prosumers outfitted with BESS; (4) Compared with the single
+trading mode, the electricity expenditure costs for prosumers can
+be reduced effectively; (5) Compared with the single trading
+mode, the electricity purchasing quantity from the grid at peak
+hours can be decreased effectively as well.
+VII. REFERENCES
+[1] Z. Zhang, H. Tang, J. Ren, Q. Huang, and W. - J. Lee, “Strategic prosumersbased peer-to-peer energy market design for community microgrids,” IEEE
+Trans. Ind. Appl., vol. 57, no. 3, pp. 2048–2057, May/Jun. 2021.
+[2] M. Khorasany, Y. Mishra, and G. Ledwich, “A decentralized bilateral
+energy trading system for peer-to-peer electricity markets,” IEEE Trans.
+Ind. Electron., vol. 67, no. 6, pp. 4646–4657, Jun. 2020.
+[3] J. Kim and Y. Dvorkin, “A P2P-dominant distribution system architecture,”
+IEEE Trans. Power Syst., vol. 35, no. 4, pp. 2716–2725, Jul. 2020.
+[4] B. Zheng, W. Wei, Y. Chen, Q. Wu, and S. Mei, “A peer-to-peer energy
+trading market embedded with residential shared energy storage units,”
+Appl. Energy, vol. 308, Feb. 2022, Art. no. 118400.
+
+6397
+
+[5] M. I. Azim, W. Tushar, T. K. Saha, C. Yuen, and D. Smith, “Peer-to-peer
+kilowatt and negawatt trading: A review of challenges and recent advances
+in distribution networks,” Renewable Sustain. Energy Rev., vol. 169,
+Nov. 2022, Art. no. 112908.
+[6] T. AlSkaif, J. L. Crespo-Vazquez, M. Sekuloski, G. van Leeuwen, and
+J. P. S. Catalao, “Blockchain-based fully peer-to-peer energy trading strategies for residential energy systems,” IEEE Trans. Ind. Inform., vol. 18,
+no. 1, pp. 231–241, Jan. 2022.
+[7] Z. Lu, J. Wang, W. Yong, Z. Tang, M. Yang, and B. Zhang, “Coordinated
+P2P electricity trading model with aggregated alliance and reserve purchasing for hedging the risk of deviation penalty,” Energy Rep., vol. 7,
+pp. 426–435, Apr. 2021.
+[8] Z. Jing, M. Pipattanasomporn, and S. Rahman, “Blockchain-based
+negawatt trading platform: Conceptual architecture and case studies,” in Proc. IEEE PES GTD Grand Int. Conf. Expo. Asia, 2019,
+pp. 68–73.
+[9] W. Tushar et al., “Grid influenced peer-to-peer energy trading,” IEEE
+Trans. Smart Grid, vol. 11, no. 2, pp. 1407–1418, Mar. 2020.
+[10] M. H. Ullah and J. - D. Park, “Peer-to-peer energy trading in transactive
+markets considering physical network constraints,” IEEE Trans. Smart
+Grid, vol. 12, no. 4, pp. 3390–3403, Jul. 2021.
+[11] J. Kang, R. Yu, X. Huang, S. Maharjan, Y. Zhang, and E. Hossain,
+“Enabling localized peer-to-peer electricity trading among plug-in hybrid
+electric vehicles using consortium blockchains,” IEEE Trans. Ind. Inform.,
+vol. 13, no. 6, pp. 3154–3164, Dec. 2017.
+[12] D. H. Nguyen, “Optimal solution analysis and decentralized mechanisms
+for peer-to-peer energy markets,” IEEE Trans. Power Syst., vol. 36, no. 2,
+pp. 1470–1481, Mar. 2021.
+[13] J. Guerrero, D. Gebbran, S. Mhanna, A. C. Chapman, and G. Verbič,
+“Towards a transactive energy system for integration of distributed energy
+resources: Home energy management, distributed optimal power flow, and
+peer-to-peer energy trading,” Renewable Sustain. Energy Rev., vol. 132,
+Oct. 2020, Art. no. 110000.
+[14] C. Zhang, J. Wu, Y. Zhou, M. Cheng, and C. Long, “Peer-to-peer energy
+trading in a microgrid,” Appl. Energy, vol. 220, pp. 1–12, Jun. 2018.
+[15] K. Anoh, S. Maharjan, A. Ikpehai, Y. Zhang, and B. Adebisi, “Energy
+peer-to-peer trading in virtual microgrids in smart grids: A game-theoretic
+approach,” IEEE Trans. Smart Grid, vol. 11, no. 2, pp. 1264–1275,
+Mar. 2020.
+[16] K. Chen, J. Lin, and Y. Song, “Trading strategy optimization for a prosumer
+in continuous double auction-based peer-to-peer market: A predictionintegration model,” Appl. Energy, vol. 242, pp. 1121–1133, May 2019.
+[17] W. Liu, D. Qi, and F. Wen, “Intraday residential demand response scheme
+based on peer-to-peer energy trading,” IEEE Trans. Ind. Inform., vol. 16,
+no. 3, pp. 1823–1835, Mar. 2020.
+[18] W. Tushar et al., “Challenges and prospects for negawatt trading in light
+of recent technological developments,” Nature Energy, vol. 5, no. 11,
+pp. 834–841, Aug. 2020.
+[19] Y. Okawa and T. Namerikawa, “Distributed optimal power management
+via negawatt trading in real-time electricity market,” IEEE Trans. Smart
+Grid, vol. 8, no. 6, pp. 3009–3019, Nov. 2017.
+[20] D. Sypatayev, H. S. V. S. Kumar Nunna, and A. Shintemirov, “A novel
+peer-to-peer negawatt trading transactive energy system for prosumers,”
+in Proc. IEEE 14th Int. Conf. Compat., Power Electron. Power Eng., 2020,
+pp. 181–186.
+[21] M. I. Azim and W. Tushar, “P2P negawatt trading: A potential alternative to
+demand-side management,” in Proc. IEEE PES Innov. Smart Grid Technol.
+- Asia, 2021, pp. 1–5.
+[22] M. I. Azim, W. Tushar, and T. K. Saha, “Cooperative negawatt P2P energy
+trading for low-voltage distribution networks,” Appl. Energy, vol. 299,
+Oct. 2021, Art. no. 117300.
+[23] “2020 integrated system plan (ISP),” AEMO, Oct. 2021. [Online]. Available:
+https://www.aemo.com.au/energy-systems/major-publications/
+integrated-system-plan-isp/2020-integrated-system-plan-isp
+[24] T. Ding, R. Bo, W. Gu, and H. Sun, “Big-M based MIQP method for
+economic dispatch with disjoint prohibited zones,” IEEE Trans. Power
+Syst., vol. 29, no. 2, pp. 976–977, Mar. 2014.
+[25] P. P. Bedekar, S. R. Bhide, and V. S. Kale, “Determining optimum TMS
+and PS of overcurrent relays using big-M method,” in Proc. Joint Int.
+Conf. Power Electron., Drives Energy Syst. 2010 Power India, 2010,
+pp. 1–5.
+[26] W. Chen, J. Qiu, J. Zhao, Q. Chai, and Z. Y. Dong, “Bargaining game-based
+profit allocation of virtual power plant in frequency regulation market
+considering battery cycle life,” IEEE Trans. Smart Grid, vol. 12, no. 4,
+pp. 2913–2928, Jul. 2021.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+6398
+
+IEEE TRANSACTIONS ON POWER SYSTEMS, VOL. 39, NO. 5, SEPTEMBER 2024
+
+[27] D. Tran and A. M. Khambadkone, “Energy management for lifetime
+extension of energy storage system in micro-grid applications,” IEEE
+Trans. Smart Grid, vol. 4, no. 3, pp. 1289–1296, Sep. 2013.
+[28] J. Wang, H. Zhong, C. Wu, E. Du, Q. Xia, and C. Kang, “Incentivizing
+distributed energy resource aggregation in energy and capacity markets:
+An energy sharing scheme and mechanism design,” Appl. Energy, vol. 252,
+Oct. 2019, Art. no. 113471.
+[29] B. P. Hayes, S. Thakur, and J. G. Breslin, “Co-simulation of electricity
+distribution networks and peer to peer energy trading platforms,” Int. J.
+Elect. Power Energy Syst., vol. 115, Feb. 2020, Art. no. 105419.
+[30] X. Sun, J. Qiu, Y. Yi, and Y. Tao, “Cost-effective coordinated voltage
+control in active distribution networks with photovoltaics and mobile
+energy storage systems,” IEEE Trans. Sustain. Energy, vol. 13, no. 1,
+pp. 501–513, Jan. 2022.
+[31] Y. Yang, J. Qiu, C. Zhang, J. Zhao, and G. Wang, “Flexible integrated
+network planning considering echelon utilization of second life of used
+electric vehicle batteries,” IEEE Trans. Transp. Electrific., vol. 8, no. 1,
+pp. 263–276, Mar. 2022.
+[32] “Best solar feed-in tariffs in Australia | state guide – Canstar Blue,” Canstar
+Blue, 2022. [Online]. Available: https://www.canstarblue.com.au/solar/acomparison-of-solar-feed-in-tariffs/
+[33] X. Sun, J. Qiu, Y. Tao, Y. Ma, and J. Zhao, “Coordinated real-time voltage
+control in active distribution networks: An incentive-based fairness approach,” IEEE Trans. Smart Grid, vol. 13, no. 4, pp. 2650–2663, Jul. 2022.
+[34] W. Chen, J. Qiu, and Q. Chai, “Customized critical peak rebate pricing
+mechanism for virtual power plants,” IEEE Trans. Sustain. Energy, vol. 12,
+no. 4, pp. 2169–2183, Oct. 2021.
+
+Jing Qiu (Senior Member, IEEE) received the B.Eng.
+degree in control engineering from Shandong University, Jinan, China, in 2008, the M.Sc. degree in
+environmental policy and management, majoring in
+carbon financing in the power sector from The University of Manchester, Manchester, U.K., in 2010, and
+the Ph.D. degree in electrical engineering from The
+University of Newcastle, Callaghan, NSW, Australia,
+in 2014. He is currently a Senior Lecturer of electrical
+engineering with the University of Sydney, Sydney,
+NSW, Australia. His research interests include power
+system planning, data-driven energy market analysis, and artificial intelligence
+(AI)-assisted energy pricing and trading strategies. He is the Editorial Board
+Member of IET Renewable Power Generation and Energy Conversion and
+Economics.
+
+Chenxi Zhang (Graduate Student Member, IEEE)
+received the B.E. (Hons.) degree in electrical engineering from the University of Sydney, Sydney, NSW,
+Australia, and the Harbin Institute of Technology,
+Harbin, China, in 2020. She is currently working
+toward the Ph.D. degree in electrical engineering
+with the University of Sydney. Her research interests
+include power system operation and planning, peerto-peer trading, price model, and electricity market.
+
+Yi Yang (Graduate Student Member, IEEE) received
+the B.Eng. degree in electrical engineering and automation from the Xiamen University of Technology,
+Xiamen, China, in 2017, and the M.P.E. degree in
+electrical engineering in 2020 from the University of
+Sydney, Sydney, NSW, Australia, where he is currently working toward the Ph.D. degree in electrical
+engineering. His research interests include power system planning, low-carbon economy, electric vehicles,
+and electricity market.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 17,2026 at 20:23:09 UTC from IEEE Xplore. Restrictions apply.
+
+

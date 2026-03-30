@@ -1,0 +1,2495 @@
+Journal of Energy Storage 105 (2025) 114530
+
+Contents lists available at ScienceDirect
+
+Journal of Energy Storage
+journal homepage: www.elsevier.com/locate/est
+
+Research papers
+
+Real-time peer-to-peer energy trading for networked multi-energy systems
+with hybrid energy storage
+Boshen Zheng, Wei Wei ∗
+Department of Electrical Engineering, Tsinghua University, Beijing, China
+
+ARTICLE
+
+INFO
+
+Keywords:
+Multi-energy system
+Energy hub
+Peer-to-peer trading
+Lyapunov optimization
+Online algorithm
+ADMM
+
+ABSTRACT
+Integrated use of electricity and heat is an effective way to improve energy efficiency, precipitating the
+advent of multi-energy systems. In a network of multi-energy systems connected via power electronics devices,
+the power flow through soft-open points can be directly controlled, which allows peer-to-peer (P2P) energy
+trading. This paper proposes an online distributed decision scheme for this scenario. We begin with the
+deterministic centralized model of P2P energy trading problem, aiming to minimize long-term energy cost.
+Then the problem is decomposed temporally and spatially. To handle uncertainty, Lyapunov optimization is
+employed to decompose inter-temporal constraints in storage operation model, thus the problem in each period
+can be solved independently, yielding an online prediction-free policy. It is proven that, by properly selecting
+parameters, online policy generates a strategy that satisfies inter-temporal constraints and enjoys guaranteed
+performance. To protect privacy, an alternating direction method of multipliers (ADMM) based algorithm is
+employed to decompose the one-time-slot problem spatially, so that the subproblem of each peer admits a
+solver-free solution. The P2P trading price is intrinsically generated during the consensus-reaching process.
+Case studies demonstrate the prediction-free, performance-competitive, solver-free advantages of the proposed
+method. Both total and individual energy costs are reduced, and close to offline optimum.
+
+1. Introduction
+The integration of heat, electricity, and gas can exploit the synergy
+of different energy carriers [1–3]. For example, the waste heat during
+electricity production can be collected and reused, thus improving
+overall efficiency; heat is easier to store, providing more flexibility to
+utilize volatile renewable energy. On this account, multi-energy system
+plays an indispensable role in promoting the green and sustainable
+development of renewable-based cities, which has been widely implemented in industrial park and residential community [4,5]. Energy hub
+(EH) is a typical framework of multi-energy system [6–8]. It integrates
+energy production, conversion, and storage facilities into a single plant.
+Through efficient use of renewable energy, it becomes a promising
+paradigm in the low-carbon society. Since the demand profiles of different consumers are somehow complementary, connecting energy hubs
+via power electronics devices and allowing energy trading among them
+can further improve operation flexibility and reduce the investment
+in backup resources [9]. Peer-to-peer (P2P) trading/sharing is a new
+market scheme, which allows a peer to buy∕sell energy from∕to the
+neighboring peers instead of a grid utility [10–14]. This new market
+scheme has attracted significant attention in recent years.
+
+The existing researches on modeling the P2P market can be roughly
+classified into two groups: centralized mode and decentralized mode.
+For the centralized mode, a service provider can manage the energy
+flow and set trading prices/allocate benefit [15]. In [16], a two-stage
+aggregated battery control strategy is proposed to facilitate P2P energy
+trading, where the rule-based control method is developed for realtime operation of energy storage devices. A stochastic leader-follower
+game is proposed to describe the interaction between the P2P service
+provider and prosumers; as the leader, the service provider adopts a
+dynamic pricing scheme [17]. In [18], the transformer operator is set
+as an aggregator to coordinate the P2P energy trading among smart
+homes, where the P2P price is established based on the mid-market
+rate. In such a mode, privacy protection and unbiased pricing or benefit
+allocation are challenging tasks. Therefore, the decentrailized mode
+is another popular framework. For the decentralized mode, aiming
+to maximize individual profits, peers are given the freedom to make
+self-interest decisions, and the market equilibrium emerges when the
+amount of energy trading and corresponding prices reach a consensus [19–21]. In [22], a real-time energy trading platform based on a
+decentralized digital currency technology is designed for prosumers;
+but energy storage utilization and solar power uncertainty are not
+
+∗ Corresponding author.
+
+E-mail address: wei-wei04@mails.tsinghua.edu.cn (W. Wei).
+https://doi.org/10.1016/j.est.2024.114530
+Received 8 July 2024; Received in revised form 25 September 2024; Accepted 4 November 2024
+Available online 24 November 2024
+2352-152X/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+ℎ𝑐𝑖,𝑡 ∕ℎ𝑑𝑖,𝑡
+𝐸𝑖,𝑡
+𝑊𝑖,𝑡
+𝑏𝑒𝑖,𝑡 ∕𝑏ℎ𝑖,𝑡
+𝑝𝑏𝑖,𝑡 ∕𝑝𝑠𝑖,𝑡
+
+Nomenclature
+Abbreviations
+P2P
+EH
+ADMM
+CHP
+HP
+BSU
+TSU
+
+Peer-to-peer
+Energy hub
+Alternating direction method of multipliers
+Combined-heat-power unit
+Heat pump unit
+Battery storage unit
+Thermal storage unit
+
+𝑝𝑖𝑗 ,𝑡
+
+Indices and sets
+𝑖, 𝑗
+
+𝑡
+𝝃𝒕
+𝒙𝒕
+
+Index of energy hubs
+Set of energy hubs
+Index of time periods 𝑡 ∈ {1, 2, … , 𝑇 }
+Set of uncertain parameters
+Set of decision variables
+
+Parameters
+𝜏
+𝜂𝑖𝑔𝑒 ∕𝜂𝑖𝑔ℎ
+𝐺𝑖𝐶 𝐻 𝑃
+𝐶 𝑂𝑃𝑖𝑒ℎ
+𝐻𝑖𝐻 𝑃
+𝐸𝑖𝑙 ∕𝐸𝑖𝑚
+𝑊𝑖𝑙 ∕𝑊𝑖𝑚
+𝑃𝑖𝑚
+𝐻𝑖𝑚
+𝜂𝑖𝑒𝑐 /𝜂𝑖𝑒𝑑
+𝜂𝑖ℎ𝑐 /𝜂𝑖ℎ𝑑
+𝑝𝑅
+𝑖,𝑡
+𝑝𝐿
+𝑖,𝑡
+ℎ𝐿
+𝑖,𝑡
+𝜆𝑏𝑡 /𝜆𝑠𝑡
+𝜆𝑔𝑡
+𝜃𝑖𝑒
+𝜃𝑖ℎ
+𝐴
+𝑉 ∕𝑉𝑖𝑒 ∕𝑉𝑖ℎ
+𝜌
+
+Time period duration
+Gas to electricity/heat conversion efficiency
+Gas to electricity/heat conversion efficiency
+Coefficient of performance of heat pump 𝑖
+Capacity of heat pump 𝑖
+Minimum/Maximum storage level of BSU 𝑖
+Minimum/Maximum storage level of TSU 𝑖
+Power capacity of BSU 𝑖
+Power capacity of TSU 𝑖
+Charging/Discharging efficiency of BSU
+Charging/Discharging efficiency of TSU
+Renewable generation of EH 𝑖 in period 𝑡
+Electric demand of energy hub 𝑖 in period 𝑡
+Heat demand of energy hub 𝑖 in period 𝑡
+Real-time electricity price/Feed-in-tariff in
+period 𝑡
+Gas price in period 𝑡
+Perturbation constant of BSU 𝑖 in Lyapunov
+optimization
+Perturbation constant of TSU 𝑖 in Lyapunov
+optimization
+An upper bound constant in Lyapunov
+optimization
+Weight
+parameter
+in
+Lyapunov
+optimization
+Positive penalty coefficient in ADMM
+
+𝜆𝑖𝑗 ,𝑡
+
+P2P traded energy price associated with 𝑝𝑖𝑗 ,𝑡
+
+𝐸
+𝑓𝑖,𝑡
+𝐺
+𝑓𝑖,𝑡
+𝑀
+𝑓𝑖,𝑡
+𝑓𝑖,𝑡
+𝑓𝑡
+𝑄𝑒𝑖,𝑡
+𝑄ℎ𝑖,𝑡
+𝜣𝑡
+𝜀𝑖𝑗 ,𝑡
+
+Payment to power grid of EH 𝑖 at period 𝑡
+Payment to gas market of EH 𝑖 at period 𝑡
+Payment to P2P market of EH 𝑖 at period 𝑡
+Energy cost of EH 𝑖 at period 𝑡
+Total energy cost of all EHs  at period 𝑡
+Virtual queue of BSU
+Virtual queue of TSU
+𝜣 𝑡 = {𝑄𝑒𝑖,𝑡 , 𝑄ℎ𝑖,𝑡 , ∀𝑖 ∈  },virtual queue set
+Auxiliary variable associated with 𝑝𝑖𝑗 ,𝑡 in
+ADMM
+Positive penalty coefficient in ADMM
+An auxiliary variable for solving the subproblem in ADMM
+
+𝜌
+𝜃
+Functions
+𝐿(𝜣 𝑡 )
+𝛥(𝜣 𝑡 )
+𝐿(𝒙𝒊𝒕 )
+𝑣(𝜃)
+𝑣1 (𝜃)
+𝑣2 (𝜃)
+
+Lyapunov function of 𝜣 𝑡
+Lyapunov drift of 𝜣 𝑡
+Lagrangian function in ADMM
+Convex programming over 𝜃
+A linear programming subproblem of 𝑣(𝜃)
+A quadratic programming subproblem of
+𝑣(𝜃)
+
+conducted to achieve energy trading among multiple virtual power
+plants, where prosumer preferences and power demand heterogeneity
+are considered.
+The aforementioned literature primarily focuses on the electricity
+sector, neglecting the complexity inherent in energy hub systems that
+encompass a diverse array of energy carriers and sophisticated energy
+conversion and storage technologies. This oversight is significant, as the
+energy management of an energy hub necessitates a more complicated
+approach due to the interactions between multiple energy forms and
+devices. For instance, a rule-based control method can be used for
+real-time battery operation in the electricity-only scenario, but such
+simplistic control strategies are rendered infeasible in energy hub operation because of the integration of multi-carriers [16]. Furthermore,
+this complexity is exacerbated in scenarios involving P2P energy exchange and management across multiple interconnected energy hubs,
+necessitating the development of advanced methodologies to address
+the multifaceted nature of energy management in such integrated
+systems. There are some studies on the P2P transactive energy for
+multiple energy hubs. In [25], a P2P transaction platform is established
+for networked energy hubs to motivate energy trading and improve
+social welfare. In [26], the cooperative game theory is used to design a
+fair and efficient payoff allocation mechanism for P2P energy trading
+among energy hubs with high penetration of renewable energy; the
+cooperative game is proved to be balanced, ensuring the stability of
+the grand coalition. In [27], a fully decentralized model based on the
+alternating direction method of multipliers (ADMM) is proposed to enable P2P energy trading among industrial, commercial, and residential
+
+Variables
+𝐶𝐻𝑃
+𝑔𝑖,𝑡
+𝐶
+𝐻𝑃
+𝑝𝑖,𝑡𝐻 𝑃 ∕ℎ𝐶
+𝑖,𝑡
+𝐻
+𝑃
+𝑝𝑖,𝑡
+𝑃
+ℎ𝐻
+𝑖,𝑡
+𝑐
+𝑝𝑖,𝑡 ∕𝑝𝑑𝑖,𝑡
+
+Charging/Discharging power of TSU
+Stored energy level of BSU
+Stored energy level of TSU
+Charging/Discharging state of BSU/TSU
+Electricity bought/sold from/to grid of
+energy hub 𝑖 in period 𝑡
+P2P traded energy from hub 𝑖 to hub 𝑗 (positive for selling and negative for buying)
+
+Maximum gas input of CHP in EH 𝑖
+CHP electricity/heat output
+HP electricity input
+HP heat output
+Charging/Discharging power of BSU
+
+considered. In [23], a blockchain-based P2P platform is established and
+P2P trading is achieved based on the supply and demand matching
+process, where the long short-term memory models are used to forecast
+renewable generation and electric load. In [24], real-time auction is
+2
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+energy hubs, where the privacy preservation issue is addressed. However, the trading price is set to a fixed ratio of time-of-use price, which
+does not reflect the value of energy from the perspective of the user
+under different supply–demand scenarios. In [28], a three-stage multienergy P2P trading strategy is given to solve the energy imbalance issue
+among energy hubs, where the trading price is obtained from one-toone bargaining along with computational complexity. Except for energy
+hub, P2P transaction for multi-energy community [29] and microgrid
+[30] are also investigated.
+A common feature of the above works [25–30] is that they adopt a
+deterministic optimization model with exact problem data to analysis
+the market equilibrium and benefit of P2P trading, neglecting the
+system uncertainty. However, in practical implementation, the system
+uncertainties, including renewable generation, load profile, and energy
+prices, have significant effects on energy hub operation economy and
+reliability, and thus could not be ignored. Especially in real-time operation, the uncertainty is revealed period by period, and the dispatch
+decisions in each period are also made after observing the uncertainty
+realization; but the decisions made in the current period will affect
+the feasible action set in future periods, thus affecting the economy
+and reliability. Therefore, many approaches are developed to tackle
+the uncertainty obstacle. Main approaches for handling uncertainties
+include:
+(i) Rolling horizon model predictive control (MPC) [31]. This approach solves the deterministic optimization problem with forecast
+information in a rolling horizon manner. In the P2P trading market proposed in [32], the prosumers modify their scheduled power
+plan in accordance with predicted information under the MPC framework. However, the performance largely depends on the forecast accuracy [33]. Since renewable power forecast error in a small area is
+typically large [34], the performance of MPC is not always good.
+(ii) SP/RO/DRO. Stochastic programming (SP) assumes knowing
+the probability distribution of uncertainty and optimizing the expectation [35]. In practice, the probability distribution can be obtained
+from historical data or Monte Carlo simulation [36]. However, the
+highly accurate prediction of uncertainty distribution is hard. Robust
+optimization (RO) builds the uncertainty set according to all possible
+uncertain parameter values and optimizes the result under the worst
+scenario [37]. RO is criticized for being overly conservative, especially
+in the application of user-side energy management problems. Distributionally robust optimization (DRO) makes a good compromise between
+SP and RO and the uncertainty is described by a set of probability
+distributions around an empirical one [38]. SP/RO/DRO usually adopt
+a two-stage framework, where the decision is made in the first stage,
+and uncertainty is revealed in the second stage. They are widely applied
+in planning problem [39–41] and scheduling problem [42–44]. However, in real-time decision-making problem, the uncertainty in each
+period is observed sequentially and the decisions are made period-byperiod based on the realized uncertainty, which is a typical multistage
+stochastic optimization problem. In this regard, classical SP/RO/DRO
+are not suitable for solving such problems.
+(iii) Dynamic programming method. Dynamic programming is a
+classical paradigm for multistage optimization problems and can obtain
+sequential decisions. This method can be roughly categorized into
+model-based approaches and model-free approaches. For model-based
+approaches, stochastic dual dynamic programming [45] and robust
+dual dynamic programming [46] are two main approaches, where
+the optimal value functions are piecewise linear and constructed via
+forward and backward passes. The former employs the expectation of
+scenario tree, while the latter considers the worst scenario. Recently,
+DRO-based dynamic programming has also attracted attention [47,
+48], which minimizes the worst-case expected cost over an ambiguity
+set of probability distributions and makes decisions period-by-period.
+However, all these approaches are computationally expensive when
+the decision-making stage grows. For model-free approaches, reinforcement learning [49] is popular for approximately constructing optimal
+
+value function and generating real-time decision strategies. Nevertheless, the learning approach requires adequate historical data, and the
+convergence performance is sensitive to the quality of data.
+(iv) Lyapunov optimization. Lyapunov optimization is a predictionfree queue scheduling method and is first proposed to solve the stochastic optimization problem in communication and queuing networks
+[50]. It refers to introducing Lyapunov function to optimally control
+a dynamic system with time-coupling queue constraints. In Lyapunov
+optimization framework, it minimizes the long-term time-average cost
+and the time-coupling constraint is replaced by queue stability condition; thus, the stochastic optimization is finally cast into a driftplus-penalty problem and can be solved sequentially without referring
+to any future prediction information. Given the similarity between
+energy storage and the accumulation of queues, it has been applied to
+storage-related real-time operation problems. In [51], real-time energy
+management of wind-storage integrated power plant is investigated,
+where the real-time dispatch decisions are made based on Lyapunov
+optimization framework and enjoy a competitive performance compared with the MPC method. In [52], a Lyapunov optimization-based
+energy management strategy for the energy hub with an energy router
+is proposed, and the proposed strategy can achieve an economic operation. In [53], an online energy management system based on Lyapunov
+optimization is proposed to solve the stochastic optimal power flow
+problem in microgrid; the performance is better than greedy policy and
+close to optimal offline policy. In [54], a real-time bidirectional energy
+control algorithm is developed for residential energy storage management system with integrated renewable generation; the proposed
+method possesses a bounded performance guarantee compared with the
+offline method. In [55], a Lyapunov optimization approach is proposed
+to schedule the electric vehicle charging at fast charging stations. The
+significant characteristic of Lyapunov optimization is that it can break
+the time-coupling constraints of multistage stochastic problems, thus
+the operator can solve one-time-slot problem to make real-time decisions without referring to future information. Besides, compared with
+the dynamic programming method, it does not need offline training or
+build optimal value function, showing its online adaptive and easy-toimplement advantage. Furthermore, the Lyapunov optimization-based
+method can achieve better performance than the traditional greed
+algorithm and bounded performance guarantee compared with optimal
+offline results.
+Given the above discussion, the P2P energy trading for networked
+EHs with system uncertainty still meets the following two challenges.
+(1) How to make real-time P2P trading decisions? In real-time operation, the P2P trading decision is made period by period in response to
+the latest observation of renewable power, load, and prices. In practice,
+the exact future uncertainty data is still not known because high-quality
+renewable prediction in small regions is hard. However, the energy
+storage unit operation depends on the overall renewable and load series
+because of its limited capacity and time-coupling constraints. That is to
+say, the decisions made in the current period will affect the decisions
+in future periods, thus affecting the long-term operation economy.
+Therefore, the uncertainty inherent in the system and the temporal
+constraints of hybrid storage devices present significant obstacles to the
+optimization of real-time P2P energy transactions within multiple EHs.
+(2) How to fairly clear the P2P market in a distributed manner?
+During the P2P energy transaction, peers should reach a consensus on
+the energy pricing and quantities exchanged. However, the reluctance
+of peers to disclose sensitive information poses a significant challenge
+to the design of a decentralized decision-making framework. Besides,
+because of the diversity of renewable and load, an energy hub might
+be an energy supplier or demander in different scenarios; therefore, a
+fair and efficient pricing scheme is necessary to incentive the dynamic
+role transition and energy trading. Finally, it is crucial to develop a
+mechanism that not only ensures fairness and efficiency in pricing but
+also protects the private information.
+3
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+Table 1
+Comparisons with existing revelant P2P energy trading works.
+Ref.
+
+Participants
+
+Multi-energy
+
+System uncertainty
+
+Real-time operation
+
+Prediction-free
+
+Distributed
+
+Pricing
+
+[15]
+[16]
+[17]
+[18]
+[19]
+[20]
+[21]
+[22]
+[23]
+[24]
+
+Prosumer
+Prosumer
+Prosumer
+Smart home
+Household
+Prosumer
+Prosumer
+Prosumer
+Prosumer
+Virtual power plant
+
+–
+–
+–
+–
+–
+–
+–
+–
+–
+–
+
+–
+–
+✓
+–
+–
+–
+✓
+–
+✓
+✓
+
+–
+✓
+–
+–
+–
+–
+–
+✓
+✓
+–
+
+–
+✓
+–
+–
+–
+–
+–
+–
+–
+–
+
+–
+–
+–
+–
+✓
+✓
+✓
+✓
+✓
+✓
+
+✓
+–
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+
+[25]
+[26]
+[27]
+[28]
+[29]
+[30]
+
+EH
+EH
+EH
+EH
+Community
+Microgrid
+
+✓
+✓
+✓
+✓
+✓
+✓
+
+–
+–
+–
+–
+–
+–
+
+–
+–
+–
+–
+–
+–
+
+–
+–
+–
+–
+–
+–
+
+✓
+–
+✓
+✓
+–
+✓
+
+✓
+–
+–
+✓
+✓
+–
+
+This paper
+
+EH
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓: The item is considered. –: The item is not considered.
+
+To address the above issues, we propose an online decision scheme
+for real-time P2P trading among networked energy hubs without renewable power predictions. The differences of this paper from the
+existing relevant works are listed in Table 1. To begin with, we formulate a deterministic and centralized version of multiple energy hubs P2P
+trading problem, whose goal is to minimize the long-term time-average
+overall energy cost. Then centralized deterministic optimization model
+is decomposed temporally and spatially. The contributions include:
+(1) A temporal decomposition method based on Lyapunov optimization. The storage-level equation coupling decision in consecutive
+periods is replaced by a queue stability condition, and the objective
+function is modified as the weighted sum of cost and queue length,
+called drift-plus-penalty. In this way, the multi-periods operation problem is decomposed into a single-period problem and can be solved
+based on the current uncertainty realization, without referring to future
+uncertainty information. The future impact of using energy storage is
+taken into account by the cumulative queue length. We prove that
+by properly selecting the parameter in the drift-plus-penalty function,
+omitting storage level variables does not jeopardize storage capacity
+constraints, and the optimality gap compared to the hindsight optimum
+is bounded by a constant.
+(2) A spatial decomposition method based on ADMM. To clear
+the market and preserve privacy during P2P trading, ADMM is applied to the single-period problem with the drift-plus-penalty objective.
+The subproblem of each energy hub is a quadratic program, which
+is further decomposed into a strictly convex part and a linear programming part. The former has an analytical solution, and the latter
+is solved via a customized vertex enumeration algorithm. Two parts
+are coordinated via a golden section search scheme. In this way, the
+proposed method can be implemented on simple hardware without
+a sophisticated computation platform and optimization software. We
+show that the proposed algorithm intrinsically determines the P2P
+trading prices from the consensus-reaching process. The price discloses
+the willingness of supply and consumption and promotes P2P trading.
+The rest of this paper is organized as follows. The hindsight operation problem of networked energy hubs is formulated in Section 2. The
+temporal decomposition based on Lyapunov optimization is developed
+in Section 3. The spatial decomposition based on ADMM and solution
+routine of subproblems is presented in Section 4. The holistic flowchart
+is plotted in Section 5. The case study is reported in Section 6. Finally,
+Section 7 concludes the paper.
+
+and energy flow variables of energy hub are depicted in Fig. 1. The
+energy hub consists of some mainstream energy conversion and storage facilities, including combined-heat-power plant, electrical-powered
+heat pump, as well as battery and thermal storage units; besides, the
+energy hub installs renewable generation devices. This paper considers an energy hub with two inputs and two outputs; the inputs are
+electricity and natural gas; and the outputs are electricity and heat. It
+consumes electricity and natural gas to meet electric power and heat
+demands. On the electric side, power is generated from the renewable
+plant and CHP unit, or purchased from the main grid. On the heat side,
+heat is produced by the CHP unit and heat pump. Battery and thermal
+storage are used to improve the system flexibility to compensate for the
+fluctuation of renewable energy and demands. In the energy hub power
+flow, electricity can be used to supply the electric demand, charge a
+battery, or be consumed by a heat pump which produces heat. Heat
+can be directly used to supply the heat demand, or stored in a thermal
+storage unit if necessary.
+Since co-generation unit reuses waste heat, and excessive renewable
+power can be converted to heat, the energy hub enjoys higher flexibility
+compared to supplying power and heat separately. Furthermore, neighboring energy hubs can be connected via soft-open points, through
+which the transmitted power between two energy hubs can be independently controlled. Although the renewable generation in each energy
+hub may have a strong correlation, the demand profiles are different
+and may exhibit some complementarity. The P2P energy trading can
+further improve flexibility during real-time operation.
+This paper aims to address two problems. First, as renewable generation is uncertain and deploying an advanced forecasting system
+is expensive, how could each energy hub make real-time dispatch
+decisions without prediction? Second, in P2P trading, how could each
+energy hub price its energy while preserving privacy? The answers to
+the above two problems are a natural consequence of the temporal and
+spatial decomposition of the optimal operation problem, which will be
+shown in the subsequent sections.
+
+2.2. System operation constraints
+Let  denote the set of energy hubs; one energy hub is indexed by
+𝑖 ∈  , and 𝑗 ∈ −𝑖 represents all other energy hubs excluding the
+𝑖th one. The operation problem is formulated over the horizon with
+𝑡 = 1, … , 𝑇 periods; 𝜏 is the duration of each period. The operation
+constraints of generation∕conversion∕storage devices in the energy hub
+are introduced as follows.
+
+2. Mathematic formulation
+2.1. System configuration
+Energy hub can be used to model multi-energy systems in industrial
+park, commercial building, and residential community. The topology
+4
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+2.2.4. P2P trading
+Because of the difference in load variation patterns and system
+capacity configurations, when some energy hubs lack energy, others
+may have excessive supplies. Energy hubs have the opportunity to save
+costs or gain additional profits through P2P trading. Let 𝑝𝑖𝑗 ,𝑡 be the
+transactive energy from hub 𝑖 to hub 𝑗 (positive for selling and negative
+for buying), then the P2P trading obeys the following constraints:
+𝑝𝑖𝑗 ,𝑡 + 𝑝𝑗 𝑖,𝑡 = 0, ∀𝑖 ∈  , ∀𝑗 ∈ −𝑖 , ∀𝑡
+
+(4)
+
+2.2.5. Balancing condition
+The energy hub is equipped with renewable plant. Renewable output in hub 𝑖 period 𝑡 is 𝑝𝑅
+𝑖,𝑡 , depending on the weather condition.
+This parameter is observed period-by-period. We make no reference to
+forecasts of 𝑝𝑅
+𝑖,𝑡 in future periods in real-time dispatch.
+Electric power balance in energy hub 𝑖, period 𝑡 is cast as:
+
+Fig. 1. Illustration of power flow in an energy hub.
+
+2.2.1. Co-generation unit
+We consider combined-heat-power unit (CHP), which produces electricity and heat simultaneously according to a fixed ratio:
+𝐻𝑃
+𝐶𝐻𝑃
+𝑝𝐶
+= 𝜂𝑖𝑔𝑒 𝑔𝑖,𝑡
+𝑖,𝑡
+
+(1a)
+
+𝐻𝑃
+𝐶𝐻𝑃
+ℎ𝐶
+= 𝜂𝑖𝑔 ℎ 𝑔𝑖,𝑡
+𝑖,𝑡
+
+(1b)
+
+𝐶𝐻𝑃
+0 ≤ 𝑔𝑖,𝑡
+≤ 𝐺𝑖𝐶 𝐻 𝑃
+
+(1c)
+
+𝐶𝐻𝑃
+𝑃
+𝑝𝑏𝑖,𝑡 + 𝑝𝑅
++ 𝑝𝑑𝑖,𝑡 − 𝑝𝑐𝑖,𝑡 − 𝑝𝐻
+𝑖,𝑡 +𝑝𝑖,𝑡
+𝑖,𝑡
+∑
+𝐿
+𝑠
+= 𝑝𝑖,𝑡 + 𝑝𝑖,𝑡 +
+𝑝𝑖𝑗 ,𝑡
+
+(5)
+
+𝑗∈−𝑖
+
+where variable 𝑝𝑏𝑖,𝑡 ∕𝑝𝑠𝑖,𝑡 is the energy bought from∕sold to the power grid
+at real-time price∕feed-in tariff; 𝑝𝐿
+𝑖,𝑡 is the electric demand of energy hub
+𝑖 in period 𝑡.
+The heat balance in energy hub 𝑖, period 𝑡 is expressed as:
+
+𝐶 𝐻 𝑃 is the consumption of natural gas; 𝑝𝐶 𝐻 𝑃 and ℎ𝐶 𝐻 𝑃 are
+where 𝑔𝑖,𝑡
+𝑖,𝑡
+𝑖,𝑡
+electricity and heat output, respectively; 𝜂𝑖𝑔𝑒 ∕𝜂𝑖𝑔ℎ is gas to electricity∕
+heat conversion efficiency, as in (1a)–(1b); 𝐺𝑖𝐶 𝐻 𝑃 is the maximum gas
+input, as in (1c).
+
+𝐻𝑃
+𝑃
+𝑑
+𝑐
+𝐿
+ℎ𝐶
++ ℎ𝐻
+𝑖,𝑡
+𝑖,𝑡 + ℎ𝑖,𝑡 − ℎ𝑖,𝑡 = ℎ𝑖,𝑡
+
+(6)
+
+where ℎ𝐿
+𝑖,𝑡 is heat demand of energy hub 𝑖 in period 𝑡.
+2.3. Centralized operation model of networked energy hubs
+
+2.2.2. Heat pump
+2.3.1. Individual operation model
+To begin with, we first build the operation model of individual
+energy hub with the above operation constraints. The operation cost
+of individual energy hub is
+
+Heat pump produces heat through a refrigeration cycle by consuming electricity:
+𝑃
+𝑒ℎ 𝐻 𝑃
+ℎ𝐻
+𝑖,𝑡 = 𝐶 𝑂𝑃𝑖 𝑝𝑖,𝑡
+
+(2a)
+
+𝑃
+𝐻𝑃
+0 ≤ ℎ𝐻
+𝑖,𝑡 ≤ 𝐻𝑖
+
+(2b)
+
+𝐸
+𝐺
+𝑀
+𝑓𝑖,𝑡 = 𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
+
+𝑃
+where 𝑝𝐻
+𝑖,𝑡
+
+𝑃
+and ℎ𝐻
+𝑖,𝑡 denote electricity input and heat output, respectively; 𝐶 𝑂𝑃𝑖𝑒ℎ is the coefficient of performance, which is 3∼4 for air
+𝑃
+𝐻𝑃
+source heat pump; it determines the ratio between 𝑝𝐻
+𝑖,𝑡 and ℎ𝑖,𝑡 , as in
+𝐻
+𝑃
+(2a); 𝐻𝑖
+is the capacity of heat pump, which restricts its maximum
+
+(7)
+
+The first term
+𝐸
+𝑓𝑖,𝑡
+= 𝜆𝑏𝑡 𝑝𝑏𝑖,𝑡 − 𝜆𝑠𝑡 𝑝𝑠𝑖,𝑡
+
+output, as in (2b).
+
+is the payment to the power grid, where 𝜆𝑏𝑡 is real-time electricity price
+which is also uncertain; 𝜆𝑠𝑡 is the feed-in tariff. We assume 𝜆𝑏𝑡 > 0 and
+𝜆𝑠𝑡 < 𝜆𝑏𝑡 . The second term
+
+2.2.3. Storage units
+
+𝐺
+𝐶𝐻𝑃
+𝑓𝑖,𝑡
+= 𝜆𝑔𝑡 𝑔𝑖,𝑡
+
+The energy hub has installed hybrid energy storage. Battery storage
+unit (BSU) and thermal storage unit (TSU) play important roles in
+balancing generation and demand, whose operations are constrained
+by
+
+is the payment in the natural gas market, where 𝜆𝑔𝑡 is the price of
+natural gas. The third term
+∑
+𝑀
+𝑓𝑖,𝑡
+=
+−𝜆𝑖𝑗 ,𝑡 𝑝𝑖𝑗 ,𝑡
+𝑗∈−𝑖
+
+𝐸𝑖,𝑡+1 − 𝐸𝑖,𝑡 = (𝑝𝑐𝑖,𝑡 𝜂𝑖𝑒𝑐 − 𝑝𝑑𝑖,𝑡 ∕𝜂𝑖𝑒𝑑 )𝜏
+
+(3a)
+
+𝑊𝑖,𝑡+1 − 𝑊𝑖,𝑡 = (ℎ𝑐𝑖,𝑡 𝜂𝑖ℎ𝑐 − ℎ𝑑𝑖,𝑡 ∕𝜂𝑖ℎ𝑑 )𝜏
+
+(3b)
+
+0 ≤ 𝑝𝑐𝑖,𝑡 ≤ 𝑏𝑒𝑖,𝑡 𝑃𝑖𝑚 , 0 ≤ 𝑝𝑑𝑖,𝑡 ≤ (1 − 𝑏𝑒𝑖,𝑡 )𝑃𝑖𝑚
+
+(3c)
+
+0 ≤ ℎ𝑐𝑖,𝑡 ≤ 𝑏ℎ𝑖,𝑡 𝐻𝑖𝑚 , 0 ≤ ℎ𝑑𝑖,𝑡 ≤ (1 − 𝑏ℎ𝑖,𝑡 )𝐻𝑖𝑚
+
+(3d)
+
+𝐸𝑖𝑙 ≤ 𝐸𝑖,𝑡 ≤ 𝐸𝑖𝑚
+
+(3e)
+
+𝑊𝑖𝑙 ≤ 𝑊𝑖,𝑡 ≤ 𝑊𝑖𝑚
+
+(3f)
+
+is the payment in the P2P market, where 𝜆𝑖𝑗 ,𝑡 is P2P trading price. It is
+internally determined and will be explained later. Relation 𝜆𝑠𝑡 ≤ 𝜆𝑖𝑗 ,𝑡 ≤
+𝜆𝑏𝑡 must hold, otherwise, there is no incentive to join in the P2P market.
+2.3.2. Centralized operation model
+Our goal is to minimize the long-term energy cost of the overall
+networked energy hubs, which is the summation of individual costs.
+Based on the individual model, the total energy cost of  energy hubs
+at period 𝑡 is
+∑
+∑
+𝐸
+𝐺
+𝑀
+𝑓𝑡 =
+𝑓𝑖,𝑡 =
+(𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
+)
+(8)
+
+where 𝑝𝑐𝑖,𝑡 ∕𝑝𝑑𝑖,𝑡 is charging∕discharging power of BSU; 𝐸𝑖,𝑡 is the storage
+level of BSU; binary variable 𝑏𝑒𝑖,𝑡 = 1∕0 means a charging∕discharging
+state; 𝜂𝑖𝑒𝑐 ∕𝜂𝑖𝑒𝑑 is charging∕discharging efficiency; 𝑃𝑖𝑚 is the power capacity; 𝐸𝑖𝑙 ∕𝐸𝑖𝑚 represents minimum/maximum storage level. Constraints
+(3a), (3c) and (3e) describe storage level dynamics, operating power
+and storage level boundaries of battery. Notations and constraints in
+(3b), (3d) and (3f) for TSU have similar interpretations.
+
+𝑖∈
+
+𝑖∈
+
+From the perspective of an energy hub, renewable generation, demand
+and prices in future periods are all uncertain. The above uncertain
+parameters are collected in a vector
+𝐿
+𝐿
+𝑏 𝑠 𝑔
+𝝃 𝒕 = {𝑝𝑅
+𝑖,𝑡 , 𝑝𝑖,𝑡 , ℎ𝑖,𝑡 , 𝜆𝑡 , 𝜆𝑡 , 𝜆𝑡 , ∀𝑖 ∈  }
+
+5
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+The value of 𝝃 𝒕 is not known until the beginning of period 𝑡. The
+decision variables in period 𝑡 are encapsulated in a vector
+
+which is clearly not the case in practice. But policy 𝒙𝒕 (𝝃 𝒕 ) means that
+dispatch action 𝒙𝒕 is a function of 𝝃 𝒕 and does not depend on uncertain
+parameters in future periods.
+To obtain policy 𝒙𝒕 (𝝃 𝒕 ), we resort to a temporal decomposition of
+problem (10). If we could find a way to ensure constraints (3e)–(3f)
+without explicitly modeling storage levels 𝐸𝑖,𝑡 , 𝑊𝑖,𝑡 , then (3a)–(3b) can
+also be omitted, and thus the problem (10) becomes time-decoupled.
+Summing all constraints in (3a)–(3b) for 𝑡 = 1 ∶ 𝑇 , dividing both
+sides by 𝑇 , and then taking expectation, we obtain
+
+𝐻𝑃
+𝐻𝑃 𝐶𝐻𝑃 𝐻𝑃
+𝑃
+𝒙𝒕 = {𝑝𝐶
+, ℎ𝐶
+, 𝑔𝑖,𝑡 , 𝑝𝑖,𝑡 , ℎ𝐻
+𝑖,𝑡
+𝑖,𝑡
+𝑖,𝑡 ,
+
+𝑝𝑐𝑖,𝑡 , 𝑝𝑑𝑖,𝑡 , ℎ𝑐𝑖,𝑡 , ℎ𝑑𝑖,𝑡 , 𝑝𝑏𝑖,𝑡 , 𝑝𝑠𝑖,𝑡 , 𝑝𝑖𝑗 ,𝑡 , ∀𝑖 ∈  }
+In the networked system, the goal is to minimize the long-term total
+operation cost, giving rise to
+{
+}
+𝑇
+|
+1 ∑∑ 𝐸
+𝐺 |
+min
+(𝑓𝑖,𝑡 + 𝑓𝑖,𝑡
+)𝜏 |(1)–(6)
+(9)
+|
+𝒙
+𝑇 𝑡=1
+|
+𝑖∈
+
+The P2P trading cost vanishes in (9) because
+
+∑
+
+E[
+
+𝑀
+𝑖∈ 𝑓𝑖,𝑡 = 0.
+
+2.3.3. Challenges for solution
+There are three difficulties that challenge the application of problem
+(9) in practice:
+(1) Constraints (3a)–(3b) couple decision variables in two successive
+periods. As a result, the dispatch action in a period influences the
+feasibility and cost in future periods. To identify the optimal solution,
+we have to forecast 𝝃 𝒕 in all periods. However, it is difficult to get highquality renewable prediction in a small area, so problem (9) cannot be
+established. If there are no time coupling constraints, then problem (9)
+naturally decouples into 𝑇 single-period problems which can be solved
+independently according to the observed value of 𝝃 𝒕 in each period.
+This is a basic motivation of the proposed method.
+(2) Problem (9) is cast in a centralized manner. To use this in
+practice, some authority is responsible for collecting the data of all
+energy hubs and solving problem (9), and then inform the optimal
+action to each of them. However, system data, especially the consumption patterns, are private information that energy hubs are unwilling
+to disclose. It is expected that the P2P market should be cleared in a
+distributed way without exposing private data.
+(3) To clear the P2P market in a distributed way, the energy hub
+has to make individual decisions, and it is necessary to specify the
+value of P2P trading price 𝜆𝑖𝑗 ,𝑡 , which does not appear in the centralized
+problem (9). By now, it is not clear how to determine a fair price that
+best incentivizes P2P trading.
+In the subsequent sections, the first problem will be addressed in
+Section 3, and the remaining two in Section 4.
+
+E[
+
+𝐸𝑖,𝑇 +1
+𝑇
+𝑊𝑖,𝑇 +1
+𝑇
+
+] − E[
+
+𝐸𝑖,1
+
+] − E[
+
+𝑇
+
+𝑊𝑖,1
+𝑇
+
+1 ∑
+E[𝑝𝑖,𝑡 ]𝜏
+𝑇 𝑡=1
+
+(11a)
+
+1 ∑
+E[ℎ𝑖,𝑡 ]𝜏
+𝑇 𝑡=1
+
+(11b)
+
+𝑇
+
+]=
+
+𝑇
+
+]=
+
+where
+𝑝𝑖,𝑡 = 𝑝𝑐𝑖,𝑡 𝜂𝑖𝑒𝑐 − 𝑝𝑑𝑖,𝑡 ∕𝜂𝑖𝑒𝑑
+
+(11c)
+
+ℎ𝑖,𝑡 = ℎ𝑐𝑖,𝑡 𝜂𝑖ℎ𝑐 − ℎ𝑑𝑖,𝑡 ∕𝜂𝑖ℎ𝑑
+
+(11d)
+
+Because storage levels 𝐸𝑖,𝑡 and 𝑊𝑖,𝑡 take finite values, taking a limit over
+a large 𝑇 yields
+𝐸𝑖,𝑇 +1
+𝐸𝑖,1
+lim E[
+] = lim E[
+]=0
+(12a)
+𝑇 →∞
+𝑇 →∞
+𝑇
+𝑇
+𝑊𝑖,𝑇 +1
+𝑊𝑖,1
+lim E[
+] = lim E[
+]=0
+(12b)
+𝑇 →∞
+𝑇 →∞
+𝑇
+𝑇
+Consequently, the right side of (11) yields
+𝑇
+𝑇
+1 ∑
+1 ∑
+E[𝑝𝑖,𝑡 ]𝜏 = 0, lim
+E[ℎ𝑖,𝑡 ]𝜏 = 0
+𝑇 →∞ 𝑇
+𝑇 →∞ 𝑇
+𝑡=1
+𝑡=1
+
+lim
+
+(13)
+
+which is the mean rate stability condition in queueing theory. Clearly,
+condition (13) is weaker than constraints (3e)–(3f). However, the timeaverage constraint (13) is still not decoupled over time. To solve
+problem in an online manner, the key technique originated from Lyapunov optimization is adopted. We build a single-period problem that
+compromises the storage levels and costs.
+3.1.2. Virtual queues
+Step 2: Build virtual queues for time-coupling constraints.
+From queueing theory, the storage level can be viewed as the queue
+length. Specifically, we introduce two virtual queues corresponding to
+the storage levels of BSU and TSU. Their respective lengths are:
+
+3. Temporal decomposition
+In this section, problem (9) is decomposed over time based on
+Lyapunov optimization, and an online problem without prediction
+is derived. The temporal decomposition does not mean solving the
+problem (9) in a decomposed manner. Instead, we aim to establish a
+policy that offers good actions without knowing all the uncertainty data
+in the problem (9).
+
+𝑄𝑒𝑖,𝑡 = 𝐸𝑖,𝑡 − 𝜃𝑖𝑒
+
+(14a)
+
+𝑄ℎ𝑖,𝑡 = 𝑊𝑖,𝑡 − 𝜃𝑖ℎ
+
+(14b)
+
+where 𝜃𝑖𝑒 and 𝜃𝑖ℎ are constants. By properly choosing their values, we
+can ensure constraints (3e)–(3f) without using 𝐸𝑖,𝑡 and 𝑊𝑖,𝑡 explicitly.
+Selection of 𝜃𝑖𝑒 and 𝜃𝑖ℎ will be thoroughly discussed later. By storage dynamic Eqs. (3a)–(3b), the dynamics of virtual queues can be expressed
+as
+
+3.1. Temporal decomposition via Lyapunov optimization framework
+3.1.1. The time-average optimization model
+Step 1: Reformulate the original problem into time-average
+form.
+We first write problem (9) into a time-average form considering the
+randomness of 𝝃 𝒕 :
+{
+}
+𝑇
+|
+1 ∑
+|
+min
+lim
+E[𝑓𝑡 ]𝜏 |(1)–(6)
+(10)
+|
+𝒙
+𝑇 →∞ 𝑇
+|
+𝑡=1
+
+𝑄𝑒𝑖,𝑡+1 = 𝑄𝑒𝑖,𝑡 + 𝑝𝑖,𝑡 𝜏
+
+(15a)
+
+𝑄ℎ𝑖,𝑡+1 = 𝑄ℎ𝑖,𝑡 + ℎ𝑖,𝑡 𝜏
+
+(15b)
+
+Similar to (12), the virtual queues must be mean rate stable, which
+means the lengths of virtual queues will not grow faster than the elapse
+of time.
+3.1.3. Lyapunov function and Lyapunov drift
+Step 3: Construct Lyapunov function and Lyapunov drift for
+virtual queues.
+Define 𝜣 𝑡 = {𝑄𝑒𝑖,𝑡 , 𝑄ℎ𝑖,𝑡 , ∀𝑖 ∈  } and the following Lyapunov
+function:
+1 ∑ 𝑒 2 1 ∑ ℎ 2
+𝐿(𝜣 𝑡 ) =
+(𝑄𝑖,𝑡 ) +
+(𝑄𝑖,𝑡 )
+2
+2
+
+Compared with (9), a main difference is that problem (10) considers
+uncertainty: the expectation is taken over {𝝃 𝑡 }𝑇𝑡=1 . Because of this
+difference, instead of identifying an optimal solution, we aim to acquire
+a policy 𝒙𝒕 (𝝃 𝒕 ) from the observed 𝝃 𝒕 to dispatch actions, or in other
+words, 𝒙𝒕 is viewed as a function of 𝝃 𝒕 . Indeed, the optimal solution
+of problem (9) is also a policy 𝒙(𝝃). The difference is that the dispatch
+action 𝒙 is deployed after all parameters {𝝃 𝑡 }𝑇𝑡=1 have been observed,
+
+𝑖∈
+
+6
+
+𝑖∈
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+which is a quadratic function in 𝜣 𝑡 . The incremental increase of 𝐿(𝜣 𝑡 )
+in two successive time periods
+𝛥(𝜣 𝒕 ) = 𝐿(𝜣 𝑡+1 ) − 𝐿(𝜣 𝑡 )
+
+Algorithm 1 Online Decision-making Algorithm
+Input: System parameters, 𝑡, 𝜃𝑖𝑒 , 𝜃𝑖ℎ , 𝑉 , 𝑄𝑒𝑖,𝑡 , 𝑄ℎ𝑖,𝑡 , and 𝝃 𝑡 .
+Output: Real-time dispatch decision 𝒙𝒕 .
+1: In time period 𝑡, observe 𝑄𝑒𝑖,𝑡 , 𝑄ℎ𝑖,𝑡 and uncertain realization 𝝃 𝑡 .
+2: Solve problem (19) and obtain optimal real-time dispatch decision 𝒙∗𝒕 .
+3: Update 𝑄𝑒𝑖,𝑡+1 , 𝑄ℎ𝑖,𝑡+1 according to (15).
+4: Update 𝑡 ← 𝑡 + 1, and return to step 1.
+
+(16)
+
+is called the Lyapunov drift. By the definition in (15) and two inequalities 𝑝𝑖,𝑡 ≤ 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 and ℎ𝑖,𝑡 ≤ 𝐻𝑖𝑚 ∕𝜂𝑖ℎ𝑑 , we have
+( 𝑚 )2
+𝑃𝑖 𝜏
+𝑒
+2
+𝑒 2
+𝑒
+(𝑄𝑖,𝑡+1 ) − (𝑄𝑖,𝑡 ) ≤ 2𝑄𝑖,𝑡 𝑝𝑖,𝑡 𝜏 +
+𝜂𝑖𝑒𝑑
+( 𝑚 )2
+𝐻𝑖 𝜏
+(𝑄ℎ𝑖,𝑡+1 )2 − (𝑄ℎ𝑖,𝑡 )2 ≤ 2𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 𝜏 +
+𝜂𝑖ℎ𝑑
+By the definition of Lyapunov drift in (16), we obtain
+∑
+𝛥(𝜣 𝑡 ) ≤ 𝐴 +
+(𝑄𝑒𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 )𝜏
+
+3.2.1. Feasibility guarantee
+Constraints (3e)–(3f) are relaxed in problem (19), but they must
+hold in real operation. How to maintain storage levels within the
+required bounds without modeling 𝐸𝑖,𝑡 and 𝑊𝑖,𝑡 explicitly?
+
+(17a)
+
+3.2.2. Optimality gap
+Problem (19) makes no reference on forecasts. If we carry out the
+strategy generated by problem (19), it must receive a higher value than
+the optimum generated by problem (9), which uses exact forecasts over
+all periods. Then what is the gap between these two optima?
+The answers are given in the following two theorems.
+
+𝑖∈
+
+where the constant
+1 ∑
+𝐴=
+[(𝑃𝑖𝑚 𝜏∕𝜂𝑖𝑒𝑑 )2 + (𝐻𝑖𝑚 𝜏∕𝜂𝑖ℎ𝑑 )2 ]
+2
+
+(17b)
+
+𝑖∈
+
+This gives an estimation on the upper bound of 𝛥(𝜣 𝑡 ). Compared with
+the definition (16), the upper bound in (17) does not depend on the
+information in period 𝑡 + 1.
+
+Theorem 1. Suppose 𝜃𝑖𝑒 and 𝜃𝑖ℎ are chosen as
+𝜃𝑖𝑒 = 𝐸𝑖𝑙 + 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 + 𝑉 𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐
+𝜃𝑖ℎ = 𝑊𝑖𝑙 + 𝜏 𝐻𝑖𝑚 ∕𝜂𝑖ℎ𝑑 + 𝑉 𝜆𝑔,𝑚𝑎𝑥 ∕(𝜂𝑖ℎ𝑐 𝜂𝑖𝑔ℎ )
+
+3.1.4. Online optimization problem via Lyapunov drift-plus-penalty technique
+Step 4: Obtain an online optimization problem via Lyapunov
+drift-plus-penalty technique.
+To maintain queue stability as required in (13), 𝑄𝑒𝑖,𝑡 and 𝑄ℎ𝑖,𝑡 are
+expected to be as small as possible.
+And 𝛥(𝜣 𝑡 ) in each step cannot be very large. Meanwhile, the cost
+𝑓𝑡 𝜏 is also to be optimized. Taking the above factors into consideration,
+we resort to minimizing a weighted sum of Lyapunov drift and cost in
+each period, yielding a drift-plus-cost function
+𝛥(𝜣 𝒕 ) + 𝑉 𝑓𝑡 𝜏
+
+Let
+𝑉𝑖𝑒 =
+
+𝐸𝑖𝑚 − 𝐸𝑖𝑙 − 𝜏 𝑃𝑖𝑚 𝜂𝑖𝑒𝑐 − 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑
+
+𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 − 𝜂𝑖𝑒𝑑 𝜆𝑏,𝑚𝑖𝑛
+𝑚
+𝑊 − 𝑊𝑖𝑙 − 𝜏 𝐻𝑖𝑚 𝜂𝑖ℎ𝑐 − 𝜏 𝐻𝑖𝑚 ∕𝜂𝑖ℎ𝑑
+𝑉𝑖ℎ = 𝑖
+(𝜆𝑔,𝑚𝑎𝑥 ∕𝜂𝑖ℎ𝑐 − 𝜂𝑖ℎ𝑑 𝜆𝑔,𝑚𝑖𝑛 )∕𝜂𝑖𝑔ℎ
+and 𝑉 ∗ = min𝑖∈ {𝑉𝑖𝑒 , 𝑉𝑖ℎ }. Then, for any 0 < 𝑉 ≤ 𝑉 ∗ , the dispatch actions
+generated by problem (19) satisfy (3e)–(3f).
+
+(18)
+
+Proof. See Appendix A.
+Let 𝑓 (𝑥) be the objective function of problem (9), and 𝑥 its optimal
+solution; the hindsight optimum is 𝐶 = 𝑓 (𝑥). Let 𝑥
+̂ = {𝑥𝑡 }𝑇𝑡=1 denote
+the dispatch actions generated by problem (19), and 𝐶̂ = 𝑓 (̂
+𝑥). The
+following theorem provides an estimation of the optimality gap.
+
+is a weight parameter. Later we will give the values of 𝑉 , 𝜃𝑖𝑒
+
+where 𝑉
+and 𝜃𝑖ℎ so that the relaxed constraints (3e)–(3f) can be guaranteed by
+the online policy. Replacing 𝛥(𝜣 𝒕 ) with its upper bound given in (17),
+we obtain:
+∑
+(𝑄𝑒𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 )𝜏 + 𝑉 𝑓𝑡 𝜏
+𝐴+
+
+Theorem 2. Assume the weight parameter 𝑉 ∈ (0, 𝑉 ∗ ], then we have
+
+𝑖∈
+
+𝐶̂ − 𝐶 ≤ 𝐴∕𝑉
+
+The constant 𝐴 can be omitted in optimization.
+Finally, we obtain an online optimization problem depending on the
+data only in period 𝑡
+]
+∑[
+𝐸
+𝐺
+min
+𝑄𝑒𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 + 𝑉 (𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
+) 𝜏
+𝒙𝒕
+(19)
+𝑖∈
+s.t. (1), (2), (3c), (3d), (4)–(6)
+
+Proof. See Appendix B.
+Because the optimality gap is inversely proportional to 𝑉 , selecting
+𝑉 = 𝑉 ∗ leads to the smallest optimality gap.
+4. Spatial decomposition
+
+𝑀 over all energy hubs is zero, so the P2P trading
+The summation of 𝑓𝑖,𝑡
+
+In this section, the real-time dispatch problem (19) is further decomposed across each energy hub. Finally, the subproblems of individual
+energy hubs are small-scale quadratic programs.
+
+term vanishes in the objective function. At the beginning of period 𝑡,
+the values of uncertain parameters in 𝝃 𝒕 are observed, and the queue
+lengths 𝑄𝑒𝑖,𝑡 and 𝑄ℎ𝑖,𝑡 are updated by (15) based on the dispatch actions
+in period 𝑡 − 1. In this way, problem (10) is decomposed over time, and
+problem (19) refers to no forecasts on 𝝃 𝑡 in periods 𝑡 + 1, … , 𝑇 .
+The flowchart of the online optimization problem is summarized in
+Algorithm 1. The algorithm performance will be analyzed in the next
+subsection.
+
+4.1. The ADMM framework
+In problem (19), the decisions of energy hubs are coupled through
+constraint (4). To break this tie, auxiliary variable 𝜀𝑖𝑗 ,𝑡 is introduced,
+and constraint (4) is rewritten as
+
+3.2. Performance guarantee
+After the temporal decomposition of problem (9), two important
+problems have to be discussed:
+
+𝑝𝑖𝑗 ,𝑡 = 𝜀𝑖𝑗 ,𝑡 ∶ 𝜆𝑖𝑗 ,𝑡 , ∀𝑡 ∈  , ∀𝑖 ∈  , ∀𝑗 ∈ −𝑖
+
+(20a)
+
+𝜀𝑖𝑗 ,𝑡 + 𝜀𝑗 𝑖,𝑡 = 0, ∀𝑡 ∈  , ∀𝑖 ∈  , ∀𝑗 ∈ −𝑖
+
+(20b)
+
+Equality (20a) is a local constraint that involves only variables of
+energy hub 𝑖. Equality (20b) becomes a coupling constraint. The symbol
+7
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+When the iteration terminates, energy hubs have reached agreements on the trading amount 𝑝𝑖𝑗 ,𝑡 and trading price 𝜆𝑖𝑗 ,𝑡 . From an
+economic perspective, 𝜆𝑖𝑗 ,𝑡 can be viewed as the shadow price of P2P
+energy trading, which indicates the marginal reduction in individual
+costs per unit of electricity traded among energy hubs.
+
+Algorithm 2
+Input: System parameters, error tolerance 𝛿 > 0, penalty coefficient 𝜌.
+Output: Iteration index 𝑘 + 1, local variable 𝒙𝑘+1 , auxiliary variable 𝜺𝑘+1 ,
+dual variable 𝝀𝑘+1 .
+1: Set iteration index 𝑘 = 0. Initialize auxiliary variable 𝜺𝟎 and dual variable
+𝝀𝟎 .
+2: Each energy hub solves (21) given 𝜀𝑘𝑖𝑗 ,𝑡 , 𝜆𝑘𝑖𝑗 ,𝑡 and update 𝑝𝑘+1
+𝑖𝑗 ,𝑡 .
+3: Each energy hub updates 𝜺𝒌+𝟏 according to (22).
+4: Each energy hub updates 𝜆𝑘+1
+𝑖𝑗 ,𝑡 according to (23).
+
+4.2. Solving subproblems
+By leveraging the special structure of the optimization problem (21),
+a one-dimension search procedure is proposed to solve the problem
+iteratively, which is solver-free and does not rely on sophisticated
+hardware or computational platform.
+𝐻 𝑃 , 𝑝𝐻 𝑃 , 𝑝𝑐 , 𝑝𝑑 , ℎ𝑐 , ℎ𝑑 , 𝑝𝑏 , 𝑝𝑠 } and 𝑦
+𝑘
+Let 𝑥𝑖,𝑡 = {𝑝𝐶
+𝑖𝑗 ,𝑡 = 𝑝𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 ,
+𝑖,𝑡
+𝑖,𝑡
+𝑖,𝑡 𝑖,𝑡 𝑖,𝑡 𝑖,𝑡 𝑖,𝑡 𝑖,𝑡
+and introduce an auxiliary variable.
+∑
+𝜃𝑖,𝑡 =
+𝑦𝑖𝑗 ,𝑡
+(24)
+
+5: If max(‖𝝀𝒌+𝟏 − 𝝀𝒌 ‖) ≤ 𝛿, terminate and report 𝒙𝑘+1 , 𝜺𝑘+1 , 𝝀𝑘+1 ; otherwise,
+𝑘 ← 𝑘 + 1 and return to step 2.
+
+𝜆𝑖𝑗 ,𝑡 after the colon is the dual variable associated with (20a), which
+represents the P2P trading price between energy hub 𝑖 and energy hub
+𝑗 in period 𝑡.
+To solve the problem (19) in a distributed manner, the corresponding augmented Lagrangian function is formulated as
+( ) ∑ 𝑒
+𝐸
+𝐺
+𝐿 𝒙𝑖𝑡 =
+[𝑄𝑖,𝑡 𝑝𝑖,𝑡 𝜏 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 𝜏 + 𝜏 𝑉 (𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
+)+
+
+𝑗∈
+
+For brevity, we omit the index 𝑖 and 𝑡 in the variables. Then problem
+(21) of each energy hub can be rewritten as follows:
+∑(
+𝜌 )
+min 𝑐 ⊤ 𝑥 +
+𝜆𝑘𝑗 𝑦𝑗 + 𝑦2𝑗
+(25a)
+2
+
+𝑖∈
+
+∑(
+)
+𝜆𝑖𝑗 ,𝑡 (𝑝𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 ) + 𝜌(𝑝𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 )2 ∕2 ]
+
+𝑗∈
+
+s.t. 𝑥 ∈ 𝑋
+
+𝑗∈
+
+𝑚⊤
+𝑥 = 𝑛1 + 𝜃
+1
+⊤
+𝑚2 𝑥 = 𝑛2
+
+where 𝜌 is a positive penalty coefficient, 𝑥𝑖𝑡 is the vector of decision
+variables controlled by energy hub 𝑖 in period 𝑡.
+In ADMM framework, each iteration involves three steps: (1) update
+local variable 𝒙𝒊 ; (2) update auxiliary variable 𝜺; (3) update dual
+variable 𝝀.
+To start with, choose a convergence criterion 𝛿 and penalty coefficient 𝜌. Set 𝑘 = 0, where 𝑘 is the iteration number. Initialize auxiliary
+variable 𝜺𝟎 and dual variable 𝝀𝟎 .
+Step 1: Update local variable. At the beginning of 𝑘+ 1th iteration,
+auxiliary variable 𝜀𝑘𝑖𝑗 ,𝑡 and dual variable 𝜆𝑘𝑖𝑗 ,𝑡 are given. Each energy hub
+𝑖 updates its local variable 𝒙𝒊𝒕 according to
+{
+}
+|local constraints in
+|
+min 𝐿(𝒙𝑖𝑡 )|
+, ∀𝑖 ∈ 
+(21)
+|(1), (2), (3c), (3d), (5), (6)
+|
+
+(25d)
+
+and a quadratic subproblem
+⎧
+⎫
+⎪∑ ( 𝑘
+⎪
+𝜌 ) || ∑
+𝑣2 (𝜃) = min ⎨
+𝜆𝑗 𝑦𝑗 + 𝑦2𝑗 |
+𝑦𝑗 = 𝜃 ⎬
+|
+2
+⎪𝑗∈
+⎪
+| 𝑗∈
+⎩
+⎭
+
+(27)
+
+In the following, we first develop methods to solve problems (26) and
+(27), and then outline how to solve problem (25).
+Problem (27) is strictly convex, so we can find the analytical solution. The Lagrangian function of problem (27) is
+⎞
+⎛∑
+∑(
+𝜌 )
+𝑦𝑗 − 𝜃 ⎟
+𝐿2 (𝒚, 𝜈) =
+𝜆𝑘𝑗 𝑦𝑗 + 𝑦2𝑗 + 𝜈 ⎜
+⎜
+⎟
+2
+𝑗∈
+⎠
+⎝𝑗∈
+
+𝑖∈ 𝑗∈
+
+s.t. (20b), given 𝜆𝑘𝑖𝑗 ,𝑡 , 𝑝𝑘+1
+𝑖𝑗 ,𝑡
+
+where 𝜈 is the Lagrange multiplier. Since 𝜌 > 0, solve the stationary
+condition 𝜕 𝑣2 ∕𝜕 𝑦𝑗 = 0 for Lagrange function gives 𝑦𝑗 = −(𝜆𝑘𝑗 + 𝜈)∕𝜌.
+Substituting it into Eq. (24), we get
+∑
+𝜌𝜃 + 𝑗∈ 𝜆𝑘𝑗
+𝜈=−
+𝑁
+
+(22)
+
+𝑘+1
+Step 3: Update dual variable 𝝀. Based on 𝑝𝑘+1
+𝑖𝑗 ,𝑡 and 𝜆𝑖𝑗 ,𝑡 , the dual
+𝑘+1
+variable 𝜆𝑖𝑗 ,𝑡 is updated by
+𝑘
+𝑘+1
+𝑘+1
+𝜆𝑘+1
+𝑖𝑗 ,𝑡 = 𝜆𝑖𝑗 ,𝑡 + 𝜌(𝑝𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 )
+
+(25c)
+
+In (25b), 𝑋 contains only lower and upper bound constraints; 𝑚1 , 𝑚2 ,
+𝑛1 , 𝑛2 are constants; equality constraints (25c) and (25d) correspond
+to power and heat balance conditions in (5) and (6), respectively.
+Viewing 𝜃 as a parameter, problem (25) is decomposed into a linear
+programming subproblem
+{
+}
+|𝑚⊤ 𝑥 = 𝑛1 + 𝜃
+⊤ | 1
+𝑣1 (𝜃) = min 𝑐 𝑥| ⊤
+(26)
+|𝑚 𝑥 = 𝑛
+𝑥∈𝑋
+2
+| 2
+
+The optimal solution includes 𝒙𝑘+1
+and 𝑝𝑘+1
+𝑖𝑗 ,𝑡 . The subproblems (21) for
+𝒊
+individual energy hubs can be solved in parallel.
+Step 2: Update auxiliary variable. The auxiliary variable 𝜺 is
+updated according to the optimal solution of problem
+∑ ∑
+𝜌 𝑘+1
+2
+min
+𝜆𝑘𝑖𝑗 ,𝑡 (𝑝𝑘+1
+𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 ) + 2 (𝑝𝑖𝑗 ,𝑡 − 𝜀𝑖𝑗 ,𝑡 )
+
+The optimal solution in closed form is
+((
+(
+)
+))
+1
+1 𝑘
+𝑘+1
+𝑘
+𝑘+1
+𝜆
+𝜀𝑘+1
+=
+𝑝
+−
+𝑝
++
+−
+𝜆
+𝑗 𝑖,𝑡
+𝑖𝑗 ,𝑡
+𝑖𝑗 ,𝑡
+𝑗 𝑖,𝑡
+2
+𝜌 𝑖𝑗 ,𝑡
+((
+(
+))
+)
+1
+1 𝑘
+𝑘+1
+𝜆𝑗 𝑖,𝑡 − 𝜆𝑘𝑖𝑗 ,𝑡
+𝜀𝑘+1
+𝑝𝑘+1
++
+𝑗 𝑖,𝑡 = 2
+𝑗 𝑖,𝑡 − 𝑝𝑖𝑗 ,𝑡
+𝜌
+
+(25b)
+
+Therefore,
+∑
+𝜌𝜃 + 𝑗∈ 𝜆𝑘𝑗 − 𝑁 𝜆𝑘𝑗
+𝑦𝑗 =
+𝑁𝜌
+
+(23)
+
+(28)
+
+Substituting (28) into (27), we obtain
+(
+)2 (
+)2
+∑
+𝑘
+− 𝑁 𝜆𝑘𝑗
+∑ 𝜌𝜃 + 𝑗∈ 𝜆𝑗
+𝑣2 (𝜃) =
+2𝜌𝑁 2
+𝑗∈
+
+The convergence criterion is
+max(‖𝝀𝒌+𝟏 − 𝝀𝒌 ‖) ≤ 𝛿
+where 𝛿 is a given tolerance. The flowchart is summarized in Algorithm
+2. Information exchange is needed in Step 2: energy hub 𝑖 shares 𝑝𝑘+1
+𝑖𝑗 ,𝑡
+with those who are willing to trade power; private data, such as facility
+parameters, load profiles, are not disclosed. Only local information is
+used in remaining steps.
+
+We can see that 𝑣2 (𝜃) is convex in 𝜃.
+Problem (26) is a linear program over lower and upper bound
+constraints in 𝑋 and two additional equality constraints. Given this
+special structure, we devise a customized vertex generation algorithm
+8
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Algorithm 3 Customized Vertex Generation
+Input: Initial vertex set 𝛺0 of hypercube 𝑋 ∈ R8 , two equalities ℎ1 (𝑥) = 0
+and ℎ2 (𝑥) = 0.
+Output: Final vertex set 𝛺1 .
+1: Set iteration index 𝑘 = 1.
+2: Let 𝛺0⋆ , 𝛺0+ , 𝛺0− collect elements 𝑢 ∈ 𝛺0 satisfying ℎ𝑘 (𝑢) = 0, ℎ𝑘 (𝑢) > 0,
+ℎ𝑘 (𝑢) < 0 respectively; let 𝛺1 = 𝛺0⋆ .
+3: If 𝛺0+ = ∅ or 𝛺0− = ∅, then terminate and report 𝛺1 .
+4: for all 𝑢+ ∈ 𝛺0+
+5:
+update the adjacent vertex set adv(𝑢+ , 𝛺0− );
+6:
+for all 𝑢− ∈ adv(𝑢+ , 𝛺0− )
+7:
+find the point 𝑢⋆ = seg(𝑢+ , 𝑢− ) ∩ 𝐻;
+8:
+update 𝛺1 ← 𝛺1 ∪ 𝑢⋆ .
+9:
+end
+10: end
+11: 𝑘 ← 𝑘 + 1; 𝛺0 ← 𝛺1 ;
+12: If 𝑘 ≤ 2, return to line 2. Otherwise, terminate and report 𝛺1 .
+
+Fig. 2. Illustration of the idea of vertex generation. The initial hypercube is 𝛺0 =
+{1, 2, 3, 4, 5, 6, 7, 8}; adding a hyperplane (representing an equality constraint) passing
+through point 2, then 𝛺0⋆ = {2}, 𝛺0+ = {1, 3, 4}, 𝛺0− = {5, 6, 7, 8}. For point 1 in 𝛺0+ ,
+the adjacent point in 𝛺0− is point 8, so adv(1, 𝛺0− ) = {8}; similarly, adv(3, 𝛺0− ) = {6},
+adv(4, 𝛺0− ) = {5}; The set of intersection points is 𝛺1 = {2, 9, 10, 11}, which is the vertex
+set of the new polyhedron.
+
+Algorithm 4 Golden Section Search
+Input: Parameters of 𝑣(𝜃), [𝜃𝑚𝑖𝑛 , 𝜃𝑚𝑎𝑥 ], tolerance 𝜗.
+Output: Optimal solution 𝜃 ∗ .
+1: Calculate 𝜃1 = 𝜃𝑚𝑖𝑛 + 0.382 ∗ (𝜃𝑚𝑎𝑥 − 𝜃𝑚𝑖𝑛 ),𝜃2 = 𝜃𝑚𝑖𝑛 + 0.618 ∗ (𝜃𝑚𝑎𝑥 − 𝜃𝑚𝑖𝑛 ).
+2: if 𝑣(𝜃1 ) > 𝑣(𝜃2 ) then
+3: 𝜃𝑚𝑖𝑛 = 𝜃1 , 𝜃1 = 𝜃2 , 𝜃2 = 𝜃𝑚𝑖𝑛 + 0.618 ∗ (𝜃𝑚𝑎𝑥 − 𝜃𝑚𝑖𝑛 ) ;
+4: else
+5: 𝜃𝑚𝑎𝑥 = 𝜃2 , 𝜃2 = 𝜃1 , 𝜃1 = 𝜃𝑚𝑖𝑛 + 0.382 ∗ (𝜃𝑚𝑎𝑥 − 𝜃𝑚𝑖𝑛 );
+6: end
+7: Repeat line 2 until |𝜃𝑚𝑎𝑥 − 𝜃𝑚𝑖𝑛 | < 𝜗.
+8: Report 𝜃 ∗ = 𝜃2 , 𝑣(𝜃 ∗ ) = 𝑣(𝜃2 ).
+
+to find the optimal solution without using the simplex or interiorpoint method. Without equality constraints, vertices of the hypercube
+𝑋 can be easily enumerated. Adding one equality constraint, the new
+feasible set 𝑃 is the intersection of 𝑋 and the hyperplane defined by
+the equality, and its vertices are the points where the edges of 𝑋
+passing through the hyperplane. Adding the second equality, the new
+vertices are the points where the edges of 𝑃 passing through the second
+hyperplane. The idea is illustrated in Fig. 2. In this way, all the vertices
+of the problem (26) are found.
+The flowchart is given in Algorithm 3. In line 5, the adjacent vertex
+set of some 𝑢+ ∈ 𝛺0+ is created. At a vertex of a polyhedron of dimension
+𝑑, there are 𝑑 active constraints. A vertex 𝑢− ∈ 𝛺0− is said to be adjacent
+to 𝑢+ if the two sets of active constraints at 𝑢+ and 𝑢− differ in only
+one constraint. All the vertices in 𝛺0− that are adjacent to 𝑢+ ∈ 𝛺0+ is
+denoted as the set adv(𝑢+ , 𝛺0− ). In line 7, seg(𝑢+ , 𝑢− ) is the line segment
+connecting 𝑢+ and 𝑢− , and 𝐻 is the hyperplane defined by the linear
+equality constraint.
+Executing Algorithm 3 for a fixed 𝜃, we obtain the vertex set of
+problem (26). The optimal solution is one element in the vertex set
+such that the objective function 𝑐 ⊤ 𝑥 achieves minimum. Because each
+energy hub controls only 8 variables, Algorithm 3 is efficient for online
+applications. When 𝜃 varies, function 𝑣1 (𝜃) is piecewise and convex in
+𝜃 [56].
+Problem (25) is equivalent to searching 𝜃 that minimizes the sum
+of 𝑣1 (𝜃) and 𝑣2 (𝜃), which is
+min 𝑣(𝜃) = 𝑣1 (𝜃) + 𝑣2 (𝜃)
+𝜃
+
+which contains three steps (21) (22) (23). The optimization problem
+(21) can be further decomposed into a linear programming subproblem
+(26) and a quadratic subproblem (27), which can be solved analytically. Finally, by leveraging the golden section search, the optimum of
+problem (21) can be identified without relying on commercial solvers.
+6. Case study
+In this section, the results of numerical simulation are reported to
+validate the proposed method. Simulations are conducted on a laptop
+with Intel i5-1130G7 CPU and 16 GB RAM.
+6.1. Configuration of the testing system
+The testing system is comprised of three energy hubs (EH1, EH2,
+EH3). The parameter settings of co-generation unit, heat pump, battery, and thermal storage units are based on the results in [57] with
+some specific modification. For renewable plant, EH1 and EH2 are
+equipped with wind turbines, and EH3 with solar panels. Key technical
+parameters are listed in Table 2. Detailed system data are available
+in [58]. The real-time electricity price, feed-in-tariff and gas price are
+illustrated in Fig. 4(a). The real-time price is revealed period-by-period.
+The feed-in-tariff and gas price are 𝜆𝑠 = 30$/MWh and 𝜆𝑔 = 50$/MWh.
+Fig. 4(b) presents the electric load, heat load and renewable energy
+output, which are revealed period-by-period in operation. The dispatch
+horizon covers a whole week with a step size of 15 min, namely 672
+time periods in total.
+
+(29)
+
+As both 𝑣1 (𝜃) and 𝑣2 (𝜃) are convex functions in 𝜃, their sum 𝑣(𝜃) is also
+convex. The optimum can be identified by the renowned golden section
+search method. The flowchart is summarized in Algorithm 4.
+5. Holistic flowchart
+The proposed method is schematically shown in Fig. 3. The centralized multistage operation model for multiple energy hubs with P2P
+energy trading is established as problem (9), where the renewable
+generation, demand, and prices are uncertainty parameters. In the
+temporal decomposition section, to tackle the uncertainty, Lyapunov
+optimization technique is used to decompose inter-temporal constraints
+and obtain an online optimization problem (19), which can yield a
+prediction-free and performance-guaranteed dispatch policy. In the
+spatial decomposition section, to protect private data and clear the P2P
+market, ADMM framework is adopted to solve (19) in a distributed
+manner. Algorithm 2 summarizes the iteration procedure of ADMM,
+
+6.2. Performance comparison
+The proposed method enables P2P trading and dispatch energy hubs
+without forecasts. It is compared with three existing approaches:
+M1: Hindsight optimization with P2P trading [25]. Provided with
+full knowledge of uncertain data, the offline problem (9) is solved,
+providing the ideal optimum which is used to validate optimality but
+cannot be achieved in practice.
+9
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Fig. 3. Flowchart of proposed methods.
+
+Fig. 4. Simulation data setting.
+
+Table 2
+Key technical parameters of energy hubs.
+Facility
+
+Parameters
+
+EH1
+
+EH2
+
+EH3
+
+CHP
+
+𝐺𝐶 𝐻 𝑃 (MW)
+𝐻 𝐻 𝑃 (MW)
+𝐶 𝑂𝑃 𝑒ℎ
+𝐸 𝑚 (MWh)
+𝑊 𝑚 (MWh)
+(MW)
+(MW)
+
+7
+10
+3
+20
+10
+0
+15
+
+5
+8
+3
+20
+10
+0
+5
+
+4
+9
+3
+20
+10
+14
+0
+
+HP
+BSU
+TSU
+Solar
+Wind
+
+the energy hubs and reallocates the cost among them; otherwise, the
+centralized strategy may be unfair to some of the participants. The cost
+reallocation scheme is not unique and not the main scope of this paper.
+Table 3 summarizes the individual and total energy costs under
+different methods. The optimality gap is defined as the difference in
+total costs compared with the hindsight optimum in M1, which is
+always positive. Despite the availability of exact data, the optimality
+gap of M2 is 19.88%, demonstrating the benefit brought by P2P trading
+business model. M3 has a smaller optimality gap compared to M2
+because of the allowance of P2P trading, although forecasts longer
+than four hours are not available. The optimality gap of the proposed
+method is 1.82%, much better than MPC, despite the lack of forecasts.
+In terms of the individual cost, compared to M2, every energy
+hub has a lower cost and thus gains benefits from P2P trading. On
+this account, the proposed method exhibits great potential in practice
+because it relies on neither renewable power prediction nor advanced
+computation platform, and has provable guarantees on performances.
+
+M2: Hindsight policy without P2P trading. This case provides a
+benchmark of individual costs under the autarky mode. In M2, P2P
+trading is omitted and is actually a simplified version of M1.
+M3: Model predictive control (MPC) with P2P trading [31]. We
+assume that all the uncertain data in the next 16 periods (four hours)
+can be exactly predicted, and solve problem (9) over the next four hours
+but only deploy the action in the first period. This setting is optimistic
+because 4-h ahead ultra-short-term prediction is not accurate.
+In M1 and M3, we solve the centralized optimization problem and
+only consider the total costs, because the P2P trading price 𝜆𝑖𝑗 ,𝑡 is not
+clear. This means that a central authority makes decisions on behalf of
+
+6.3. P2P energy trading analysis
+The P2P market clearing results are investigated. The diversity of
+load and renewable generation patterns inspires energy trading among
+energy hubs. Results are shown in Fig. 5.
+10
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Fig. 5. P2P energy trading results.
+
+Table 3
+Cost comparison among different methods.
+Method
+
+M1
+M2
+M3
+Proposed
+
+Cost (104 USD)
+
+Gap
+
+EH1
+
+EH2
+
+EH3
+
+−0.169
+
+5.587
+
+3.168
+
+−0.705
+
+5.442
+
+2.555
+
+Total
+7.162
+8.586
+7.466
+7.292
+
+0
+19.88%
+4.24%
+1.82%
+
+From Fig. 5, it is observed that each energy hub acts as a prosumer
+that can either sell or buy energy in the P2P market. For EH2, since
+its electric load is higher than wind power output, it purchases energy
+from other energy hubs. EH1 sells energy in most periods. EH3 imports
+energy during the night when there is no solar radiation and sells
+surplus energy at noon when solar power is abundant.
+Fig. 5(c) shows the P2P trading prices. Clearly, the trading prices
+fall in the interval [𝜆𝑠 , 𝜆𝑏 ] in all periods. Otherwise, if the price is
+lower than 𝜆𝑠 , selling surplus energy to the grid brings more benefit;
+if the price is higher than 𝜆𝑏 , purchasing energy from the grid has a
+lower cost. As shown in the individual energy costs in columns 2–4
+of Table 3, the costs with P2P trading are lower than those without
+trading mechanism, which means every energy hub could benefit from
+the P2P market. It is also observed that in any period, the P2P trading
+prices among all pairs are identical, otherwise, an arbitrage opportunity
+arises. Therefore, our market clearing provides a fair price for all
+participants. Thus the third challenge is overcome.
+To explain the relation between the P2P trading price and the realtime electricity price 𝜆𝑏 , the net demand, which is equal to the electric
+load minus renewable output 𝑝𝐿 − 𝑝𝑅 , is plotted in Fig. 6, where 𝐷 > 𝑆
+means demand exceeds supply, and vice versa; discount is the gap
+between 𝜆𝑏 and P2P trading price. From Fig. 6 we can see that if 𝑆 > 𝐷,
+then the discount is positive, but the converse may not be true; the
+discount can be positive even if 𝐷 > 𝑆, although this happens only
+in very few periods. Nevertheless, the P2P trading price could never
+exceed 𝜆𝑏 , and the discount cannot be negative.
+
+Fig. 6. Net demand and P2P energy trading price.
+
+Fig. 7. Histogram of the iteration numbers.
+
+6.5. Feasibility and sub-optimality
+In the online problem (19), storage levels are omitted and constraints (3e)–(3f) are relaxed but ensured by the selection of 𝑉 and 𝜃,
+as asserted in Theorem 1. The dynamics of storage levels are drawn in
+Fig. 8, showing that the operation strategy generated from the proposed
+method satisfies (3e)–(3f), although storage levels are not explicitly
+modeled. Besides, in most periods, the storage levels are maintained at
+a medium value, neither close to the upper bound nor the lower bound.
+Hence, storage units can offer maximum flexibility in case of need. This
+is an appealing feature when forecast is not used.
+We further compare the BSU state of charge under the four different
+strategies. For clear visualization, we only plot the first two days. The
+results comparison are shown in Fig. 9. It can be observed that our proposed method and M1 method have the most similar SoC trajectories,
+
+6.4. Convergence analysis
+In Algorithm 1, 𝛿 = 0.005 and 𝜌 = 2 are used. The iteration numbers
+of the main ADMM loop in the 676 periods are counted in Fig. 7.
+The average iteration number is 5, and the maximum does not exceed
+30. The iteration number is less than 20 in about 95% periods and
+less than 10 in more than 80% periods. The convergence rate and fast
+speed demonstrate the high efficiency of Algorithm 2. Since industrial
+application does not require such a high accuracy, a large 𝛿 can be used,
+and the computation time can be further reduced. Thus the second
+challenge is overcome.
+11
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Table 4
+Convergence results with more energy hubs.
+Number
+of hubs
+
+Minimum no.
+of iterations
+
+Maximum no.
+of iterations
+
+Average no.
+of iterations
+
+3
+5
+7
+9
+
+3
+5
+7
+8
+
+29
+45
+69
+91
+
+5
+11
+19
+30
+
+because the battery has already been fully charged. The above results
+show that the upper bound 𝑉 ∗ for maintaining constraints (3e)–(3f)
+given by Theorem 2 is tight.
+6.6. Scalability
+The previous results are obtained from the case with three energy
+hubs. To evaluate the scalability of the proposed method, we increase
+the number of energy hubs. Simulation results, including iteration
+numbers, are summarized in Table 4. The average iteration number
+grows almost linearly with respect to the number of energy hubs. Since
+the number of networked energy hubs will not be too large in a local
+area, such a scalability is able to handle practically sized problems.
+
+Fig. 8. Storage level dynamics of 3 energy hubs with proposed method.
+
+6.7. Implications for energy market stakeholders
+Given the above discussion in this paper, we provide the following
+implications for grid operators, policymakers, energy consumers and
+producers (prosumers).
+(1) Grid operators: The implementation of P2P energy trading
+methodologies, can augment the integration of distributed energy
+resources (DERs), such as solar PV, wind energy, and storage unit.
+Since renewable energy can be accommodated locally and the net load
+demand of specific nodes is reduced, capacity expansion or update of
+transmission lines, transformers, and other grid infrastructure can be
+reduced or postponed. If the P2P traded energy is transferred through
+the grid network, the grid operator needs to design a dispatch scheme
+to adopt the novel business model to assure the security and reliability
+of system operation.
+(2) Policymakers: The cost reduction of peers and increased renewable utilization rate present policymakers with a compelling argument
+to advocate for and to promulgate policies that foster the growth of P2P
+energy trading markets. Based on our analysis, fair and efficient P2P
+market structure is necessary. Besides, the market clearing mechanism
+should also be incentive-compatible to attract more participants.
+(3) Energy consumers and producers (Prosumers): The paradigm of
+P2P energy trading brings a reduction in energy costs and an increase
+in energy utilization efficiency for local peers. A peer should make good
+dispatch decisions for its devices and determine the P2P traded energy
+price and quantity. Our proposed online decision scheme provides a
+prediction-free policy for sub-optimal device control, which can achieve
+a nearly offline optimum result.
+In summary, our research provides a corpus of valuable insights into
+the prospective evolution of energy markets and offers a direction for
+action to a diverse array of stakeholders.
+
+Fig. 9. BSU SoC dynamics of 3 energy hubs under 4 methods.
+
+which can explain why our method can enjoy the least optimality gap
+in Table 3. For M2 where P2P trading is not allowed, BSU1 SoC always
+keeps at a high level because EH1 has surplus wind power; BSU3 starts
+to charge in the noon because its PV panel works and generates surplus
+energy during this time. For M3, since the forecast window is only 4 h
+and relatively short compared to a daily cycle, its policy seems to be a
+little bit greedy and the SoC always keeps at a low level.
+Fig. 10 exhibits the dispatched power of battery storage unit in
+EH1. Combined with electricity price in Fig. 10(a) and net demand
+in Fig. 10(b), it can be observed that the battery charges power when
+the electricity price is low or renewable energy is abundant. On the
+contrary, when the electricity price reaches the peak in the midday,
+the battery begins to discharge. This means that the proposed method
+is adaptive to the change of price and renewable power, although
+forecasts are not exploited. Thus the first challenge is overcome.
+According to Theorem 2, there is a maximal value 𝑉 ∗ ; once 𝑉
+exceeds 𝑉 ∗ , the online policy may violate constraints (3e)–(3f). Here
+we let 𝑉 = 𝛼 𝑉 ∗ and change 𝛼 from 0.6 to 1.2. The total costs under
+different 𝑉 are shown in Fig. 11(a). A larger 𝑉 leads to a smaller cost.
+The storage dynamics are obtained from the simulation. The minimum
+and maximum storage levels of BSU in EH1 are given in Fig. 11(b).
+When 𝛼 > 1, the maximum storage level exceeds the upper bound
+𝐸1𝑚 . In practice, this means that a charging order cannot be executed
+
+7. Conclusion
+This paper addressed two important issues in P2P trading of networked multi-energy systems: one is the coordinated dispatch of system
+devices without forecast information, and the other is distributed market clearing while preserving privacy. To this end, the operation problem is firstly decomposed over time, so that real-time dispatch action
+can be determined based on the observed uncertainty, and then the centralized problem is further decomposed across each energy hub using
+ADMM technique, so that privacy is protected. Finally, the optimization
+12
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Fig. 10. Dispatch strategy of battery storage in EH1.
+
+Fig. 11. Sensitivity analysis about 𝑉 = 𝛼 𝑉 ∗ .
+
+Assuming 𝐸𝑖𝑙 ≤ 𝐸𝑖,𝑡 ≤ 𝐸𝑖𝑚 , 𝑊𝑖𝑙 ≤ 𝑊𝑖,𝑡 ≤ 𝑊𝑖𝑚 , after solving online
+optimization problem (19), we will show 𝐸𝑖𝑙 ≤ 𝐸𝑖,𝑡+1 ≤ 𝐸𝑖𝑚 , 𝑊𝑖𝑙 ≤
+𝑊𝑖,𝑡+1 ≤ 𝑊𝑖𝑚 .
+The objective function in (19) is
+∑
+𝐸
+𝐺
+𝑀
+𝐹𝑡 =
+[𝑄𝑒𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 + 𝑉 (𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
++ 𝑓𝑖,𝑡
+)]𝜏
+
+problem of each energy hub is solved by a one-dimensional search
+procedure leveraging its special structure. The proposed method does
+not rely on a sophisticated forecasting system or computational platform. Theoretical analysis and numerical tests show that the proposed
+method naturally suggests a fair pricing mechanism for promoting
+P2P trading and outperforms rolling horizon optimization with exact
+predictions in the next four hours; by taking advantage of the synergy between multiple energy carriers and the complementarity among
+demand profiles, the cost is reduced by about 20% compared to an
+autarky system. Our ongoing work is to consider more types of loads
+in the proposed method, such as electric vehicle charging stations and
+demand response programs. Another direction for our future work is
+to consider real-time P2P trading in a distribution power system level
+where peers are located at different nodes.
+
+𝑖∈
+
+We prove that BSU boundary constraint (3e) is preserved. The
+constraint (3f) can be proven in the same way.
+Case 1: 𝐸𝑖𝑙 ≤ 𝐸𝑖,𝑡 < 𝐸𝑖𝑙 + 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 . According to power balance Eq. (5), we substitute 𝑝𝑏𝑖,𝑡 into objective function 𝐹𝑡 . The partial
+derivative of 𝐹𝑡 with respect to 𝑝𝑐𝑖,𝑡 is
+𝜕 𝐹𝑡
+=𝜏(𝑄𝑒𝑖,𝑡 𝜂𝑖𝑒𝑐 + 𝑉 𝜆𝑏𝑡 )
+𝜕 𝑝𝑐𝑖,𝑡
+≤𝜏((𝐸𝑖,𝑡 − 𝜃𝑖𝑒 )𝜂𝑖𝑒𝑐 + 𝑉 𝜆𝑏,𝑚𝑎𝑥 )
+
+CRediT authorship contribution statement
+
+=𝜏(𝐸𝑖,𝑡 − 𝐸𝑖𝑚 − 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 )𝜂𝑖𝑒𝑐 < 0
+On this account, 𝐹𝑡 will decrease if 𝑝𝑐𝑖,𝑡 > 0. Thus, to minimize 𝐹𝑡 , the
+optimal solution is 𝑝𝑐𝑖,𝑡 = 𝑃𝑖𝑚 and 𝑝𝑑𝑖,𝑡 = 0, so 𝐸𝑖,𝑡+1 = 𝐸𝑖,𝑡 + 𝜏 𝑃𝑖𝑚 𝜂𝑖𝑒𝑐 .
+Clearly, 𝐸𝑖,𝑡+1 > 𝐸𝑖𝑙 , and 𝐸𝑖,𝑡+1 < 𝐸𝑖𝑚 follows from the fact that the
+numerator of 𝑉𝑖𝑒 is positive.
+Case 2: 𝐸𝑖𝑙 + 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 ≤ 𝐸𝑖,𝑡 ≤ 𝐸𝐻 , where 𝐸𝐻 = 𝑉 (𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 −
+𝑒𝑑
+𝜂𝑖 𝜆𝑏,𝑚𝑖𝑛 ) + 𝐸𝑖𝑙 + 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 .
+The definition of 𝑉 indicates
+
+Boshen Zheng: Writing – original draft, Visualization, Validation,
+Software, Methodology, Conceptualization. Wei Wei: Writing – review & editing, Supervision, Investigation, Funding acquisition, Data
+curation.
+Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to
+influence the work reported in this paper.
+
+𝑉 ⋅ (𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 − 𝜂𝑖𝑒𝑑 𝜆𝑏,𝑚𝑖𝑛 ) ≤ 𝑉𝑖𝑒 ⋅ (𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 − 𝜂𝑖𝑒𝑑 𝜆𝑏,𝑚𝑖𝑛 )
+= 𝐸𝑖𝑚 − 𝐸𝑖𝑙 − 𝜏 𝑃𝑖𝑚 𝜂𝑖𝑒𝑐 − 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑
+which is
+
+Appendix A. Proof of Theorem 1
+
+𝑉 ⋅ (𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 − 𝜂𝑖𝑒𝑑 𝜆𝑏,𝑚𝑖𝑛 ) + 𝐸𝑖𝑙 + 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑
+
+We assumed that the numerator of 𝑉 is positive. In practice, as
+the energy hub is usually dispatched every 15 min, this assumption is
+naturally met.
+
+≤ 𝐸𝑖𝑚 − 𝜏 𝑃𝑖𝑚 𝜂𝑖𝑒𝑐
+
+When 𝐸𝑖,𝑡 belongs to the indicated interval, either charging or discharging the BSU with the maximum power, we still have 𝐸𝑖𝑙 ≤ 𝐸𝑖,𝑡+1 ≤
+𝐸𝑖𝑚 .
+13
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+
+Case 3: 𝐸𝐻 < 𝐸𝑖,𝑡 ≤ 𝐸𝑖𝑚 . In this case, we only need to consider
+𝐸𝑖,𝑡 ∈ [𝐸𝑖𝑚 − 𝜏 𝑃𝑖𝑚 𝜂𝑖𝑒𝑐 , 𝐸𝑖𝑚 ]. Otherwise, we must have 𝐸𝑖,𝑡 < 𝐸𝑖𝑚 . Calculate
+the partial derivative:
+( 𝑒
+)
+(
+)
+𝑄𝑖,𝑡
+𝐸𝐻 − 𝜃𝑖𝑒
+𝜕 𝐹𝑡
+𝑏
+𝑏
+=
+−𝜏
++
+𝑉
+𝜆
+<
+−𝜏
++
+𝑉
+𝜆
+𝑡
+𝑡
+𝜕 𝑝𝑑𝑖,𝑡
+𝜂𝑖𝑒𝑑
+𝜂𝑖𝑒𝑑
+
+Data availability
+Data will be made available on request.
+
+References
+
+Substituting 𝐸𝐻 into the righthand side, we obtain
+((
+)
+)
+𝜕 𝐹𝑡
+𝜏𝑉
+𝜆𝑏,𝑚𝑎𝑥
+𝜆𝑏,𝑚𝑎𝑥
+𝑒𝑑 𝑏,𝑚𝑖𝑛
+𝑒𝑑 𝑏
+<
+−
+−
+𝜂
+𝜆
+−
++
+𝜂
+𝜆
+𝑒
+𝑖
+𝑖
+𝑡
+𝜂𝑖𝑒𝑐
+𝜂𝑖,𝑐
+𝜕 𝑝𝑑𝑖,𝑡
+𝜂𝑖𝑒𝑑
+( 𝑏,𝑚𝑖𝑛
+)
+𝑏
+=𝜏 𝑉 𝜆
+−𝜆 ≤0
+
+[1] K. Rowe, G. Mokryani, K. Cooke, F. Campean, T. Chambers, Bi-level optimal
+sizing, siting and operation of utility-scale multi-energy storage system to reduce
+power losses with peer-to-peer trading in an electricity/heat/gas integrated
+network, J. Energy Storage 83 (2024) 110738.
+[2] Z. Liao, X. Liao, A. Khakichi, Optimum planning of energy hub with participation
+in electricity market and heat markets and application of integrated load
+response program with improved particle swarm algorithm, Energy 286 (2024)
+129587.
+[3] J. Kalina, W. Pohl, Technical and economic analysis of a multicarrier building
+energy hub concept with heating loads at different temperature levels, Energy
+(2023) 129882.
+[4] S. Feng, W. Wei, Y. Chen, Day-ahead scheduling and online dispatch of energy
+hubs: A flexibility envelope approach, IEEE Trans. Smart Grid (2023).
+[5] Z.M. Shoja, A.B. Oskouei, M. Nazari-Heris, Optimal scheduling of a community
+multi-energy system in energy and flexible ramp markets considering vectorcoupling storage devices: A hybrid fuzzy-IGDT/Stochastic/Robust optimization
+framework, Energy Build. (2024) 114465.
+[6] S. Rezaei, A. Ghasemi, Stochastic scheduling of resilient interconnected energy
+hubs considering peer-to-peer energy trading and energy storages, J. Energy
+Storage 50 (2022) 104665.
+[7] P. Van Phu, T.H.B. Huy, S. Park, D. Kim, An IGDT approach for the multiobjective framework of integrated energy hub with renewable energy sources,
+hybrid energy storage systems, and biomass-to-hydrogen technology, J. Energy
+Storage 89 (2024) 111488.
+[8] T. Ding, W. Jia, M. Shahidehpour, et al., Review of optimization methods for
+energy hub planning, operation, trading, and control, IEEE Trans. Sustain. Energy
+13 (3) (2022) 1802–1818.
+[9] W. Tushar, T.K. Saha, C. Yuen, et al., Peer-to-peer trading in electricity networks:
+An overview, IEEE Trans. Smart Grid 11 (4) (2020) 3185–3200.
+[10] L. Bokopane, K. Kusakana, H. Vermaak, A. Hohne, Optimal power dispatching
+for a grid-connected electric vehicle charging station microgrid with renewable
+energy, battery storage and peer-to-peer energy sharing, J. Energy Storage 96
+(2024) 112435.
+[11] B. Han, Y. Zahraoui, M. Mubin, S. Mekhilef, T. Korõtko, O. Alshammari,
+Distributed optimal storage strategy in the ADMM-based peer-to-peer energy
+trading considering degradation cost, J. Energy Storage 96 (2024) 112651.
+[12] B. Zheng, W. Wei, Y. Chen, et al., A peer-to-peer energy trading market
+embedded with residential shared energy storage units, Appl. Energy 308 (2022)
+118400.
+[13] H. Sahebi, M. Khodoomi, M. Seif, M. Pishvaee, T. Hanne, The benefits of peerto-peer renewable energy trading and battery storage backup for local grid, J.
+Energy Storage 63 (2023) 106970.
+[14] M.K. Salehi, M. Rastegar, Distributed peer-to-peer transactive residential energy
+management with cloud energy storage, J. Energy Storage 58 (2023) 106401.
+[15] M.I. Azim, W. Tushar, T.K. Saha, Coalition graph game-based P2P energy
+trading with local voltage management, IEEE Trans. Smart Grid 12 (5) (2021)
+4389–4402.
+[16] C. Long, J. Wu, Y. Zhou, N. Jenkins, Peer-to-peer energy sharing through a
+two-stage aggregated battery control in a community microgrid, Appl. Energy
+226 (2018) 261–276.
+[17] L. Chen, N. Liu, C. Li, J. Wang, Peer-to-peer energy sharing with social attributes:
+A stochastic leader–follower game approach, IEEE Trans. Ind. Inform. 17 (4)
+(2021) 2545–2556.
+[18] S. Hussain, M.I. Azim, C. Lai, U. Eicker, New coordination framework for smart
+home peer-to-peer trading to reduce impact on distribution transformer, Energy
+284 (2023) 129297.
+[19] J. Guerrero, A.C. Chapman, G. Verbič, Decentralized P2P energy trading under
+network constraints in a low-voltage network, IEEE Trans. Smart Grid 10 (5)
+(2019) 5163–5173.
+[20] A. Aminlou, B. Mohammadi-Ivatloo, K. Zare, R. Razzaghi, A. Anvari-Moghaddam,
+Activating demand side flexibility market in a fully decentralized P2p transactive
+energy trading framework using ADMM algorithm, Sustainable Cities Soc. 100
+(2024) 105021.
+[21] Y. Xia, Q. Xu, S. Tao, P. Du, Y. Ding, J. Fang, Preserving operation privacy
+of peer-to-peer energy transaction based on enhanced benders decomposition
+considering uncertainty of renewable energy generations, Energy 250 (2022)
+123567.
+[22] H.K. Lopez, A. Zilouchian, Peer-to-peer energy trading for photo-voltaic
+prosumers, Energy 263 (2023) 125563.
+[23] K. Zhou, Y. Chu, R. Hu, Energy supply-demand interaction model integrating
+uncertainty forecasting and peer-to-peer energy trading, Energy 285 (2023)
+129436.
+
+In view of this, the objective function will decrease with respect to
+𝑝𝑑𝑖,𝑡 . To minimize 𝐹𝑡 , 𝑝𝑑𝑖,𝑡 = 𝑃𝑖𝑚 and 𝑝𝑐𝑖,𝑡 = 0 hold, as a result, 𝐸𝑖,𝑡+1 =
+𝐸𝑖,𝑡 − 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 < 𝐸𝑖𝑚 , and 𝐸𝑖,𝑡+1 > 𝐸𝑖𝑙 follows from
+𝐸𝐻 − 𝜏 𝑃𝑖𝑚 ∕𝜂𝑖𝑒𝑑 = 𝑉 (𝜆𝑏,𝑚𝑎𝑥 ∕𝜂𝑖𝑒𝑐 − 𝜂𝑖𝑒𝑑 𝜆𝑏,𝑚𝑖𝑛 ) + 𝐸𝑖𝑙
+and the numerator of 𝑉𝑖𝑒 is positive.
+In all the above three cases, 𝐸𝑖,𝑡+1 ∈ [𝐸𝑖𝑙 , 𝐸𝑖𝑚 ]. For the same reason,
+𝑊𝑖,𝑡+1 ∈ [𝑊𝑖𝑙 , 𝑊𝑖𝑚 ]. Theorem 1 follows from induction.
+■
+Appendix B. Proof of Theorem 2
+For any period 𝑡, let 𝒙̂𝒕 and 𝒙𝒕 denote the optimal solution of online
+problem (19) and hindsight problem (9), and the corresponding costs
+are 𝑓̂𝑡 and 𝑓𝑡 , respectively. Random variables 𝝃 𝒕 are assumed to be
+independent identically distributed (i.i.d.). The conclusion remains if
+𝝃 𝒕 is Markovian [50].
+Take expectations on the drift-plus-cost function:
+E[𝛥(𝜣 𝒕 )] + 𝑉 E[𝑓̂𝑡 ]𝜏
+∑
+ℎ ̂
+̂
+≤𝐴 +
+E[(𝑄𝑒𝑖,𝑡 𝑝̂
+𝑖,𝑡 + 𝑄𝑖,𝑡 ℎ𝑖,𝑡 )]𝜏 + 𝑉 E[𝑓𝑡 ]𝜏
+𝑖∈
+
+≤𝐴 +
+
+∑
+
+E[(𝑄𝑒𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 )]𝜏 + 𝑉 E[𝑓𝑡 ]𝜏
+
+𝑖∈
+
+where the first inequality is obtained from (17); the second inequality
+follows from the fact that 𝒙̂𝒕 is the optimal solution of problem (19).
+Note that 𝝃 𝒕 is i.i.d., so is 𝒙𝒕 . According to the strong law of large
+numbers
+1 ∑
+𝒙𝒕 = E[𝒙𝒕 ]) = 1
+𝑇 →∞ 𝑇
+𝑡=1
+𝑇
+
+Pr( lim
+
+so we have
+E[𝛥(𝜣 𝒕 )] + 𝑉 E[𝑓̂𝑡 ]𝜏
+≤ 𝐴 + 𝑉 E[𝑓𝑡 ]𝜏 +
+
+∑
+
+𝜏 ∑ 𝑒
+(𝑄𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 )]
+𝑇 →∞ 𝑇
+𝑡=1
+𝑇
+
+E[ lim
+
+𝑖∈
+
+According to Eq. (13),
+∑
+
+1 ∑ 𝑒
+(𝑄𝑖,𝑡 𝑝𝑖,𝑡 + 𝑄ℎ𝑖,𝑡 ℎ𝑖,𝑡 )] = 0
+𝑇 →∞ 𝑇
+𝑡=1
+𝑇
+
+E[ lim
+
+𝑖∈
+
+Therefore,
+E[𝛥(𝜣 𝒕 )] + 𝑉 E[𝑓̂𝑡 ]𝜏 ≤ 𝐴 + 𝑉 E[𝑓𝑡 ]𝜏
+By summing both sides over 𝑡 ∈ {1, … , 𝑇 }, we have
+𝑇
+∑
+
+𝑉 E[𝑓̂𝑡 ]𝜏 ≤ 𝐴𝑇 +
+
+𝑡=1
+
+𝑇
+∑
+
+𝑉 E[𝑓𝑡 ]𝜏 − E[𝐿(𝜣 𝑻 +𝟏 )] + E[𝐿(𝜣 𝟏 )]
+
+𝑡=1
+
+Since 𝐿(𝜣 𝑻 +𝟏 ) and 𝐿(𝜣 𝟏 ) take finite values, dividing both sides of this
+inequality by 𝑉 𝑇 and letting 𝑇 → ∞, we have
+𝑇
+𝑇
+1 ∑ ̂
+𝐴
+1 ∑
+E[𝑓𝑡 ]𝜏 ≤
++ lim
+E[𝑓𝑡 ]𝜏
+𝑇 →∞ 𝑇
+𝑇 →∞ 𝑇
+𝑉
+𝑡=1
+𝑡=1
+
+lim
+
+implying that
+𝐶̂ − 𝐶 ≤ 𝐴∕𝑉
+which is the desired result in Theorem 2.
+
+■
+14
+
+Journal of Energy Storage 105 (2025) 114530
+
+B. Zheng and W. Wei
+[24] K. Zhou, Y. Chu, H. Yin, Peer-to-peer electricity trading model for urban
+virtual power plants considering prosumer preferences and power demand
+heterogeneity, Sustainable Cities Soc. 107 (2024) 105465.
+[25] X. Wang, Y. Liu, C. Liu, J. Liu, Coordinating energy management for multiple
+energy hubs: From a transaction perspective, Int. J. Electr. Power Energy Syst.
+121 (2020) 106060.
+[26] W. Gan, M. Yan, W. Yao, J. Wen, Peer to peer transactive energy for multiple
+energy hub with the penetration of high-level renewable energy, Appl. Energy
+295 (2021) 117027.
+[27] M.S. Javadi, A.E. Nezhad, A.R. Jordehi, et al., Transactive energy framework
+in multi-carrier energy hubs: A fully decentralized model, Energy 238 (2022)
+121717.
+[28] J. Yang, W. Xu, K. Ma, C. Li, A three-stage multi-energy trading strategy based
+on P2P trading mode, IEEE Trans. Sustain. Energy 14 (1) (2023) 233–241.
+[29] N. Wang, Z. Liu, P. Heijnen, M. Warnier, A peer-to-peer market mechanism
+incorporating multi-energy coupling and cooperative behaviors, Appl. Energy 311
+(2022) 118572.
+[30] W. Cao, J.-W. Xiao, S.-C. Cui, X.-K. Liu, An efficient and economical storage and
+energy sharing model for multiple multi-energy microgrids, Energy 244 (2022)
+123124.
+[31] M. Shi, H. Wang, P. Xie, et al., Distributed energy scheduling for integrated
+energy system clusters with peer-to-peer energy transaction, IEEE Trans. Smart
+Grid 14 (1) (2023) 142–156.
+[32] T. Morstyn, M.D. McCulloch, Multiclass energy management for peer-to-peer
+energy trading driven by prosumer preferences, IEEE Trans. Power Syst. 34 (5)
+(2019) 4005–4014.
+[33] M. Lin, Z. Liu, A. Wierman, L.L. Andrew, Online algorithms for geographical
+load balancing, in: 2012 International Green Computing Conference, IGCC, IEEE,
+2012, pp. 1–10.
+[34] H. Wang, S. Han, Y. Liu, et al., Sequence transfer correction algorithm for
+numerical weather prediction wind speed and its application in a wind power
+forecasting system, Appl. Energy 237 (2019) 1–10.
+[35] A. Shapiro, D. Dentcheva, A. Ruszczynski, Lectures on Stochastic Programming:
+Modeling and Theory, SIAM, 2021.
+[36] A. Rastgou, S. Hosseini-Hemati, Simultaneous planning of the medium and
+low voltage distribution networks under uncertainty: A bi-level optimization
+approach, Int. Trans. Electr. Energy Syst. 2022 (1) (2022) 2267926.
+[37] X.A. Sun, A.J. Conejo, et al., Robust Optimization in Electric Energy Systems,
+Springer, 2021.
+[38] R. Xie, W. Wei, Distributionally Robust Optimization and its Applications in
+Power System Energy Storage Sizing, Springer Nature, 2024.
+[39] A. Rastgou, J. Moshtagh, S. Bahramara, Probabilistic power distribution planning
+using multi-objective harmony search algorithm, J. Oper. Autom. Power Eng. 6
+(1) (2018) 111–125.
+[40] S. Wang, G. Geng, Q. Jiang, Robust co-planning of energy storage and transmission line with mixed integer recourse, IEEE Trans. Power Syst. 34 (6) (2019)
+4728–4738.
+
+[41] R. Xie, W. Wei, M. Li, Z. Dong, S. Mei, Sizing capacities of renewable
+generation, transmission, and energy storage for low-carbon power systems: A
+distributionally robust optimization approach, Energy 263 (2023) 125653.
+[42] P. Hajiamoosha, A. Rastgou, S. Bahramara, S.M.B. Sadati, Stochastic energy management in a renewable energy-based microgrid considering demand response
+program, Int. J. Electr. Power Energy Syst. 129 (2021) 106791.
+[43] N.G. Cobos, J.M. Arroyo, N. Alguacil, J. Wang, Robust energy and reserve
+scheduling considering bulk energy storage units and wind uncertainty, IEEE
+Trans. Power Syst. 33 (5) (2018) 5206–5216.
+[44] Z. Li, L. Chen, W. Wei, S. Mei, Risk constrained self-scheduling of AA-CAES
+facility in electricity and heat markets: a distributionally robust optimization
+approach, CSEE J. Power Energy Syst. (2021).
+[45] A. Shapiro, Analysis of stochastic dual dynamic programming method, European
+J. Oper. Res. 209 (1) (2011) 63–72.
+[46] A. Georghiou, A. Tsoukalas, W. Wiesemann, Robust dual dynamic programming,
+Oper. Res. 67 (3) (2019) 813–830.
+[47] D. Bertsimas, M. Sim, M. Zhang, Adaptive distributionally robust optimization,
+Manage. Sci. 65 (2) (2019) 604–618.
+[48] T. Ding, X. Zhang, R. Lu, M. Qu, M. Shahidehpour, Y. He, T. Chen, Multi-stage
+distributionally robust stochastic dual dynamic programming to multi-period
+economic dispatch with virtual energy storage, IEEE Trans. Sustain. Energy 13
+(1) (2021) 146–158.
+[49] T. Chen, S. Bu, X. Liu, et al., Peer-to-peer energy trading and energy conversion
+in interconnected multi-energy microgrids using multi-agent deep reinforcement
+learning, IEEE Trans. Smart Grid 13 (1) (2022) 715–727.
+[50] M. Neely, Stochastic Network Optimization with Application to Communication
+and Queueing Systems, Morgan & Claypool, San Rafael, CA, USA, 2010.
+[51] Z. Guo, W. Wei, L. Chen, et al., Real-time self-dispatch of a remote wind-storage
+integrated power plant without predictions: explicit policy and performance
+guarantee, IEEE Open Access J. Power Energy 8 (2021) 484–496.
+[52] P. Li, W. Sheng, Q. Duan, et al., A Lyapunov optimization-based energy
+management strategy for energy hub with energy router, IEEE Trans. Smart Grid
+11 (6) (2020) 4860–4870.
+[53] W. Shi, N. Li, C.-C. Chu, R. Gadh, Real-time energy management in microgrids,
+IEEE Trans. Smart Grid 8 (1) (2017) 228–238.
+[54] T. Li, M. Dong, Residential energy storage management with bidirectional energy
+control, IEEE Trans. Smart Grid 10 (4) (2018) 3596–3611.
+[55] M.H. Abbasi, Z. Arjmandzadeh, J. Zhang, V. Krovi, B. Xu, D.K. Mishra, A coupled
+game theory and Lyapunov optimization approach to electric vehicle charging
+at fast charging stations, IEEE Trans. Veh. Technol. (2024).
+[56] D. Bertsimas, J.N. Tsitsiklis, Introduction to Linear Optimization, vol. 6, Athena
+scientific Belmont, MA, 1997.
+[57] Y. Cao, W. Wei, J. Wang, S. Mei, M. Shafie-khah, J.P. Catalao, Capacity planning
+of energy hub in multi-carrier energy networks: A data-driven robust stochastic
+programming approach, IEEE Trans. Sustain. Energy 11 (1) (2018) 3–14.
+[58] Zheng Boshen, 2024-Energy hub peer-to-peer, 2024, URL: https://github.com/
+zhengbs17/Papers.
+
+15
+
+

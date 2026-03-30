@@ -1,0 +1,1646 @@
+1886
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+A Bi-Level Game-Based Optimal Scheduling
+Strategy for Shared Energy Storage and
+Integrated Energy MG Clusters
+Siwen Wang, Hui Chen , Member, IEEE, Chunyang Gong , Chenxian Song, Jian Wang , Tingting Wang,
+Yanfei Shang, Chuanlin Zhang , Senior Member, IEEE, Zhixin Wang , Member, IEEE, and Ning Yang
+
+Abstract—To coordinate resource allocation among multi-level
+and multi-agent stakeholders at local energy markets and facilitate the integration of shared energy storage, this paper proposes a Bi-Level Game-Based Optimal Scheduling Strategy for
+Shared Energy Storage and Integrated Energy Microgrid (MG)
+Clusters. Firstly, to address the disadvantaged position of shared
+energy storage at local markets, a price-driven energy leasing
+clearing mechanism is designed to enhance its market bargaining
+power. Secondly, a Bi-Level optimization framework based on a
+hybrid Nash–Stackelberg–Cooperative (N-S-C) game is developed,
+of which, the upper level, the profit-maximization objectives of
+microgrid operators (MOs) and shared energy storage operators (SESOs) are coordinated using Nash equilibrium theory to
+achieve a dynamic balance of market power, the lower level, a
+multi-stage decision-making mechanism is employed to minimize
+the operational cost of MG coalition, improve renewable energy
+utilization efficiency. Finally, a two-stage distributed optimization
+framework is constructed to solve the proposed model, of which,
+
+Received 25 April 2025; revised 20 July 2025; accepted 6 September 2025.
+Date of publication 6 October 2025; date of current version 10 February
+2026. Paper 2025-ESC-0801.R1, presented at the 9th International Conference on Power and Renewable Energy, Guangzhou, China, Sep. 20–23, and
+approved for publication in the IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS by the ICPRE2024 of the IEEE Industry Applications Society [DOI:
+10.1109/ICPRE62586.2024.10768522]. This work was supported in part by
+the Key Program of the National Natural Science Foundation of China under
+Grant 62233006, in part by the Youth Science Fund Project through the National
+Natural Science Foundation of China under Grant 52407124, and in part by the
+Science and Technology Planning Project of Shanghai Science and Technology
+Commission under Grant 24DZ3001500. (Corresponding authors: Chunyang
+Gong; Jian Wang.)
+Siwen Wang, Hui Chen, Chunyang Gong, Chenxian Song, and Ning Yang are
+with the College of Automation Engineering, Shanghai University of Electric
+Power, Shanghai 201399, China (e-mail: siwen677@163.com; chenhui@shiep.
+edu.cn; sh19900307@163.com; songcx2002@163.com; yangning@shiep.
+edu.cn).
+Jian Wang is with the College of Smart Energy, Shanghai Jiao Tong University,
+Shanghai 200240, China (e-mail: wangjianee@sjtu.edu.cn).
+Tingting Wang is with the Shanghai Institute of Quality Inspection and
+Technical Research, Shanghai 201114, China (e-mail: wangtt@sqi.org.cn).
+Yanfei Shang is with LITHOS NEW ENERGY GROUP COMPANY LIMITED, Shanghai 202156, China (e-mail: 13810571560@139.com).
+Chuanlin Zhang is with the College of Computer Science and Technology, Shanghai University of Electric Power, Shanghai 201399, China (e-mail:
+clzhang@shiep.edu.cn).
+Zhixin Wang is with the College of Automation Engineering, Shanghai
+University of Electric Power, Shanghai 201399, China, and also with the
+Department of Electrical Engineering, Shanghai Jiaotong University, Shanghai
+200240, China (e-mail: wangzxin@sjtu.edu.cn).
+Color versions of one or more figures in this article are available at
+https://doi.org/10.1109/TIA.2025.3618226.
+Digital Object Identifier 10.1109/TIA.2025.3618226
+
+a distributed optimization method based on E-ADMM (Exchangebased ADMM) is applied to enable coordinated energy interactions among MGs while preserving privacy, and the S-ADMM
+(Sharing-based ADMM) algorithm is employed to ensure global
+storage capacity constraints are met, also under privacy-preserving
+conditions. Simulation results verify the effectiveness of the proposed model for safeguarding user privacy and promoting the local
+consumption of renewable energy.
+Index Terms—Bi-level game, distributed optimization, local
+energy market, P2P trading, shared energy storage.
+
+I. INTRODUCTION
+N RECENT years, the rapid development of renewable
+energy sources, such as wind and solar power, has profoundly reshaped the global energy landscape. This shift has
+disrupted the traditional balance of electricity supply and demand, increased power flow fluctuations across transmission and
+distribution networks, and posed significant challenges to grid
+stability. In response, governments worldwide have promoted
+the establishment of energy communities to support localized
+energy generation and consumption [1].
+Microgrid is a localized power generation and distribution system that integrates loads, distributed energy resources
+(DERs) [2], energy storage systems, and energy conversion
+technologies. Due to their strong self-balancing capability, microgrids (MGs) are considered as an effective solution for integrating distributed energy into the power system [3]. Numerous
+studies have focused on MG energy management [4]. For example, [5] formulated a mixed-integer linear programming model
+to optimize generation capacity and scheduling in multi-energy
+MGs, considering electricity, heating, and transportation electrification. In [6], a multi-energy MG was modeled as a virtual
+power plant providing ancillary services, where an integrated
+demand response strategy was developed to mitigate conflicts of
+interest between suppliers and consumers by exploiting demandside flexibility. Furthermore, [7] introduced a multi-objective
+optimization method for critical load vector scheduling in MGs,
+aiming to balance availability, net cost, and efficiency.
+However, due to limited capacity and inertia, individual MGs
+still face challenges in accommodating local renewable generation. To overcome these limitations, recent research has emphasized the coordinated operation of multiple interconnected
+MGs—linking adjacent AC and DC MGs to exchange energy
+
+I
+
+0093-9994 © 2025 IEEE. All rights reserved, including rights for text and data mining, and training of artificial intelligence and similar technologies.
+Personal use is permitted, but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+and enhance overall system efficiency [8]. For instance, [9]
+proposed a multi-tier market framework involving transmission
+system operators, distribution system operators (DSOs), and
+multiple MGs, wherein the DSO acts as a coordinator solving a
+bilevel optimization problem using Karush-Kuhn-Tucker (KKT)
+conditions. Although this approach improves computational
+efficiency, it compromises user privacy. To address this, [10]
+introduced a peer-to-peer (P2P) low-carbon economic operation model for multi-microgrid (MMG) systems, employing
+the alternating direction method of multipliers (ADMM) to
+decompose the problem into subproblems, thereby ensuring
+both solution accuracy and privacy. Building on this, [11] introduced an enhanced ADMM algorithm incorporating a dynamic
+penalty factor that adapts to the relationship between primal
+and dual residuals, mitigating convergence instability due to
+poor parameter initialization. Owing to its decentralized and
+privacy-preserving characteristics, ADMM has become a widely
+used method in MMG coordination.
+Energy storage also plays a critical role in modern power
+systems [12]. To address the spatiotemporal mismatch between
+generation and demand, storage systems have been deployed
+in both islanded and grid-connected MGs [13]. However, installing dedicated storage for individual MGs often leads to low
+utilization and high costs. As a solution, the concept of shared
+energy storage has gained attention and is increasingly applied
+in MMG optimization [14]. For example, [15] evaluates the
+economic and operational advantages of shared energy storage
+under demand response, formulating an optimization model to
+derive optimal strategies for both individual and shared systems.
+Results show that shared storage notably reduces electricity
+costs and improves utilization. Building on this, [16] presents
+a storage-leasing business model for multiple industrial parks
+and develops an iterative bi-level optimization framework to
+determine optimal storage allocation. Moreover, [17] proposes
+a multi-objective model for MGs to maximize power fluctuation mitigation and minimize storage costs, based on which
+charge/discharge demands are obtained to guide storage leasing
+decisions.
+Despite these advances, most existing shared storage models
+rely on fixed leasing fees, lacking the flexibility in pricing and
+trading mechanisms needed to adapt to dynamic market conditions. This rigidity may limit competitiveness and discourage
+long-term participation. Therefore, innovative market-clearing
+mechanisms are urgently needed to enhance adaptability, participation, and economic viability.
+In energy trading strategies involving multiple stakeholders,
+achieving balanced and coordinated interest allocation remains a
+core challenge. Game theory, as a fundamental tool for analyzing
+strategic interactions and equilibrium outcomes among rational
+agents, has been extensively applied in recent energy trading
+studies [18]. For example, [19] proposed a non-cooperative
+game-based optimization model for islanded microgrid clusters,
+analyzing their planning, operation, and trading behaviors. In
+[20], a cooperative game model was developed to enhance
+synergy among MGs, incorporating a benefit allocation mechanism based on individual contributions and renewable energy
+absorption ratios. In [21], a Stackelberg game model captured
+
+1887
+
+the sequential decision-making dynamics between the DSO and
+MMGs.
+While these studies effectively model agent interactions, most
+adopt a single-layer game-theoretic structure, which may be
+inadequate for representing the complex strategic relationships
+inherent in multi-level, multi-agent systems. To address this, [22]
+introduced a hybrid game-theoretic strategy for shared energy
+storage systems, combining a Stackelberg game between the
+shared energy storage operator (SESO) and multiple microgrids
+(MMGs) with a generalized Nash bargaining model incorporating compensation among MMGs. Similarly, [23] proposed
+a two-layer framework embedding a cooperative game among
+integrated energy management communities within a vertical
+Stackelberg game involving the distribution network operator.
+However, existing hybrid models primarily focus on embedding horizontal games among lower-level agents within a leader–
+follower structure. The strategic interactions among upper-level
+decision-makers—such as between microgrid operators (MOs)
+and SESOs in pricing and resource allocation—remain insufficiently explored. To more accurately represent the strategic
+landscape of local energy markets with hierarchical and crosslevel interactions, a more comprehensive hybrid game-theoretic
+framework is needed. This framework should integrate both
+vertical leader–follower dynamics and horizontal interactions
+within and across hierarchical levels to overcome the structural
+and modeling limitations of existing approaches.
+Based on an in-depth literature review, this paper proposes a
+hybrid bilevel game model involving MOs, SESOs, and multiple
+interconnected MGs. The model holistically incorporates stakeholder interdependencies and sequential decision-making, addressing the limitations of existing game-theoretic frameworks
+in capturing the structural complexity and modeling accuracy
+required for multi-agent, multi-level decision scenarios. A twostage lower-level game is formulated based on energy scheduling
+priorities, and a tailored distributed algorithm is developed to
+solve it. The proposed model enhances stakeholder participation, achieves balanced interest distribution, and promotes the
+development of regional energy markets and local renewable
+energy consumption.
+The main contributions of this paper are as follows:
+r In terms of game model construction, we consider the
+multi-stakeholder and multi-stage game characteristics of
+interconnected MMG systems and integrate both horizontal and vertical game structures. A hybrid Nash–
+Stackelberg–Cooperative (N-S-C) game framework is established to promote balanced benefit allocation in local
+energy market transactions.
+r According to the priority of energy scheduling, the MMG
+scheduling problem is modeled as a multi-stage decisionmaking process, where step-by-step energy scheduling is
+employed to maximize the local consumption of renewable
+energy.
+r A price-driven energy leasing clearing mechanism for
+shared energy storage is proposed to enhance its adaptability in the flexible and dynamic local electricity market, thereby improving its market position and participation. Meanwhile, the S-ADMM (Sharing-based ADMM)
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1888
+
+Fig. 1.
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+Framework of local energy market.
+
+algorithm is applied to ensure that global physical constraints of energy storage are satisfied while preserving
+user privacy.
+r A cooperative game model for P2P trading among multiple
+MGs is developed, and the E-ADMM (Exchange-based
+ADMM) algorithm is employed to solve the MMG energy
+interaction problem. This method dynamically adjusts energy trading prices based on supply and demand levels to
+maintain power exchange balance within the cluster. Additionally, a Shapley value-based profit allocation approach
+is utilized to ensure fair distribution of cooperative benefits.
+The remainder of this paper is organized as follows: Section II
+presents the mathematical models of MOs, SESO, and MMG
+systems, along with the joint scheduling formulation. Section III
+introduces the unified N–S–C game framework and the solution
+algorithms. Section IV provides case studies and numerical analysis. Section V concludes the paper, highlights key innovations,
+and outlines future research directions.
+II. MMG SYSTEM MODEL WITH SHARED ENERGY STORAGE
+A. Local Energy Market Framework
+The local energy market is an innovative model for electricity trading and management that enhances system flexibility
+through localized energy generation and consumption. This
+study focuses on a community-level distributed energy market, where the main participants include MG users, SESOs,
+and MOs. In this market, MG users act as energy consumers,
+
+acquiring services primarily from SESOs and MOs. The overall
+market structure and energy flow are illustrated in Fig. 1.
+Functioning as an energy hub, the MO serves as an interface between multiple MGs and external energy networks. As
+depicted in the figure, the MO procures electricity and natural
+gas from the grid and gas network, respectively. Natural gas
+is converted into electricity and heat using combined heat and
+power (CHP) systems and gas boilers. The MO then supplies
+this energy to MG users at specified prices, ensuring energy
+provision for the cluster while generating revenue through
+trading.
+This paper proposes a market mechanism where the SESO
+uses an independent clearing process based on energy leasing.
+SESO determines leasing prices according to real-time market
+conditions and operating costs, then sends price signals to microgrid clusters. In response, MGs develop leasing strategies
+based on their load demands. Upon agreement, energy is physically transferred via power interconnections, enabling efficient
+allocation and utilization of storage resources.
+Each integrated energy MG consists of electrical and thermal
+loads, DERs such as photovoltaic (PV) and wind power (WP),
+and power-to-heat conversion devices. Through coordinated
+management of self-generation and external supply, the MG
+maintains internal source-load balance. Within the proposed
+framework, regional MGs are interconnected via power lines
+to facilitate P2P energy trading. Users first trade energy with
+neighboring MGs; if a deficit remains, energy is acquired sequentially from the SESO and then the MO.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+In summary, the proposed community-level distributed energy trading framework adopts a multi-agent collaborative architecture that redefines traditional supply–demand relationships.
+By integrating MG users, SESOs, and MOs into a unified trading
+network and incorporating P2P trading priority and dynamic
+pricing strategies, the framework supports a transition from
+centralized dispatch to a “local balancing with global supplementation” paradigm.
+B. Mathematical Model Formulation
+1) MO Mathematical Model: The MO’s objective is to maximize its revenue, and its objective function is as follows:
+F MO =
+
+N 
+T
+
+
+O MO
+O MO
+(λM
+Pi,t + λM
+e
+h Hi,t )
+
+i=1 t=1
+
+−
+
+T
+
+
+αλgrid
+Ptgrid −
+b
+
+T
+
+t
+
+t=1
+
+CtCHP −
+
+T
+
+
+CtGB
+
+(1)
+
+t=1
+
+O
+O
+, λM
+and λgrid
+denote the electricity selling price,
+where λM
+e
+h
+b
+heat selling price set by the operator, and the electricity price of
+MO
+MO
+, Hi,t
+and Ptgrid correspond
+the main grid, respectively. Pi,t
+to the electricity selling power, heat selling power, and electricity purchasing power from the grid. α represents the discount
+coefficient offered by the grid to the operator.
+During time period t, the heat production cost of the gas boiler
+CtGB , the fuel cost of the CHP unit CtCHP , and the relationship
+between the power and heat outputs of the CHP unit can be
+expressed as:
+⎧
+λ
+⎪
+CtCHP = QLHVgas
+P CHP
+⎪
+ηeCHP t
+⎪
+⎨
+CHP
+1−ηeCHP −ηloss
+HtCHP =
+ζh PtCHP
+(2)
+ηeCHP
+⎪
+⎪
+GB
+⎪
+λ
+H
+gas
+t
+⎩CtGB =
+η GB
+h
+
+Where λgas denotes the unit price of natural gas, HtGB denotes
+the thermal outputs of the GB, respectively. and ηhGB is the
+thermal efficiency of the gas boiler.
+The MO sets the following selling price constraints for electricity and thermal energy:
+
+O
+≤ λM
+≤ λgird
+λgird
+s
+e
+b
+(3)
+MO
+MO
+O
+λh,min ≤ λh ≤ λM
+h,max
+and λgird
+are the feed-in tariff and the grid sale
+Where λgird
+s
+b
+O
+MO
+price respectively, and λM
+h,max and λh,min are the upper limit and
+lower limit of the heat price respectively.
+The MO’s power balance constraint is formulated as follows:
+⎧
+grid
+⎪
+≤ Ptgrid
+⎪
+⎪ 0 ≤ Pt
+⎪
+⎨P CHP ≤ P CHP ≤ P CHP
+t
+t
+t
+(4)
+⎪HtCHP ≤ HtCHP ≤ HtCHP
+⎪
+⎪
+⎪
+⎩H GB ≤ H GB ≤ H GB
+t
+t
+t
+Where Ptgrid , PtCHP , HtCHP , and HtGB represent the upper
+bounds of the corresponding variables, while PtCHP , HtCHP ,
+and HtGB denote their respective lower bounds.
+
+1889
+
+2) SESO Mathematical Model: The objective function of the
+SESO is given by:
+F SESO =
+
+N 
+T
+
+
+
+esb
+es ess
+λes
+b Pi,t − λs Pi,t
+
+i=1 t=1
+
+−
+
+N 
+T
+
+
+esb
+ess
+β(Pi,t
++ Pi,t
+)
+
+(5)
+
+i=1 t=1
+es
+Where λes
+b , λs denote the SESO’s selling and purchasing
+esb
+ess
+price of electricity, Pi,t
+and Pi,t
+denote the electricity selling
+and purchasing power of the SESO, respectively.β is the kWh
+cost coefficient of the energy storage device.
+The purchase and sale prices of SESO are constrained as:
+ grid
+es
+λs ≤ λes
+s ≤ λs,max
+(6)
+grid
+es
+λes
+s + 2β ≤ λb ≤ λb,max
+grid
+where λes
+s,max and λb,max denote the maximum unit price of
+electricity acquired by the storage plant and the maximum value
+of electricity price of the grid in a day, respectively.
+The continuity constraint of the load state of the energy
+storage plant is:
+
+(t)
+E(t) = (1 − u)E(t − 1) + [η ch Pch (t) − Pηdis
+dis ]Δt
+(7)
+Emin ≤ E(t) ≤ Emax
+
+where E(t) is the state of charge (SoC) of the shared energy
+storage at time t; Emax and Emin are the maximum and minimum
+values of the SoC of the shared energy storage, respectively; u is
+the self-discharge rate of the energy storage device; η ch andη dis
+are the charging and discharging efficiencies of the energy storage device, respectively; and Pch (t) and Pdis (t) are the charging
+and discharging powers, respectively.
+The charging and discharging power constraints, as well as
+the power balance constraints of the energy storage station, refer
+to (5) in [24].
+3) MG Mathematical Model: The objective function of the
+MGs is defined as:
+FiM G =
+
+T
+
+
+
+ess
+grid s
+λes
+Pi,t
+s Pi,t + λs
+
+t=1
+
++
+
+T
+
+
+2
+(ai Lreal
++ bi Lreal
+i,t
+i,t + ci ) −
+
+t=1
+
+−
+
+T
+
+
+T
+
+
+
+O MO
+λM
+Pi,t
+e
+
+t=1
+O MO
+es esb
+h
+λM
+h Hi,t + λb Pi,t + νi Lcut
+
+2
+
+t=1
+
++
+
+λtrans
+ex
+ Pi,t
+
+2
+
+(8)
+
+where Psi,t , Lhcut , and Lreal
+i,t denote the power sold by the MG to the
+grid, the power reduction in thermal load, and the MG’s electrical
+load after demand response, respectively. H(Piex ) represents
+the cost of energy exchange between MGs, while Piex denotes
+the power exchanged with other MGs. λtrans corresponds to
+the transmission fee for energy trading between MGs. v is the
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1890
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+thermal load comfort factor of the MG, and a, b, and c are
+parameters of the MG’s electricity consumption utility function.
+The MG’s electrical load after demand response is defined as:
+trans
++ Leh
+Lreal
+i,t = Li,t + Li,t
+i,t
+
+(9)
+
+eh
+Where Li,t , Ltrans
+i,t , and Li,t represent the fixed load, transferable load, and electricity-to-heat power of user i at time period
+t, respectively.
+eh
+cut
+Ltrans
+i,t , Li,t , and Li,t must satisfy the following constraints:
+
+⎧
+−θLi,t ≤ Ltrans
+≤ θLi,t
+⎪
+i,t
+⎪
+⎨0 ≤ Leh ≤ Leh
+max
+i,t
+=0
+⎪ Tt=1 Ltrans
+i,t
+⎪
+⎩
+h
+0 ≤ Lcut
+i,t ≤ τ Li,t
+
+(10)
+
+Where θ represents the maximum load transfer ratio of the
+user, Leh
+max represents the maximum electricity-to-heat power of
+the user, and τ represents the maximum thermal load reduction
+ratio of the user.
+The power balance constraint of the user is as follows:
+⎧ MO
+pv
+esb
+ess
+w
+s
+ex
+P
++ Pi,t
+− Pi,t
++ Pi,t
++ Pi,t
+− Pi,t
++ Pi,t
+⎪
+⎪
+⎨ i,t
+trans
+eh
+= Li,t + Li,t + Li,t
+(11)
+eh
+H M O + Hi,t
+= Lhi,t − Lcut
+⎪
+i,t
+⎪
+⎩ i,t
+eh
+Hi,t
+= ζLeh
+i,t
+pv
+w
+and Pi,t
+are the PV and WP generation outputs
+Where Pi,t
+of user i at time t, respectively, and ζ represents the electricityto-heat efficiency.
+To reduce computational complexity while ensuring the feasibility and operational security of the model, a linearized DistFlow power flow [25] constraint is introduced in this study:
+
+⎧
+⎨
+
+i∈BI,j Pli,j =
+
+k∈BS,j Plj,k + Pj
+Q
+=
+l
+k∈BS,j Qlj,k + Qj
+⎩ i∈BI,j i,j
+Ui − Uj = 2(rli,j Pli,j + χli,j Qli,j )
+
+(12)
+
+Where BI,j and BS,j denote the sets of nodes injecting
+into and flowing out of node j along the reference direction,
+respectively. Pli,j and Qli,j represent the active and reactive
+power flows on the branch li,j between nodes i and j, while
+Plj,k and Qlj,k denote the active and reactive power flows on the
+branch lj,k between nodes j and k. Pj and Qj correspond to the
+active and reactive power at node j, respectively. rli,j and χli,j
+are the resistance and reactance of branch li,j , and Ui denotes
+the voltage at node i.
+To ensure the stable operation of the system, voltage constraints at each node and capacity constraints on each branch
+must also be considered.
+
+Uj ≤ Uj ≤ Uj
+(13)
+Pli,j ≤ Pli,j ≤ Pli,j
+Where Uj and Uj denote the upper and lower voltage limits
+at node j, respectively; Pli,j and Pli,j represent the upper and
+lower capacity limits of branch li,j , respectively.
+
+Fig. 2.
+
+Framework diagram of N-S-C mixed game model.
+
+III. UNIFIED MODELING FRAMEWORK FOR N-S-C GAMES AND
+ITS SOLUTION ALGORITHM FRAMEWORK.
+A. Formulation of the Game Model and Proof of Equilibrium
+Solution
+1) Establishment of N-S-C Mixed Game Model: The proposed distributed energy trading market model must consider
+both strategic coupling among multiple agents and temporal
+dependencies inherent in multi-stage decision-making. In such
+a complex game-theoretic setting, a single game model cannot
+fully capture the intricate interactions. Nash and cooperative
+games effectively model competitive or collaborative relationships among agents at the same decision level but cannot
+handle hierarchical multi-stage decision processes. Conversely,
+Stackelberg games capture sequential decisions in hierarchical
+structures but overlook interactions among agents with equal
+priority. Hence, developing a unified framework that integrates
+cross-layer decision dependencies and intra-layer strategic interactions is crucial for complex energy trading systems.
+To address this, a hybrid N–S–C game model is proposed,
+combining horizontal and vertical game structures. The horizontal layer captures competition and cooperation among agents
+at the same level, while the vertical layer reflects inter-level
+decision dependencies. Through dynamic recursive equilibrium
+analysis, the model reveals strategy propagation and benefit
+allocation across multiple stages, offering theoretical insights
+and practical guidance for energy markets.
+As shown in Fig. 2, the bilevel game model consists of an
+upper level with MOs and SESOs. Both maximize profits by
+setting production plans and pricing strategies. Initially, operators determine energy prices based on costs and communicate
+them to the lower level.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+The lower level includes multiple independent MGs aiming
+to minimize operational costs. MG users plan energy purchases,
+load adjustments (including electric heating and demand response), and P2P trading. The lower-level optimization occurs
+in two stages: first, users prioritize local energy consumption by
+conducting P2P trades, with the market coordinator adjusting
+prices iteratively based on supply–demand balance until equilibrium is reached; second, after finalizing P2P trades, users
+develop energy purchasing and load adjustment plans informed
+by upper-level prices and report these back. The upper level
+updates revenues and prices accordingly. This iterative process
+continues until no participant can improve profit unilaterally,
+achieving a stable game equilibrium.
+In the proposed game model, the vertical dimension reflects a
+Stackelberg game, where upper-level pricing decisions precede
+lower-level energy consumption responses. Horizontally, MGs
+and SESOs compete for limited market share by strategically
+setting energy service prices, forming a Nash game. Additionally, at the lower level, MGs establish profit-sharing coalitions
+coordinated by a market agent who manages price adjustments
+and energy exchanges to minimize system-wide costs. Profits
+are distributed based on individual contributions, constituting a
+cooperative game [23].
+In summary, this paper develops a hierarchical N–S–C hybrid
+game framework that integrates vertical Stackelberg dynamics
+with horizontal Nash and cooperative interactions.
+G=
+⎫
+⎧
+[(M O, SESO) ∪ M M G];
+⎪
+⎪
+⎪
+⎪
+⎨ M O M O grid CHP
+ES ⎬
+, HtCHP , HtGB ; λES
+,
+λ
+;
+(λe , λh , Pt , Pt
+s
+b
+MO
+MO
+esb
+ess
+P ex , P S , Pi,t
+, Hi,t
+, Pi,t
+, Pi,t
+, Ltrans
+, Lcut
+⎪
+⎪
+i,t
+i,t );
+⎪
+⎪
+⎭
+⎩ i M O i,t SESO
+MG
+(F
+,F
+; Fi )
+(14)
+The game model G, as defined in (11), comprises three core
+components: the set of participating entities, the strategy space,
+and the objective function system. Together, these elements
+formally define the game structure. Specifically, the entity set
+identifies the market’s decision-making agents and their interrelations; the strategy space specifies the feasible actions available
+to each agent; and the objective function system quantifies each
+agent’s interests and captures the competitive dynamics among
+them.
+2) Nash Game Linear Weighting Method: For the upperlevel Nash game problem, the linear weighting method is employed to transform the multi-objective optimization model into
+a single-objective one. The upper-level optimization objective
+is defined as follows:
+F upper = ω1 F M O + ω2 F SESO
+
+(15)
+
+The weights represent the bargaining power of the stakeholders, with larger values indicating stronger bargaining positions;
+here, ω1 + ω2 = 1.
+3) Shapley Value Allocation Method: Once the total revenue
+of the lower-level MG cooperative coalition is determined, a
+fair profit allocation method is required to ensure equitable
+distribution among participating entities. The Shapley value is
+
+1891
+
+a widely used approach for this purpose, as it quantifies each
+entity’s marginal contribution to the total revenue across all
+possible sub-coalition structures. Specifically, it computes the
+average marginal contribution of an entity when added to every
+possible permutation of the coalition, thereby determining its
+fair share [26].
+Suppose a cooperative coalition consists of n members, denoted by N = {1,2, … …,n}. A subset S ∈ N represents a
+sub-coalition, and the characteristic function v(S) is defined to
+calculate the revenue of coalition S. For each participating MG
+i in the coalition, its allocated profit Pi alloc can be expressed as:
+
+φ(S)[ν(S ∪ {i}) − ν(s)]
+(16)
+Pialloc =
+S∈N \{i}
+
+|s|!(n − |s| − 1)!
+(17)
+n!
+The rationality conditions of cooperative game theory ensure
+that all participants are incentivized to cooperate. These conditions primarily include:
+a) Individual rationality condition: Each participant must
+receive no less than the profit it could achieve independently.
+This condition ensures voluntary participation and is mathematically expressed as:
+φ(s) =
+
+Pialloc ≥ ν({i})i = 1, 2, . . . , n,
+
+(18)
+
+b) Collective rationality condition: The total revenue of
+the coalition must be fully distributed among its members, ensuring neither surplus nor deficit. This is mathematically formulated
+as:
+n
+
+Pialloc = ν(N )
+(19)
+i=1
+
+4) Proof of the Stackelberg Equilibrium Solution: Before
+solving the Stackelberg model, it is essential to demonstrate
+the existence and uniqueness of its optimal solution, as outlined
+below:
+Existence: The objective functions of all participating agents
+are continuous and convex with respect to their own decision
+variables, and their strategy sets are non-empty, compact, and
+convex. According to optimization theory and the existence
+theorem for Stackelberg games, at least one equilibrium exists
+in which both the leader and followers can attain their respective
+optimal strategies.
+Uniqueness: By computing the second-order partial derivatives of (1) and (5), the corresponding Hessian matrices are found
+to be zero, indicating that the objective functions are linear. Furthermore, the gradient directions align with the feasible region
+in only one boundary direction, thereby ensuring the uniqueness
+of the optimal solutions.
+The Hessian matrix of (8), obtained through second-order differentiation, is positive semi-definite, indicating that the function
+is convex but not strictly convex. However, due to the inclusion
+of the linear constraint in (12), the function can still achieve
+an optimal solution under the first-order optimality conditions,
+S
+MO
+MO
+esb
+ess
+, Pi,t
+, Hi,t
+, Pi,t
+and Pi,t
+do not
+even though variables Pi,t
+exhibit second-order curvature.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1892
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+In summary, the Stackelberg game admits a unique equilibrium solution.
+To address the issue of non-differentiability at zero caused
+by
+ the absolute value function in (8), a smooth approximation
+
+ex2 + ε is introduced in place of  P ex , where ε is a
+Pi,t
+i,t
+
+sufficiently small positive constant.
+B. Two-Stage Distributed Solution Framework for Mixed
+Game Model
+1) E-ADMM Model for Interconnected MMGs: As shown
+in Fig. 2, the lower-level optimization problem of the interconnected MMG system is divided into two stages. The first
+stage aims to optimize energy exchange among MGs while
+coordinating power flows under energy balance constraints.
+Considering the privacy of energy demand data, traditional
+centralized approaches pose a risk of information leakage.
+To address this issue, this paper adopts an E-ADMM-based
+method grounded in optimal exchange theory [27], enabling
+privacy-preserving scheduling optimization within a distributed
+coordination framework. This approach decomposes the global
+problem into local subproblems solved independently by each
+node, requiring only the exchange of non-sensitive boundarycoupling variables during the iterative process [28]. The specific
+model is formulated as follows:
+The specific model formulation is presented as follows:
+minimize
+
+N
+
+
+(f (ci ) + H(Piex ))
+
+i=1
+
+subject to
+
+N
+
+
+Piex = 0
+
+4) Convergence condition judgment:
+k+1
+k+1
+ ≤ εpri
+ dex
+ ≤ εdual
+ hex,i
+ex
+ex
+
+5) Adaptive penalty factor update:
+Traditional penalty factors are usually manually set to a fixed
+value, which may lead to slower convergence. Therefore, this
+paper adopts an adaptive penalty factor update strategy [11].
+⎧
+k+1
+k
+k+1
+⎪
+⎨θ1 ρex ,  hex,i > ∂ex  dex 
+k
+k+1
+ρex
+k+1
+k+1
+=
+ρex
+(25)
+,  dex
+> ∂ex  hex,i
+
+⎪
+⎩ ρθk2 ,
+else
+ex
+This iterative process continues until the power exchange
+k
+progresamong MGs gradually reaches equilibrium, and υex
+sively converges to an optimal price vector.
+2) Shared Energy Storage S-ADMM Model: In the second
+stage of local optimization, each microgrid further refines its
+own strategy based on the results of the first stage, including
+load adjustment and energy trading plans with the MO and
+SESO. To preserve user privacy, a distributed architecture [27] is
+still employed when formulating shared energy storage trading
+plans. Each microgrid only needs to submit its charging and
+discharging power to the SESO without disclosing internal operational parameters. However, a mismatch may arise between
+the aggregated user-submitted plans and the actual capacity constraints of the shared energy storage system, potentially violating
+global feasibility. To address this issue, this paper proposes a
+coordinated optimization mechanism based on S-ADMM, as
+detailed below:
+To facilitate model formulation, the variables are coupled as
+follows:
+
+(20)
+
+xi = Piesb + Piess
+
+i=1
+
+where f (ci ) represents the remaining part of FiM G after excluding H(Piex ), and ci represents the remaining part of the MG
+user strategy set after excluding Piex .
+The update process of E-ADMM is as follows.
+1) Each sub-MG optimizes its local variable Piex :
+
+T
+Piex,k+1 = arg min f (xi ) + H(Piex ) + υex
+Piex
+Piex
+
++
+
+
+ρex
+ Piex − (Piex,k − P̄ ex ) 22
+2
+
+(21)
+
+where υex represents the Lagrange multiplier, which also
+denotes the optimal clearing price for P2P transactions in this
+paper. The inner product of υex and the power exchange amount
+Piex represents the revenue obtained by entity i in P2P transactions. ρex is the penalty factor, indicating the intensity of the
+penalty for constraint violations.
+k
+:
+2) The market secretary updates the dual variable υex
+k+1
+k
+= υex
++ ρex P̄kex
+υex
+
+(22)
+
+k+1
+,
+3) Compute the primal residual and dual residual hex,i
+k+1
+dex :
+k+1
+k+1
+k+1
+k
+= P̄kex dex
+= υex
+− υex
+hex,i
+
+(23)
+
+(24)
+
+(26)
+
+During the variable exchange between the two parties, only
+the coupled variables are transmitted. In the local optimization
+stage, decoupling is performed first, followed by optimization. In
+the first step, the objective functions of the MG and the SESO are
+integrated, and the overall optimization objective is formulated
+as follows:
+N
+
+N
+
+
+minimize
+FiM G (xi ) + F SESO
+xi
+(27)
+i=1
+
+i=1
+
+Let the shadow variable of xi be denoted as zi , and the
+optimization objective can be further expressed as:
+N 
+N
+
+
+minimize
+FiM G (xi ) + F SESO
+zi
+i=1
+
+i=1
+
+subject to xi − zi = 0, i = 1, . . . , N,
+
+(28)
+
+The update process of S-ADMM is expressed as follows:
+1) Local optimization of the sub-MG:
+
+
+ρes
+k
+ xi − zik + υes,i
+22
+xik+1 = argmin FiM G (xi ) +
+2
+xi
+(29)
+k
+Where υes,i
+represents the dual variable and ρes represents
+the penalty factor.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+Fig. 4.
+
+1893
+
+Load and new energy output data.
+TABLE I
+GRID ELECTRICITY PRICE
+
+Fig. 3.
+
+TABLE II
+PARAMETERS RELATED TO THE OPERATION OF MICROGRIDS
+
+Overall solution flowchart.
+
+2) Global optimization of the SESO:
+
+N 
+N
+
+ρes 
+k+1
+SESO
+= argmin F
+zi +
+z
+2 i=1
+z
+i=1
+
+k
+ zi − υes,i
+− xik+1 22
+
+subject to zi ≤ xi , i = 1, . . . , N,
+
+(30)
+
+The constraint in (30) ensures that the SESO adjusts only
+within the expected transaction volume of the user.
+k+1
+:
+3) Update of the Lagrange multiplier υes,i
+k+1
+k
+υes,i
+= υes,i
++ xik+1 − zik+1
+
+TABLE III
+NUMERICAL VALUES OF RELEVANT DATA
+
+(31)
+
+4) Calculation of the primal residual and dual residuals
+k+1 k+1
+, des :
+hes,i
+k+1
+k+1
+k+1
+k
+hes,i
+= xik+1 − zik+1 des
+= υes
+− υes
+
+(32)
+
+5) Convergence condition determination
+k+1
+k+1
+ ≤ εpri
+ des
+ ≤ εdual
+ hes,i
+es
+es
+
+(33)
+
+The penalty factor update strategy follows the reference of
+E-ADMM.
+3) Solution Procedure: This paper uses a genetic algorithm
+to solve the Stackelberg game problem between the upper and
+lower layers. The overall solution procedure of the model is
+shown in Fig. 3.
+IV. CASE ANALYSIS
+A. Basic Data
+The interconnected MMG system in this paper consists of
+four sub-MGs, each connected by power transmission lines.
+Each sub-MG includes distributed energy, basic electrical load,
+
+basic thermal load, and electro-thermal conversion devices. The
+predicted output power and forecast load data of the distributed
+energy in the MMG are shown in Fig. 4.
+The electricity grid pricing is referenced from [24], as shown
+in Table I.
+The operating parameters of the MG are shown in Table II.
+Other related parameters are shown in Table III:
+B. Scheme Comparison
+To verify the effectiveness of the proposed scheme, four
+comparative scenarios are designed as follows:
+Scheme 1: The SESO adopts a traditional capacity leasing
+model with a fixed rental fee [16], and energy P2P trading among
+MMGs is not considered.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1894
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+TABLE IV
+COMPARISON OF SCHEME RESULTS
+
+Scheme 2: the SESO adopts a price-driven independent clearing mechanism for energy leasing. However, energy P2P trading
+among MGs is still not considered.
+Scheme 3: This scheme considers energy P2P trading among
+MMGs forming a cooperative alliance, while the SESO continues to adopt the traditional capacity leasing model with a fixed
+rental fee.
+Scheme 4: This scheme implements the method proposed in
+this paper, where the SESO adopts a price-driven independent
+clearing mechanism for energy leasing, and the lower-level MGs
+form a cooperative alliance to conduct energy P2P trading.
+All simulations are performed in MATLAB using the
+YALMIP modeling toolbox with the CPLEX solver. The hardware environment is configured with an AMD Ryzen 7 6800H
+processor (Base Frequency 3.2 GHz). The corresponding simulation results are presented in Table IV.
+The simulation results are presented in Table IV. Compared
+with Scheme 1, the SESO’s profit in Scheme 2 increases by
+47.7%, indicating that the independent clearing strategy enables
+the SESO to achieve greater profitability. This strategy improves
+the SESO’s bargaining power in the local electricity market
+and enhances its initiative in market participation. Comparing
+Scheme 1 and Scheme 3, the MGs’ energy costs decrease by
+3.1%, 3.7%, 6.7%, and 15.5%, respectively, while both the
+MO and SESO see reduced profits. The results indicate that
+collaboration among MGs decreases their energy procurement
+from external service providers, improving overall economic
+efficiency. Therefore, the proposed cooperative game-based P2P
+trading strategy effectively promotes hierarchical renewable
+energy consumption and lowers MG users’ operational costs.
+A further comparison between Scheme 2 and Scheme 3
+reveals that both offer advantages over Scheme 1. Scheme
+2 focuses on enhancing the SESO’s market participation and
+profitability, while Scheme 3 emphasizes improving local renewable energy utilization within the MG cluster and reducing
+operational costs.
+The proposed Scheme 4 integrates the SESO’s independent
+clearing strategy with the P2P trading mechanism among MG
+clusters. Compared to Scheme 2, the SESO’s profit in Scheme
+4 decreases by 42%, whereas the MGs’ operational costs are
+reduced by 3.48%, 4.14%, 9.22%, and 21.82%, respectively.
+This suggests that relying solely on the SESO’s independent
+clearing while neglecting P2P trading can lead to suboptimal
+resource allocation, reduced system efficiency, and limited economic benefits for individual MGs.
+Additionally, comparing Scheme 3 and Scheme 4, the SESO’s
+profit in Scheme 3 is 34.42% lower than in Scheme 4, indicating
+that the absence of an independent clearing mechanism weakens
+
+the SESO’s market engagement and significantly impacts its
+profitability. Therefore, Scheme 4 comprehensively considers
+the interests of all stakeholders in its market strategy design,
+fostering balanced and efficient energy trading among multiple
+participants.
+C. Results and Analysis
+1) Analysis of Optimal Pricing Strategies for MO and SESO:
+The optimal electricity pricing strategies at the upper level are
+shown in Fig. 5. Here, SESO-SP and SESO-PP denote the sale
+and purchase prices set by the SESO, respectively; MO-SP and
+MO-HP represent the electricity and heat sale prices determined
+by the MO. Results show that across all periods, the price at
+which MGs sell electricity to the SESO consistently lies between
+the MO’s sale price and the grid feed-in tariff. This pricing
+scheme encourages MGs to prioritize selling excess renewable
+energy to the SESO while preventing arbitrage, where users
+might buy electricity from the MO to resell to the SESO. During
+peak hours (09:00–12:00 and 18:00–21:00), the SESO’s purchase price is set below those of the grid and MO, incentivizing
+MG users to buy from the SESO before the MO. Conversely, in
+off-peak (00:00–08:00) and medium periods (13:00–17:00 and
+22:00–24:00), the SESO’s purchase price exceeds both grid and
+MO prices to cover energy storage operational costs and ensure
+its economic viability.
+2) Analysis of Power Balance Results for Each MG: Under
+the optimal pricing strategies of the MO and SESO, the optimal
+electricity usage plans of each MG user are shown in Fig. 6.
+Here, PSE denotes power sold to the main grid, ESES is power
+sold to the SESO, EH is electric heating load, TRANS represents load shifting capacity, PBE is power purchased from
+the MO, ESEB is power purchased from the SESO, and IPOM
+indicates power exchanged with other MGs. MG 1 and MG 2
+are electricity-deficient, while MG 3 and MG 4 have surplus
+electricity. According to the proposed hierarchical energy consumption strategy, surplus renewable energy is first traded P2P
+within the MG cluster. For example, during midday, MG 2 and
+MG 4 generate excess renewable power that they trade with
+MG 1 and MG 3. Once the interconnection capacity limits are
+reached, remaining surplus is sold to the SESO based on declared
+amounts, and any excess beyond that is exported to the main
+grid.
+During deficit periods, MGs prioritize P2P purchases within
+the cluster; unmet demand is then fulfilled by buying from the
+MO or SESO, whichever offers a lower price. As Fig. 5 shows,
+MGs mainly purchase from the SESO during peak hours due
+to its more competitive pricing. Additionally, demand response
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+Fig. 5.
+
+Upper-layer optimal pricing strategy.
+
+Fig. 6.
+
+Electrical energy balance diagrams of each MG.
+
+encourages load shifting to periods of abundant renewable generation, improving electricity utilization efficiency and further
+reducing overall operational costs.
+3) Analysis of Thermal Energy Balance Results for Each
+MG: The optimal thermal energy usage plans of the MG are
+presented in Fig. 7. Here, H_CUT denotes curtailed thermal
+load, BH is heat purchased from the MO, EH represents heat
+supplied by electric heating devices, and H_LOAD is the total
+thermal load. Results show that MG users primarily rely on
+electric heating during off-peak periods. As shown in Fig. 5,
+
+1895
+
+the MO’s electricity price is significantly lower than the thermal
+energy price during these hours. Consequently, regardless of
+renewable energy surplus, MG users prefer electric heating during off-peak periods to reduce total system operating costs. Additionally, during hours with both surplus renewable generation and relatively high thermal prices
+(e.g., 13:00 and 14:00), users allocate remaining renewable
+energy—after meeting electricity demand in the previous two
+stages—to electric heating, thereby minimizing thermal energy
+expenditures.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1896
+
+Fig. 7.
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+Thermal energy balance diagrams of each MG.
+
+Fig. 8. Pareto front and optimal compromise solutions under three sets of
+parameters.
+
+TABLE V
+COST SAVINGS UNDER DIFFERENT COOPERATION MODELS
+
+4) Sensitivity Analysis of Coalition Formation Dynamics:
+Table V presents the cost savings associated with all possible
+coalition formations within the cooperative alliance. The data
+indicate that along any feasible coalition formation path, the
+total system cost savings increase progressively as new members
+join sequentially. This demonstrates that each participant contributes a positive marginal benefit to the alliance. Consequently,
+every potential cooperative member has an incentive to join the
+coalition, thereby facilitating the gradual establishment of the
+overall alliance. This dynamic process reflects an increasing
+marginal benefit effect among coalition members, ensuring the
+stable formation of the cooperative alliance.
+5) Sensitivity Analysis of Weighting Factors: To evaluate the
+impact of different weighting factors on the optimization results,
+a sensitivity analysis is conducted with respect to ω1 and ω2 .
+Three sets of parameters are considered:
+Parameter 1: ω1 = 0.7, ω2 = 0.3, indicating that the MO has
+stronger bargaining power;
+Parameter 2: ω1 = ω2 = 0.5, indicating equal bargaining power
+between the MO and SESO;
+Parameter 3: ω1 = 0.3, ω2 = 0.7, indicating that the SESO has
+stronger bargaining power.
+Fig. 8 illustrates the selection of optimal compromise solutions under different weighting factors along a representative
+Pareto front. Under Parameter 2, the profits of both the MO
+and SESO are relatively balanced among all non-dominated
+
+Fig. 9.
+
+Electricity interaction and transaction prices between MGs.
+
+solutions. In contrast, Parameter 1 favors the MO with higher
+profit at the expense of the SESO, while Parameter 3 yields
+higher SESO profit but lower MO profit. These results highlight
+that weighting preferences significantly affect the distribution
+of compromise solutions, underscoring the need for parameter selection aligned with specific decision-making priorities.
+Notably, Parameter 2 achieves better balance between the two
+parties, suggesting greater practical applicability.
+6) Analysis of P2P Energy Trading Results: The electricity
+trading outcomes within the MG cluster and the corresponding
+optimal P2P trading prices are shown in Fig. 9. Although valley
+periods offer greater trading potential, actual P2P transactions
+remain limited. This is primarily due to the combination of
+low electricity selling prices from the MO and the additional
+transmission fees associated with P2P trading, which dampen
+the willingness of electricity-deficient MGs to participate. In
+contrast, between 11:00 and 17:00, the P2P trading price drops
+below the electricity prices offered by both the MO and the
+SESO. As a result, MG2 and MG4 transfer surplus electricity
+to MG1 and MG3 during this period. The illustrated results
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+Fig. 10.
+
+Real-time SoC of energy storage.
+
+demonstrate that energy exchange within the cluster remains
+balanced at all times, indicating that the proposed E-ADMM
+algorithm effectively ensures power flow equilibrium while
+preserving user privacy. By enabling inter-MG P2P trading,
+the system enhances renewable energy utilization and further
+reduces overall operating costs.
+7) Shared Energy Storage SoC Analysis: The SoC profile
+of the SESO throughout the day is illustrated in Fig. 10. As
+shown, the SESO primarily charges during valley periods and
+discharges during the evening peak hours (18:00 till 21:00),
+thereby obtaining profits through a strategy of “charging at
+low prices and discharging at high prices.” However, there is
+almost no charging activity between 11:00 and 15:00, despite
+high photovoltaic output from MGs during this period. As
+previously analyzed, this is because users prefer to consume
+surplus renewable energy locally via P2P trading during these
+hours. The figure also indicates that the SESO’s initial and final
+SoC are equal, and the max and min SoC values are 0.881 Emax
+and 0.188 Emax , respectively, both of which satisfy the capacity
+constraints defined in this study. This confirms that the proposed
+S-ADMM distributed algorithm can effectively preserve the
+privacy of distributed entities while ensuring compliance with
+global physical constraints.
+V. CONCLUSION
+This paper addresses multi-stakeholder coordination in a local
+energy market and proposes an optimal scheduling strategy for
+shared energy storage and integrated energy MG clusters based
+on a hybrid game-theoretic model. The strategy accounts for
+the interests of multiple hierarchical stakeholders, aiming to
+enhance the overall economic benefits of market participants.
+The main findings are summarized as follows:
+1) The proposed N-S-C hybrid game framework effectively
+characterizes the multi-stage, multi-agent game interactions in local energy markets and protects the interests of
+all participants.
+2) The proposed two-stage algorithm ensures hierarchical
+energy scheduling, thereby promoting local consumption
+of renewable energy.
+
+1897
+
+3) Compared to the fixed leasing fee model, the proposed price-driven SESO independent clearing model improves SESO’s revenue by 52.5% under the same conditions. Meanwhile, the proposed S-ADMM distributed
+optimization algorithm guarantees global physical constraints for energy storage while preserving the privacy of
+MG data from SESO.
+4) A P2P trading mechanism for MG clusters is also developed using the E-ADMM algorithm and Shapley valuebased profit allocation. This approach maintains power
+exchange balance and preserves data privacy across nodes.
+Simulation results show that, compared to the no-P2P
+scenario, the proposed method reduces MG operating
+costs by 3.36%, 3.97%, 8.44%, and 17.91%, respectively.
+To further enhance the proposed operational method, future
+research can explore the following directions:
+1) Incorporating real-world load fluctuations to better capture dynamic energy consumption behaviors;
+2) Considering the impact of energy storage degradation on
+long-term system operation and planning;
+3) Analyzing the sensitivity of cooperative alliances to strategic misreporting.
+REFERENCES
+[1] E. Barabino et al., “Energy Communities: A review on trends, energy
+system modelling, business models, and optimisation objectives,” Sustain.
+Energy, Grids Netw., vol. 36, 2023, Art. no. 101187.
+[2] P. Lin, Q. Meng, M. Zhu, and F. Blaabjerg, “Dynamic circuit-based unified
+power regulation for hybrid AC/DC/DS microgrids: A comprehensive
+approach to static and transient control,” IEEE Trans. Ind. Electron., early
+access, Sep. 09, 2025, doi: 10.1109/TIE.2025.3585029.
+[3] L. Ahmethodžić, M. Musić, and S. Huseinbegović, “Microgrid energy
+management: Classification, review and challenges,” CSEE J. Power Energy Syst., vol. 9, no. 4, pp. 1425–1438, Jul. 2023.
+[4] A. R. Abbasi and D. Baleanu, “Recent developments of energy management strategies in microgrids: An updated and comprehensive review and
+classification,” Energy Convers. Manage., vol. 297, 2023, Art. no. 117723.
+[5] H. Masrur, M. Shafie-Khah, M. J. Hossain, and T. Senjyu, “Multi-energy
+microgrids incorporating EV integration: Optimal design and resilient operation,” IEEE Trans. Smart Grid, vol. 13, no. 5, pp. 3508–3518, Sep. 2022.
+[6] Y. Wang et al., “Optimal operation strategy for multi-energy microgrid
+participating in auxiliary service,” IEEE Trans. Smart Grid, vol. 14, no. 5,
+pp. 3523–3534, Sep. 2023.
+[7] J. A. M. Alvarez, I. G. Zurbriggen, F. Paz, and M. Ordonez, “Microgrids
+multiobjective design optimization for critical loads,” IEEE Trans. Smart
+Grid, vol. 14, no. 1, pp. 17–28, Jan. 2023.
+[8] E. S. Seddigh, M. R. Haghifam, and H. R. Baghaee, “Reliability assessment
+of multi-microgrids considering collaborations at PCC,” IEEE Trans. Ind.
+Appl., vol. 60, no. 2, pp. 2357–2365, Mar./Apr. 2024.
+[9] Y. Du and F. Li, “A hierarchical real-time balancing market considering
+multi-microgrids with distributed sustainable resources,” IEEE Trans.
+Sustain. Energy, vol. 11, no. 1, pp. 72–83, Jan. 2020.
+[10] J. Xu and Y. Yi, “Multi-microgrid low-carbon economy operation strategy considering both source and load uncertainty: A Nash bargaining
+approach,” Energy, vol. 263, 2023, Art. no. 125712.
+[11] K. Wang, Y. Liang, R. Jia, X. Wu, X. Wang, and P. Dang, “Two-stage
+stochastic optimal scheduling for multi-microgrid networks with natural
+gas blending with hydrogen and low carbon incentive under uncertain
+envinronments,” J. Energy Storage, vol. 72, 2023, Art. no. 108319.
+[12] R. Dai, R. Esmaeilbeigi, and H. Charkhgard, “The utilization of shared
+energy storage in energy systems: A comprehensive review,” IEEE Trans.
+Smart Grid, vol. 12, no. 4, pp. 3163–3174, Jul. 2021.
+[13] N. Wu, J. Xu, J. Linghu, and J. Huang, “Real-time optimal control and
+dispatching strategy of multi-microgrid energy based on storage collaborative,” Int. J. Elect. Power Energy Syst., vol. 160, 2024, Art. no. 110063.
+[14] L. Vankudoth and A. Q. Badar, “Development and analysis of scheduling
+strategies for utilizing shared energy storage system in networked microgrids,” J. Energy Storage, vol. 97, 2024, Art. no. 112691.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+1898
+
+IEEE TRANSACTIONS ON INDUSTRY APPLICATIONS, VOL. 62, NO. 2, MARCH/APRIL 2026
+
+[15] A. Walker and S. Kwon, “Analysis on impact of shared energy storage
+in residential community: Individual versus shared energy storage,” Appl.
+Energy, vol. 282, 2021, Art. no. 116172.
+[16] Y. Wang, J. Chen, Y. Zhao, and B. Xu, “Incorporate robust optimization
+and demand defense for optimal planning of shared rental energy storage
+in multi-user industrial park,” Energy, vol. 301, 2024, Art. no. 131721.
+[17] X. Li, Z. Fang, F. Li, S. Xie, and S. Cheng, “Game-based optimal dispatching strategy for distribution network with multiple microgrids leasing
+shared energy storage,” Proc. CSEE, vol. 42, no. 18, pp. 6611–6625, 2022.
+[18] A. R. Singh, D. K. Raju, L. P. Raghav, and R. S. Kumar, “State-of-theart review on energy management and control of networked microgrids,”
+Sustain. Energy Technol. Assessments, vol. 57, 2023, Art. no. 103248.
+[19] H. Li, Z. Ren, A. Trivedi, P. P. Verma, D. Srinivasan, and W. Li, “A
+noncooperative game-based approach for microgrid planning considering
+existing interconnected and clustered microgrids on an island,” IEEE
+Trans. Sustain. Energy, vol. 13, no. 4, pp. 2064–2078, Oct. 2022.
+[20] L. Lei and N. Wu, “An optimal scheduling strategy for electricity-thermal
+synergy and complementarity among multi-microgrid based on cooperative games,” Renewable Energy, vol. 237, 2024, Art. no. 121575.
+[21] W. Hua et al., “Transactive energy and flexibility provision in multimicrogrids using Stackelberg game,” CSEE J. Power Energy Syst., vol. 9,
+no. 2, pp. 505–515, Mar. 2023.
+[22] Y. Wen, R. Ding, Y. Liang, and J. Chen, “Multi-microgrid shared energy
+storage operation optimization strategy based on a mixed game theory,”
+Electric Power Syst. Res., vol. 246, 2025, Art. no. 111643.
+[23] K. Zhang, C. Gao, G. Zhang, T. Xie, and H. Li, “Electricity and heat
+sharing strategy of regional comprehensive energy multi-microgrid based
+on double-layer game,” Energy, vol. 293, 2024, Art. no. 130655.
+[24] S. Wang, H. Chen, Z. Wang, Y. Shang, and C. Gong, “Research on pricing
+strategy of shared energy storage and integrated energy microgrid cluster
+transaction based on Stackelberg game theory,” in Proc. 9th Int. Conf.
+Power Renewable Energy, 2024, pp. 1183–1188.
+[25] M. E. Baran and F. F. Wu, “Network reconfiguration in distribution systems
+for loss reduction and load balancing,” IEEE Trans. Power Del., vol. 4,
+no. 2, pp. 1401–1407, Apr. 1989.
+[26] G. Ye and F. Gao, “Coordinated optimization scheduling of data center
+and electricity retailer based on cooperative game theory,” CPSS Trans.
+Power Electron. Appl., vol. 7, no. 3, pp. 273–282, Sep. 2022.
+[27] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, “Distributed
+optimization and statistical learning via the alternating direction method
+of multipliers,” Foundations Trends Mach. Learn., vol. 3, no. 1, pp. 1–122,
+2011.
+[28] Z. Yang, J. Hu, X. Ai, J. Wu, and G. Yang, “Transactive energy supported
+economic operation for multi-energy complementary microgrids,” IEEE
+Trans. Smart Grid, vol. 12, no. 1, pp. 4–17, Jan. 2021.
+
+Chunyang Gong received the B.Sc. degree in electrical engineering and automation from the Shanghai
+University of Electric Power, Shanghai, China, in
+2013, and the M.Sc. degree in electrical and electronic
+engineering from the University of Strathclyde, Glasgow, U.K., in 2014. He is currently working toward
+the Ph.D. degree in electrical engineering with the
+Shanghai University of Electric Power. In 2015, he
+was the Scientific Research Secretary of the College
+of Automation Engineering, Shanghai University of
+Electric Power. His research focuses on new energy
+power generation planning and control.
+
+Chenxian Song received the B.Sc. degree in electrical engineering and automation from Chengdu University, Chengdu, China, in 2024. She is currently
+working toward the M.Sc. degree in clean energy
+technology with the Shanghai University of Electric
+Power, Shanghai, China. Her research interests include energy management and interaction in multimicrogrid systems.
+
+Jian Wang received the B.S. degree in electrical
+engineering from North China Electric Power University, Beijing, China, in 2018, and the Ph.D. degree
+in electrical engineering from Shanghai Jiao Tong
+University, Shanghai, China and, Politecnico di Milano, Milan, Italy both in 2023. She joined Shanghai
+Jiao Tong University in 2023 as an Assistant Research
+Fellow with the College of Smart Energy.
+Her research interests include virtual power plant
+and integrated energy system.
+
+Siwen Wang received the B.Sc. degree in electrical
+engineering and automation from Anyang Normal
+University, Anyang, China, in 2023. He is currently
+working toward the M.Sc. degree in clean energy
+technology with the Shanghai University of Electric
+Power, Shanghai, China. His research focuses on
+optimal scheduling of integrated energy microgrids.
+
+Tingting Wang received the Ph.D. degree from
+Shanghai University, Shanghai, China. She is currently a Senior Engineer with the Shanghai Institute
+of Quality Inspection and Technical Research, Shanghai. She is a Registered Expert of IEC TC 104 and a
+Member of the National Technical Committee on Environmental Conditions and Environmental Testing
+of Electrical and Electronic Products (SAC/TC 08).
+She is also a Member of the Technical Subcommittee
+on Intelligent Laboratory Equipment of the National
+Technical Committee on Laboratory Instruments and
+Equipment. She is also the Secretary of the Shanghai Committee on Instrumentation and Electronics Standardization and a Member of the Shanghai Branch
+of the China Association for Quality and Certification.
+
+Hui Chen (Member, IEEE) received the B.Sc. degree in control and instrument specialty from Jiangsu
+University, Zhenjiang, China, in 2006, and the M.Sc.
+and Ph.D. degrees in control science and engineering
+from Shanghai University, Shanghai, China, in 2009
+and 2014, respectively. From 2011 to 2012, she was
+a Joint Ph.D. Student with the Computation Department, Jacobs University Bremen, Bremen, Germany.
+She is currently a Professor with the College of Automation Engineering, Shanghai University of Electric Power, Shanghai. Her research interests include
+pattern recognition, computer vision, and deep learning.
+
+Yanfei Shang received the bachelor’s degree in
+2003. He is currently the Deputy General Manager
+of LITHOS NEW ENERGY GROUP COMPANY
+LIMITED. He was awarded the title of Senior Technician of Shanghai in 2020. His main work focuses
+on the research and development of new energy and
+energy-saving technologies, as well as project management.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+WANG et al.: BI-LEVEL GAME-BASED OPTIMAL SCHEDULING STRATEGY FOR SHARED ENERGY STORAGE
+
+Chuanlin Zhang (Senior Member, IEEE) received
+the B.S. degree in mathematics and the Ph.D. degree
+in control theory and control engineering from the
+School of Automation, Southeast University, Nanjing, China, in 2008 and 2014, respectively. From
+2011 to 2012, he was a Visiting Ph.D. Student with the
+Department of Electrical and Computer Engineering,
+University of Texas at San Antonio, San Antonio, TX,
+USA. From 2016 to 2017, he was Visiting Scholar
+with the Energy Research Institute, Nanyang Technological University, Singapore. From 2017 to 2018,
+he was a Visiting Scholar with Advanced Robotics Center, National University of
+Singapore. Since 2014, he has been with the College of Automation Engineering,
+Shanghai University of Electric Power, Shanghai, China, where he is currently
+a Professor. His research interests include nonlinear system control theory and
+applications for power systems.
+
+1899
+
+Ning Yang received the B.Sc. degree from the Department of Mechanics, Changchun Institute of Optical
+Precision Machinery, Changchun, China, in 1999,
+the M.Sc. degree from the Department of Optoelectronics, Changchun Institute of Optical Precision
+Machinery, in 2002, and the Ph.D. degree from the
+Department of Instrumentation, Shanghai Jiaotong
+University, Shanghai, China, in 2006. Since 2006, he
+has been engaged in scientific research on information fusion, intelligent optimization algorithms, and
+industrial inspection and control. He is currently the
+Vice President of Shanghai University of Electric Power and a Professor with
+the School of Automation Engineering.
+
+Zhixin Wang (Member, IEEE) received the B.Sc.
+degree in scientific instrument, the M.Sc. degree in
+scientific instrument, and the Ph.D. degree in mechanical engineering from Zhejiang University, Zhejiang,
+China, in 1985, 1988, and 1994, respectively. His
+research interests include photovoltaic power generation, wind-solar hybrid technology, and intelligent
+control of electro-mechanical systems. He was the
+Vice Chairman of the Shanghai Hydropower Engineering Society and a Member of the Renewable Energy Committee of the Chinese Society of Electrical
+Engineering, Fluid Control Engineering Committee of the Chinese Society of
+Mechanics,Hydraulic Technology Committee of the Chinese Mechanical Engineering Society, Chinese Automation Society, and Manufacturing Technology
+Special Committee.
+
+Authorized licensed use limited to: Pontificia Universidad Catolica de Chile. Downloaded on March 11,2026 at 16:14:52 UTC from IEEE Xplore. Restrictions apply.
+
+

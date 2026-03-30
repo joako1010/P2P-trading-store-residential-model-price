@@ -1,0 +1,1524 @@
+Applied Energy 383 (2025) 125283
+
+Contents lists available at ScienceDirect
+
+Applied Energy
+journal homepage: www.elsevier.com/locate/apenergy
+
+Peer-to-peer energy trading of solar and energy storage: A networked
+multiagent reinforcement learning approach
+Chen Feng , Andrew L. Liu
+
+∗
+
+Edwardson School of Industrial Engineering, Purdue University, Grissom Hall, West Lafayette, 47907, IN, USA
+
+ARTICLE
+
+INFO
+
+Keywords:
+Multi-agent reinforcement learning
+Distributed energy resources
+Peer-to-peer market
+
+ABSTRACT
+Utilizing distributed renewable energy resources, particularly solar and energy storage, in local distribution
+networks via peer-to-peer (P2P) energy trading has long been touted as a solution to improve energy systems’
+resilience and sustainability. Consumers and prosumers (that is, those with solar PV and/or energy storage),
+however, do not have the expertise to engage in repeated P2P trading, and the zero-marginal costs of
+renewables present challenges in determining fair market prices. To address these issues, we propose multiagent reinforcement learning (MARL) frameworks to help automate consumers’ bidding and management of
+their solar PV and energy storage resources, under a specific P2P clearing mechanism that utilizes the socalled supply–demand ratio. In addition, we show how the MARL frameworks can integrate physical network
+constraints, ensuring the physical feasibility of P2P energy trading and providing a possible pathway for
+practical deployment.
+
+1. Introduction
+As our society strives to transition towards sustainable energy
+sources, distributed renewable resources and energy storage are increasingly seen as key components in creating resilient and sustainable
+energy systems. Peer-to-peer (P2P) energy trading in local energy
+markets offers a promising approach to decentralize and optimize
+the allocation of distributed energy resources (DERs). This model
+not only empowers consumers and those who can store or generate
+energy, known as prosumers, to trade energy directly but also promotes
+renewable energy usage and reduces energy losses.
+However, implementing P2P trading presents significant challenges.
+First, consumers and prosumers lack the technical expertise required
+to engage in repeated P2P trading and manage their energy resources
+efficiently. Second, renewable energy, such as solar, often has zero
+marginal costs, which introduces difficulties in determining fair market
+prices for energy trades: a uniform-pricing auction resembling a wholesale energy market would not work since the market clearing prices
+would be zero most of the time. Third, while P2P trading only entails
+financial transactions, the delivery of energy occurs over the physical
+distribution networks. How to maintain network feasibility in a local
+P2P trading market is an important yet open question.
+In response to these challenges, this paper introduces a decentralized framework utilizing multiagent reinforcement learning (MARL),
+which is designed to automate the bidding processes of agents, enhancing the management efficiency of their solar PV and energy storage
+
+resources. Additionally, the framework ensures the feasibility of a
+distribution network. Specifically, inspired by the algorithm in [1], we
+propose a consensus-based actor-critic algorithm for a decentralized
+MARL, in which each agent in a repeated P2P auction is modeled as
+a Markov decision problem (MDP). By allowing agents to exchange
+information and reach agreements, the proposed framework facilitates
+efficient decision-making and resource allocation, while mitigating the
+computational and privacy challenges associated with certain centralized learning approaches. In addition, the shared network constraints,
+such as voltage regulation, can be learned through the decentralized
+approach with a constraint violation incurring a (fictitious) penalty to
+each agent’s reward function. We consider this development a potential
+approach toward practical deployment of P2P energy trading.
+In addition to the modeling and algorithm development, we establish the theoretical conditions for the consensus-MARL algorithm
+to converge to an asymptotically stable equilibrium. We consider this
+a significant advantage over a purely decentralized approach without
+agents’ communication, such as the one in our previous work [2],
+in which each agent uses the proximal policy optimization (PPO) approach [3] to solve their own MDP and ignores multiagent interaction.
+Through numerical simulations, we compare three different frameworks to implement P2P trading while considering network constraints:
+purely decentralized trading using PPO, consensus-MARL, and a centralized learning and decentralized execution approach using the multiagent deep deterministic policy gradient (MADDPG) algorithm [4].
+
+∗ Corresponding author.
+
+E-mail address: andrewliu@purdue.edu (A.L. Liu).
+https://doi.org/10.1016/j.apenergy.2025.125283
+Received 18 July 2024; Received in revised form 11 December 2024; Accepted 3 January 2025
+Available online 15 January 2025
+0306-2619/© 2025 Published by Elsevier Ltd.
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+Our findings indicate that consensus-MARL achieves higher average
+rewards compared to both PPO and MADDPG.
+The rest of the paper is organized as follows. Section 2 reviews the
+literature on P2P energy trading and emphasizes the contribution of
+our work. Section 3 introduces the market clearing mechanism based
+on the supply–demand ratio, first proposed in [5], which can avoid
+zero-clearing prices when the supply resources have zero marginal
+costs. Section 4 provides the detailed consensus-MARL formulation and
+algorithm, as well as establishing convergence results. The specific
+setups and data of our simulation are described in Section 5, along with
+numerical results. Finally, Section 6 summarizes our work and points
+out several future research directions.
+
+To overcome the drawbacks of fully decentralized and CTDE-based
+MARL, algorithms with communication among agents have also been
+developed. A notable contribution in this area is the consensus-based
+MARL algorithm designed for discrete-space problems, as presented
+in [22], and its extension to continuous-space problems in [1]. This
+model allows agents to learn and implement policies in a decentralized
+manner with limited communication, underpinned by a theoretical
+guarantee of convergence under certain conditions. Separately, [23] introduced a Scalable Actor Critic (SAC) framework, particularly relevant
+for large-scale networks where an individual agent’s state transition is
+influenced only by its neighbors. SAC is distinguished by its reduced
+communication needs compared to the CTDE framework and offers
+a theoretical guarantee for its policy convergence as well. However,
+the SAC framework is only established for discrete state space problems, and its extension and effectiveness in continuous-state space
+applications remain unexplored.
+In this work, we present several key contributions: First, we develop a comprehensive framework for a P2P energy trading market
+while integrating a consensus-based MARL algorithm. This framework
+facilitates automated control and bidding of DERs while allowing for
+decentralized learning of voltage constraints. Second, we present the
+sufficient conditions required for the convergence of the MARL algorithm and show the details of implementing this algorithm using
+deep neural networks. Third, we conduct a comparative analysis of
+market outcomes derived from three distinct MARL strategies: a naive
+decentralization approach, the MADDPG approach, and the proposed
+consensus-based MARL. Our findings reveal that the consensus-based
+approach notably outperforms the others in achieving better market
+outcomes. Our work addresses P2P energy trading under network constraints, which is crucial for integrating distributed renewable energy
+sources and enhancing grid stability. The RL-based algorithm we propose, designed for control automation, can be directly implemented on
+grid-edge devices, making it highly applicable for distribution networks
+with increasing numbers of prosumers.
+
+2. Literature review
+The literature on decentralized control of energy transactions in
+a distribution network is extensive and diverse. Broadly speaking,
+there are two predominant approaches: the distributed optimization approach and P2P bilateral trading. A key method in the former approach
+is the alternating direction multiplier method (ADMM), which solves
+centralized dispatch problems by iteratively updating price signals for
+consumer/prosumer optimization (such as [6–10]). Despite ADMM’s
+theoretical convergence under convexity, practical challenges arise: (i)
+As an algorithmic approach rather than a market design, ADMM is
+subject to the same difficulties faced by a uniform-pricing-based market
+of all zero-marginal-cost resources. Specifically, it is prone to ‘bang–
+bang’ pricing: market clearing prices plummet to zero in oversupply or
+spike to a price ceiling in under-supply. Addressing this with additional
+market mechanisms, such as adding ancillary service markets, akin to
+wholesale markets, could overly complicate distribution-level markets
+for energy trading. (ii) Most distributed algorithms, including ADMM,
+are static, lacking real-time adaptability. While online ADMM variants exist [11,12], ensuring network constraints within each iteration
+remains an open question. (iii) Assuming consumers or prosumers
+can solve complex optimization problems is often unrealistic due to
+potential expertise or resource limitations.
+These limitations form the basis of our interest in exploring P2P
+bilateral trading. Consequently, our literature review will focus on
+this alternative approach. There have been multiple review papers
+on the large and ever-growing literature on P2P energy trading [13–
+17]. Within the literature, we focus on the works that explicitly consider distribution network constraints. [18] proposes a continuous double auction framework within which physical network constraints are
+maintained through a sensitivity-based approach. The agents in the
+auction are the so-called zero-intelligence-plus (ZIP) traders, who employ simple adaptive mechanisms without any learning of the repeated
+multi-agent interactions. More sophisticated than ZIP, a fully decentralized MARL is adopted in [19] to realize decentralized voltage
+control and is extended in [2] to form a P2P energy trading market
+with physical constraints. These two papers implement a completely
+decentralized approach in the sense that each agent ignores the multiagent interaction as well and just learns their single-agent policy to
+maximize their own payoff.
+Another MARL approach that has been explored is the centralized
+training and decentralized execution (CTDE) framework, of which the
+multi-agent deep deterministic policy gradient (MADDPG) method [4]
+is a prominent example. It is applied in [20] to solve the autonomous
+voltage control problem In [21], a modified MADDPG algorithm is proposed for a double-sided auction market to facilitate P2P energy trading, although physical constraints are not considered in their model.
+While the CTDE framework can lead to more efficient learning and
+robust outcomes, its dependence on a centralized entity for collecting
+and coordinating all agents’ data introduces difficulties for practical
+implementations and potential vulnerabilities, such as increased risk of
+single-point failures and higher susceptibility to cyber-attacks.
+
+3. Market clearing mechanism
+In this section, we first describe a clearing mechanism, referred to as
+the supply–demand-ratio (SDR) [5], that can address the two potential
+issues faced by a renewable-dominated P2P market: (i) marginal-costbased pricing yielding zero market prices, and (ii) the bang–bang
+outcomes in a double-auction-based mechanism, as the reserve prices
+for buyers (the utility rates) and the sellers (usually the feed-in tariffs)
+are publicly known. The second issue is unique to the P2P energy
+market, in our opinion, and the bang–bang phenomenon is documented
+in [24] and will be explained further in this section.
+The SDR-clearing mechanism in P2P markets has been detailed in
+our earlier work [2]. For completeness, we briefly revisit it here. Let
+ = {1, 2, … , 𝐼} represent all consumers and prosumers, all referred to
+as agents. We assume that trading among the agents takes place in fixed
+rounds (such as hourly or every 15 min) and is cleared ahead of time
+(such as day-ahead or hour-ahead). In each trading round 𝑡, each agent
+𝑖 ∈  submits bids (𝑏𝑖,𝑡 ) to buy (if 𝑏𝑖,𝑡 < 0) or sell (if 𝑏𝑖,𝑡 > 0) energy.
+Agents can switch roles between buyers and sellers across different
+rounds, but not within the same round. For a round 𝑡, the sets of buyers
+and sellers are denoted as 𝑡 = {𝑖 ∶ 𝑏𝑖,𝑡 < 0} and 𝑡 = {𝑖 ∶ 𝑏𝑖,𝑡 ≥ 0},
+respectively.
+The SDR mechanism, originally proposed in [5], is an approach to
+clear a market with all zero-marginal-cost supply resources, which is
+straightforward to implement. An SDR is defined as the ratio between
+total supply and demand bids at 𝑡; that is,
+/
+∑
+∑
+𝑆 𝐷𝑅𝑡 ∶=
+𝑏𝑖,𝑡 −
+𝑏𝑖,𝑡 .
+(1)
+𝑖∈𝑡
+
+𝑖∈𝑡
+
+To ensure that 𝑆 𝐷𝑅𝑡 is well-defined, we assume 𝑡 ≠ ∅ for any 𝑡,
+a reasonable assumption given agents’ continuous need for energy. In
+2
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+that transactions for buyers and sellers are at least as favorable as dealing directly with the utility. Second, it simplifies the bidding process
+by requiring only quantity bids. This allows consumers with flexible
+loads to focus on adjusting their demand timings, and prosumers to
+better manage their energy storage and sales strategies, without the
+complexity of submitting price-quantity pairs.
+With the above being said, we are interested in comparing consumer and producer surplus (and their sum, social surplus) between
+the marginal-cost-pricing (MCP) approach and the SDR approach. Conceptually, consumer surplus is the difference between the maximum
+amount consumers are willing to pay for a good and the amount they
+actually pay. Similarly, producer surplus represents the difference between the price producers receive for a good and the cost of producing
+it. However, several complicating factors arise in surplus analysis here.
+First, both demand and supply have inflexible and flexible components.
+For electricity consumption, there is inflexible demand (the so-called
+baseload) and flexible demand, with flexibility either coming from
+shiftable loads (like EV charging, washers/dryers) or from charging
+energy storage. For baseload, we do not know the (aggregated) consumers’ true willingness to pay. We follow the approach in [25] and
+use the utility rate as a proxy for consumers’ willingness to pay when
+calculating consumer surplus for the inflexible load; that is, (UR clearing price) × baseload. For flexible load, we assume consumers’
+willingness to pay is represented by a downward-sloping curve, as
+shown in Figs. 2 and 3. In these figures, 𝑄𝐵 denotes the total baseload,
+̂ denotes the total load, both flexible and inflexible. For supply,
+and 𝑄
+we have inflexible supply, such as grid-tied solar (that is, there is no
+storage). In this case, any energy generated beyond the prosumer’s own
+consumption is automatically sold back to the grid. We denote the total
+inflexible supply by 𝑆𝐵 . There is also flexible supply, where flexibility
+comes entirely from the option to store energy for later sale. For flexible
+supply, we assume prosumers’ willingness to sell is represented by an
+upward-sloping curve until it hits the total supply capacity (denoted by
+̂ as depicted in Figs. 2 and 3.
+𝑆),
+Next, we analyze the differences in surpluses between MCP and
+SDR. We assume that under MCP, consumers and prosumers bid their
+true willingness-to-buy and willingness-to-sell curves, respectively. We
+must consider different cases we do not know how prosumers would bid
+under the SDR mechanism. The first case is when 𝑆̂ < 𝑄𝐵 , meaning
+the maximum prosumers’ supply is less than the total baseload. In
+this scenario, under MCP, the market clearing price will be 𝑈 𝑅, and
+prosumers capture all the surplus (denoted as PS in the figures), as
+shown in the left graph of Fig. 2. In the SDR case, regardless of the
+agents’ strategies, we will have 0 < 𝑆 𝐷𝑅 < 1, since the total supply
+is less than demand. In this case, consumers capture the surplus of
+̂ as shown in the right graph of Fig. 2, with the area
+(𝑈 𝑅 − 𝑃𝑆 𝐷𝑅 ) × 𝑆,
+denoted by CS, and it is easy to see that the social surplus is identical to
+the MCP case. This is likely the most common scenario now and in the
+near future, where prosumers’ total solar and storage capacity is less
+than total inflexible demand. The second case is the opposite extreme,
+̂ In this case, 𝑃𝑆 𝐷𝑅 = 0, which is the same as 𝑃𝑀 𝐶 𝑃 .
+where 𝑆𝐵 > 𝑄.
+As a result, consumers capture all the surplus, and the social surplus is
+again identical between MCP and SDR, as shown in the left graph of
+Fig. 3. In cases beyond these two extremes, the situation is less clear,
+as it depends on how agents bid in both the SDR and MCP markets.
+In such cases, we expect that 𝑃𝑆 𝐷𝑅 and 𝑃𝑀 𝐶 𝑃 will differ, making the
+analysis of social surplus more complex. We defer this analysis to future
+research.
+It is important to note, based on Figs. 2 and 3, that the MCP
+approach would not present a problem if the willingness-to-buy and
+willingness-to-sell curves were known, even when all supply resources
+have zero marginal costs, as market clearing prices would not necessarily be 0 or 𝑈 𝑅. However, determining these curves is impractical,
+as even consumers and prosumers often do not know their precise
+willingness to buy or sell in relation to flexible demand and supply.
+This is exactly where the SDR approach offers a distinct advantage: it
+
+Fig. 1. Market clearing using SDR.
+
+rare cases where every agent is a prosumer with excess energy at time 𝑡,
+the P2P market can be temporarily suspended, and surplus energy sold
+to the grid at a predefined price, which will not impact our model or
+algorithm framework. Conversely, if 𝑡 is ∅, indicating no excess energy
+for sale at 𝑡, then 𝑆 𝐷𝑅𝑡 = 0.
+Based on its definition, when 𝑆 𝐷𝑅𝑡 > 1, it means that there is
+an over-supply. In this case, we assume that the excess energy in the
+P2P market is sold to a utility company, a distribution system operator
+(DSO), or an aggregator at a pre-defined rate, generally denoted as 𝐹 𝐼 𝑇
+(feed-in tariff).1 If 0 ≤ 𝑆 𝐷𝑅𝑡 < 1, indicating over-demand in 𝑡, then the
+unmet demand bids will purchase energy at a pre-defined utility rate,
+denoted as 𝑈 𝑅. Without loss of generality, we assume that 𝐹 𝐼 𝑇 < 𝑈 𝑅.2
+The SDR mechanism determines the market clearing price as follows:
+{
+(𝐹 𝐼 𝑇 − 𝑈 𝑅) ⋅ 𝑆 𝐷𝑅𝑡 + 𝑈 𝑅, 0 ≤ 𝑆 𝐷𝑅𝑡 ≤ 1;
+𝑃𝑡 ∶= 𝑃 (𝑆 𝐷𝑅𝑡 ) =
+(2)
+𝐹 𝐼𝑇 ,
+𝑆 𝐷𝑅𝑡 > 1.
+In (2), 𝑃𝑡 denotes the market clearing price in round 𝑡, which is a
+piece-wise linear function with respect to the 𝑆 𝐷𝑅𝑡 , as illustrated in
+Fig. 1.
+While the SDR approach may be criticized for not being based
+on economic theories, we argue that its simplicity and transparency
+make it well-suited for a P2P energy market with zero marginal cost
+resources. In our previous work [24], we identified that a P2P energy
+market using a traditional double-sided auction is unlikely to perform
+well due to its unique characteristics. Specifically, uncleared electricity
+demand bids must be bought at the 𝑈 𝑅 rate, and uncleared energy
+supply bids must be sold at 𝐹 𝐼 𝑇 , with both rates known to all market
+participants. The public information of 𝑈 𝑅 and 𝐹 𝐼 𝑇 naturally leads
+sellers to bid at 𝑈 𝑅 and buyers to bid at 𝐹 𝐼 𝑇 , aiming to maximize their
+payoffs, since the marginal generation costs are zero. This will result in
+a bang–bang market outcome: when there is overdemand, the market
+price is 𝑈 𝑅; when there is oversupply, the price is 𝐹 𝐼 𝑇 . We view the
+SDR approach as a fair and reasonable alternative to the marginal-costbased approach to avoid such outcomes, especially in a new market
+where supply is likely much less than demand.
+Additionally, the SDR method offers two key benefits: First, it
+maintains the market clearing price between 𝑈 𝑅 and 𝐹 𝐼 𝑇 , ensuring
+
+1
+The 𝐹 𝐼 𝑇 rate is a rate set by utilities/policymakers. It can be set as zero
+and will not affect the pricing mechanism in any way.
+2
+If 𝐹 𝐼 𝑇 > 𝑈 𝑅, it means that energy consumers pay more than the utility
+rate to purchase energy from the prosumers, which is equivalent to a direct
+subsidy from energy consumers (including low-income consumers who do not
+have the means to invest in DERs) to prosumers. This cannot be justified from
+an equity perspective.
+
+3
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+Fig. 2. Social surplus comparison: total zero-marginal-cost supply less than total inflexible load.
+
+Fig. 3. Social surplus: total zero-marginal-cost supply more than total inflexible load.
+
+removes the need for agents to define their true preferences – which
+are inherently uncertain – and simply requires them to bid quantities.
+Moreover, in at least two cases, there is no loss in social surplus, and
+in fact, the SDR mechanism results in greater consumer surplus when
+demand significantly exceeds prosumer supply.
+
+is the concatenation of the states of each agent, where 𝐼 is the total
+number of agents. Specifically, the individual state variable is defined
+𝑝
+𝑞
+𝑝
+𝑞
+as 𝑠𝑖,𝑡 ∶= (𝑑𝑖,𝑡
+, 𝑑𝑖,𝑡
+, 𝑒𝑖,𝑡 , 𝑃 𝑉𝑖,𝑡 ) ∈ 𝑖 , where 𝑑𝑖,𝑡
+and 𝑑𝑖,𝑡
+are the inflexible
+demand of active and reactive power of agent 𝑖, 𝑒𝑖,𝑡 is the state of charge
+of agent 𝑖’s energy storage system, and 𝑃 𝑉𝑖,𝑡 is the PV (real) power
+generation in 𝑡.
+𝑝
+𝑞
+Among the state variables, (𝑑𝑖,𝑡
+, 𝑑𝑖,𝑡
+, 𝑃 𝑉𝑖,𝑡 ) are only observations
+because their transitions adhere to underlying distributions that are
+independent of agents’ actions. In contrast, the transition of 𝑒𝑖,𝑡 is
+influenced by agents’ actions, with details to be elaborated further
+below after agents’ actions are defined.
+The assumption that each agent is required to observe the whole
+system’s state may appear to be strong in a decentralized setting and
+is prone to criticisms and privacy concerns. Our responses are twofold:
+first, the identity of the agents is irrelevant, and hence, from an agent’s
+perspective, which state variable corresponds to which specific agent
+is not known. Second, the proposed algorithms are intended to be
+implemented on devices that can receive information from the grid
+(generally referring to a utility or a distributed system operator) and
+automatically participate in the repeated P2P market without human
+intervention (aka control automation). The information received by the
+devices should be encrypted and can only be decrypted by the controlautomation devices. Grant ed that the devices could be compromised,
+there have been works on how to address adversarial attacks in a
+multi-agent reinforcement learning framework [26], which leads to
+interesting future research directions.
+Action or control variables: at time 𝑡, the actions that agent 𝑖 can take
+are represented by a vector 𝑎𝑖,𝑡 ∶= (𝑎𝑞𝑖,𝑡 , 𝑎𝑒𝑖,𝑡 ) ∈ 𝑖 = 𝑞𝑖 ×𝑒𝑖 , where 𝑎𝑞𝑖,𝑡 is
+the reactive power injected or absorbed by agent 𝑖’s smart inverter, and
+𝑎𝑒𝑖,𝑡 is energy charged (if 𝑎𝑒𝑖,𝑡 > 0) to or discharged (if 𝑎𝑒𝑖,𝑡 < 0) from the
+battery. The feasible action spaces of 𝑎𝑞𝑖,𝑡 and 𝑎𝑒𝑖,𝑡 are generically denoted
+
+4. Decentralized learning with consensus updates
+In this section, we first formulate the decision-making problem
+faced by each agent as a MDP. (For brevity, we only describe a
+prosumer’s problem. A pure consumer’s problem is similar, just without
+the supply bids.) We then introduce the details of the consensus-MARL
+algorithm.
+4.1. Markov decision process for a prosumer
+In our setup, we assume that each prosumer locates at one bus of the
+distribution network and has two resources under their control: a solar
+photovoltaic (PV) system with a smart inverter, and a rechargeable
+battery as energy storage. Each prosumer also has a fixed baseload of
+energy consumption. At a particular time period t, whether a prosumer
+is a net energy seller or a buyer depends on their baseload versus the
+level of PV generation and energy storage.
+Due to the presence of energy storage, each agent’s bidding and
+charging decisions are linked over time, which are naturally modeled
+through dynamic programming. Since an agent’s decisions at 𝑡 only
+depend on its energy storage level at 𝑡 − 1 and the PV generation in 𝑡, a
+discrete-time MDP model is suitable here. In the following, we describe
+the key building blocks of each agent’s MDP model.
+Observation and state variables: Agent 𝑖 ∈  at time step 𝑡 is assumed
+𝐼  , which
+to receive the system states 𝑠𝑡 = (𝑠1,𝑡 , … , 𝑠𝐼 ,𝑡 ) ∈  ∶= 𝛱𝑖=1
+𝑖
+4
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+by 𝑞𝑖 and 𝑏𝑖 , respectively. In the specific context of our model, it is
+safe to assume that the action space 𝑖 = 𝑞𝑖 × 𝑒𝑖 is bounded.
+State transition: Out of the state variables defined earlier, the energy
+storage level 𝑒𝑖,𝑡 is the only one that is directly affected by an agent’s
+own action. The state transition for 𝑒𝑖,𝑡 can be written as follows:
+{
+[
+] }
+1
+𝑒𝑖,𝑡+1 = max min 𝑒𝑖,𝑡 + 𝜂𝑖𝑐 max(𝑎𝑒𝑖,𝑡 , 0) + 𝑑 min(𝑎𝑒𝑖,𝑡 , 0), 𝑒𝑖 , 0 ,
+(3)
+𝜂𝑖
+
+network has 𝑁 buses, we have that for 𝜅 = 1, … , 𝑁 (the time index 𝑡
+is omitted below for simplicity):
+
+where 𝜂𝑖𝑐 and 𝜂𝑖𝑑 are the charging and discharging efficiency of agent
+𝑖’s battery, respectively, and 𝑒𝑖 is the battery capacity. The charging
+efficiency represents the ratio of the amount of energy effectively stored
+in the system to the energy input during the charging process; while
+the discharging efficiency is the ratio of the energy delivered by the
+system during discharge to the energy that was initially stored in it.
+Their product, 𝜂𝑖𝑐 × 𝜂𝑖𝑑 , yields the so-called round-trip efficiency. The
+outside ‘‘max’’ operation in (3) is to ensure that the energy level in
+the battery will not be negative; while the first ‘‘min’’ operation in the
+bracket is to ensure that the battery storage capacity is not exceeded.
+Reward: Each agent 𝑖’s reward function is affected by both the
+collective actions of the agents and the system states. Specifically, agent
+𝑖’s reward in time step 𝑡, denoted by 𝑟𝑖,𝑡 , is a random variable whose
+conditional expectation has three components as follows:
+
+In the above system of nonlinear equations, 𝑝𝜅 ’s and 𝑞𝜅 ’s are input
+data, with 𝑝𝜅 being the net real power injection (or withdrawal) at
+∑
+bus 𝜅 (i.e. 𝑝𝜅 = 𝑖∈𝜅 𝑏𝑖 , with 𝑏𝑖 given in (6) and 𝜅 denoting the
+set of agents at bus 𝜅), and 𝑞𝑘 being the net reactive power flow at
+∑
+bus 𝑘 (i.e. 𝑞𝜅 = 𝑖∈𝜅 (−𝑑𝑖𝑞 + 𝑎𝑞𝑖 )). The variables are |𝑉𝜅 | and 𝛼𝜅 for
+𝜅 = 1, … , 𝑁, with |𝑉𝜅 | being the voltage magnitude and 𝛼𝜅 the phase
+angle at bus 𝜅. The terms 𝐺𝜅 𝑗 and 𝐵𝜅 𝑗 are parameters that represent
+the real and imaginary parts of the admittance of branch 𝜅-𝑗 in the
+network, respectively.
+At a given round 𝑡 of the P2P trading, for a given set of the real and
+reactive power injection/withdrawal as the result of agents’ bidding, if
+the system of Eqs. (7) has a solution,3 then we can define the voltage
+violation penalty as follows:
+𝑁
+[
+]
+∑
+clip max(|𝑉𝜅 ,𝑡 | − 𝑉 𝜅 , 𝑉 𝜅 − |𝑉𝜅 ,𝑡 |), {0, 𝑀} .
+𝑟𝑣 ∶= −𝜆
+(8)
+
+𝑒
+𝑒
+𝑣
+E[𝑟𝑖,𝑡 |𝑠𝑡 , 𝑎𝑡 ] ∶= E[𝑟𝑚
+𝑖 (𝑎𝑖,𝑡 ; 𝑎−𝑖,𝑡 , 𝑠𝑡 )] + E[𝑟 (𝑎𝑖,𝑡 ; 𝑎−𝑖,𝑡 , 𝑠𝑡 )]∕𝐼
+
++ E[𝑟𝑙 (𝑎𝑖,𝑡 ; 𝑎−𝑖,𝑡 , 𝑠𝑡 )]∕𝐼 .
+
+𝑝𝜅 =
+
+𝑞𝜅 =
+
+𝑁
+∑
+
+(7)
+|𝑉𝜅 ||𝑉𝑗 |(𝐺𝜅 𝑗 sin(𝛼𝜅 − 𝛼𝑗 ) − 𝐵𝜅 𝑗 cos(𝛼𝜅 − 𝛼𝑗 )).
+
+𝑗=1
+
+𝜅=1
+
+(4)
+In (8), 𝑉 𝜅 and 𝑉 𝜅 represent the upper and lower limit of bus 𝑘’s voltage
+magnitude, respectively. Let 𝑓𝑐 𝑙𝑖𝑝 denote a generic ‘clip’ function in the
+form of 𝑓𝑐 𝑙𝑖𝑝 = clip[𝑥, {𝑣𝑚𝑖𝑛 , 𝑣𝑚𝑎𝑥 }], which is defined as 𝑓𝑐 𝑙𝑖𝑝 = 𝑥 when
+𝑣𝑚𝑖𝑛 ≤ 𝑥 ≤ 𝑣𝑚𝑎𝑥 , 𝑓𝑐 𝑙𝑖𝑝 = 𝑣𝑚𝑖𝑛 if 𝑥 < 𝑣𝑚𝑖𝑛 , and 𝑓𝑐 𝑙𝑖𝑝 = 𝑣𝑚𝑎𝑥 if 𝑥 > 𝑣𝑚𝑎𝑥 .
+Based on the clip function definition, if the voltage magnitudes |𝑉𝜅 ,𝑡 |
+obtained from solving Eqs. (7) are within the voltage limit of [𝑉 𝜅 , 𝑉 𝜅 ]
+on every bus 𝜅 = 1, … , 𝑁, then 𝑅𝑣 = 0; if there is voltage violation
+at a certain bus 𝜅, the term max(|𝑉𝜅 ,𝑡 | − 𝑉 𝜅 , 𝑉 𝜅 − |𝑉𝜅 ,𝑡 |) becomes
+positive, and 𝑟𝑣 becomes a negative number with an arbitrary positive
+number 𝜆 to amplify the voltage violation. The other positive parameter
+in (8), 𝑀, is just to ensure that the reward 𝑟𝑣 is bounded below, a
+technical condition needed to ensure the convergence of the consensus
+MARL algorithm to be introduced in the next section. If the power flow
+Eqs. (7) do not have a solution with a given set of agents’ bids, we can
+simply set 𝑟𝑣 = −𝜆 ⋅ 𝑁 ⋅ 𝑀.
+The third term in the reward function (4), 𝑟𝑙 , is the line capacity
+violation penalty over the entire distribution network at a given time
+𝑡. Let 𝑆𝜅 ,𝑗 denote the apparent power flow from bus 𝜅 to bus 𝑗, which
+is defined as 𝑆𝜅 ,𝑗 = 𝑉𝑗 𝐼𝜅∗,𝑗 , where 𝐼𝜅∗,𝑗 is the complex conjugate of 𝐼𝜅 ,𝑗
+– the current from bus 𝜅 to bus 𝑗. 𝐼𝜅 ,𝑗 is calculated 𝐼𝜅 ,𝑗 = 𝑌𝜅 ,𝑗 (𝑉𝜅 − 𝑉𝑗 ),
+where 𝑌𝜅 ,𝑗 is the complex admittance of the branch between buses 𝜅
+and 𝑗, and 𝑉𝜅 and 𝑉𝑗 are the voltages from the power flow equations in
+(7). Let  be the set of branches with constraints on the magnitude of
+the apparent power flow. The total line capacity violation penalty can
+then be defined as follows:
+]
+[
+∑
+𝑟𝑙 ∶= −𝛾
+min max(|𝑆𝜅 ,𝑗 | − 𝑆 𝜅 ,𝑗 , 0), 𝐶 ,
+(9)
+
+where I𝑖∈𝑡 is an indicator function such that I𝑖∈𝑡 = 1 if 𝑖 ∈ 𝑡 , and
+0 otherwise. Similarly, I𝑖∈𝑡 = 1 if ∈ 𝑡 and 0 otherwise. 𝑆 𝐷𝑅𝑡 is the
+supply–demand-ratio as defined in (1), which depends on all agents’
+bids, and the bids further depend on each agent’s charging/discharging
+decisions, as well as the PV generation and the baseload. Specifically,
+the bids can be explicitly written as
+if 𝑎𝑒𝑖,𝑡 ≥ 0,
+
+|𝑉𝜅 ||𝑉𝑗 |(𝐺𝜅 𝑗 cos(𝛼𝜅 − 𝛼𝑗 ) + 𝐵𝜅 𝑗 sin(𝛼𝜅 − 𝛼𝑗 )),
+
+𝑗=1
+
+In (4), the notation 𝑎−𝑖,𝑡 refers to the collection of all other agents’
+actions, excluding agent 𝑖’s; while 𝑎𝑒−𝑖,𝑡 refers to only the energy charge/
+discharge decisions of the other agents. The first term 𝑟𝑚
+𝑖 in (4) is
+the energy purchase cost or sales profit of agent 𝑖 from the P2P
+energy market (with the superscript ‘m’ standing for ‘market’), whose
+formulation is as follows:
+[
+]
+⎧I
+⎪ 𝑖∈𝑡 × 𝑆 𝐷𝑅𝑡 ⋅ 𝑃𝑡 ⋅ 𝑏𝑖,𝑡 + (1 − 𝑆 𝐷𝑅𝑡 ) ⋅ 𝑈 𝑅 ⋅ 𝑏𝑖,𝑡
+(
+)
+⎪
+𝑟𝑚
+(5)
+if 0 ≤ 𝑆 𝐷𝑅𝑡 ≤ 1,
+𝑖 ∶= ⎨+ I𝑖∈𝑡 × 𝑃𝑡 ⋅ 𝑏𝑖,𝑡 ,
+⎪
+⎪𝐹 𝐼 𝑇 ⋅ 𝑏 , if 𝑆 𝐷𝑅 > 1,
+𝑖,𝑡
+𝑡
+⎩
+
+⎧
+𝑝
+𝑒 𝑒𝑖 −𝑒𝑖,𝑡
+⎪𝑃 𝑉𝑖,𝑡 − 𝑑𝑖,𝑡 − min(𝑎𝑖,𝑡 , 𝜂𝑖𝑐 ),
+𝑏𝑖,𝑡 = ⎨
+⎪𝑃 𝑉𝑖,𝑡 − 𝑑 𝑝 − max(𝑎𝑒 , −𝑒𝑖,𝑡 ⋅ 𝜂 𝑑 ),
+𝑖,𝑡
+𝑖,𝑡
+𝑖
+⎩
+
+𝑁
+∑
+
+(6)
+
+otherwise,
+
+which is simply the net energy of PV generation minus baseload demand (of real power) and charge to the battery. Since PV generation is
+inherently variable, this net available energy is also a random variable.
+The market clearing price 𝑃𝑡 in (5) is defined in (2).
+Note that when 𝑆 𝐷𝑅𝑡 < 1, not all demand bids will be cleared in
+the P2P market at time 𝑡. In such instances, they will need to purchase
+the needed energy at the utility rate, leading to the 𝑈 𝑅 ⋅ 𝑏𝑖,𝑡 term when
+defining the reward 𝑅𝑚
+𝑖 in Eq. (5). To ensure fairness and prevent any
+inadvertent favoritism among the demand bids, we employ a mechanism where each demand bid is partially cleared. Specifically, the
+clearance proportion is exactly 𝑆 𝐷𝑅𝑡 (which represents the percentage
+of total demand bids cleared), and the uncleared bid for every agent is
+then (1 − 𝑆 𝐷𝑅𝑡 ) ⋅ 𝑏𝑖,𝑡 . This approach of proportional scaling echoes the
+rules used in multi-unit double auctions in [27].
+The second term in the reward function (4), 𝑟𝑣 , is the system voltage
+violation penalty at a given time 𝑡. To provide an explicit form of 𝑟𝑣 ,
+we first write out the standard bus-injection model. Assume that the
+
+(𝜅 ,𝑗)∈
+
+where 𝑆 𝜅 ,𝑗 represent the upper limit of branch 𝜅 − 𝑗, 𝐶 is a constant
+to ensure that the reward 𝑟𝑙 is bounded below, and 𝛾 is an arbitrary
+positive number to amplify the capacity violation. If (7) does not have
+a solution, similar to the voltage violation case, we set 𝑟𝑙 = −𝜆 ⋅ 𝑁 ⋅ 𝐶.
+We want to clarify that the voltage and line capacity violation penalties are not actual financial penalties for the agents, as market clearing
+occurs before real-time energy delivery. Instead, these penalties only
+serve as feedback to help agents refine their reinforcement learning
+policies. Note that the (fictitious) network violation penalties should
+not be confused with the fees utilities charge for grid maintenance. This
+
+3
+
+5
+
+Sufficient conditions under which (7) has a solution are provided in [28].
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+relative action-value function 𝑄𝜃 (𝑠, 𝑎) for a given 𝑎 ∈ , 𝑠 ∈  and
+a policy 𝜋𝜃 as:
+]
+[ 𝐼
+∞
+∑
+1∑
+𝑟 − 𝐽 (𝜃) ∣ 𝑠0 = 𝑠, 𝑎0 = 𝑎, 𝜋𝜃 .
+(11)
+𝑄𝜃 (𝑠, 𝑎) ∶=
+E
+𝐼 𝑖=1 𝑖,𝑡
+𝑡=0
+
+trading market does not account for how utilities impose transmission
+and distribution (T&D) maintenance fees, which are typically fixed
+rather than volumetric in most U.S. regions [29]. We can adjust the
+utility rate (UR, the price ceiling in Fig. 1) to subtract the fixed
+charge, and the framework in this paper remains applicable, with the
+understanding that each transaction will have to pay an additional grid
+maintenance fee.
+After market-clearing and solving for voltage magnitudes, the total
+reward for agent 𝑖 at time step 𝑡 is realized, as defined in (4). Note that
+while we do not explicitly assume to have a DSO in the distribution
+network, an entity is still needed to solve Eq. (7). A utility company
+can assume such a role. The solution process may even be carried out
+by a distributed ledger system, such as on a blockchain.
+Objective function: At each 𝑡, agent 𝑖 receives the system state 𝑠𝑡 ,
+chooses an action 𝑎𝑖,𝑡 ∈ 𝑖 , and receives a reward 𝑟𝑖,𝑡 . Agent 𝑖’s decision,
+given the system state 𝑠𝑡 ∈ , is determined by the policy 𝜋𝜃𝑖 (⋅|𝑠𝑡 ).
+This policy is a density function mapping from 𝑖 to [0, ∞) and is
+parameterized by 𝜃𝑖 . Here, 𝜃𝑖 is an element of a generic set 𝛩𝑖 ∈ 𝑚𝑖 ,
+where the dimensionality 𝑚𝑖 is determined by each agent. In choosing
+𝑚𝑖 , each agent faces a tradeoff: it should be large enough to avoid
+underfitting, yet not too large to risk overfitting and increased training
+∏
+time. Let 𝜃 ∶= [𝜃1 , … , 𝜃𝐼 ] and 𝜋𝜃 (⋅|𝑠) = 𝐼𝑖=1 𝜋𝜃𝑖 (⋅|𝑠) be the joint policy
+of all agents. In the following discussion of this section, we assume that
+{ }
+the Markov chains 𝑠𝑡 𝑡≥0 induced by the collective policy 𝜋𝜃 is ergodic
+with a stationary distribution 𝜌𝜃 .
+Different from a fully decentralized framework, the goal for each
+agent in the consensus-update framework is to solve the following
+optimization problem:
+( 𝐼
+)
+]
+[
+𝑇
+|
+1 ∑ 1∑
+|
+𝑟𝑖,𝑡 |𝑠0 , 𝜋𝜃 ,
+(10)
+sup
+𝐽 (𝜃) = E𝑠0 ∼𝜌𝜃 lim
+|
+𝑇 →∞ 𝑇
+𝐼 𝑖=1
+𝐼 𝛩
+𝜃∈𝛩∶=𝛱𝑖=1
+|
+𝑡=0
+𝑖
+
+Note that since all the agents share the same 𝐽 (𝜃), the 𝑄 function does
+not need to have an agent index and is the same across the agents.
+The function 𝑄𝜃 (𝑠, 𝑎) cannot be calculated by each agent, even if
+the global state and action information are shared, since the joint
+̂ ⋅; 𝜔𝑖 ) ∶
+policy distribution 𝜋𝜃 is not known. Instead, each agent uses 𝑄(⋅,
+ ×  → , which is a class of functions parameterized by 𝜔𝑖 ∈ 𝐾 ,
+where 𝐾 is the dimension of the 𝜔𝑖 , to approximate the action-value
+function 𝑄𝜃 (𝑠, 𝑎). Note that unlike the parameters 𝜃𝑖 , where agents can
+choose their own policy models (and hence different dimensions of 𝜃𝑖 ),
+the dimension of 𝜔𝑖 has to be the same across all agents (and hence 𝐾
+does not have an agent index) to facilitate the consensus update.
+The decentralized consensus-update actor-critic algorithm for networked multi-agents works as follows: at the beginning of time step 𝑡+1,
+each agent 𝑖 observes the global state 𝑠𝑡+1 and chooses their action 𝑎𝑖,𝑡+1
+according to their own policy 𝜋𝜃𝑖,𝑡 (referred to as the ‘actor’), where 𝜃𝑖,𝑡
+is the policy parameter for agent 𝑖 at time step 𝑡. Then each agent 𝑖 will
+receive the joint action 𝑎𝑡+1 = (𝑎1,𝑡+1 , … , 𝑎𝐼 ,𝑡+1 ) and their own reward
+̂ ⋅; 𝜔𝑖 ) (referred to as the ‘critic’) and
+𝑟𝑖,𝑡+1 , which help them update 𝑄(⋅,
+𝑡
+𝜋𝜃𝑖,𝑡 on their own in each time step. Specifically, each agent first updates
+the temporal-difference (TD) error 𝛿𝑡𝑖 and long-term return estimate 𝑟̄𝑖𝑡+1
+as follows:
+(
+)
+(
+)
+𝛿𝑡𝑖 ∶= 𝑟𝑖,𝑡+1 − 𝑟̄𝑖𝑡+1 + 𝑄̂ 𝑠𝑡+1 , 𝑎𝑡+1 ; 𝜔𝑖𝑡 − 𝑄̂ 𝑠𝑡 , 𝑎𝑡 ; 𝜔𝑖𝑡
+(12)
+𝑟̄𝑖𝑡+1 ← (1 − 𝛽𝜔,𝑡 ) ⋅ 𝑟̄𝑖𝑡 + 𝛽𝜔,𝑡 ⋅ 𝑟𝑖,𝑡
+
+(13)
+
+̂ ⋅; 𝜔𝑖 ) for agent 𝑖, and
+Let 𝜔
+̃𝑖𝑡 denote a temporary local parameter of 𝑄(⋅,
+𝑡
+it is updated as:
+(
+)
+𝜔
+̃𝑖𝑡 = 𝜔𝑖𝑡 + 𝛽𝜔,𝑡 ⋅ 𝛿𝑡𝑖 ⋅ ∇𝜔 𝑄̂ 𝑠𝑡 , 𝑎𝑡 ; 𝜔𝑖𝑡 .
+(14)
+
+which is to optimize the average system long-term reward. The objective function resembles a cooperative game, which may face similar
+critiques regarding the need for each agent to access system-wide state
+variables in a decentralized setting. A pertinent response, as previously
+mentioned, is the use of control automation: the objective function
+can be integrated into intelligent control devices, making them ‘black
+boxes’ for end-users. Additionally, in developing a MARL framework
+with provable convergence, some level of global information sharing
+among agents is likely unavoidable. The collective objective function,
+as outlined in (10), is essential for decentralized agents to reach a
+consensus.
+To ensure that the objective function in (10) is well-defined, we
+have the following result.
+
+The local parameter of the policy 𝜋𝜃𝑖,𝑡 is updated as
+𝜃𝑖,𝑡+1 = 𝛤 𝑖 [𝜃𝑖,𝑡 + 𝛽𝜃,𝑡 ⋅ 𝐼̂𝑡𝑄,𝑖 ],
+
+(15)
+
+where 𝛤 𝑖 ∶ R𝑚𝑖 → 𝛩𝑖 ⊂ R𝑚𝑖 is a projector operator. An example is the
+orthogonal projector mapping: 𝛤 𝑖 (𝑥) ≜ ar g min𝑦∈𝛩𝑖 ‖𝑦 − 𝑥‖, ∀𝐱 ∈ R𝑚𝑖 ,
+where 𝛩 is a compact convex set. The 𝐼̂𝑡𝑄,𝑖 term in (15) is given as
+follows:
+𝐼̂𝑄,𝑖 =
+𝑡
+
+∫𝑖
+
+Lemma 4.1. The supremum in (10), sup𝜃 𝐽 (𝜃), exists and is finite.
+
+(
+)
+(
+) (
+)
+𝑖
+𝑑 𝜋𝜃𝑖,𝑡 𝑎𝑖 ∣ 𝑠𝑡 ∇𝜃𝑖 log 𝜋𝜃𝑖,𝑡 𝑎𝑖 ∣ 𝑠𝑡 𝑄̂ 𝑠𝑡 , 𝑎𝑖 , 𝑎−𝑖
+𝑡 ; 𝜔𝑡 .
+
+(16)
+
+To limit communication among agents, each agent 𝑖 only shares local parameter 𝜔
+̃𝑖𝑡 with each other; no other information needs to be
+shared. A consensual estimate of 𝑄𝜃 (𝑠, 𝑎) can then be estimated through
+updating the parameter 𝜔𝑖𝑡+1 as follows:
+
+Proof. Since the market clearing price 𝑃𝑡 , the supply–demand ratio
+𝑆 𝐷𝑅𝑡 , and agents bid 𝑏𝑖,𝑡 for 𝑖 = 1, … , 𝐼 are all bounded above, the first
+term in an agent’s reward function, 𝑅𝑚
+𝑖 , is then bounded above based
+𝐼  and 𝑠 ∈ . The second term, 𝑅𝑣 ,
+on Eq. (5), for any 𝑎 ∈  ∶= 𝛱𝑖=1
+𝑖
+is bounded above by 0 based on its definition in Eq. (8). Hence, agent
+𝑖’s reward 𝑟𝑖,𝑡 is bounded at any 𝑡, and for any 𝑎 ∈  and 𝑠 ∈ . Since
+the number of agents is finite, there exists a common upper bound for
+all 𝑟𝑖,𝑡 ’s, and let us denote it as 𝑅. Then by the formulation in (10),
+𝐽 (𝜃) ≤ 𝑅 for all 𝜃 ∈ 𝛩. By the well-known least-upper-bound property
+of real numbers, we know that sup𝜃 𝐽 (𝜃) exists and is finite. □
+
+𝜔𝑖𝑡+1 =
+
+𝐼
+∑
+
+𝜔
+̃𝑗𝑡 .
+
+(17)
+
+𝑗=1
+
+To apply such an algorithm to P2P energy trading, we illustrate the
+conceptual framework in Fig. 4. The detailed algorithm is presented in
+Algorithm 1.
+
+4.3. Convergence results
+4.2. Consensus-update actor-critic algorithm
+In this section, we discuss the convergence results of Algorithm 1.
+For ease of notation, we drop the 𝑡 index of the parameters 𝜃𝑖 for 𝑖 ∈ 
+in the following discussions. First, we need a technical condition of
+Markov chains, known as the geometric ergodicity.
+
+In this section, we introduce the consensus-update actor-critic algorithm for MARL with continuous state and action spaces, developed
+in [1], and apply it to solve Problem (10). First, define the global
+6
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+Fig. 4. Consensus MARL Framework for the Voltage Control with P2P Market.
+
+Definition 4.1 (Geometric Ergodicity, Referred to as Uniform Ergodicity in [30]). A Markov chain having stationary distribution 𝜋(⋅) is
+geometrically ergodic if
+
+Algorithm 1: Consensus-update actor-critic algorithm for voltage control with P2P energy market
+Input: Initial values of the parameters
+𝑟̄𝑖 , 𝜔𝑖 , 𝜔
+̃𝑖 , 𝜃 𝑖 , ∀𝑖 ∈ {1, … , 𝐼}, the initial state 𝑠0 , and stepsizes
+{0 0} 0 0 { }
+𝛽𝜔,𝑡 𝑡≥0 and 𝛽𝜃,𝑡 𝑡≥0 .
+
+‖𝑃 𝑚 (𝑥, ⋅) − 𝜋(⋅)‖ ≤ 𝑀 𝑐 𝑚 , 𝑚 = 1, 2, 3, …
+for some 0 < 𝑐 < 1 and 0 < 𝑀 < ∞, where 𝑃 is the transition kernel of
+the Markov chain.
+The concept of geometric ergodicity specifies the rate at which a
+Markov chain converges to a stationary distribution if it exists. In the
+following, we state the first assumption to ensure the consensus MARL
+convergence to a steady state, which requires the Markov chains formed
+by the system state and state–action pairs to be both geometrically
+ergodic. Grant ed that this assumption cannot be easily verified, it is
+essential to the convergence proof.
+
+for each agent 𝑖 = 1, ..., 𝐼 do
+Makes the decision on reactive power generation and
+(
+)
+battery charging/discharging 𝑎𝑖,0 ∼ 𝜋𝜃𝑖 ⋅ ∣ 𝑠0 .
+0
+
+end
+The power flow equation (7) is solved, the P2P energy market
+is cleared, and the information of joint actions
+(
+)
+𝑎0 = 𝑎𝑖,0 , … , 𝑎𝐼 ,0 is sent to each agent.
+for each agent 𝑖 = 1, ..., 𝐼 do
+Observes the reward 𝑟𝑖,0 .
+end
+for each time step 𝑡 = 0, 1, ...𝑇 do
+for each agent 𝑖 = 1, ..., 𝐼 do
+Observes the next global state 𝑠𝑡+1 .
+Update 𝑟̄𝑖𝑡+1 ← (1 − 𝛽𝜔,𝑡 ) ⋅ 𝑟̄𝑖𝑡 + 𝛽𝜔,𝑡 ⋅ 𝑟𝑖,𝑡 . Makes the decision
+on reactive power generation and battery
+(
+)
+charging/discharging 𝑎𝑖,𝑡+1 ∼ 𝜋𝜃𝑖,𝑡 ⋅ ∣ 𝑠𝑡+1 .
+
+Assumption 1. For each 𝑖 ∈ , 𝑠 ∈  and 𝜃𝑖 ∈ 𝛩𝑖 , agent 𝑖’s policy is
+(
+)
+positive; that is, 𝜋𝜃𝑖 𝑎𝑖 ∣ 𝑠 > 0 for all 𝑎𝑖 ∈ 𝑖 . Additionally, 𝜋𝜃𝑖 (⋅ ∣ 𝑠) is
+assumed to be continuously differentiable with respect to the parameter
+{ }
+{(
+)}
+𝜃𝑖 over 𝛩𝑖 . Finally, the Markov chains 𝑠𝑡 𝑡≥0 and 𝑠𝑡 , 𝑎𝑡 𝑡≥0 induced
+by the agents’ collective policies 𝜋𝜃 are both geometrically ergodic,
+with the corresponding stationary distribution denoted by 𝜌𝜃 and 𝜌̃𝜃 ,
+respectively.
+
+end
+The power flow equation (7) is solved, the P2P energy
+market is cleared, and the information of joint actions
+(
+)
+𝑎𝑡+1 = 𝑎𝑖,𝑡+1 , … , 𝑎𝐼 ,𝑡+1 is sent to each agent.
+for each agent 𝑖 = 1, ..., 𝐼 do
+1. Observes the reward 𝑟𝑖,𝑡+1 and update
+(
+)
+(
+)
+𝛿𝑡𝑖 ← 𝑟𝑖,𝑡+1 − 𝑟̄𝑖𝑡+1 + 𝑄̂ 𝑠𝑡+1 , 𝑎𝑡+1 ; 𝜔𝑖𝑡 − 𝑄̂ 𝑠𝑡 , 𝑎𝑡 ; 𝜔𝑖𝑡 .
+(
+)
+2. Critic step: 𝜔
+̃𝑖𝑡 ← 𝜔𝑖𝑡 + 𝛽𝜔,𝑡 ⋅ 𝛿𝑡𝑖 ⋅ ∇𝜔 𝑄̂ 𝑠𝑡 , 𝑎𝑡 ; 𝜔𝑖𝑡 .
+3. Actor step: 𝜃𝑖,𝑡+1 ← 𝛤̃ 𝑖 [𝜃𝑖,𝑡 + 𝛽𝜃,𝑡 ⋅ 𝐼̂𝑡𝑄,𝑖 ], where
+𝛤 𝑖 ∶ R𝑚𝑖 → 𝛩𝑖 ⊂ R𝑚𝑖 , and
+( 𝑖
+)
+𝐼̂𝑡𝑄,𝑖 =
+𝑑𝜋
+𝑎 ∣ 𝑠𝑡 ⋅
+(18)
+∫𝑖 𝜃𝑖,𝑡
+(
+) (
+)
+𝑖
+∇𝜃𝑖 log 𝜋𝜃𝑖,𝑡 𝑎𝑖 ∣ 𝑠𝑡 𝑄̂ 𝑠𝑡 , 𝑎𝑖 , 𝑎−𝑖
+(19)
+𝑡 ; 𝜔𝑡 ,
+
+Remark 1. The first part of Assumption 1 is a standard assumption on
+policy functions. One example of such a policy is Gaussian: 𝜋𝜃𝑖 (⋅ ∣ 𝑠) ∼
+(
+)
+ 𝜂𝜃𝑖 (𝑠), 𝛴𝑖 , where 𝜂𝜃𝑖 (𝑠) ∶  → 𝑖 ∈ R𝑛 is a fully connected neural
+network parameterized by 𝜃𝑖 and is continuously differentiable with
+respect to 𝜃𝑖 and 𝑠, and 𝛴𝑖 ∈ R𝑛×𝑛 is the covariance matrix.
+Assumption 2. The policy parameter 𝜃𝑖 for each agent is updated by
+a local projection operator, 𝛤 𝑖 ∶ R𝑚𝑖 → 𝛩𝑖 ⊂ R𝑚𝑖 , that projects any 𝜃𝑖
+∏
+onto a compact set 𝛩𝑖 . In addition, 𝛩 = 𝐼𝑖=1 𝛩𝑖 includes at least one
+local minimum of 𝐽 (𝜃).
+Remark 2. The requirement of the local projection operator is standard
+in convergence analyses of many reinforcement learning algorithms. If
+𝛩𝑖 is a convex set, a qualifying example of 𝛤 𝑖 can be the nearest point
+projection on 𝛩𝑖 ; that is,
+
+4. Send 𝜔
+̃𝑖𝑡 to the other agent in the system.
+end
+for each agent 𝑖 = 1, ..., 𝐼 do
+∑
+Consensus step: 𝜔𝑖𝑡+1 ← 𝐼1 𝐼𝑗=1 𝜔
+̃𝑗𝑡 .
+
+𝛤 𝑖 (𝜃𝑖 ) = ar g max
+‖𝜃𝑖 − 𝜃𝑖 ∗ ‖2 .
+∗
+
+end
+end
+
+𝜃𝑖 ∈𝛩𝑖
+
+(20)
+
+Next, we make an assumption on the action-value function approximation.
+7
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+Assumption 3. For each agent 𝑖, the action-value function is approx̂ 𝑎; 𝜔) = 𝜔⊤ 𝜙(𝑠, 𝑎) where
+imated by linear functions, i.e., 𝑄(𝑠,
+[
+]⊤
+𝜙(𝑠, 𝑎) = 𝜙1 (𝑠, 𝑎), … , 𝜙𝐾 (𝑠, 𝑎) ∈ R𝐾
+
+(DNNs) instead, as they excel in capturing and modeling non-linear
+relationships. The downside of using DNNs, however, is that the proof
+of Theorem 4.1 is no longer applicable. Consequently, the convergence
+of the critic and actor steps remains an unresolved issue, meriting
+further investigation in future research.
+
+is the feature associated with (𝑠, 𝑎). The feature function, 𝜙𝑘 ∶  ×  →
+R, for 𝑘 = 1, … , 𝐾, is bounded for any 𝑠 ∈ , 𝑎 ∈ . Furthermore, the
+{ }𝐾
+feature functions 𝜙𝑘 𝑘=1 are linearly independent, and for any 𝑢 ∈ R𝐾
+⊤
+and 𝑢 ≠ 0, 𝑢 𝜙 is not a constant function over  × .
+
+Remark 5. To guarantee convergence, all agents must use the consensus algorithm. It has been shown in [26] that this consensus-based
+MARL algorithm may lack robustness; specifically, a single adversarial
+attacker could disrupt the joint reward optimization process. A more
+resilient approach is proposed in the follow-up work [31], which could
+potentially be adapted to enhance the robustness of our framework.
+While the focus is not necessarily on adversarial agents, it would be
+valuable to address scenarios where some agents may use different algorithms or act randomly without using any algorithm at all. Exploring
+such robustness would be a promising future research direction.
+
+Remark 3. One example of the action-value function approximation is
+the Gaussian radial basis function (RBF):
+̂ 𝑎; 𝜔) =
+𝑄(𝑠,
+
+𝐾
+∑
+
+𝜔𝑖 𝑒−𝛾𝑗 ‖[𝑠,𝑎]−𝑐𝑗 ‖ ,
+
+(21)
+
+𝑗=1
+
+where [𝑠, 𝑎] is the concatenation of 𝑠 and 𝑎, 𝛾𝑗 ∈ + for 𝑗 = 1, … , 𝐾,
+𝑐𝑗 ∈ ||+|| for 𝑗 = 1, … , 𝐾. The parameters 𝛾𝑗 and 𝑐𝑗 can be chosen
+arbitrarily, as long as (𝛾𝑗 , 𝑐𝑗 ) are different with different 𝑗 so that the
+feature functions are linearly independent.
+
+Another challenge arises from the dynamic nature of multi-agent
+environments, where agents frequently enter or leave the system, resulting in an ever-changing environment. Since the convergence of
+consensus MARL depends on the exchange of information between
+neighboring agents, the proof of convergence under static agent settings does not carry through in such dynamic scenarios. However, our
+algorithm remains valid in these situations, as it adapts by relearning
+and retraining the policies to reflect the updated composition of agents.
+Its performance, however, may initially be suboptimal during this
+adaptation phase. To improve performance in such dynamic settings,
+warm-start approaches like transfer learning [32], which facilitates
+the transfer of knowledge between domains, may be employed to
+accelerate the relearning process. Techniques such as policy distillation
+and policy reuse can help retain useful behaviors while adapting to new
+conditions. Exploring the application of these techniques in the MARL
+context presents a promising direction for future research.
+Another challenge arises from the dynamic nature of multi-agent
+environments, where agents frequently enter or leave the system, resulting in an ever-changing environment. The convergence of consensus
+MARL depends on the exchange of information between neighboring
+agents (while our results address the exchange of information with
+all agents in the network, the algorithm is also effective for local
+neighborhood exchanges, as demonstrated in [1]). As the composition
+of agents evolves, the joint state and action spaces of neighboring
+agents can change, potentially impacting the learned policies. Transfer
+learning [32], which facilitates the transfer of knowledge between domains, may provide a viable solution to adapt policies in such dynamic
+settings. Specifically, techniques like policy distillation and policy reuse
+can help preserve useful behaviors while adapting to new conditions.
+Investigating the application of these techniques in the MARL context
+offers a promising direction for future research.
+
+Assumption 4. The stepsizes 𝛽𝜔,𝑡 and 𝛽𝜃 ,𝑡 in Algorithm 1 satisfy
+∑
+∑
+∑
+2
++ 𝛽𝜃2,𝑡 ) < ∞.
+(22)
+𝛽𝜔,𝑡 =
+𝛽𝜃,𝑡 = ∞, and
+(𝛽𝜔,𝑡
+𝑡
+
+𝑡
+
+𝑡
+
+( )
+−1 = 1.
+Also, 𝛽𝜃,𝑡 = 𝑜 𝛽𝜔,𝑡 and lim𝑡→∞ 𝛽𝜔,𝑡+1 ⋅ 𝛽𝜔,𝑡
+An example of such stepsizes can be 𝛽𝜔,𝑡 = 1∕𝑡0.8 and 𝛽𝜃,𝑡 = 1∕𝑡.
+With the above assumptions, the convergence of Algorithm 1 is
+given below.
+Theorem 4.1. Assume that each agent’s state space 𝑖 is compact for
+{ } { }
+{ }
+𝑖 ∈ . Under Assumptions 1–4, the sequences 𝜃𝑖,𝑡 , 𝜇𝑡𝑖 and 𝜔𝑖𝑡
+generated from Algorithm 1 satisfy the following.
+∑
+(i) Convergence of the critic step: 𝐼1 lim𝑡→∞ 𝑖∈ 𝜇𝑡𝑖 = 𝐽 (𝜃), where 𝐽 (𝜃)
+is defined in (10), and lim𝑡→∞ 𝜔𝑖𝑡 = 𝜔𝜃 for all 𝑖 ∈ , with 𝜔𝜃 being a
+solution of a fixed point mapping. (The convergence is in the sense of
+almost surely.)
+(ii) Convergence of the actor step: for each 𝑖 ∈ , 𝜃𝑖,𝑡 converges almost
+surely to a point 𝜃̂𝑖 that is a projection onto the set 𝛩.
+Proof. The general convergence result of the consensus algorithm is
+proved in [1] under six assumptions. Our Assumptions 1–4 directly
+correspond to four assumptions in [1]. The fifth assumption in [1]
+regarding agents’ time-varying neighborhood is trivially true here since
+we assume agents can communicate through the whole network, and
+the network topology does not change over time. Hence, the only
+remaining item to show is the uniform boundedness of agents’ reward
+𝑟𝑖,𝑡 . By the definition of the market clearing price 𝑃𝑡 in (2), it is bounded
+between 𝐹 𝐼 𝑇 and 𝑈 𝑅. Together with the compactness assumption of
+the state space 𝑖 (which is reasonable since an agent’s energy demand
+and battery/PV capacities are all bounded), the 𝑅𝑚
+𝑖 component in the
+reward function, as defined in (4), is uniformly bounded. The other two
+terms, the voltage violation penalty 𝑅𝑣𝑖 , is uniformly upper bounded by
+0 and lower bounded by −𝜆𝑁 𝑀, and the capacity violation penalty
+𝑅𝑐𝑖 , is uniformly upper bounded by 0 and lower bounded by −𝜆𝑁 𝐶.
+Hence, 𝑟𝑖,𝑡 is uniformly bounded for all 𝑖 and 𝑡, and the convergence
+results follow directly from Theorem 2 and 3 in [1]. □
+
+5. Simulation results
+5.1. Test data
+We test the algorithm frameworks using the IEEE 13-bus test feeder
+[33], whose topology is shown in Fig. 5. In our simulations, we set each
+bus to have one prosumer, excluding the substation bus; hence, there
+are 12 prosumers (and no pure consumers). The length of each time
+step is set to be 1 h. The distribution network’s voltage limit is set to
+[0.98 pu, 1.01 pu]. The amplifying parameter for voltage violation, 𝜆, is
+set at 104 . As for the line capacity constraint, we set an apparent power
+constraint of 15 kVA on the line between Node 684 and 671, and the
+amplifying parameter for capacity violation, 𝛾, as 102 . The price ceiling
+and floor, that is, the utility rate 𝑈 𝑅 and feed-in tariff 𝐹 𝐼 𝑇 , are set
+at 14 ¢/kWh and 5 ¢/kWh, respectively. The capacity of each agent’s
+PV is set to be 20 kW, and the energy storage capacity is set to be
+50 kWh, with the charging and discharging efficiency being 0.95 and
+
+Remark 4. While the theorem establishes the convergence to a steady
+state of the critic and actor steps, it does not address how good the
+system reward is upon convergence. A key concern in this context
+is the potential inadequacy of the linear approximation of the critic
+̂ 𝑎; 𝜔) in Assumption 3. In our model, the distribution
+function 𝑄(𝑠,
+network encompasses a multitude of agents, each exhibiting non-linear
+behaviors and interactions that may not be adequately captured by
+simple linear models. One natural idea is to deep neural networks
+8
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+where 𝛾𝑖 is the discount factor of agent 𝑖. In the fully decentralized
+framework, each agent uses the single-agent PPO algorithm from [3]
+to update their own policy and value function locally based on only
+their own state, action, and reward information.
+Since all three MARL approaches are categorized as policy gradient
+descent methods, they update the parameter 𝜃𝑡+1 in a similar manner
+to approximate gradient ascent of 𝐽 (𝜃) as follows:
+̂
+𝜃𝑡+1 = 𝜃𝑡 + 𝛽 ∇𝐽
+(𝜃𝑡 ),
+
+(25)
+
+̂
+where 𝛽 is the step size and ∇𝐽
+(𝜃𝑡 ) is a stochastic estimate approximating the gradient of the performance measure. The three MARL
+̂
+approaches differ in how each agent updates ∇𝐽
+(𝜃𝑡 ). To highlight such
+differences, we present the specific gradient approximations for the
+three approaches below.
+In the fully decentralized approach, the gradient update uses local
+states and actions only: for each 𝑖 ∈ ,
+[
+( )
+(
+)
+(
+)]
+∇𝜃̂
+𝐽 𝜃𝑖 = E𝑠∼𝜌𝜃 ,𝑎𝑖 ∼𝜋𝜃 ∇𝜃𝑖 log 𝜋𝜃𝑖 𝑎𝑖 ∣ 𝑠𝑖 𝑄𝜋𝑖 𝑠𝑖 ; 𝑎𝑖 .
+(26)
+𝑖 𝑖
+𝑖
+
+Fig. 5. IEEE-13 test feeder.
+
+In the MADDPG approach, each agent makes decisions based on
+only their own state variables. However, their action-value functions
+are updated based on the global states and actions of all agents by a
+central authority, who is assumed to have access to the global information. Specifically, for each agent 𝑖 ∈ , the gradient approximation in
+MADDPG is
+[
+( )
+(
+)
+(
+)]
+∇̂
+𝐽 𝜃 =E 𝜃
+∇ log 𝜋 𝑎 ∣ 𝑠 𝑄𝜋 𝒔; 𝒂 , … , 𝒂
+,
+(27)
+
+0.9 for each agent. The PV generation of the prosumers and the total
+base load of the pure consumers on each bus have fixed diurnal shapes.
+These shapes represent the average values corresponding to each hour
+of the day. For a detailed explanation and due to page limitations her,
+please refer to our earlier paper [2]. Additionally, [2] provides more
+information on how the random PV output for each agent is generated.
+The power flow Eqs. (7) are solved by the open-source distribution
+system simulator OpenDSS [34].
+
+𝜃𝑖 𝑖
+
+𝑠∼𝜌 ,𝑎𝑖 ∼𝜋𝜃𝑖
+
+𝜃𝑖
+
+𝜃𝑖
+
+𝑖
+
+𝑖
+
+𝑖
+
+𝟏
+
+𝑰
+
+(
+)
+where
+𝒔; 𝒂𝟏 , … , 𝒂𝑰 is the centralized action-value function to
+be updated by the assumed central authority. The policy function,
+(
+)
+𝜋𝜃𝑖 𝑎𝑖 ∣ 𝑠𝑖 , on the other hand, uses only local states 𝑠𝑖 . This is what
+is referred to as centralized training and decentralized execution.
+For the consensus framework, the gradient estimation uses the
+so-called expected policy gradient as in [1]:
+)
+𝑄(
+∇̂
+(28)
+𝜃𝑖 𝐽 (𝜃) = E𝑠∼𝜌𝜃 ,𝑎−𝑖 ∼𝜋𝜃 𝜃 𝑠, 𝑎−𝑖 , 𝑖 = 1, … , 𝐼 ,
+𝑄𝜋𝑖
+
+5.2. Deep neural network implementation
+As stated in Remark 4, we use DNNs instead of linear combinations
+̂ To implement the
+of features to approximate the critic function 𝑄.
+consensus MARL with DNNs, we apply the default architectures of the
+actor and critic networks of actor-critic algorithms in RLlib [35]. To be
+specific, for the policy function, we use
+⎛⎡𝜎 (1) (𝑠)⎤ ⎡𝜎 (3) (𝑠)
+0 ⎤⎞
+𝜃𝑖
+⎥ , ⎢ 𝜃𝑖
+⎥⎟ ,
+𝜋𝜃𝑖 (⋅|𝑠) ∼  ⎜⎢ (2)
+(23)
+(4)
+⎜⎢𝜎 (𝑠)⎥ ⎢ 0
+𝜎𝜃 (𝑠)⎥⎦⎟⎠
+⎦ ⎣
+⎝⎣ 𝜃𝑖
+𝑖
+
+−𝑖
+
+𝑖
+
+where
+(
+)
+(
+)
+(
+)
+𝜃𝑄 𝑠, 𝑎−𝑖 = E𝑎𝑖 ∼𝜋𝜃 ∇𝜃𝑖 log 𝜋𝜃𝑖 𝑎𝑖 ∣ 𝒔 𝑄𝜋𝑖 𝒔; 𝒂𝟏 , … , 𝒂𝑰 .
+𝑖
+
+𝑖
+
+(29)
+
+While the action-value function 𝑄𝜋𝑖 is the same as in (27), the key difference lies in the policy function. As stated in Section 4.1 and reflected
+in (29), each agent 𝑖’s policy depends on all agents’ states 𝒔. The other
+difference between the consensus MARL and the MADDPG algorithm is
+how the action-value function 𝑄𝜋𝑖 is updated. In MADDPG, the function
+is updated through centralized training by a central authority; while in
+consensus MARL, updates are executed via a decentralized consensus
+process, as described in Section 4.2.
+
+where 𝜎𝜃(1) (𝑠) represents the mean value of the charging/discharging
+𝑖
+
+action, and 𝜎𝜃(2) (𝑠) denotes the mean value of the smart inverter action.
+𝑖
+
+Similarly, 𝜎𝜃(3) (𝑠) and 𝜎𝜃(4) (𝑠) correspond to the variances of the charg𝑖
+𝑖
+ing/discharging action and the smart inverter action, respectively. The
+function 𝜎𝜃𝑖 (𝑠) ∶  → 4 is implemented as a DNN, parameterized by
+𝜃𝑖 . This network comprises two fully connected layers, each consisting
+of 256 neurons, and employs a 𝑡𝑎𝑛ℎ activate function following each
+layer. A similar neural network architecture is also applied to the
+̂ ⋅; 𝜔𝑖 ). The settings of
+approximator of the action-value function 𝑄(⋅,
+stepsizes are 𝛽𝜔,𝑡 = 1∕𝑡0.65 and 𝛽𝜃,𝑡 = 1∕𝑡0.85 .
+
+5.4. Numerical results
+We conduct 20 simulation runs for each of the three frameworks,
+each comprising 7000 training episodes, where each training episode
+is 24 time steps (corresponding to 24 h in a day). In Fig. 6, the mean
+of the convergence curves of the 30-episode moving average of the
+episodic total reward in the distribution network is depicted for the 20
+runs of each of the three distinct MARL algorithms. The shaded region
+represents one standard deviation. It is evident that the mean episodic
+total reward gradually converges to a high level at the end of the
+training in all three frameworks. The results show that the consensus
+MARL algorithm outperforms the fully decentralized framework, which
+is in line with expectations, since the consensus-update framework
+benefits from improved approximation of the action-value function
+through communication. A one-sided Welch’s t-test yields a 𝑝-value
+of 7.46 × 10−7 , strongly suggesting the rejection of the null hypothesis
+that the episodic total reward of consensus MARL after 7000 training
+episodes is less than or equal to that of MADDPG. This result provides
+
+5.3. Comparison of three different MARL algorithms
+We compare the consensus MARL with two other algorithm frameworks: (i) a fully decentralized framework in which each agent just
+solves their own reinforcement learning problem using the PPO algorithm [2], while completely ignoring multiagent interactions, and (ii)
+the MADDPG approach [4].
+Different from maximizing the system’s total long-term expected reward, the objective for each agent in the fully decentralized framework
+and in MADDPG is to optimize their own long-term expected reward:
+[∞
+]
+∑
+𝑡
+sup 𝐽𝑖 (𝜃𝑖 ) = E𝑠0 ∼𝜌𝜃
+𝛾𝑖 𝑟𝑖,𝑡 |𝑠0 , 𝜋𝜃 , 𝑖 = 1, … , 𝐼 ,
+(24)
+𝜃𝑖
+
+𝑖
+
+𝑡=0
+
+9
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+Fig. 6. 30-episode moving average of episodic total reward.
+
+Fig. 8. System voltage deviation. The total system voltage deviation (p.u.) in the 𝑛th
+∑24𝑛−1 ∑
+episode is calculated as 𝑡=24(𝑛−1) 𝑗∶𝐵𝑢𝑠 [max(0, 𝑣𝑗𝑡 − 𝑣)
+̄ + max(0, 𝑣 − 𝑣𝑗𝑡 )].
+
+Fig. 7. Hourly prices over the last three days.
+
+Fig. 9. Transmission line capacity violation. The transmission line capacity violation
+∑24𝑛−1
+(kVA) in the 𝑛th episode is calculated as 𝑡=24(𝑛−1) max{0, 𝑆𝑡684,671 − 15}.
+
+strong evidence favoring consensus MARL for better performance compared to MADDPG, which is somewhat surprising. Conventionally, one
+might anticipate a centralized algorithm to outperform decentralized
+algorithms. The explanation here can be traced to MADDPG’s decentralized execution. In MADDPG, each agent independently updates its
+actions based on its own local state, despite the centralized nature of
+the learning process. This approach of relying solely on local information appears to be less effective compared to the consensus update
+mechanism.
+Fig. 7 presents the average market prices of the P2P market in
+chronological order over the last three days after thousands of training episodes. Notably, in the consensus-update framework, the market price tends to be higher during off-peak hours and lower during
+peak hours. This suggests that agents using this algorithm have developed more sophisticated trading strategies compared to the other
+two MARL frameworks. Specifically, the consensus-update algorithm
+leads to strategies where agents buy more and sell less during off-peak
+hours, and sell more and buy less during peak hours, unlike the purely
+decentralized algorithm.
+Fig. 8 shows the gradual reduction of the system voltage deviation
+after training. Initially, it is observed that voltage violations are significantly high across all three frameworks.4 However, the consensus and
+MADDPG framework demonstrate a rapid decline in these violations,
+
+converging swiftly and effectively to zero at the fastest rate at the
+later stage. The fully decentralized framework demonstrates a slower
+rate of convergence, and is seemingly unable to fully eliminate voltage
+violations.
+Fig. 9 illustrates the effectiveness of the three MARL frameworks in
+reducing distribution line capacity violations. However, the decrease
+is not always consistent, especially at the beginning of each training
+cycle for MADDPG. This initial fluctuation can be attributed to the
+core objective of all MARL frameworks: optimizing the total long-term
+reward through a balance between exploration (trying new actions)
+and exploitation (focusing on actions with proven success). During
+training, certain components of the total reward might temporarily
+prioritize actions that lead to short-term capacity violations, causing
+these fluctuations in the observed reduction.
+6. Conclusion and future research
+This study has developed a market and algorithmic framework
+to enable consumers’ and prosumers’ participation in local P2P energy trading. Utilizing reinforcement learning algorithms, we have
+automated bidding for agents while ensuring decentralized decisionmaking. The SDR-based market clearing addresses challenges with zeromarginal-cost resources and simplifies bidding. Additionally, our MARL
+framework includes voltage and line capacity constraints of a physical
+network, offering a possible approach for practical deployment.
+However, this research represents just the initial phase in the practical application of a P2P energy trading market, with several challenges
+
+4
+We emphasize that the violations depicted in the figures are fictitious and
+occur only in a preliminary stage, such as the hour-ahead market. If agents’
+bids result in physical network constraint violations in the bidding phase
+(not in the actual delivery phase), they are returned for resubmission until
+feasible. In real-time operations, deviations from cleared bids are inevitable.
+In such cases, a DSO, likely a utility company, can and should intervene to
+maintain grid reliability and stability. Alternatively, grid-scale batteries with
+mechanisms similar to Automatic Generation Control (AGC) could serve as
+
+backup resources to maintain grid feasibility, which would fit nicely within
+the decentralized MARL framework.
+10
+
+Applied Energy 383 (2025) 125283
+
+C. Feng and A.L. Liu
+
+ahead. Theoretically, the scalability of the MARL framework is crucial;
+if the scalability of the consensus MARL algorithm is limited, a meanfield approach, as in [36], could be considered, where agents operate
+with the belief that the market outcome is at a mean-field equilibrium.
+Practically, while the current model uses discrete, synchronous trading
+rounds, future work should investigate continuous and asynchronous
+trading among agents.
+Another critical aspect is cybersecurity. With increased automation,
+the system becomes vulnerable to cyber attacks, such as malicious
+users compromising smart inverters to inject false information into the
+market. In this context, the work in [26] provides valuable insights.
+Last but not least, it is essential to investigate how short-term P2P
+market dynamics influence long-term consumer investment decisions,
+particularly regarding the adoption of solar panels and energy storage
+systems.
+
+[8] Liu Y, Sun C, Paudel A, Gao Y, Li Y, Gooi HB, Zhu J. Fully decentralized
+P2P energy trading in active distribution networks with voltage regulation. IEEE
+Trans Smart Grid 2022;14(2):1466–81.
+[9] Tarashandeh N, Karimi A. Peer-to-peer energy trading under distribution network constraints with preserving independent nature of agents. Appl Energy
+2024;355:122240.
+[10] Guo Z, Qin B, Guan Z, Wang Y, Zheng H, Wu Q. A high-efficiency and
+incentive-compatible peer-to-peer energy trading mechanism. IEEE Trans Smart
+Grid 2023;15(1):1075–88.
+[11] Zhang Y, Dall’Anese E, Hong M. Online proximal-ADMM for time-varying
+constrained convex optimization. IEEE Trans Signal Inf Process Netw
+2021;7:144–55.
+[12] Feng C, Liang B, Li Z, Liu W, Wen F. Peer-to-peer energy trading under
+network constraints based on generalized fast dual ascent. IEEE Trans Smart
+Grid 2022;14(2):1441–53.
+[13] Tushar W, Saha TK, Yuen C, Smith D, Poor HV. Peer-to-peer trading in electricity
+networks: An overview. IEEE Trans Smart Grid 2020;11(4):3185–200.
+[14] Tushar W, Yuen C, Saha TK, Morstyn T, Chapman AC, Alam MJE, Hanif S,
+Poor HV. Peer-to-peer energy systems for connected communities: A review of
+recent advances and emerging challenges. Appl Energy 2021;282:116131.
+[15] Tushar W, Yuen C, Mohsenian-Rad H, Saha T, Poor HV, Wood KL. Transforming
+energy networks via peer-to-peer energy trading: The potential of game-theoretic
+approaches. IEEE Signal Process Mag 2018;35(4):90–111.
+[16] Soto EA, Bosman LB, Wollega E, Leon-Salas WD. Peer-to-peer energy trading: A
+review of the literature. Appl Energy 2021;283:116268.
+[17] Bukar AL, Hamza MF, Ayub S, Abobaker AK, Modu B, Mohseni S, Brent AC,
+Ogbonnaya C, Mustapha K, Idakwo HO. Peer-to-peer electricity trading: A
+systematic review on current developments and perspectives. Renew Energy
+Focus 2023;44:317–33.
+[18] Guerrero J, Chapman AC, Verbič G. Decentralized P2P energy trading under network constraints in a low-voltage network. IEEE Trans Smart Grid
+2018;10(5):5163–73.
+[19] Biagioni D, Zhang X, Wald D, Vaidhynathan D, Chintala R, King J, Zamzam AS.
+PowerGridworld: A framework for multi-agent reinforcement learning in power
+systems. 2021, arXiv preprint arXiv:2111.05969.
+[20] Wang S, Duan J, Shi D, Xu C, Li H, Diao R, Wang Z. A data-driven multi-agent
+autonomous voltage control framework using deep reinforcement learning. IEEE
+Trans Power Syst 2020;35(6):4644–54.
+[21] Qiu D, Wang J, Wang J, Strbac G. Multi-agent reinforcement learning for
+automated peer-to-peer energy trading in double-side auction market. In: IJCAI.
+2021, p. 2913–20.
+[22] Zhang K, Yang Z, Liu H, Zhang T, Basar T. Fully decentralized multi-agent
+reinforcement learning with networked agents. In: International conference on
+machine learning. PMLR; 2018, p. 5872–81.
+[23] Qu G, Wierman A, Li N. Scalable reinforcement learning for multiagent
+networked systems. Oper Res 2022;70(6):3601–28.
+[24] Zhao Z, Feng C, Liu AL. Comparisons of auction designs through multiagent learning in peer-to-peer energy trading. IEEE Trans Smart Grid
+2022;14(1):593–605.
+[25] Kim JH, Giraldo JS, Preckel PV, Liu AL, Gotham D. Welfare impact of virtual
+trading on wholesale electricity markets. Energy J 2024. in press.
+[26] Figura M, Kosaraju KC, Gupta V. Adversarial attacks in consensus-based multiagent reinforcement learning. In: 2021 American control conference. ACC, IEEE;
+2021, p. 3050–5.
+[27] Huang P, Scheller-Wolf A, Sycara K. Design of a multi–unit double auction
+e–market. Comput Intell 2002;18(4):596–617.
+[28] Cui B, Sun XA. Solvability of power flow equations through existence and
+uniqueness of complex fixed point. 2019, arXiv preprint arXiv:1904.08855.
+[29] Chen Y, Liu AL, Tanaka M, Takashima R. Optimal retail tariff design with
+prosumers: Pursuing equity at the expenses of economic efficiencies? IEEE Trans
+Energy Mark Policy Regul 2023;1(3):198–210.
+[30] Roberts GO, Rosenthal JS. General state space Markov chains and MCMC
+algorithms. Probab Surv 2004;1:20–71.
+[31] Ye L, Figura M, Lin Y, Pal M, Das P, Liu J, Gupta V. Resilient multi-agent
+reinforcement learning with function approximation. IEEE Trans Autom Control
+2024;69(12):8497–512.
+[32] Zhu Z, Lin K, Jain AK, Zhou J. Transfer learning in deep reinforcement learning:
+A survey. IEEE Trans Pattern Anal Mach Intell 2023;45(11):13344–62.
+[33] IEEE Distribution System Analysis Subcommittee. IEEE 13 Node Test Feeder,
+https://cmte.ieee.org/pes-testfeeders/resources/.
+[34] Electric Power Research Institute. OpenDSS, https://www.epri.com/pages/sa/
+opendss.
+[35] The Ray Team. Models, Preprocessors, and Action Distributions Ray 2.8.1, https:
+//docs.ray.io/en/latest/rllib/rllib-models.html#default-model-config-settings.
+[36] Guo X, Hu A, Xu R, Zhang J. Learning mean-field games. Adv Neural Inf Process
+Syst 2019;32.
+
+CRediT authorship contribution statement
+Chen Feng: Writing – review & editing, Writing – original draft,
+Visualization. Andrew L. Liu: Writing – review & editing, Writing –
+original draft.
+Declaration of competing interest
+The authors declare the following financial interests/personal relationships which may be considered as potential competing interests:
+Andrew Lu Liu reports financial support was provided by US Department of Energy. Andrew Lu Liu reports financial support was provided
+by National Science Foundation. If there are other authors, they declare
+that they have no known competing financial interests or personal
+relationships that could have appeared to influence the work reported
+in this paper.
+Acknowledgments
+We acknowledge the support of the U.S. Department of Energy,
+Office of Electricity under Award Number DE-OE0000921, and the
+National Science Foundation, USA under Grant No. ECCS-2129631.
+Data availability
+Data will be made available on request.
+
+References
+[1] Zhang K, Yang Z, Basar T. Networked multi-agent reinforcement learning in
+continuous spaces. In: 2018 IEEE conference on decision and control. CDC, IEEE;
+2018, p. 2771–6.
+[2] Feng C, Lu AL, Chen Y. Decentralized voltage control with peer-to-peer energy trading in a distribution network. In: Proceedings of the 56th Hawaii
+international conference on system sciences. 2023, p. 2600–9.
+[3] Schulman J, Wolski F, Dhariwal P, Radford A, Klimov O. Proximal policy
+optimization algorithms. 2017, arXiv preprint arXiv:1707.06347.
+[4] Lowe R, Wu YI, Tamar A, Harb J, Abbeel P, Mordatch I. Multi-agent actor-critic
+for mixed cooperative-competitive environments. Adv Neural Inf Process Syst
+2017;30.
+[5] Liu N, Yu X, Wang C, Li C, Ma L, Lei J. Energy-sharing model with price-based
+demand response for microgrids of peer-to-peer prosumers. IEEE Trans Power
+Syst 2017;32(5):3569–83.
+[6] Morstyn T, McCulloch MD. Multiclass energy management for peer-to-peer
+energy trading driven by prosumer preferences. IEEE Trans Power Syst
+2018;34(5):4005–14.
+[7] Ullah MH, Park J-D. Peer-to-peer energy trading in transactive markets considering physical network constraints. IEEE Trans Smart Grid
+2021;12(4):3390–403.
+
+11
+
+

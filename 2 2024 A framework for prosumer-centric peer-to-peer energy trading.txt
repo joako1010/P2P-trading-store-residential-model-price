@@ -1,0 +1,2288 @@
+Applied Energy 361 (2024) 122906
+
+Contents lists available at ScienceDirect
+
+Applied Energy
+journal homepage: www.elsevier.com/locate/apenergy
+
+A framework for prosumer-centric peer-to-peer energy trading using
+network-secure export–import limits
+Md Murshadul Hoque a , Mohsen Khorasany a , M. Imran Azim a , Reza Razzaghi a ,∗, Mahdi Jalili b
+a
+b
+
+Department of Electrical and Computer Systems Engineering, Monash University, Melbourne, VIC 3800, Australia
+School of Engineering, RMIT University, Melbourne, VIC 3000, Australia
+
+ARTICLE
+
+INFO
+
+Keywords:
+Export–import limits
+Electric vehicle charge–discharge
+Photovoltaic systems
+Peer-to-peer energy trading
+Double auction
+Energy management
+
+ABSTRACT
+This paper presents a new prosumer-centric peer-to-peer (P2P) energy trading framework incorporating the
+network-secure export–import limits, known as dynamic operating envelope (DOE), for prosumers considering their preferences to trade in the local market. In the proposed framework, a DOE-integrated energy
+management algorithm is developed for prosumers considering electric vehicles (EVs) charge–discharge and
+photovoltaic (PV) systems. The framework allows prosumers to operate within defined DOE, aligning with the
+preferences of EV-owning prosumers by managing the desired EV battery charge levels at their departure. An
+auction-based P2P energy trading mechanism for prosumers is proposed incorporating the allocated DOE to
+ensure secure network operation and valuing prosumers’ preferences to benefit them. The proposed framework
+is implemented on a 78-node low-voltage (LV) residential distribution network to evaluate its performance.
+The results and comparative analyses verify the effectiveness of the proposed framework in addressing network
+issues such as voltage and line congestion problems, meeting prosumers’ preferences in asset management, and
+providing benefits to all participants in the energy trading process.
+
+1. Introduction
+1.1. Motivation and problem statement
+With the proliferation of electric vehicles (EVs) and photovoltaic
+(PV) systems as distributed energy resources (DERs) in the power
+networks, prosumers, can actively participate in energy markets and
+provide services to power grids. Recently, various studies have investigated new models for DER participation in energy markets. Emerging
+market models such as peer-to-peer (P2P) energy trading, motivate
+prosumers to trade energy with their peers to maximize benefits from
+their DERs [1]. However, a high level of DER integration into lowvoltage (LV) residential distribution networks, with unrestricted import
+and export, can challenge the integrity of the network in terms of node
+voltage magnitude and line congestion problems, power imbalance
+and system stability issues [2,3]. Moreover, with a high charging rate
+and high penetration level, the charge/discharge of EVs connected to
+networks might challenge the secure network operation [2]. Therefore,
+appropriate network-aware trading mechanisms are required to benefit
+prosumers financially from the market, while operational constraints of
+the network and EV owners’ preferences are regarded.
+
+In recent years, the P2P trading concept has been introduced in the
+local energy market (LEM) for bilateral trade between peers through
+the matching or negotiation process that can advantage prosumers to
+achieve higher benefits from their DERs [4]. P2P trading in principle
+facilitates the integration of DERs to a great extent into distribution
+networks. However, P2P energy trading has various challenges in designing a suitable trading mechanism for prosumers. Uncontrolled P2P
+energy trading in a distribution network can cause network operational
+problems that can force the distribution system operator (DSO) to
+restrict the trading by imposing a limit on the maximum import/export
+in order to maintain network integrity. Moreover, the participation of
+prosumers equipped with EVs can challenge P2P trading while managing their desires with EVs’ uncertain mobility behavior. In addition,
+managing a large number of prosumers with various preferences in
+P2P energy trading can impose control difficulty while coordinating
+them for P2P trading [5]. Therefore, this paper aims to propose a P2P
+energy trading framework for prosumers equipped with EVs and PV
+systems to address the aforementioned challenges considering network
+operational constraints, EVs’ uncertainties and prosumers’ preferences.
+
+∗ Corresponding author.
+
+E-mail addresses: md.hoque1@monash.edu (M.M. Hoque), mohsen.khorasany@monash.edu (M. Khorasany), imran.azim@monash.edu (M.I. Azim),
+reza.razzaghi@monash.edu (R. Razzaghi), mahdi.jalili@rmit.edu.au (M. Jalili).
+https://doi.org/10.1016/j.apenergy.2024.122906
+Received 30 November 2023; Received in revised form 28 January 2024; Accepted 19 February 2024
+Available online 4 March 2024
+0306-2619/© 2024 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+Nomenclature
+
+̃𝑛,𝑡 , 𝜃̃𝑛,𝜙
+V
+
+Abbreviations
+
+𝛶𝑛𝑖𝑛𝑖 , 𝛶𝑛𝑑𝑒𝑠
+𝐼𝐷𝑠𝑆 , 𝐼𝐷𝑢𝐵
+
+ADMM
+DER
+DLMP
+DMO
+DOE
+DSO
+EV
+LEM
+LV
+MiM
+OPF
+P2P
+PIEI
+PV
+QoE
+QoS
+RPI
+SOC
+
+Alternating Direction Method of Multipliers
+Distributed Energy Resource
+Distribution Locational Marginal Price
+Distribution Market Operator
+Dynamic Operating Envelope
+Distribution System Operator
+Electric Vehicle
+Local Energy Market
+Low-Voltage
+Min–Max
+Optimal Power Flow
+Peer-to-Peer
+Power Import–Export Index
+Photovoltaic
+Quality of Experience
+Quality of Service
+Relative Payoff Index
+State of Charge
+
+Variables
+𝑟𝑒𝑠
+𝛥𝑃𝑛,𝑡
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+, 𝛥𝑃𝑠,𝑡
+𝛥𝑃𝑢,𝑡
+
+𝜆𝑆𝑠,𝑡 , 𝜆𝐵
+𝑢,𝑡
+𝜆𝑎𝑣𝑔
+𝑡
+𝑟𝑒∕𝑖𝑚
+
+I𝑑,𝑡
+
+𝑟𝑒∕𝑖𝑚
+I𝑙,𝑡
+𝑟𝑒∕𝑖𝑚
+
+I𝑛,𝑡
+
+𝐺𝑟𝑖𝑑
+PO𝐺𝑟𝑖𝑑
+𝑢,𝑡 , PO𝑠,𝑡
+
+Indices and sets
+
+PO𝑃𝑢,𝑡2𝑃 , PO𝑃𝑠,𝑡2𝑃
+
+Set of downstream lines connected to 𝑛,
+indexed by 𝑑, where 𝑑 ∈ D ≜ {1, … , 𝑑, … , 𝐷}
+Set of line section between upstream node (𝑛 −
+1) and node 𝑛, indexed by 𝑙, where 𝑙 ∈ L ≜
+{1, … , 𝑙, … , 𝐿}
+Set of DER prosumers connected to network
+nodes, indexed by 𝑛, where 𝑛 ∈ N ≜
+{1, … , 𝑛, … , 𝑁}
+Set of prosumers (buyers) with imports, indexed by 𝑢, where 𝑢 ∈ N𝑡𝑈 ≜ {1, … , 𝑢, … , 𝑁 𝑈 }
+Set of prosumers (sellers) with exports, indexed by 𝑠, where 𝑠 ∈ N𝑡𝑆 ≜ {1, … , 𝑠, … , 𝑁 𝑆 }
+Set of time slot, indexed by 𝑡, where 𝑡 ∈ T ≜
+{1, … , 𝑡, … , 𝑇 }
+Set of phases of the distribution network,
+indexed by 𝜙, defined as 𝜙 ∈ 𝛷 = {𝑎, 𝑏, 𝑐}
+
+D
+L
+
+N
+
+N𝑡𝐵
+N𝑡𝑆
+T
+𝛷
+
+PO𝑇𝑢,𝑡𝐵 , PO𝑇𝑠,𝑡𝑆
+𝑑𝑜𝑒
+P𝑛,𝑡
+𝑒𝑣𝑐 , P𝑒𝑣𝑑
+P𝑛,𝑡
+𝑛,𝑡
+𝑔𝑒𝑛
+𝑐𝑜𝑛
+P𝑛,𝑡
+, P𝑛,𝑡
+𝑛𝑒𝑡
+P𝑛,𝑡
+𝑝𝑣
+𝑝𝑣
+P𝑛,𝑡
+, 𝑃𝑛,𝑡
+
+𝑠𝑢𝑟
+P𝑛,𝑡
+𝑛𝑒𝑡 , P𝑛𝑒𝑡
+P𝑠,𝑡
+𝑢,𝑡
+𝑟𝑣 , B𝑟𝑣
+S𝑠,𝑡
+𝑢,𝑡
+𝐵 (.), C𝑆 (.)
+U𝑢,𝑡
+𝑠,𝑡
+
+Parameters
+
+𝑟𝑒∕𝑖𝑚
+
+V, V
+
+Duration of a time slot
+Charging and discharging efficiencies of EV
+Time-of-use (ToU) and feed-in-tariff (FiT)
+prices
+Household load and intended reactive power
+by the prosumer
+Resistance and reactance matrices of the
+distribution network
+Maximum value of EV charge/discharge rating
+and maximum capacity of the EVs battery
+Maximum value of the PV system generation
+and maximum congestion limit corresponding
+to line 𝑙
+Upper voltage limit and the lower voltage limit
+
+𝑒𝑣
+𝛶 𝑛 , 𝛶 𝑒𝑣
+𝑛
+𝑎𝑐𝑡
+𝜏𝑛𝑎𝑟𝑟 , 𝜏𝑛𝑑𝑒𝑝 , 𝜏𝑛,𝑡
+
+Maximum SOC and minimum SOC of 𝑛th EV
+Arrival time, departure time and action time
+
+𝛥𝑡
+𝜂 𝑒𝑣𝑐 , 𝜂 𝑒𝑣𝑑
+𝑓 𝑖𝑡
+𝜆𝑡𝑜𝑢
+𝑡 , 𝜆𝑡
+𝑙𝑜𝑎𝑑 , Q
+̃ 𝑛𝑒𝑡
+P𝑛,𝑡
+𝑛,𝑡
+
+R𝑙 , X𝑙
+𝑒𝑣
+
+𝑒𝑣
+
+P𝑛 , E𝑛
+𝑝𝑣
+
+P𝑛 , I𝑙
+
+Predefined voltage magnitude (i.e., 1 p.u.)
+and predefined voltage angle at phase 𝜙
+Initial and desired SOC
+Identification numbers of the seller 𝑠 and
+buyer 𝑢
+
+V𝑛,𝑡
+
+𝑟𝑒∕𝑖𝑚
+
+V𝑛−1,𝑡
+𝑒𝑣
+𝜈𝑛,𝑡
+
+𝑎𝑣𝑎 , 𝜏 𝑟𝑒𝑞
+𝜏𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣 , 𝛶 𝑒𝑣
+𝛶𝑛,𝑡
+𝑛,𝑡+𝛥𝑡
+𝑒𝑣𝑐 , 𝑃 𝑒𝑣𝑑
+𝑃𝑛,𝑡
+𝑛,𝑡
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+𝑃𝑠,𝑡
+, 𝑃𝑢,𝑡
+𝑃 2𝑃 , 𝜆𝑃 2𝑃
+𝑃𝑢,𝑠,𝑡
+𝑢,𝑠,𝑡
+𝐺𝑟𝑖𝑑 , 𝑃 𝐺𝑟𝑖𝑑
+𝑃𝑢,𝑡
+𝑠,𝑡
+𝑟𝑣 , 𝐵 𝑟𝑣
+𝑆𝑠,𝑡
+𝑢,𝑡
+
+2
+
+Restricted amount of power within the
+allocated DOEs
+Remaining import power of buyer 𝑢 and
+export power of seller 𝑠 in each transaction
+during auction
+Offer and bid prices of the seller 𝑠 and buyer
+𝑢
+Average price of all market players 𝑁 in
+each 𝑡
+Real and imaginary current on line 𝑑
+Line current that flow through a line section
+𝑙 between upstream node (𝑛 − 1) and node 𝑛
+Real and imaginary parts of prosumers’ export/import current at connection node 𝑛
+and phase 𝜙
+Payoff for buyer 𝑢 and seller 𝑠 for energy
+trade with the grid
+Payoff of buyer 𝑢 for energy trade with
+sellers and payoff of seller 𝑠 for energy trade
+with buyers from the auction
+Total payoff for buyer 𝑢 and seller 𝑠
+Allocated DOE
+EVs charge and discharge power
+Net generation and net consumption of a
+customer at node 𝑛
+Net power injected to customer node 𝑛
+Local generation of the PV system of a residential customer at node 𝑛 and updates of
+PV system power
+Surplus of the local PV system generation
+Net export and import power of a customer
+at node 𝑛
+request vectors of the seller 𝑠 and buyer 𝑢
+Buyers’ utility and sellers’ generation costs
+Real and imaginary parts of the node
+voltage at node 𝑛
+Real and imaginary parts of voltage at the
+upstream node (𝑛 − 1)
+An integer variable that defines the state of
+EV at a time 𝑡 as {1,-1,0}
+Available time and required time to reach
+𝛶𝑛𝑑𝑒𝑠
+Current state-of-charge (SOC) and SOC
+updates of EVs
+Updates of EV charge and discharge power
+Allowed export and import power within
+the allocated DOE
+Traded matching quantity and price
+Energy trade with the upstream grid for
+buyer 𝑢 and seller 𝑠
+Vector updates of the seller 𝑠 and buyer 𝑢
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+trading within assigned DOEs in the market while preserving network constraints. A coordination framework is presented in [21] for
+prosumers using DOEs and shared community battery, where prosumers manage their exports within allocated DOEs. A framework is
+developed in [22] using assigned DOEs to facilitate residential DER
+services with secure network operation. A DOE-enabled P2P energy
+trading framework has been studied in [23] using cooperative game
+theory to limit prosumers’ exports without EVs. A local energy market
+framework has been proposed in [24] considering DOE that optimally
+clears the market for energy trading of prosumers. While DOE as a
+new method for ensuring network integrity has been discussed in some
+recent studies (e.g., [20,22]), its incorporation in prosumer-centric
+P2P energy trading is not well addressed in the literature. Moreover,
+the iterative market clearing process (e.g. in [9,12,16,24]) raises a
+challenge in regards to the valuation of prosumers’ preferences and the
+computational efficiency for a large number of DERs. This challenge
+can also be observed in the game-based approaches (e.g., [8,11,18,23])
+due to the high dependency of an agent’s action on others’ actions and
+the long process of attaining a viable result after revealing all possible
+matchings.
+
+1.2. State-of-the-art review
+Many P2P energy trading mechanisms have been developed in the
+state-of-the-art to manage DERs in LV distribution networks. A P2P
+energy trading for aggregated DERs is developed in [6] using the
+alternating direction method of multipliers (ADMM) approach for prosumers’ enhanced profit with their flexibility. A blockchain-based P2P
+energy trading framework is presented in [7] to clear the market with
+payment settlement depending on the smart contracts. A cooperative
+game-based P2P energy trading is developed to discourage incentivized
+prosumers from not demanding any energy during peak hour [8]. A
+secure P2P energy trading system is presented in [9] by using a multiobjective optimization for maximizing regional social welfare to obtain
+the trading price and energy amount for EVs. A blockchain-based P2P
+energy trading scheduling for EVs is studied in [10] by balancing
+energy between the DSO and EVs in order to minimize the energy costs
+of EVs and maximize the profit of the DSO. Nonetheless, these P2P
+energy trading frameworks in [6–10] have not analyzed the impact of
+energy trading on network operation.
+Some studies in [11–18] propose network-constrained P2P trading
+frameworks by either considering an additional charge for network
+operation and usage or limiting the trade amount at the node experiencing any network issue. Considering the network usage charge for
+maximizing profit of the DSO, a P2P energy trading is proposed for
+prosumers in the active distribution system using ADMM method [11].
+A network charge pricing mechanism has been developed in [12] to
+benefit both prosumers and the DSO in P2P energy trading, respecting
+the capacity constraints of the network. A voltage feasible market
+clearing mechanism is presented in [13] for prosumers to trade in
+the P2P energy market that assures safe network operation. A P2P
+energy exchange mechanism is proposed in [5] that incorporates costs
+for power loss, voltage regulation, and congestion with distribution
+locational marginal price (DLMP) for each transaction. An iterative
+auction-based matching approach is presented for the P2P energy
+market in [4] that considers reputation and distance to model power
+losses in energy transactions. Securing network constraints through
+auction-based P2P energy trading for prosumers is developed in [14]
+by managing their flexible demands. In [15], a decentralized P2P
+energy market framework is proposed using ADMM that coordinates
+prosumers’ trading with their independent nature respecting network
+constraints. Maintaining market equilibrium and network constraints,
+an optimal power flow (OPF)-based P2P energy market framework
+is proposed in [16] using ADMM optimization. Yang et al. in [17]
+have presented a decentralized P2P energy trading mechanism using
+the ADMM method that maintains network constraints by maximizing
+social welfare of the trade. A P2P energy trading based on coalition
+graph game theory is studied in [18] that considers voltage constraints
+to limit prosumers’ trade in the market. In the above studies, P2P
+energy trading is managed considering network operational constraints
+where either the DSO directly curtails or blocks energy trading of
+prosumers to maintain the network integrity or assigns network usage
+fee on top of the market clearing prices. However, these approaches
+are not efficient in fully utilizing the grid capacity for DERs and might
+impose extra costs on prosumers for network usage while trading in the
+LEM. Besides, the DSO continuously interferes with the trading process
+and accesses prosumers’ assets in order to resolve network constraints.
+Recently, the dynamic operating envelope (DOE) has been introduced as a solution to limit prosumers’ power exports/imports, in
+which the DSO plays a collateral role to ensure secure network operation for dynamic energy trading in the market [19]. In this context,
+the DSO determines DOEs for prosumers depending on their intended
+power exports/imports and network constraints so that prosumers can
+manage their assets within the defined DOEs for secure trading without
+breaching network constraints. Incorporating DOE, Petrou et al. [20]
+have proposed a framework for prosumers having PV and battery
+storage systems in which prosumers manage their power exports for
+
+1.3. Contributions and outline of the paper
+There is a gap in designing a framework to secure prosumers’
+trading in a prosumer-centric P2P energy market as well as manage the
+energy of EVs’ charge–discharge and PV systems, which preserves the
+network integrity while valuing prosumers’ preferences, benefits, and
+fairness. Therefore, this paper proposes a new framework for coordinating prosumers equipped with EVs and PV systems using DOEs so that
+prosumers can trade in the P2P energy market with their preferences
+to benefit themselves and ensure the integrity of the network. In the
+framework, a double auction mechanism is proposed for P2P energy
+trading to enhance the performance efficiency of the market in which
+market properties such as individual rationality, strong budget balance,
+computational efficiency, and economic fairness and truthfulness would
+be satisfied. The main contributions of the work are as follows:
+• A new prosumer-centric P2P energy trading framework for prosumers is proposed that incorporates DOEs and considers the
+preference of prosumers to trade in the market. The proposed
+framework is developed based on a hybrid DER marketplace
+model, consisting of the DSO to monitor the network operation
+by allocating DOEs and a distribution market operator to manage
+local energy trading of prosumers within allocated DOEs.
+• In the proposed framework, the DOE is formulated to provide
+an efficient allocation of hosting capacity whilst maximizing prosumers’ export/import power to/from the network in the presence
+of EVs, as compared to many other existing DOE approaches,
+without violating any network constraint. Considering EV charge–
+discharge and PV systems, DOE-integrated energy management
+is developed for prosumers, which allows them to increase the
+utilization of PV system generations by prioritizing EV charge and
+to fulfill the desired state of charge (SOC) of EV batteries at the
+time of EVs’ departure.
+• A DOE-integrated double auction-based market mechanism is
+proposed to provide prosumer-centric P2P energy trading that
+simultaneously benefits prosumers and ensures secure network
+operation, as opposed to conventional double auction-based market mechanisms that prioritize social benefits. It is done by incorporating a prosumers’ preferred bidding process that satisfies
+the auction properties in order to provide prosumers with equal
+access to the local market with their preferences for P2P trading. The effectiveness of the proposed mechanism is evaluated
+through a financial and comparative analysis by considering a
+set of performance metrics to compare the proposed framework
+with other methods such as trading with the grid, fixed import/export limit P2P trading without/with network issues and
+network-constrained P2P trading.
+3
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+The rest of this paper is organized as follows. Section 2 discusses
+the problem formulation for developing the proposed framework that
+includes framework overview, DOE formulation, and prosumers energy
+management with DOE. Section 3 demonstrates the proposed P2P
+energy trading mechanism using DOE. The results analysis, discussion,
+and comparative analyses of the proposed framework are presented in
+Section 4. Finally, conclusions are summarized in Section 5.
+
+2. Problem formulation
+2.1. Framework overview
+A prosumer-centric market framework is considered for P2P energy
+trading in a smart residential LV distribution network with IoT facilities, where residential prosumers are equipped with DERs, such as EVs
+and PV systems. The framework is a DER marketplace (in line with the
+hybrid model framework in [25]) consisting of the DSO and a distribution market operator (DMO). In this model, the DSO monitors the
+network operation to check whether any problems are caused during
+the trading of prosumers for their intended power imports/exports and
+manages the network within the operational constraints by allocating
+DOEs for prosumers. On the other hand, the DMO administrates the
+distribution market to manage local energy trading of prosumers considering their preferences within DOEs allocated by the DSO. A double
+auction-based market mechanism is then proposed for P2P energy
+trading for prosumers in the developed framework. Fig. 1 presents
+the proposed framework of the DOE-based P2P energy market. As
+shown in Fig. 1, the DMO responds to prosumers, by sending energy
+price signals to prosumers who are willing to trade with their peers,
+and prosumers submit their bids/offers including price and power
+import/export quantities. The DMO communicates with the DSO by
+forwarding prosumers’ bids/offers. The DSO continuously supervises
+the network operation with the requested imports/exports and allocates
+the DOEs for import/export limits for the prosumers to avoid anomalies
+with the network operation so that prosumers can perform secure
+trading with their peers. DOEs are communicated with the prosumers
+in order to update their trading bids/offers and manage the energy
+profiles of their assets. After receiving the updates of prosumers’ energy
+bids/offers within the allocated DOEs, the DMO then starts the auction
+mechanism for determining the matching peers as auction winners by
+the proposed price and quantity matching algorithm as illustrated in
+Section 3. The flowchart of the proposed network-secure P2P energy
+market framework is depicted in Fig. 2. In the end, the results of
+cleared prices and quantities are sent to the corresponding matched
+prosumers. The winning prosumers are allowed to trade with their
+peers in the P2P energy market, and losers in the auction can trade
+with the upstream grid. The proposed framework enables prosumers to
+manage their assets within their assigned DOEs using their management
+systems without the direct control of the DSO. This indirect control
+secures prosumers’ privacy by limiting DSO’s access to detailed energy
+profile of their DER, as the DSO calculates DOEs using net generation/demand for each prosumer. Besides, the proposed framework
+is prosumer-centric and facilitates all prosumers (buyers and sellers)
+equally to participate in the market with their willingness and preferred
+bids and offers for both energy and prices; provides fairness in terms of
+having equal motivation in terms of getting trading access and payoff;
+prioritizes prosumers to charge their EVs from the surplus of PV system
+generation; fulfills EV owners’ preferences in terms of achieving the
+desired SOC at their departure; and prosumers can manage the energy
+of their assets individually in a decentralized manner and can restrict
+data access for other entities [26].
+
+Fig. 1. The proposed P2P energy market framework using DOEs.
+
+Fig. 2. The flowchart of the proposed network-secure P2P energy market framework.
+
+2.2. Prosumers model
+Let 𝑛 ∈ N ≜ {1, … , 𝑛, … , 𝑁} denotes a set of prosumers equipped
+with DERs (e.g., EVs, PV systems) and household loads connected to
+4
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+𝑝𝑣
+𝑒𝑣𝑐 , and P𝑒𝑣𝑑 are household load, PV system generation, EV
+P𝑛,𝑡
+, P𝑛,𝑡
+𝑛,𝑡
+charge power, and EV discharge power, respectively. Thus, the net
+𝑛𝑒𝑡
+power P𝑛,𝑡 injected to customer node 𝑛 is obtained as in (12).
+
+network nodes. Based on the exports/imports to/from the network, a
+set of prosumers with exports, known as sellers or producers, is defined
+as N𝑡𝑆 ∶= 𝑛 ∈ N and a set of all other prosumers with imports,
+known as buyers or consumers, is defined as N𝑡𝐵 ∶= 𝑛 ∈ N, where
+N𝑡𝑆 ∪ N𝑡𝐵 = N and N𝑡𝑆 ∩ N𝑡𝐵 = ∅. Here, 𝑡 is an index of a time slot
+defined as 𝑡 ∈ T ≜ {1, … , 𝑡, … , 𝑇 }.
+The local generation of the PV system of a residential customer at
+𝑝𝑣
+, which is constrained by:
+node 𝑛 is P𝑛,𝑡
+𝑝𝑣
+
+𝑝𝑣
+≤ P𝑛
+0 ≤ P𝑛,𝑡
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+𝑝𝑣
+𝑔𝑒𝑛
+𝑒𝑣𝑑
++ P𝑛,𝑡
+= P𝑛,𝑡
+P𝑛,𝑡
+
+(1)
+
+𝑝𝑣
+
+𝑒𝑣𝑑
+0 ≤ P𝑛,𝑡
+≤
+
+𝑒𝑣
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(2)
+
+P𝑛 ; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+2
+{
+𝑒𝑣 < 𝛶 𝑑𝑒𝑠 < 𝛶 𝑒𝑣 ,
+𝛶𝑛,𝑡
+𝑛
+𝑛
+
+(3)
+
+2
+
+P𝑛
+
+𝑒𝑣 (𝜈 𝑒𝑣 − 1)
+𝜈𝑛,𝑡
+𝑛,𝑡
+
+𝑒𝑣
+
+⎧
+⎪1 ; if
+𝑟𝑒𝑞
+𝑠𝑢𝑟 > 0,
+𝜏 𝑎𝑣𝑎 < 𝜏𝑛,𝑡
+, P𝑛,𝑡
+⎪
+𝑒𝑣
+{ 𝑛,𝑡
+𝜈𝑛,𝑡 ∶= ⎨
+𝑟𝑒𝑞
+𝑒𝑣
+𝑒𝑣
+𝑎𝑣𝑎
+⎪−1 ; if 𝛶𝑛,𝑡 > 𝛶 𝑛 , 𝜏𝑛,𝑡 > 𝜏𝑛,𝑡 ,
+⎪
+⎩0 ; otherwise ; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(4)
+
+𝑎𝑣𝑎
+𝑎𝑐𝑡
+𝜏𝑛,𝑡
+= 𝜏𝑛𝑑𝑒𝑝 − 𝜏𝑛,𝑡
+
+(5)
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+𝑒𝑣 )E
+(𝛶𝑛𝑑𝑒𝑠 − 𝛶𝑛,𝑡
+𝑛
+𝑒𝑣
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+−
+
+𝑒𝑣
+
+2𝜂 𝑒𝑣𝑑 E𝑛
+𝑒𝑣
+
+𝑒𝑣
+𝛶 𝑒𝑣
+𝑛 ≤ 𝛶𝑛,𝑡 ≤ 𝛶 𝑛
+𝑒𝑣
+𝑖𝑛𝑖
+𝛶𝑛,𝜏
+𝑎𝑟𝑟 = 𝛶𝑛 ,
+𝑛
+
+(6)
+
+𝑛,𝜏𝑛
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(15)
+
+𝑑𝑜𝑒
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+0 ≤ P𝑛,𝑡
+≤ P𝑛,𝑡
+, if P𝑛,𝑡
+≥0
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T.
+
+(16)
+
+𝑖𝑚
+I𝑛,𝑡
+
+]
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T, 𝜙 ∈ 𝛷,
+[
+]
+(
+)
+1
+𝑑𝑜𝑒
+̃ 𝑛𝑒𝑡 cos(𝜃̃𝑛,𝜙 )
+P𝑛,𝑡
+sin(𝜃̃𝑛,𝜙 ) − Q
+=
+𝑛,𝑡
+̃𝑛,𝑡
+V
+
+(18)
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T, 𝜙 ∈ 𝛷,
+̃ 𝑛𝑒𝑡 corresponds to the intended reactive power
+where in (17) and (18), Q
+𝑛,𝑡
+by the prosumer, 𝜙 is a set of phases of the distribution network defined
+̃𝑛,𝑡 is the predefined voltage magnitude (i.e., 1
+as 𝜙 ∈ 𝛷 = {𝑎, 𝑏, 𝑐}, V
+p.u.), and 𝜃̃𝑛,𝜙 is the predefined voltage angle at phase 𝜙. Eq. (19)
+𝑟𝑒∕𝑖𝑚
+presents the real and imaginary parts of the line current I𝑙,𝑡
+that
+flow through a line section 𝑙 ∈ L ≜ {1, … , 𝑙, … , 𝐿} between upstream
+𝑟𝑒∕𝑖𝑚
+node (𝑛−1) and node 𝑛. In (19), I𝑑,𝑡 is the real and imaginary current
+on line 𝑑 which is a set of downstream lines connected to 𝑛 defined as
+𝑑 ∈ D ≜ {1, … , 𝑑, … , 𝐷}.
+[
+] [
+] ∑[
+]
+𝑟𝑒∕𝑖𝑚
+𝑟𝑒∕𝑖𝑚
+𝑟𝑒∕𝑖𝑚
+I𝑙,𝑡
+= I𝑛,𝑡
++
+I𝑑,𝑡
+(19)
+𝑑∈D
+; ∀𝑛 ∈ N, ∀𝑙 ∈ L, ∀𝑑 ∈ D, ∀𝑡 ∈ T.
+
+(7)
+
+; ∀𝑛 ∈ N.
+
+𝑛𝑒𝑡
+𝑑𝑜𝑒
+𝑛𝑒𝑡
+P𝑛,𝑡
+≤ P𝑛,𝑡
+≤ 0, if P𝑛,𝑡
+<0
+
+[
+
+𝑒𝑣𝑑
+P𝑛,𝑡
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+𝛶 𝑒𝑣 𝑑𝑒𝑝 = 𝛶𝑛𝑑𝑒𝑠
+
+(13)
+
+The real and imaginary parts of prosumers’ export/import current
+𝑟𝑒∕𝑖𝑚
+I𝑛,𝑡
+at connection node 𝑛 and phase 𝜙 are computed by (17) and
+(18), respectively as:
+]
+[
+[
+]
+(
+)
+1
+𝑟𝑒
+𝑑𝑜𝑒
+̃ 𝑛𝑒𝑡 sin(𝜃̃𝑛,𝜙 )
+I𝑛,𝑡
+=
+P𝑛,𝑡
+cos(𝜃̃𝑛,𝜙 ) + Q
+𝑛,𝑡
+̃𝑛,𝑡
+V
+(17)
+
+𝑒𝑣𝑐
+P𝑛,𝑡
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(12)
+
+𝑑𝑜𝑒 is the DOE, that limits the intended export/import power
+where P𝑛,𝑡
+of prosumers for trading with secure network operation, which is
+constrained by (15) for exports and (16) for imports.
+
+𝑒𝑣
+
+𝑒𝑣
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+This section illustrates the DOE formulation in an unbalanced threephase distribution network through an optimization-based iterative
+power flow considering voltage and line flow constraints to limit prosumers’ intended exports/imports for secure network operation. The
+DSO determines DOEs for prosumers equipped with EVs and PV systems
+so that prosumers can participate in the energy market within DOEs
+without any violation of network constraints. In the proposed framework, an objective function is defined to compute DOEs that aims to
+minimize the absolute difference between the intended export/import
+𝑛𝑒𝑡 of prosumers and the DOE P𝑑𝑜𝑒 by:
+power P𝑛,𝑡
+𝑛,𝑡
+∑|
+𝑛𝑒𝑡
+𝑑𝑜𝑒 |
+min
+|P𝑛,𝑡 − P𝑛,𝑡 | ; ∀𝑡 ∈ T,
+|
+|
+𝑛∈N
+(14)
+subject to: (15) to (23),
+
+and in (6), and E𝑛 is the maximum capacity of the EVs battery. The
+𝑒𝑣 ) is updated by (7) and constrained by (8).
+SOC level of an EV (𝛶𝑛,𝑡
+In (7), 𝛥𝑡 is the duration of a time slot, and 𝜂 𝑒𝑣𝑐 and 𝜂 𝑒𝑣𝑑 are the
+charging and discharging efficiencies of EV, respectively. As in (9), the
+charging/discharging of EVs can start at the time of their arrival 𝜏𝑛𝑎𝑟𝑟
+with the initial SOC 𝛶𝑛𝑖𝑛𝑖 and end at the time of their departure 𝜏𝑛𝑑𝑒𝑝
+with the desired SOC 𝛶𝑛𝑑𝑒𝑠 .
+
+2E𝑛
+𝑒𝑣 (𝜈 𝑒𝑣 − 1)𝛥𝑡
+𝜈𝑛,𝑡
+𝑛,𝑡
+
+𝑔𝑒𝑛
+𝑛𝑒𝑡
+𝑐𝑜𝑛
+P𝑛,𝑡
+= P𝑛,𝑡
+− P𝑛,𝑡
+
+2.3. DOE formulation
+
+𝑎𝑐𝑡 is the action time,
+where in (5), 𝜏𝑛𝑑𝑒𝑝 is the departure time and 𝜏𝑛,𝑡
+
+𝑒𝑣
+𝑒𝑣
+𝛶𝑛,𝑡+𝛥𝑡
+= 𝛶𝑛,𝑡
++
+
+(11)
+
+; ∀𝑛 ∈ N, ∀𝑠 ∈ N𝑡𝑆 , ∀𝑢 ∈ N𝑡𝐵 , ∀𝑡 ∈ T.
+
+P𝑛
+
+𝑒𝑣 (𝜈 𝑒𝑣 + 1)𝜂 𝑒𝑣𝑐 𝛥𝑡
+𝜈𝑛,𝑡
+𝑛,𝑡
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+| 𝑛𝑒𝑡 |
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+P𝑠,𝑡
+= |P𝑛,𝑡
+<0
+| ; if P𝑛,𝑡
+|
+|
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+P𝑢,𝑡 = P𝑛,𝑡 ; if P𝑛,𝑡 ≥ 0
+
+𝑒𝑣
+
+𝑟𝑒𝑞
+𝜏𝑛,𝑡
+=
+
+𝑐𝑜𝑛
+𝑙𝑜𝑎𝑑
+𝑒𝑣𝑐
+P𝑛,𝑡
+= P𝑛,𝑡
++ P𝑛,𝑡
+
+and 𝑢 are denoted as sellers and buyers, respectively.
+
+𝑒𝑣
+
+respectively, where P𝑛 is the maximum value of EV charge/discharge
+𝑒𝑣 is an integer variable that defines the state of EV at
+rating, and 𝜈𝑛,𝑡
+a time 𝑡 as {1, −1, 0} depending on the preference of EV owner and
+their mobility pattern. According to (4), EVs can be configured either
+𝑒𝑣 = 1), or discharging (𝜈 𝑒𝑣 = −1), or idle (𝜈 𝑒𝑣 = 0). EVs
+for charging (𝜈𝑛,𝑡
+𝑛,𝑡
+𝑛,𝑡
+are also prioritized for charging from the surplus of the local PV system
+𝑠𝑢𝑟 after consuming household load demand, P𝑙𝑜𝑎𝑑 . In
+generation, P𝑛,𝑡
+𝑛,𝑡
+this case, the EV charging state is configured by setting the integer
+𝑒𝑣 as 1 based on the available P𝑠𝑢𝑟 as presented in (4). Where
+variable 𝜈𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣 , 𝛶 𝑑𝑒𝑠 , 𝛶 𝑒𝑣 , and 𝛶 𝑒𝑣 are the current state-of-charge (SOC),
+in (4), 𝛶𝑛,𝑡
+𝑛
+𝑛
+𝑛
+the desired SOC, the maximum SOC, and the minimum SOC of 𝑛th EV,
+𝑎𝑣𝑎 is the available time to define the estimated duration
+respectively; 𝜏𝑛,𝑡
+of EV’s availability at the garage to participate in the market through
+𝑟𝑒𝑞
+charge or discharge before departure, and 𝜏𝑛,𝑡
+is the required time for
+EV to be determined depending on the energy level of its battery to
+reach the desired SOC level 𝛶𝑛𝑑𝑒𝑠 at the depute time as presented by (5)
+and (6), respectively.
+𝑒𝑣 (𝜈 𝑒𝑣 + 1)
+𝜈𝑛,𝑡
+𝑛,𝑡
+
+(10)
+
+𝑛𝑒𝑡 < 0, P𝑛𝑒𝑡 is considered as net export P𝑛𝑒𝑡 , otherwise
+Note that if P𝑛,𝑡
+𝑠,𝑡
+𝑛,𝑡
+𝑛𝑒𝑡 , as in (13). The indices of 𝑠
+𝑛𝑒𝑡
+P𝑛,𝑡 can be considered as net import P𝑢,𝑡
+
+where P𝑛 is the maximum value of the PV system generation. Eqs. (2)
+𝑒𝑣𝑐 and discharge power P𝑒𝑣𝑑 ,
+and (3) constrain EVs charge power P𝑛,𝑡
+𝑛,𝑡
+
+𝑒𝑣𝑐
+0 ≤ P𝑛,𝑡
+≤
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(8)
+(9)
+
+𝑔𝑒𝑛
+𝑐𝑜𝑛 of a customer
+The net generation P𝑛,𝑡
+and the net consumption P𝑛,𝑡
+𝑙𝑜𝑎𝑑 ,
+at node 𝑛 are calculated by (10) and (11), respectively, where P𝑛,𝑡
+
+5
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+𝑖𝑚𝑝
+𝑒𝑥𝑝
+are the allowed export power and the allowed import
+and 𝑃𝑢,𝑡
+𝑃𝑠,𝑡
+power within the allocated DOE, respectively.
+
+Eqs. (20) and (21) are used to calculate the real and imaginary parts of
+𝑟𝑒∕𝑖𝑚
+the node voltage V𝑛,𝑡
+at node 𝑛 as:
+[
+] [
+] [ ][
+] [ ][
+]
+𝑟𝑒
+𝑟𝑒
+𝑟𝑒
+𝑖𝑚
+V𝑛,𝑡 = V𝑛−1,𝑡 − R𝑙 I𝑙,𝑡
++ X𝑙 I𝑙,𝑡
+(20)
+; ∀𝑛 ∈ N, ∀𝑙 ∈ L, ∀𝑡 ∈ T,
+[
+] [
+] [ ][
+] [ ][
+]
+𝑖𝑚
+𝑖𝑚
+𝑖𝑚
+𝑟𝑒
+V𝑛,𝑡
+= V𝑛−1,𝑡
+− R𝑙 I𝑙,𝑡
+− X𝑙 I𝑙,𝑡
+(21)
+; ∀𝑛 ∈ N, ∀𝑙 ∈ L, ∀𝑡 ∈ T,
+
+| 𝑑𝑜𝑒 |
+𝑒𝑥𝑝
+𝑑𝑜𝑒
+≤ |P𝑛,𝑡
+𝑃𝑠,𝑡
+<0
+| ; if P𝑛,𝑡
+|
+|
+𝑖𝑚𝑝
+𝑑𝑜𝑒
+𝑑𝑜𝑒
+𝑃𝑢,𝑡 ≤ P𝑛,𝑡 ; if P𝑛,𝑡 ≥ 0
+
+𝑒𝑣𝑐 /𝑃 𝑒𝑣𝑑 ),
+Depending on updates of EVs charge/discharge power (𝑃𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣
+the SOC values 𝛶𝑛,𝑡+𝛥𝑡 of EVs are updated as in (7). It is noted that
+the SOC updates corresponding to the updates of EVs charge/discharge
+power continue until the SOC values reach their desired SOC levels
+𝛶𝑛𝑑𝑒𝑠 at departure time. Prosumers can then estimate their intended
+exports/imports based on the SOC updates for the next immediate time
+slot in order to determine the DOEs for prosumers while fulfilling their
+desires.
+
+𝑟𝑒∕𝑖𝑚
+
+where V𝑛−1,𝑡 are the real and imaginary parts of voltage at the upstream node (𝑛 − 1), and R𝑙 and X𝑙 are the resistance and reactance
+matrices of the distribution network. Constraint (22) defines the voltage
+constraint of nodes for both the over-voltage and under-voltage of the
+network, where V and V are the upper voltage limit and the lower
+voltage limit, respectively.
+2
+
+2
+
+2
+
+𝑟𝑒
+𝑖𝑚
+V2 ≤ V𝑛,𝑡
++ V𝑛,𝑡
+≤ V
+
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T.
+
+(22)
+
+3. P2P energy trading mechanism
+
+Eq. (23) presents the congestion constraint of lines of the network,
+where I𝑙 is the maximum congestion limit corresponding to line 𝑙.
+2
+𝑟𝑒2
+𝑖𝑚2
+I𝑙,𝑡
++ I𝑙,𝑡
+≤ I𝑙
+
+; ∀𝑙 ∈ L, ∀𝑡 ∈ T.
+
+A prosumer-centric P2P energy trading mechanism is developed in
+the proposed framework based on the double auction approach [4,5].
+The proposed mechanism aims to attain an energy market in which
+prosumers can participate by sending their bid/offer prices to the DMO
+for the power import/export quantities within the allocated DOEs. The
+DMO communicates with prosumers for their bids/offers and with the
+DSO for obtaining DOEs in order to execute the auction mechanism
+as illustrated in Algorithm 1 in Section 3.1. This section elaborates on
+the proposed price and quantity matching algorithm for the auctionbased P2P energy trading using DOEs and discusses the properties of
+the designed approach as follows.
+
+(23)
+
+2.4. Energy management with DOE
+In this section, the energy management of prosumers is demonstrated incorporating DOEs, which are determined for prosumers to
+limit their exports/imports for trading in the market. Prosumers estimate their intended exports/imports for the next immediate time slot
+depending on the EVs’ mobility and desires. In the proposed framework,
+the PV system’s cost-free generation is given precedence to be utilized.
+Hence, before updating the PV system power, EVs charge and discharge
+𝑟𝑒𝑠 within the allocated DOEs as:
+power are restricted by 𝛥𝑃𝑛,𝑡
+𝑟𝑒𝑠
+𝑛𝑒𝑡
+𝑑𝑜𝑒
+𝛥𝑃𝑛,𝑡
+= P𝑛,𝑡
+− P𝑛,𝑡
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+3.1. Price and quantity matching algorithm
+
+(24)
+
+In the proposed market framework, the DMO collects all data, such
+as market prices and network operational data, from all agents and
+sends energy price signals, such as the time-of-use (ToU), 𝜆𝑡𝑜𝑢
+and
+𝑡
+feed-in-tariff (FiT), 𝜆𝑓𝑡 𝑖𝑡 prices, to all prosumers as market players, and
+enables them to submit their request vectors as sellers/buyers with the
+𝑛𝑒𝑡 /net imports P𝑛𝑒𝑡 in each 𝑡 as in (31)/(32) to the DMO.
+net exports P𝑠,𝑡
+𝑢,𝑡
+
+𝑟𝑒𝑠 is the restricted amount, which is the difference between
+where 𝛥𝑃𝑛,𝑡
+the intended export/import power and the allocated DOE.
+EV charge and discharge power as well as PV system power are
+𝑒𝑣 ). The updates of EV charge,
+updated depending on the status of EVs (𝜈𝑛,𝑡
+𝑒𝑣𝑐 , 𝑃 𝑒𝑣𝑑 , and 𝑃 𝑝𝑣 ,
+EV discharge, and PV system power are assumed as 𝑃𝑛,𝑡
+𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣 = 1 (i.e., 𝛥𝑃 𝑟𝑒𝑠 ≥ 0), if 𝑃 𝑒𝑣𝑐 ≥ 𝛥𝑃 𝑟𝑒𝑠 , EV charge
+respectively. For 𝜈𝑛,𝑡
+𝑛,𝑡
+𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣𝑐 is updated as in (25), or if 𝑃 𝑒𝑣𝑐 < 𝛥𝑃 𝑟𝑒𝑠 , no EV charge as
+power 𝑃𝑛,𝑡
+𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣𝑐
+𝑃𝑛,𝑡 = 0 and EV status is changed to discharge state, and accordingly,
+𝑒𝑣𝑑 is updated as in (26). But if 𝛥𝑃 𝑟𝑒𝑠 < 0, EV
+EV discharge power 𝑃𝑛,𝑡
+𝑛,𝑡
+𝑒𝑣𝑐 and PV system power 𝑃 𝑝𝑣 is updated as in (27),
+will charge at P𝑛,𝑡
+𝑛,𝑡
+otherwise all remain unchanged.
+𝑒𝑣𝑐
+𝑒𝑣𝑐
+𝑟𝑒𝑠 𝑒𝑣
+𝑃𝑛,𝑡
+= P𝑛,𝑡
+− 𝛥𝑃𝑛,𝑡
+𝜈𝑛,𝑡 ; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(25)
+
+𝑒𝑣𝑑
+𝑒𝑣𝑐
+𝑟𝑒𝑠 𝑒𝑣
+𝑃𝑛,𝑡
+= −P𝑛,𝑡
+− 𝛥𝑃𝑛,𝑡
+𝜈𝑛,𝑡 ; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(26)
+
+𝑝𝑣
+𝑝𝑣
+𝑟𝑒𝑠
+𝑃𝑛,𝑡
+= P𝑗,𝑡
+− 𝛥𝑃𝑛,𝑡
+; ∀𝑛 ∈ N, ∀𝑡 ∈ T.
+
+(27)
+
+𝑒𝑣𝑐
+𝑒𝑣𝑑
+𝑟𝑒𝑠 𝑒𝑣
+𝑃𝑛,𝑡
+= −P𝑛,𝑡
+− 𝛥𝑃𝑛,𝑡
+𝜈𝑛,𝑡 ; ∀𝑛 ∈ N, ∀𝑡 ∈ T.
+
+(29)
+
+(31)
+
+[
+]
+𝑟𝑣
+𝑛𝑒𝑡 𝐵
+B𝑢,𝑡
+= 𝐼𝐷𝑢𝐵 , P𝑢,𝑡
+, 𝜆𝑢,𝑡 ; ∀𝑢 ∈ N𝑡𝐵 , ∀𝑡 ∈ T,
+
+(32)
+
+[
+]
+𝑖𝑚𝑝 𝐵
+𝑟𝑣
+𝐵𝑢,𝑡
+= 𝐼𝐷𝑢𝐵 , 𝑃𝑢,𝑡
+, 𝜆𝑢,𝑡 ; ∀𝑢 ∈ N𝑡𝐵 , ∀𝑡 ∈ T.
+
+in (27), otherwise it remains unchanged.
+(28)
+
+[
+]
+𝑟𝑣
+𝑛𝑒𝑡 𝑆
+S𝑠,𝑡
+= 𝐼𝐷𝑠𝑆 , P𝑠,𝑡
+, 𝜆𝑠,𝑡 ; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+
+𝑟𝑣 and B𝑟𝑣 are the request vectors, 𝐼𝐷𝑆
+where in (31) and (32), S𝑠,𝑡
+𝑢,𝑡
+𝑠
+and 𝐼𝐷𝑢𝐵 are the identification numbers, and 𝜆𝑆𝑠,𝑡 and 𝜆𝐵
+𝑢,𝑡 are the offer
+and bid prices of the seller 𝑠 and buyer 𝑢, respectively. Note that
+𝑓 𝑖𝑡
+the offer/bid prices from sellers/buyers must be between 𝜆𝑡𝑜𝑢
+𝑡 and 𝜆𝑡
+prices in order to validate their participation in the energy market. The
+DMO corresponds with the DSO with prosumers’ offers/bids as intended
+exports/imports to receive DOEs for trading in the market. Based on
+𝑟𝑣 and buyers’
+the allocated DOEs, the DMO updates sellers’ vectors 𝑆𝑠,𝑡
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+𝑟𝑣
+vectors 𝐵𝑢,𝑡 with the updated allowed exports 𝑃𝑠,𝑡 and imports 𝑃𝑢,𝑡
+in
+each 𝑡 as in (33) and (34), respectively.
+[
+]
+𝑒𝑥𝑝 𝑆
+𝑟𝑣
+𝑆𝑠,𝑡
+= 𝐼𝐷𝑠𝑆 , 𝑃𝑠,𝑡
+, 𝜆𝑠,𝑡 ; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+(33)
+
+𝑒𝑣 = −1 (i.e., 𝛥𝑃 𝑟𝑒𝑠 < 0), if 𝑃 𝑒𝑣𝑑 ≥ |𝛥𝑃 𝑟𝑒𝑠 |,
+On the other hand, for 𝜈𝑛,𝑡
+| 𝑛,𝑡 |
+𝑛,𝑡
+𝑛,𝑡
+|
+|
+𝑒𝑣𝑑 is updated as in (28), or if 𝑃 𝑒𝑣𝑑 < |𝛥𝑃 𝑟𝑒𝑠 |, no
+EV discharge power 𝑃𝑛,𝑡
+|
+|
+𝑛,𝑡
+𝑛,𝑡
+|
+|
+𝑒𝑣𝑑 = 0, EV status is changed to charge state, and
+EV discharge as 𝑃𝑛,𝑡
+𝑒𝑣𝑐
+accordingly, EV charge power 𝑃𝑛,𝑡 is updated as in (29), otherwise
+𝑒𝑣 = 0 (i.e., no EV
+all remain unchanged. On the contrary, for 𝜈𝑛,𝑡
+𝑟𝑒𝑠 < 0, PV system power 𝑃 𝑝𝑣 is updated as
+charge/discharge), if 𝛥𝑃𝑛,𝑡
+𝑛,𝑡
+
+𝑒𝑣𝑑
+𝑒𝑣𝑑
+𝑟𝑒𝑠 𝑒𝑣
+𝑃𝑛,𝑡
+= P𝑛,𝑡
+− 𝛥𝑃𝑛,𝑡
+𝜈𝑛,𝑡 ; ∀𝑛 ∈ N, ∀𝑡 ∈ T,
+
+(30)
+
+; ∀𝑛 ∈ N, ∀𝑠 ∈ N𝑡𝑆 , ∀𝑢 ∈ N𝑡𝐵 , ∀𝑡 ∈ T.
+
+(34)
+
+To establish equal chances for all market players to win the auction,
+the DMO checks whether each seller satisfies 𝜆𝑆𝑠,𝑡 ≤ 𝜆𝑎𝑣𝑔
+and each
+𝑡
+𝑎𝑣𝑔
+buyer satisfies 𝜆𝐵
+that improves the auction process and
+𝑢,𝑡 ≥ 𝜆𝑡
+identifies the winner players for the auction in the proposed energy
+market framework. Otherwise, unsatisfied players will be listed in the
+𝑓 𝑖𝑡
+corresponding loser matrix to trade with the upstream gird at 𝜆𝑡𝑜𝑢
+𝑡 /𝜆𝑡
+
+Accordingly, the exports/imports of prosumers for trading in the P2P
+𝑑𝑜𝑒 as in (30), where
+energy market are limited by the allocated DOEs P𝑛,𝑡
+6
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+Algorithm 1 Proposed double auction-based P2P energy trading mechanism using DOE
+𝑛𝑒𝑡 , P𝑑𝑜𝑒 , 𝜆𝑡𝑜𝑢 , 𝜆𝑓 𝑖𝑡 , 𝐼𝐷𝐵 , 𝐼𝐷𝑆 , 𝜆𝐵 , 𝜆𝑆 , 𝑛 ∈ N, 𝑢 ∈ N𝐵 , 𝑠 ∈ N𝑆 , 𝑡 ∈ T
+Input: P𝑛,𝑡
+𝑡
+𝑛,𝑡
+𝑡
+𝑢
+𝑠
+𝑢,𝑡 𝑠,𝑡
+𝑡
+𝑡
+𝑃 2𝑃 , 𝜆𝑃 2𝑃 , 𝛥𝑃 𝑖𝑚𝑝 , 𝛥𝑃 𝑒𝑥𝑝 , 𝑢 ∈ N𝐵 , 𝑠 ∈ N𝑆 , 𝑡 ∈ T
+Output: 𝑃𝑢,𝑠,𝑡
+𝑢,𝑡
+𝑠,𝑡
+𝑢,𝑠,𝑡
+𝑡
+𝑡
+
+1: for 𝑡 ∈ T do
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+𝑛𝑒𝑡
+2:
+Compute P𝑠,𝑡
+, P𝑢,𝑡
+using (13) with intended P𝑛,𝑡
+[
+]
+𝑟𝑣
+𝐵
+𝑛𝑒𝑡 𝐵
+3:
+Define buyers’ request vectors: B𝑢,𝑡 ← 𝐼𝐷𝑢 , P𝑢,𝑡 , 𝜆𝑢,𝑡
+[
+]
+𝑟𝑣 ← 𝐼𝐷𝑆 , P𝑛𝑒𝑡 , 𝜆𝑆
+4:
+Define sellers’ request vectors: S𝑠,𝑡
+𝑠
+𝑠,𝑡
+𝑠,𝑡
+
+7:
+
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+𝑑𝑜𝑒
+Compute 𝑃𝑠,𝑡
+, 𝑃𝑢,𝑡
+using (30) with allocated DOE P𝑛,𝑡
+[
+]
+𝑖𝑚𝑝 𝐵
+𝑟𝑣
+Update buyers’ vectors: 𝐵𝑢,𝑡
+← 𝐼𝐷𝑢𝐵 , 𝑃𝑢,𝑡
+, 𝜆𝑢,𝑡
+[
+]
+𝑟𝑣 ← 𝐼𝐷𝑆 , 𝑃 𝑒𝑥𝑝 , 𝜆𝑆
+Update sellers’ vectors: 𝑆𝑠,𝑡
+𝑠,𝑡
+𝑠
+𝑠,𝑡
+
+8:
+9:
+10:
+11:
+12:
+13:
+14:
+15:
+16:
+17:
+18:
+19:
+20:
+21:
+22:
+23:
+24:
+25:
+26:
+27:
+28:
+29:
+
+Compute 𝜆𝑎𝑣𝑔
+using (35)
+𝑡
+if 𝜆𝐵𝑢,𝑡 ≥ 𝜆𝑎𝑣𝑔
+then
+𝑡
+𝑟𝑣 as a winner in BWM for P2P trading
+Assign 𝐵𝑢,𝑡
+else
+𝑟𝑣 as a loser in BLM to buy at 𝜆𝑡𝑜𝑢 from the grid
+Assign 𝐵𝑢,𝑡
+𝑡
+end if
+𝑎𝑣𝑔
+if 𝜆𝑆𝑠,𝑡 ≤ 𝜆𝑡 then
+𝑟𝑣
+Assign 𝑆𝑠,𝑡
+as a winner in SWM for P2P trading
+else
+𝑟𝑣 as a loser in SLM to sell at 𝜆𝑓 𝑖𝑡 to the grid
+Assign 𝑆𝑠,𝑡
+𝑡
+end if
+Sort BWM w.r.t. 𝜆𝐵𝑢,𝑡 in descending order
+Sort SWM w.r.t. 𝜆𝑆𝑠,𝑡 in ascending order
+if N𝑡𝐵 > N𝑡𝑆 then
+𝑟𝑣
+Transfer (N𝑡𝐵 − N𝑡𝑆 ) 𝐵𝑢,𝑡
+from the bottom of BWM to RBM
+else if N𝑡𝑆 > N𝑡𝐵 then
+𝑟𝑣
+from the bottom of SWM to RSM
+Transfer (N𝑡𝑆 − N𝑡𝐵 ) 𝑆𝑠,𝑡
+end if
+for 𝑢 ∈ N𝑡𝐵 do
+for 𝑠 ∈ N𝑡𝑆 do
+if s==u then
+𝑃 2𝑃
+2𝑃
+Compute 𝑃𝑢,𝑠,𝑡
+, 𝜆𝑃𝑢,𝑠,𝑡
+using (38) and (39) for P2P trade
+
+30:
+31:
+32:
+
+𝑖𝑚𝑝
+𝑒𝑥𝑝
+if 𝑃𝑢,𝑡
+> 𝑃𝑠,𝑡
+then
+𝑖𝑚𝑝
+Compute 𝛥𝑃𝑢,𝑡
+using (40) for remaining quantity
+𝑖𝑚𝑝
+𝑟𝑣
+Transfer 𝐵𝑢,𝑡 with import 𝛥𝑃𝑢,𝑡
+to the end of RBM
+
+5:
+6:
+
+33:
+34:
+35:
+36:
+37:
+38:
+39:
+40:
+41:
+
+⊳ Price and quantity matching loop
+
+𝑖𝑚𝑝
+𝑒𝑥𝑝
+else if 𝑃𝑢,𝑡
+< 𝑃𝑠,𝑡
+then
+𝑒𝑥𝑝
+Compute 𝛥𝑃𝑠,𝑡
+using (40) for remaining quantity
+𝑟𝑣 with export 𝛥𝑃 𝑒𝑥𝑝 to the end of RSM
+Transfer 𝑆𝑠,𝑡
+𝑠,𝑡
+end if
+end if
+end for
+end for
+if Data in RBM and RSM exist then
+𝑟𝑣 or 𝑆 𝑟𝑣 with a matching peer existing in RBM and RSM
+Go to Line 26 to do the price and quantity matching and repeat until no 𝐵𝑢,𝑡
+𝑠,𝑡
+
+𝑟𝑣
+𝑟𝑣
+) without matching peer in RBM(RSM) to BLM(SLM) to trade at 𝜆𝑡𝑜𝑢
+(𝜆𝑓𝑡 𝑖𝑡 ) with the grid
+(𝑆𝑠,𝑡
+42:
+Transfer remaining 𝐵𝑢,𝑡
+𝑡
+43:
+end if
+44: end for
+
+Abbreviation: BWM-buyer winner matrix, SWM-seller winner matrix, BLM-buyer loser matrix, SLM-seller loser matrix, RBM-remaining buyer matrix,
+RSM-remaining seller matrix
+
+prices. 𝜆𝑎𝑣𝑔
+is the average price of all market players 𝑁 in each 𝑡
+𝑡
+calculated as:
+∑
+∑
+𝑆
+𝐵
+𝑢∈N𝑡𝐵 𝜆𝑢,𝑡
+𝑠∈N𝑡𝑆 𝜆𝑠,𝑡 +
+𝑎𝑣𝑔
+𝜆𝑡 =
+; ∀𝑡 ∈ T.
+(35)
+𝑁
+In Algorithm 1, the DMO arranges the request vectors from sellers
+in ascending order and from buyers in descending order with respect
+to their offer and bid prices in each 𝑡 corresponding to their assigned
+matrices as:
+𝜆𝑆1,𝑡 < 𝜆𝑆2,𝑡 < 𝜆𝑆3,𝑡 < ⋯ < 𝜆𝑆𝑠,𝑡 ; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+
+(36)
+
+𝐵
+𝜆𝐵
+> 𝜆𝐵
+> 𝜆𝐵
+> ⋯ > 𝜆𝐵
+𝑢,𝑡 ; ∀𝑢 ∈ N𝑡 , ∀𝑡 ∈ T.
+1,𝑡
+2,𝑡
+3,𝑡
+
+(37)
+
+quantity and price matching for P2P energy trading, the traded match𝑃 2𝑃 is computed by the minimum quantity between the
+ing quantity 𝑃𝑢,𝑠,𝑡
+buyer’s import and seller’s export as in (38), and the traded matching
+2𝑃 is calculated by the average price of buyer’s bid and seller’s
+price 𝜆𝑃𝑢,𝑠,𝑡
+offer prices as in (39).
+(
+)
+𝑖𝑚𝑝
+𝑒𝑥𝑝
+𝑃 2𝑃
+𝑃𝑢,𝑠,𝑡
+= min 𝑃𝑢,𝑡
+, 𝑃𝑠,𝑡
+; ∀𝑢 ∈ N𝑡𝐵 , ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+(38)
+2𝑃
+𝜆𝑃𝑢,𝑠,𝑡
+=
+
+𝑆
+𝜆𝐵
+𝑢,𝑡 + 𝜆𝑠,𝑡
+
+; ∀𝑢 ∈ N𝑡𝐵 , ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T.
+(39)
+2
+The proposed auction approach is accomplished in such a way that the
+highest price bid buyer transacts with the lowest price offer seller for
+the minimum requested quantity between them at the average of their
+request prices, and the second highest price bid buyer trades with the
+second lowest price offer seller for the minimum requested quantity
+between them at the average of their request prices, and it continues
+
+The sizes of both buyer and seller winner matrices are made equal by
+|
+|
+transferring excess |N𝑡𝐵 − N𝑡𝑆 | buyer or seller vectors from the bottom
+|
+|
+of their winning matrix to the remaining buyer or seller matrix. For the
+7
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+till the end of the list of their winner matrices. It means that Buyer
+𝑃 2𝑃
+1 from the descended buyer winner matrix can buy a quantity 𝑃1,1,𝑡
+2𝑃 ,
+from Seller 1 from the ascended seller winner matrix at prices 𝜆𝑃1,1,𝑡
+𝑃 2𝑃 from Seller 2 at prices 𝜆𝑃 2𝑃 , and
+and Buyer 2 can buy a quantity 𝑃2,2,𝑡
+2,2,𝑡
+so on. In the first transaction, the buyers (sellers) with the remaining
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+) as in (40), is transferred to the end of the
+(export 𝛥𝑃𝑠,𝑡
+import 𝛥𝑃𝑢,𝑡
+remaining buyer (seller) matrix, and it is the same for other transactions
+as well.
+𝑒𝑥𝑝
+𝑖𝑚𝑝
+> 𝑃𝑠,𝑡
+; 𝑖𝑓 𝑃𝑢,𝑡
+𝑖𝑚𝑝
+𝑒𝑥𝑝
+𝑒𝑥𝑝
+𝑒𝑥𝑝
+𝑃 2𝑃
+𝛥𝑃𝑠,𝑡 =𝑃𝑠,𝑡 − 𝑃𝑠,𝑢,𝑡 ; 𝑖𝑓 𝑃𝑠,𝑡 > 𝑃𝑢,𝑡
+; ∀𝑢 ∈ N𝑡𝐵 , ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+
+3.2.2. Budget balance
+The proposed trading framework is strongly budget-balanced, as all
+matched players are equally paid off from their P2P energy transactions
+by the proposed average pricing mechanism. No other third party gets
+any financial benefit from the trade.
+3.2.3. Computational efficiency
+In the trading mechanism, the matching peers of prosumers are
+chosen from the descended buyer and ascended seller winner matrices
+as one-to-one trading between the highest price bid buyer and the
+lowest price offer seller, and between the second highest price bid
+buyer and the second lowest price offer seller, and so on until no
+buyer or seller exists in their matrices. Therefore, the trading process
+is formulated without requiring rigorous computational analysis, which
+makes the proposed trading framework computationally efficient for
+managing a large number of prosumers.
+
+𝑖𝑚𝑝
+𝑖𝑚𝑝
+𝑃 2𝑃
+− 𝑃𝑢,𝑠,𝑡
+=𝑃𝑢,𝑡
+𝛥𝑃𝑢,𝑡
+
+(40)
+
+This matching process continues for the remaining buyers and
+sellers in the remaining buyer and seller matrices and repeats until no
+buyer or seller with a matching peer exists there. The remaining buyers
+(sellers) on the list of the remaining buyer (seller) matrix without any
+matching opposite peer will be treated as losers and transferred to their
+loser matrices to trade for the remaining import (export) quantities with
+𝑓 𝑖𝑡
+the upstream grid at 𝜆𝑡𝑜𝑢
+𝑡 (𝜆𝑡 ) prices. The proposed market-clearing
+approach facilitates all prosumers equally so that prosumers can take
+part in P2P energy trading to benefit themselves. The payoff of buyer 𝑢,
+PO𝑃𝑢,𝑡2𝑃 for energy trade with sellers from the auction is given as in (41)
+and the payoff of seller 𝑠, PO𝑃𝑠,𝑡2𝑃 for energy trade with buyers from the
+auction is presented as in (42).
+)
+∑ (
+𝑃 2𝑃
+𝑃 2𝑃
+𝐵
+PO𝑃𝑢,𝑡2𝑃 =
+𝜆𝐵
+(41)
+𝑢,𝑡 − 𝜆𝑢,𝑠,𝑡 𝑃𝑢,𝑠,𝑡 ; ∀𝑢 ∈ N𝑡 , ∀𝑡 ∈ T,
+𝑠∈N𝑡𝑆
+
+PO𝑃𝑠,𝑡2𝑃 =
+
+∑ (
+
+)
+2𝑃
+𝑃 2𝑃
+𝜆𝑃𝑠,𝑢,𝑡
+− 𝜆𝑆𝑠,𝑡 𝑃𝑠,𝑢,𝑡
+; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T.
+
+3.2.4. Fairness
+The proposed market framework is financially fair to all prosumers
+as all prosumers have equal motivation in terms of getting trading
+access and payoff in the developed energy trading framework, as
+discussed in the preceding properties.
+3.2.5. Truthfulness
+The proposed trading framework satisfies the criteria of truthfulness
+in terms of economic analysis. The market clearing prices are calculated
+with the matched prosumers’ bid and offer prices based on the average
+pricing mechanism to benefit all matched prosumers consistently in
+the proposed trading framework. No hidden charges are taken into
+consideration for calculating the market clearing prices.
+
+(42)
+
+3.3. Performance evaluation indices
+
+𝑢∈N𝑡𝐵
+
+The total payoff for a buyer 𝑢, PO𝑇𝑢,𝑡𝐵 and a seller 𝑠, PO𝑇𝑠,𝑡𝑆 can be
+computed as (43) and (44), respectively, where PO𝐺𝑟𝑖𝑑
+and PO𝐺𝑟𝑖𝑑
+𝑢,𝑡
+𝑠,𝑡
+are the payoff for the respective buyer and seller for the energy trade
+𝐺𝑟𝑖𝑑 and 𝑃 𝐺𝑟𝑖𝑑 with the upstream grid that are formulated as in
+of 𝑃𝑢,𝑡
+𝑠,𝑡
+(45) and (46), respectively. For the performance evaluation, the buyers’
+𝐵 (.) is considered the same as the payment made by buyers for
+utility U𝑢,𝑡
+𝑆 (.) are
+energy trade with the grid, and the sellers’ generation costs C𝑠,𝑡
+negligible as the prices of DERs (e.g., EVs, PV systems) are zero.
+𝐵
+PO𝑇𝑢,𝑡𝐵 = PO𝑃𝑢,𝑡2𝑃 + PO𝐺𝑟𝑖𝑑
+𝑢,𝑡 ; ∀𝑢 ∈ N𝑡 , ∀𝑡 ∈ T,
+
+(43)
+
+PO𝑇𝑠,𝑡𝑆 = PO𝑃𝑠,𝑡2𝑃 + PO𝐺𝑟𝑖𝑑
+; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T,
+𝑠,𝑡
+
+(44)
+
+𝐵
+𝐺𝑟𝑖𝑑
+𝐺𝑟𝑖𝑑 𝑡𝑜𝑢
+𝐵
+PO𝐺𝑟𝑖𝑑
+𝑢,𝑡 = U𝑢,𝑡 (𝑃𝑢,𝑡 ) − 𝑃𝑢,𝑡 𝜆𝑡 ; ∀𝑢 ∈ N𝑡 , ∀𝑡 ∈ T,
+
+(45)
+
+𝐺𝑟𝑖𝑑 𝑓 𝑖𝑡
+𝑆
+𝐺𝑟𝑖𝑑
+PO𝐺𝑟𝑖𝑑
+= 𝑃𝑠,𝑡
+𝜆𝑡 − C𝑠,𝑡
+(𝑃𝑠,𝑡
+) ; ∀𝑠 ∈ N𝑡𝑆 , ∀𝑡 ∈ T.
+𝑠,𝑡
+
+(46)
+
+This section presents various metrics for evaluating the performance
+of the proposed DOE-based P2P energy trading framework as defined
+in the following [26–28].
+3.3.1. Relative payoff index (RPI)
+RPI is the total payoff of the players achieved within DOEs relative
+to the total maximum payoff PO𝑛 without limits as defined by,
+∑
+∑
+𝑇𝐵
+𝑇𝑆
+𝑢∈N𝐵 PO𝑢 +
+𝑠∈N𝑆 PO𝑠
+.
+(47)
+RPI =
+∑
+𝑛∈N PO𝑛
+3.3.2. Power import–export index (PIEI)
+PIEI is the ratio of the total allowable power imports and exports
+within DOEs to the total intended net power imports and exports
+without DOEs, as shown in (48). A high value of PIEI indicates the high
+capacity utilization of DERs.
+∑
+∑
+𝑖𝑚𝑝
++ 𝑠∈N𝑆 𝑃𝑠𝑒𝑥𝑝
+𝑢∈N𝐵 𝑃𝑢
+PIEI =
+.
+(48)
+∑
+| 𝑛𝑒𝑡 |
+𝑛∈N | P𝑛 |
+3.3.3. Quality of service (QoS)
+As given in (49), QoS index is used to evaluate the fairness of the
+proposed framework. A fairer approach has a higher value of QoS.
+(∑
+)2
+1
+𝑛∈N PIEI𝑛
+QoS =
+×
+(49)
+(
+)2 .
+N ∑
+𝑛∈N PIEI𝑛
+
+3.2. Properties of the proposed P2P energy trading mechanism
+The proposed P2P energy trading mechanism may fulfill a number
+of properties that include (1) individual rationality, (2) budget balance, (3) computational efficiency, (4) fairness, and (5) truthfulness.
+The following discussions prove that the proposed prosumer-centric
+P2P energy trading market framework is budget-balanced, individually
+rational, and computationally and financially efficient.
+
+3.3.4. Quality of experience (QoE)
+QoE index is used to measure the satisfaction of prosumers in terms
+of trading prices in the P2P energy market. The lower price deviation
+among peers gives the higher QoE value as defined by:
+𝜎
+QoE = 1 − 𝑚𝑎𝑥 ,
+(50)
+𝜎
+
+3.2.1. Individual rationality
+The proposed energy trading framework is individually rational
+because it facilitates all prosumers equally to participate in the energy
+market, and all prosumers are willing to trade with other peers to
+benefit themselves in the proposed energy trading framework rather
+than trade with the grid.
+
+2𝑃 and
+where 𝜎 is the standard deviation of P2P energy trading prices 𝜆𝑃𝑢,𝑠,𝑡
+𝜎 𝑚𝑎𝑥 is the maximum price deviation which can be calculated by the
+2𝑃 𝑚𝑎𝑥
+difference between maximum and minimum trading prices (𝜆𝑃𝑢,𝑠,𝑡
+𝑃
+2𝑃
+𝑚𝑖𝑛
+and 𝜆𝑢,𝑠,𝑡
+).
+
+8
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+Fig. 3. 78-node LV residential distribution test network.
+
+3.3.5. Min–max (MiM)
+MiM fairness index refers to the fairness from prosumers perspective when the difference between the amounts of energy traded by
+prosumers of higher and lower is small. It is calculated as:
+MiM =
+
+𝑒𝑥𝑝
+𝑚𝑖𝑛 𝑃̄𝑠,𝑡
+𝑒𝑥𝑝
+𝑚𝑎𝑥 𝑃̄𝑠,𝑡
+
+, 𝑜𝑟,
+
+𝑖𝑚𝑝
+𝑚𝑖𝑛 𝑃̄𝑢,𝑡
+𝑖𝑚𝑝
+𝑚𝑎𝑥 𝑃̄𝑢,𝑡
+
+.
+
+Fig. 4. Data: (a) average household load and PV system data, (b) EVs mobility data
+for arrival and departure time, (c) EVs SOC at arrival and departure, and (d) utility
+energy prices.
+
+(51)
+
+4. Results analysis and discussion
+
+reveals that voltage violations occur at a total of 44 residential nodes
+of the network. Whereas, as in Fig. 5b, the proposed framework performs efficiently in maintaining voltage constraints within the standard
+limits. The line congestion results of the network are shown in Fig. 6.
+The performance of the network without DOEs does not guarantee to
+preserve the congestion constraint, as Fig. 6a has a total of 17 lines with
+congestion problems. However, as depicted in Fig. 6b, the proposed
+method upholds the congestion value within the maximum capacity of
+each line of the network successfully.
+
+A three-phase unbalanced Danish 78-node LV residential distribution network [29], as shown in Fig. 3, is considered for implementing
+the proposed framework. As in Fig. 3, each single-phase residential
+household node is equipped with either both EV and PV system (colored
+blue), only EV (colored red), or only PV system (colored green). These
+nodes are connected to the corresponding Phase 𝑎 (𝑎1 − 𝑎26 ), Phase 𝑏
+(𝑏1 − 𝑏26 ) and Phase 𝑐 (𝑐1 − 𝑐26 ). Fig. 4 presents real data utilized in
+the analysis for household load and PV system data as in Fig. 4a, EVs
+mobility data for arrival 𝜏𝑛𝑎𝑟𝑟 and departure 𝜏𝑛𝑑𝑒𝑝 time as in Fig. 4b, SOC
+of EVs at arrival 𝛶𝑛𝑖𝑛𝑖 and departure 𝛶𝑛𝑑𝑒𝑠 as in Fig. 4c, and utility energy
+𝑓 𝑖𝑡
+prices (𝜆𝑡𝑜𝑢
+𝑡 , 𝜆𝑡 ) as in Fig. 4d. The analysis considers an EV model
+named Hyundai Kona with 64 kWh of capacity, 7 kW charge–discharge
+rate, and 0.95 charge–discharge efficiencies. A 0.97 load power factor
+and a 15-minute time slot duration over a 24 hour timeframe are
+considered in the analysis. For the analysis, 50% EV and PV system
+penetration is considered randomly to the network, as colored in Fig. 3,
+to assess the realistic potency of the proposed framework.
+
+4.2. Energy management of EVs
+Accomplishing the preferences of prosumers equipped with EVs in
+the proposed framework means managing the charge and discharge
+schedule of EVs efficiently to reach the desired SOC levels during the
+departure time for their mobility and participation in the market. Fig. 7
+shows the charge and discharge profile of EVs at sample residential
+nodes 𝑎8 , 𝑏18 , and 𝑐25 of the distribution network. The results of EVs
+charge and discharge in Fig. 7 are managed within allocated DOEs so
+that the proposed framework is capable of fulfilling the preferences of
+EV-owned prosumers. In Fig. 7, there is an increasing trend of SOC level
+of EV at node 𝑏18 due to EV charging with the surplus of the PV system
+generation over the period between 2 p.m. and 5 p.m.. It can also be
+seen at node 𝑎8 in Fig. 7 that EV charges its battery in the daytime when
+the surplus of the PV system generation is available. In this regard, to
+evaluate the potency of the proposed framework, the satisfaction values
+of EVs based on SOC results relative to the corresponding desired SOC
+values at their departure time are illustrated in Fig. 8. The results in
+
+4.1. Voltage and line congestion results of the network without/with DOE
+The performance of the distribution network is analyzed for node
+voltage and line congestion results by the method without DOEs and
+by the proposed method with DOEs. The analysis considers that the
+under-voltage limit is 0.94 p.u., the over-voltage limit is 1.1 p.u.
+[30], and the maximum congestion limit is 100% of the line capacity.
+Fig. 5 presents the voltage results by the method without DOE and
+the proposed framework. The results without DOE shown in Fig. 5a
+9
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+Fig. 5. Voltage results at residential nodes of the network.
+
+Fig. 6. Line congestion results in lines of the network.
+
+10
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+evaluation indices with the method of trading with the grid (no P2P
+trading) within the allocated DOEs [21], the method of P2P trading
+within the fixed import/export limit of 3.5 and 5 kW [24], and the
+method of network-constrained P2P trading [31] in which a trading is
+blocked if it causes a network issue. Table 1 shows the comparative
+results for all prosumers over a 24 hour period in terms of total cost
+saving, total selling income, and the net benefit gained from the market.
+The first method (DOE but no P2P trading) makes a net benefit of
+$168.71 in selling income from the trade with the grid. The P2P trading
+with a Fixed 3.5 kW Limit method, P2P trading with a Fixed 5 kW Limit
+and network-constrained P2P method produce $235.19, $298.15, and
+$358.45 net benefits for all prosumers, respectively. With the proposed
+framework, prosumers gain the highest net benefit of $364.53 from
+their cost savings and selling incomes among all methods.
+Another comparative analysis of different methods including P2P
+with a fixed 3.5 kW limit, P2P with a fixed 5 kW limit, networkconstrained P2P, and the proposed framework is shown in Table 2 in
+terms of the performance evaluation indices, such as RPI, PIEI, QoS,
+QoE and MiM, as defined in Section 3.3. As shown in Table 2, the
+highest value of RPI for the proposed method shows that the proposed
+framework gains the highest payoff from the market as compared to
+other methods. Regarding the PIEI index, the proposed framework has
+a higher capacity utilization of DERs than other methods. The proposed
+framework achieves the highest QoS value among all methods, indicating that the proposed framework is the fairest approach in terms of
+achieving the highest service quality. The highest value of QoE for the
+proposed framework indicates that the proposed framework provides
+prosumers with the highest satisfaction related to energy trading prices.
+With a higher MiM value than other methods, the proposed framework is fairer from the prosumers’ viewpoint, with smaller differences
+among their energy trades compared to other methods. As a whole,
+the proposed prosumer-centric P2P energy trading framework using
+DOEs signifies superiority in achieving the great value of the net benefit
+and all performance evaluation indices to prove its effectiveness and
+fairness.
+
+Fig. 7. Charge and discharge of EVs at sample residential nodes of the network.
+
+Fig. 8. Satisfaction values of EVs based on SOC results at departure time.
+
+Fig. 8 present the satisfaction values of all EVs as being precisely equal
+to 1, which means EVs’ SOC values reach their desired SOC levels at
+their departure time with the proposed framework.
+4.3. P2P energy trading results
+This subsection demonstrates the auction results for price and quantity matching corresponding to the matching peers in the proposed
+auction-based P2P energy trading. Fig. 9 depicts the results of the
+proposed P2P energy trading at a sample time slot (𝑡 = 26) that includes
+the bid prices and offer prices of prosumers, and the matching results
+of price and quantity between matched peers. As in Fig. 9a, the bid
+𝑎𝑣𝑔
+𝑡𝑜𝑢
+prices 𝜆𝐵
+prices, and as
+𝑢,𝑡 of winning buyers are within the 𝜆𝑡 and 𝜆𝑡
+in Fig. 9c, the offer prices 𝜆𝑆𝑠,𝑡 of winning sellers are within the 𝜆𝑓𝑡 𝑖𝑡 and
+𝜆𝑎𝑣𝑔
+prices at 𝑡 = 26 to the DMO for P2P trading in the proposed market.
+𝑡
+2𝑃 and quantity 𝑃 𝑃 2𝑃 between
+And the matching results of price 𝜆𝑃𝑢,𝑠,𝑡
+𝑢,𝑠,𝑡
+matched peers (𝑢, 𝑠) at 𝑡 = 26 are given in Fig. 9b. Fig. 9b illustrates that
+𝑃 2𝑃 for each transaction is obtained
+at 𝑡 = 26, the matched quantity 𝑃𝑢,𝑠,𝑡
+between the peer (𝑢, 𝑠) with the minimum quantity, and the matched
+2𝑃 for clearing the market is generated with the average price of
+price 𝜆𝑃𝑢,𝑠,𝑡
+𝑆
+that peer’s (𝑢, 𝑠) bid 𝜆𝐵
+𝑢,𝑡 and offer 𝜆𝑠,𝑡 prices according to the proposed
+P2P trading mechanism as in Algorithm 1. The illustration in Fig. 9b
+shows that the transaction continues for the remaining power quantities
+of buyers and sellers until no prosumers exist with matching peers in
+the proposed trading market.
+Fig. 10 presents the results of the benefit analysis of prosumers from
+the P2P energy trading in the proposed market framework within the
+allocated DOEs that includes the cost savings of each buyer, the selling
+income of each seller, and the total benefit of each prosumer in $
+corresponding to the residential nodes of the network. As the results are
+shown in Fig. 10, prosumers gain a significant benefit over a 24 hour
+period from P2P energy trading with the proposed market framework.
+
+4.5. Computational efficiency
+The performance of the proposed framework has been analyzed
+using MATLAB software on a computer with Intel (R) Core (TM) i78700 CPU (3.20 GHz) and 32.0 GB of RAM. Table 3 presents the
+computational efficiency of the proposed framework. As results in
+Table 3 show, with the implementation of DOE computation, energy
+management with DOE, and DOE-based P2P energy trading taking
+1.326 s, 0.024 s, and 0.016 s, respectively, the average computation
+time of the proposed framework for a Danish 78-node LV home distribution network is 1.366 s. Table 3 shows that the proposed framework
+is computationally efficient and can be applied to near-real-time P2P
+energy trading even for a large system.
+5. Conclusion
+This paper has proposed a new market framework for P2P energy
+trading and management using DOEs as the network-secure export–
+import limits by incorporating prosumers’ preferences to trade in the
+market that benefits prosumers and ensures secure network operation. In the proposed framework, depending on the intended power
+exports/imports and network constraints, the DOEs have been allocated for prosumers so that they can trade with their peers without
+causing any voltage or congestion problems in the network. The prosumers’ energy management has been accomplished to manage EV
+charge/discharge schedules by prioritizing EV charges from the surplus of PV system generation, updating the assets of prosumers, and
+achieving the desires of EV battery charge levels at their departure.
+The simulation results have shown that the proposed framework is able
+to perform P2P trading for prosumers by maintaining secure network
+
+4.4. Comparative analyses
+This subsection presents comparative analyses of the proposed
+framework in terms of prosumers’ benefits and the performance
+11
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+Fig. 9. Results of the proposed P2P energy trading at 𝑡 = 26: (a) buyers’ bid prices with ToU price, average market price, (b) price and quantity matching between matched peers,
+and (c) sellers’ offer prices with FiT price, average market price.
+
+Table 1
+Comparison of the proposed method with others in terms of benefit.
+Method
+
+Type of limit
+
+P2P trading
+
+Cost saving ($)
+
+Selling income ($)
+
+Net benefit ($)
+
+Ref. [21]
+
+DOE
+
+✗
+
+0.00
+
+168.71
+
+168.71
+
+Ref. [24]
+
+Fixed (3.5 kW)
+Fixed (5 kW)
+
+✓
+✓
+
+101.73
+124.79
+
+133.46
+173.36
+
+235.19
+298.15
+
+Ref. [31]
+Proposed
+
+Trade blocking
+DOE
+
+✓
+✓
+
+149.51
+152.17
+
+208.94
+212.36
+
+358.45
+364.53
+
+Table 2
+Performance indices for comparison analysis.
+Method
+
+RPI
+
+PIEI
+
+QoS
+
+QoE
+
+MiM
+
+P2P with 3.5 kW fixed limit ([24])
+P2P with 5 kW fixed limit ([24])
+Network constrained P2P ([31])
+P2P with DOE (Proposed)
+
+0.6435
+0.8158
+0.9766
+0.9994
+
+0.5697
+0.7448
+0.9514
+0.9903
+
+0.9029
+0.9640
+0.9629
+0.9962
+
+0.9824
+0.9814
+0.9833
+0.9845
+
+0.1616
+0.1584
+0.1278
+0.1836
+
+Table 3
+Computational efficiency results of the proposed framework.
+Implementation
+
+Average computation time (s)
+
+DOE Computation
+Energy management with DOE
+DOE-based P2P energy trading
+Overall proposed framework
+
+1.326
+0.024
+0.016
+1.366
+
+operation and manage EV charge and discharge scheduling efficiently,
+contributing toward achieving the desires of EV-owned prosumers. The
+proposed framework has also provided prosumers equal access to the
+local market with their preferences to trade with their peers rationally
+to benefit themselves. From the comparative analyses, it has been
+demonstrated that the proposed prosumer-centric P2P energy trading
+framework outperforms other existing methods greatly.
+12
+
+Applied Energy 361 (2024) 122906
+
+M.M. Hoque et al.
+
+[6] Zhao X, et al. Aggregated operation of heterogeneous small-capacity distributed
+energy resources in peer-to-peer energy trading. Int J Electr Power Energy Syst
+2022;141:108162.
+[7] Abdella J, Tari Z, Anwar A, Mahmood A, Han F. An architecture and performance
+evaluation of blockchain-based peer-to-peer energy trading. IEEE Trans Smart
+Grid 2021;12(4):3364–78.
+[8] Tushar W, et al. Grid influenced peer-to-peer energy trading. IEEE Trans Smart
+Grid 2020;11(2):1407–18.
+[9] Zhao K, Zhang M, Lu R, Shen C. A secure intra-regional-inter-regional peerto-peer electricity trading system for electric vehicles. IEEE Trans Veh Technol
+2022;71(12):12576–87.
+[10] Aggarwal S, Kumar N. PETS: P2P energy trading scheduling scheme for
+electric vehicles in smart grid systems. IEEE trans Intell Transp Syst
+2022;23(9):14361–74.
+[11] Ruan H, Gao H, Gooi HB, Liu J. Active distribution network operation
+management integrated with P2P trading. Appl Energy 2022;323:119632.
+[12] Yang Y, Chen Y, Hu G, Spanos CJ. Optimal network charge for peer-to-peer
+energy trading: A grid perspective. IEEE Trans Power Syst 2023;38(3):2398–410.
+[13] Sampath LPMI, Weng Y, Wolter F-E, Gooi HB, Nguyen HD. Voltage feasibilityconstrained peer-to-peer energy trading with polytopic injection domains. Electr
+Power Syst Res 2022;212:108591.
+[14] Jia Y, Wan C, Yu P, Song Y, Ju P. Security constrained P2P energy trading in
+distribution network: An integrated transaction and operation model. IEEE Trans
+Smart Grid 2022;13(6):4773–86.
+[15] Tarashandeh N, Karimi A. Peer-to-peer energy trading under distribution network constraints with preserving independent nature of agents. Appl Energy
+2024;355:122240.
+[16] Sampath LPMI, Paudel A, Nguyen HD, Foo EYS, Gooi HB. Peer-to-peer energy
+trading enabled optimal decentralized operation of smart distribution grids. IEEE
+Trans Smart Grid 2022;13(1):654–66.
+[17] Yang J, Wang K, Luo F, Wen F. AC network-constrained peer-to-peer electricity
+market model in low-voltage power distribution networks. Int J Electr Power
+Energy Syst 2023;154:109428.
+[18] Azim MI, Tushar W, Saha TK. Coalition graph game-based P2P energy trading
+with local voltage management. IEEE Trans Smart Grid 2021;12(5):4389–402.
+[19] DEIP dynamic operating envelopes workstream - outcomes. DEIP, Australia,
+2022.
+[20] Petrou K, et al. Ensuring distribution network integrity using dynamic operating
+limits for prosumers. IEEE Trans Smart Grid 2021;12(5):3877–88.
+[21] Gerdroodbari YZ, Khorasany M, Razzaghi R, Heidari Rahmat. Management of
+prosumers using dynamic export limits and shared community energy storage.
+Appl Energy 2024;355:122222.
+[22] Liu MZ, Ochoa LF, Wong PKC, Theunissen J. Using OPF-based operating envelopes to facilitate residential DER services. IEEE Trans Smart Grid
+2022;13(6):4494–504.
+[23] Azim MI, et al. Dynamic operating envelope-enabled P2P trading to maximise
+financial returns of prosumers. IEEE Trans Smart Grid 2023. http://dx.doi.org/
+10.1109/TSG.2023.3297366.
+[24] Hoque MM, Khorasany M, Azim MI, Razzaghi R, Jalili M. Dynamic operating
+envelope-based local energy market for prosumers with electric vehicles. IEEE
+Trans Smart Grid 2023. http://dx.doi.org/10.1109/TSG.2023.3302270.
+[25] Open energy networks project: Energy networks Australia position paper. Energy
+Networks Australia, 2020.
+[26] Umer K, Huang Q, Khorasany M, Amin W, Afzal M. A novel prosumer-centric
+approach for social welfare maximization considering network voltage constraints
+in peer-to-peer energy markets. Int J Electr Power Energy Syst 2023;147:108820.
+[27] Fairness in dynamic operating envelope objective functions. Project EDGE,
+ARENA, 2023.
+[28] Faria AS, Soares T, Orlandini T, Oliveira C, Sousa T, Pinson P, et al. P2P market
+coordination methodologies with distribution grid management. Sustain Energy
+Grids Netw 2023;34:101075.
+[29] Azim MI, Pourmousavi SA, Tushar W, Saha TK. Feasibility study of financial P2P
+energy trading in a grid-tied power network. In: Proc. IEEE power energy soc.
+gen. meeting. PESGM, Atlanta, USA; 2019, p. 1–5.
+[30] Hoque MM, Khorasany M, Razzaghi R, Wang H, Jalili M. Transactive coordination of electric vehicles with voltage control in distribution networks. IEEE Trans
+Sustain Energy 2022;13(1):391–402.
+[31] Guerrero J, Chapman AC, Verbic G. Decentralized P2P energy trading under network constraints in a low-voltage network. IEEE Trans Smart Grid
+2019;10(5):5163–73.
+
+Fig. 10. Prosumers’ benefit from P2P energy trading.
+
+CRediT authorship contribution statement
+Md Murshadul Hoque: Writing – original draft, Methodology, Formal analysis, Conceptualization. Mohsen Khorasany: Writing – review
+& editing, Supervision, Methodology. M. Imran Azim: Writing – review
+& editing, Supervision, Methodology. Reza Razzaghi: Writing – review
+& editing, Supervision, Conceptualization. Mahdi Jalili: Writing –
+review & editing, Supervision.
+Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to
+influence the work reported in this paper.
+Data availability
+Data will be made available on request.
+Acknowledgments
+This work was supported by the Australian Research Council (ARC)
+Discovery Early Career Researcher Award (DECRA) under Grant
+DE230100056.
+References
+[1] Xia Y, Xu Q, Li F. Grid-friendly pricing mechanism for peer-to-peer energy
+sharing market diffusion in communities. Appl Energy 2023;334:120685.
+[2] Hoque MM, Khorasany M, Razzaghi R, Jalili M, Wang H. Network-aware coordination of aggregated electric vehicles considering charge–discharge flexibility.
+IEEE Trans Smart Grid 2023;14(3):2125–39.
+[3] Li J, et al. A network-secure peer-to-peer trading framework for electricity-carbon
+integrated market among local prosumers. Appl Energy 2023;335:120420.
+[4] Wang J, Zheng J, Yu L, Goh M, Tang Y, Huang Y. Distributed reputationdistance iterative auction system for peer-to-peer power trading. Appl Energy
+2023;345:121306.
+[5] Haggi H, Sun W. Multi-round double auction-enabled peer-to-peer energy exchange in active distribution networks. IEEE Trans Smart Grid
+2021;12(5):4403–14.
+
+13
+
+

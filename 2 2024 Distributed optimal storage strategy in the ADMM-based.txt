@@ -1,0 +1,1713 @@
+Journal of Energy Storage 96 (2024) 112651
+
+Contents lists available at ScienceDirect
+
+Journal of Energy Storage
+journal homepage: www.elsevier.com/locate/est
+
+Research papers
+
+Distributed optimal storage strategy in the ADMM-based peer-to-peer
+energy trading considering degradation cost
+Binghui Han a , Younes Zahraoui b , Marizan Mubin a, * , Saad Mekhilef c , Tarmo Korõtko d ,
+Obaid Alshammari e
+a
+
+Power Electronics and Renewable Energy Research Laboratory (PEARL), Department of Electrical Engineering, Faculty of Engineering, University of Malaya, Kuala
+Lumpur 50603, Malaysia
+Department of Engineering Cybernetics Norwegian University of Science and Technology (NTNU), 7034 Trondheim, Norway
+c
+School of Software and Electrical Engineering, Faculty of Science, Engineering and Technology, Swinburne University of Technology, Victoria, VIC 3122, Australia
+d
+Department of Electrical Power Engineering and Mechatronics Tallinn University of Technology, 19086 Tallinn, Estonia
+e
+Department of Electrical Engineering, College of Engineering, University of Hail, Hail 2240, Saudi Arabia
+b
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+Peer-to-peer energy trading
+Alternating direction method of multiplier
+Degradation cost
+Optimal storage strategy
+Micro grid
+
+The increasing installed capacity of distributed energy resources (DERs) allows prosumers to have a more flexible
+and proactive role in power system operation. At the same time, it may affect the stability of the power grid. To
+reduce the DERs penetration in the main grid and maximize the profit of the end-users, a new energy trading
+paradigm called peer-to-peer (P2P) energy trading emerges in the area of the local community microgrid.
+However, few of the previous works combine types of energy generation and storage equipment to the microgrid
+framework and propose a throughout distributed optimization solution to this scalable framework considering
+the impact of battery degradation cost. In this paper, a novel parallel market clearing mechanism is proposed for
+P2P energy trading with end-users in a highly scalable residential community microgrid. The proposed mech­
+anism takes into account a variety of realistic factors such as household privacy, user preferences, peak shaving
+services, community power grid-related usage fees, point-to-point bilateral transaction weights, and battery
+degradation costs. To make the microgrid more scalable, each household in the community is designed with
+different household energy generation and storage appliances including photovoltaic panels, wind turbines, plugin electrical vehicles, and various household batteries with different capacities. A distributed approach based on
+the alternating direction method of multiplier (ADMM) algorithm is presented to solve the energy pricing
+problem while guaranteeing the privacy of all participants. The designed comparative case studies take into
+consideration the types of users, grid transaction methods, the influence of peak shaving fee, the impact of energy
+storage equipment, and the effect of battery degradation costs. The results show a significant reduction of both
+the cost of each user and the total cost in the P2P energy market while considering the degradation cost of home
+energy management systems and plug-in electric vehicles. The case studies also present that prosumers have
+greater advantages than consumers in P2P energy transactions. Peak shaving service and home energy storage
+devices can distribute and utilize energy more efficiently.
+
+1. Introduction
+With the increase in the world’s population and the development of
+industrialization, people’s quality of life has improved, and the demand for
+electricity has increased accordingly year by year. In the last thirty years,
+the world’s total electricity consumption has more than doubled, and
+electricity consumption in various sectors has also been rising [1]. In order
+
+to solve this problem, a large amount of power generation and trans­
+mission infrastructure has been built all over the world [2]. However, the
+main energy sources of these power generation systems are fossil fuels,
+namely oil, natural gas, and coal, which will cause increasingly serious
+environmental pollution and gradually rising electricity costs [3].
+After the first oil crisis in the 1970s, governments and organizations
+taking into account economic interests, security issues, and
+
+* Corresponding author.
+E-mail addresses: 17220675@siswa.um.edu.my (B. Han), marizan@um.edu.my (M. Mubin), smekhilef@swin.edu.au (S. Mekhilef), os.alshammari@uoh.edu.sa
+(O. Alshammari).
+https://doi.org/10.1016/j.est.2024.112651
+Received 28 February 2024; Received in revised form 1 June 2024; Accepted 16 June 2024
+Available online 26 June 2024
+2352-152X/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+stability of the power grid [5]. Specifically, the fluctuating and inter­
+mittent characteristics of RESs may generate new peaks in the grid load
+curve [12]. In addition, residential distributed energy generation is
+more likely to be interrupted or even damaged during natural disasters,
+causing the grid to be impacted [13].
+In order to reduce the penetration level of renewable energy in the
+power grid, balance the power trading of local microgrid, maximize the
+profits of end users, and achieve overall low-carbon environmental
+protection, many utilities are actively reformulating market structures
+and tariffs to incentivize the small-capacity household DERs to realize
+prioritized internal energy transactions or self-production and selfconsumption in the local microgrid [9]. The concept of peer-to-peer
+(P2P) energy trading based on prosumers in the residential commu­
+nity microgrid has also emerged due to this demand and attracted
+people’s attention.
+Compared with traditional energy trading models, P2P energy
+trading is distributed, and energy is often exchanged over short dis­
+tances. P2P platforms allow electricity producers and consumers to bid
+for and sell or buy electricity and other services directly [14], and
+manage payments and tariffs to the distributed grid based on some
+pricing factors such as the type of service and the distance between
+prosumers and consumers [15]. Therefore, it can not only reduce the
+energy loss of the system, be suitable for the deployment of DERs, and
+provide end users with greater flexibility in energy transactions, but also
+protect the security and privacy of each participant in the P2P market
+[16].
+On the other hand, the P2P market is more complex than the existing
+electricity market, as it is conceived as a multi-agent system that in­
+cludes not only different types of services but also a wider group of
+prosumers [9]. These participants fulfill diverse and changing roles, and
+there are lots of providers of each productive service. In a P2P market,
+prosumers not only respond to price signals but also actively provide
+services for which utilities, transmission system operators, or other
+prosumers must bid [9]. Besides, when prosumers are allowed to share
+energy at the community level, the community’s overall electricity
+purchases reflect prosumers’ preferences. In other words, prosumers
+trade energy based on their personal goals rather than those of a third
+party.
+In summary, local P2P markets based on the local community
+microgrid may be the key to managing DER generation and coordinating
+complex distributed models that satisfy self-interested autonomous
+multi-agents.
+As an emerging approach to promote efficient use of local resources,
+literature on the development of P2P energy trading market mechanisms
+has received increasing attention recently. The approaches in these ar­
+ticles include blockchain [17,18], game theory [18], simulation [19,20],
+optimization, and other algorithms [21], etc. [22]. In this study, we
+mainly focus on the improvement of the local community grid archi­
+tecture and the method of optimization with the goal of reduction in
+kinds of costs during the P2P energy trading. For example, in [23], a
+three-stage multi-energy sharing strategy was proposed for a gaselectricity integrated energy system to solve the multi-energy imbal­
+ance in the P2P energy trading. The results show the improvement of the
+social welfare and the satisfaction fairness of the system. In [24], a novel
+P2P energy trading system was designed for the local microgrid where
+each house in it is equipped with different types of energy generation
+and battery storage. It is worth noting that in order to reduce depen­
+dence on the grid and effectively utilize the house’s excess energy, the
+microgrid is equipped with a central battery which played a crucial role
+in increasing the profit for all end-users in the MG. In, an optimization
+model was developed for a local community with 500 households in P2P
+energy trading environment. The users in the MG are equipped with
+rooftop PV generation and battery storage. The overall model consid­
+ered real-world constraints including the scale of PV systems, PV
+penetration, battery storages, customer demand profiles and market
+signals including retail prices, feed-in tariff, and P2P trading
+
+Fig. 1. World electricity consumption by sectors in 2020.
+
+environmental requirements urgently needed one or more safe alter­
+native new clean energy sources to ensure the continuation of daily
+production and life [4]. Renewable energy sources such as solar and
+wind energy are increasingly becoming the focus of research due to their
+availability, applicability, environmental friendliness, and almost no
+terrain restrictions [5]. Nowadays, the rational development and effec­
+tive utilization of renewable energy have been widely regarded as an
+important part of solving the social energy crisis.
+As shown in Fig. 1, residential electricity consumption accounted for
+27.6 % of the world’s total electricity consumption in 2020 [1].
+Renewable energy generation for the residential sector has also been
+increasing highly according to the report of the International Energy
+Agency in 2022 [6]. This means that residential-based new energy
+equipment construction and power production and consumption opti­
+mization have great potential in the future global energy-saving
+movement.
+However, unlike traditional energy sources, most renewable energy
+sources (RESs) are volatile and intermittent, making it difficult to pre­
+dict their power output, which not only increases the difficulty of power
+transmission and distribution but also creates new challenges when
+large-scale RES generations enter the main grids [3]. In recent years,
+thanks to the development of various intelligent technologies such as
+communication technology, control technology, and energy storage
+technology [7], a variety of small household distributed energy re­
+sources (DERs) and energy storage equipment such as solar photovoltaic
+(PV) panels, wind turbines, plug- in electric vehicles (PEVs), and home
+energy storage systems (HESSs) have been widely used. Various smart
+home and home automation technologies with integrated energy man­
+agement components are also becoming increasingly popularized [8].
+These technologies enable the vast number of consumers at the end of
+the grid to match and optimize their electricity consumption according
+to their individual electricity needs and generation & storage prefer­
+ences, thereby saving money or energy in a simple and smart way. At the
+same time, they also lead to a large number of consumers in the grid
+shifting to prosumers [9].
+Unlike the consumers in the traditional power grid who are regarded
+as peers who can only buy and consume power energy from other peers
+and the grid, the prosumers are usually regarded as peers who are
+equipped with DER generations such as PV panels and wind turbines and
+can produce, and sell surplus energy to other peers and the grid [10].
+DERs enhance prosumers flexibility and they enable prosumers to play a
+more proactive role in the operation of future smart decentralized power
+systems [11]. These prosumers are both recipients of energy consump­
+tion and active providers of grid energy services and can complement or
+even compete with traditional utilities and energy companies [11].
+However, the continuous increase in the installed capacity of DERs in
+residential power grids may lead to an energy surplus and affect the
+2
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 2. Architecture of the residential community microgrid.
+
+Fig. 3. Communication structure of four types of markets, (a) Pool-based market, in which all houses interconnect with the main power grid directly, (b) Peer-to-peer
+market, in which all houses are regarded as prosumers and straight interrelate with each other, (c) Completely hybrid market, in which a group of prosumers form a
+local microgrid, connected to the main grid, and prioritize energy transactions internally, and (d) Simplified hybrid market, in which the end-users of the local
+microgrid are divided into two groups connected to the main grid and prioritize energy transactions internally.
+
+3
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 4. Flow chart of the charging and discharging strategy for the HESS and PEV of Prosumer 1.
+
+mechanism. The results showed the importance of larger PV systems and
+battery storage with maximal savings of users up to 28 %.
+As shown above, the configuration of the local microgrid has great
+variability due to the flow of community residential users and the
+replacement of equipment, so scalability needs to be considered as a
+primary challenge when dealing with prosumer-centric markets [11]. In
+addition, various product differentiation mechanisms and user
+
+preferences in the P2P energy markets have been studied separately in
+many pieces of literature which were summarized in [25], but few works
+have mentioned the impact of multiple factors on P2P energy trans­
+actions. Moreover, the impact of the installation of home storage devices
+on P2P energy trading is rarely evaluated in the literature too.
+Furthermore, due to the distributed nature of P2P, distributed opti­
+mization methods, such as the alternating direction multiplier method
+4
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 5. The flowchart of the proposed distributed ADMM optimization for P2P
+market at a time step.
+
+(ADMM), are more suitable than centralized methods to solve problems
+in P2P energy system research [26]. For instance, in [27], a novel
+decentralized P2P market structure based on the ADMM algorithm was
+implemented, which named the DSF demand-side flexibility (DSF)
+market. The proposed market structure was modeled with the MINLP
+algorithm with GAMS software platform. The numerical results showed
+a 15.9 % energy supply for all customers who participated in the DSF
+market. They also demonstrated the effectiveness of the reduction in
+congestion in the upstream network by incentivizing customers to
+participate in DSF programs. In [28], a feasible and privacy-preserving
+P2P energy trading scheme is proposed by Prosumer Preference Based
+Segmented Distributed Alternating Direction Method of Multipliers
+(PPBSD-ADMM). Simulation results presented cost reduction for pro­
+sumers up to 54.55 %, consumers up to 33.28 %, and MG up to 34.65 %.
+In [29], a novel privacy-preserving algorithm to maximize the social
+welfare in the P2P market was proposed based on the Segmentation
+Based Distributed Alternating Direction Method of Multipliers and a
+nodes color-based technique. Numerical results illustrated that the
+overall costs can be reduced for consumers up to 30.23 % and prosumers
+up to 44.34 %. In addition, the ADMM method is also suitable for pro­
+tecting the privacy [30] and security [31] of end-user data with a high
+computation speed. However, existing ADMM algorithms usually
+require each participant in the system to update variables in a certain
+order, although all participants work in parallel [9].
+Therefore, the goal of this work is to propose a novel parallel P2P
+energy trading market clearing mechanism using a distributed ADMM
+algorithm based on a highly scalable residential community microgrid
+framework.
+This study has the following four highlights:
+
+Fig. 6. Flow chart of the overall optimization algorithm for P2P energy trading.
+
+(prosumers and consumers), two types of DERs (solar panels and
+wind turbines), PEVs, and HESSs.
+2) Based on this microgrid framework, an ADMM algorithm is proposed
+that can be combined with the charging and discharging strategies of
+PEVs and HESSs. It has distributed and parallel characteristics, which
+not only save computing power but are also generally suitable for
+most P2P market structures and computing platforms.
+3) The proposed algorithm takes into account a variety of realistic
+factors such as household privacy, user preferences, peak shaving
+services, community power grid-related usage fees, point-to-point
+bilateral transaction weights, and battery degradation costs, and
+the simulation results obtained are more valuable for reference.
+4) The designed comparative experimental case takes into consider­
+ation the types of users, grid transaction methods, the impact of
+energy storage equipment, and the impact of battery degradation
+costs. The results show that prosumers have greater advantages than
+pure consumers in P2P transactions, and home energy storage de­
+vices can distribute and utilize energy more efficiently.
+The rest of this paper is organized as follows. In Section 2, the
+modeling of architecture of the designed community is introduced and
+objective functions modeling of the P2P energy trading is formulated.
+Then, Section 3 introduces the improved charging and discharging
+strategy for the battery of HESS and PEV. The distributed parallel ADMM
+algorithm is also proposed to solve the optimization problem. Results
+
+1) A residential community microgrid framework with high scalability
+is designed that simultaneously includes two types of users
+
+5
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Table 1
+Summary of the components deployed in each house.
+Equipment
+
+Prosumer 1
+
+Prosumer 2
+
+Prosumer 3
+
+Consumer 1
+
+Consumer 2
+
+Consumer 3
+
+Photovoltaic panels
+Wind turbines
+Plug-in electrical vehicles
+Home energy storage system
+
+✓
+✘
+✓
+✓
+
+✘
+✓
+✘
+✓
+
+✘
+✓
+✘
+✘
+
+✘
+✘
+✓
+✘
+
+✘
+✘
+✘
+✓
+
+✘
+✘
+✘
+✘
+
+Table 2
+Parameters of preference and appliances for each house in the community microgrid.
+Houses
+
+Prosumer 1
+
+Prosumer 2
+
+Prosumer 3
+
+Consumer 1
+
+Consumer 2
+
+Consumer 3
+
+i
+
+1
+0.0031
+
+2
+0.0014
+
+3
+0.0041
+
+4
+0.0063
+
+5
+0.0051
+
+6
+0.0032
+
+(
+)
+ai cents/kWh2
+(
+)
+bi cents/kWh2
+Cmax
+HESS (kWh)
+
+Cint
+HESS (kWh)
+Cmax
+PEV (kWh)
+Cint
+PEV (kWh)
+
+8.71
+
+2.25
+
+6.29
+
+2.24
+
+4.3
+
+8.26
+
+8
+3.5
+30
+12
+
+13
+5
+\
+\
+
+\
+\
+\
+\
+
+\
+\
+30
+12
+
+11
+4
+\
+\
+
+\
+\
+\
+\
+
+microgrid are linked by bidirectional communication and power flows.
+All prosumers are deployed with DER generators to produce and sell
+surplus energy to other houses of the community microgrid or the main
+grid, which include ①: the house with PV panels, a HESS, and a PEV
+(Prosumer 1), ②: the house with a wind turbine and a HESS (Prosumer
+2), and ③: the house with a wind turbine (Prosumer 3). All consumers
+only equip consumption appliances and can only buy the required en­
+ergy from other houses or the grid, which include ④: the house with a
+PEV (Consumer 1), ⑤: the house with a HESS (Consumer 2), and ⑥: the
+house with only the common loads (Consumer 3). P2PSO is responsible
+for P2P energy transactions including the price and power to be traded
+between all prosumers and all consumers in the community microgrid. It
+also controls the energy transactions and the connection between the
+community microgrid and the main grid. If there is a shortage or surplus
+of energy in the local market, the P2PSO needs to purchase the shortage
+of electricity from the main grid or sell the excess electricity to the main
+grid [32].
+
+Table 3
+Common parameters for HESSs and PEVs used in the community microgrid.
+Parameters for HESS
+
+Parameters for PEV
+
+Pchmax
+HESS (kW)
+
+3
+
+dis
+ηch
+HESS /ηHESS
+
+0.92
+1.04RTPAVG
+
+Pdismax
+HESS (kW)
+RTPdis
+HESS
+
+− 3
+
+Pchmax
+(kW)
+PEV
+
+4
+
+dis
+ηch
+PEV /ηPEV
+
+0.92
+1.08RTPAVG
+
+Pdismax
+(kW)
+PEV
+RTPdis
+PEV
+
+− 4
+
+and discussion of numerical simulation case studies are elucidated and
+summarized in Section 4. Finally, the conclusions of this work are pre­
+sented in Section 5.
+2. Mathematical model
+In this study, a highly scalable residential community microgrid has
+been designed by considering the differences in user preferences and
+equipment installations among families in the community. The calcu­
+lated time horizon is set to 24 h, and the time interval Δt is set to 1 h. The
+total number of time intervals are T = 24 (T = 24 h/Δt). t ∈ [1, T] is the
+time stamp within the time horizon. As shown in Fig. 2, this microgrid is
+built based on three types of prosumers, three types of consumers, one
+distribution system operator (DSO), and one P2P system operator
+(P2PSO), to compare the costs and effects of each type of house in the
+community microgrid with and without P2P energy trading.
+Specifically, the DSO runs the power system infrastructure of the grid
+in this work and guarantees the stability and reliability of the energy
+operations. The community is organized by a group of consumers and
+prosumers that have no explicit legal form. All the houses in the
+
+2.1. Peer-to-peer energy trading communication structure
+Unlike the existing pool-based markets shown in Fig. 3(a), the typical
+architecture of a fully connected P2P electricity market, see Fig. 3(b),
+can be seen as an internal energy trading market where all participants,
+in the community microgrid exchange their requirements and supplies.
+Usually, the participants are prosumers and their exceed generation can
+meet the consumption of each other properly. In a peer-to-peer market,
+it is assumed that in principle any agent should be able to negotiate with
+any other agent [33]. However, in most cases, this ideal condition
+cannot be obtained because of the living and appliance installation
+preference of the peers.
+
+Fig. 7. Real-time purchase and sale prices of the main grid.
+6
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 8. Data of generation and consumption of all houses in the community microgrid, (a) generation data of three prosumers, in which Prosumer 1 equips PV panels,
+Prosumer 2 and Prosumer 3 deploy wind turbines, (b) consumption data of all prosumers and consumers.
+
+2.2.1. Electricity cost with the main grid
+Denote m the total number of houses in the community. i, j ∈ [1, m]
+are the indices of each house, either prosumer or consumer, in the
+community. Pi,Gb (t) and Pi,Gs (t) are the amount of power bought from
+and sold to the main grid respectively by house i at time t. QGb (t) and
+QGs (t) are the price of power purchased from and sold to the main grid
+respectively by house i at time t. Then, the energy cost of house i with the
+main grid at time t is described by Eq. (1).
+
+Table 4
+Description of case studies and the total cost of the community in different cases.
+Cases
+
+Grid
+
+P2P
+
+Peak shaving
+
+HESS
+
+Degradation
+
+Cost
+
+1
+2
+3
+4
+5
+
+YES
+YES
+YES
+YES
+YES
+
+NO
+YES
+YES
+YES
+YES
+
+NO
+NO
+YES
+YES
+YES
+
+NO
+NO
+NO
+YES
+YES
+
+NO
+NO
+NO
+YES
+NO
+
+6977.95
+5084.69
+5049.41
+5006.38
+4930.31
+
+Ci,G (t) = QGb (t)Pi,Gb (t) − QGs (t)Pi,Gs (t)
+Fig. 3(c) shows the full hybrid market, in which a group of prosumers
+form a local microgrid, connected to the main grid, and prioritize energy
+transactions internally [9]. It can not only conduct internal P2P energy
+transactions, but also trade excess or lack of energy within the com­
+munity through the main grid. However, a large communication capa­
+bility is required in this market too, since every peer in it needs to
+connect to all other peers at the same time.
+For simplicity, only bipartite hybrid electricity markets are consid­
+ered here, i.e., with a graph as in Fig. 3(d). This graph means all the
+houses are divided into two groups, i.e. prosumers and consumers. As a
+result, each house can only communicate with other houses in another
+group, but not with the houses inside the same group [14]. Besides, all
+the houses in the system are assumed to behave non-strategically and
+will not learn from others during the trading.
+
+(1)
+
+2.2.2. P2P energy trading costs with other peers
+Denote Ni (t) the neighboring set of peer i at time t. Pij (t) represents
+the power to be traded between peer i and peer j at time t. Pi,tr (t) is
+considered as the total power to be traded of peer i at time t, which can
+be calculated by Eq. (2).
+∑
+Pi,tr (t) =
+Pij (t)
+(2)
+j∈Ni
+
+If the value of Pi,tr is smaller than zero, it means house i is a prosumer
+and sells electricity to other consumers. And, if the value of Pi,tr is larger
+than zero, it means house i is a consumer and buys electricity from other
+prosumers.
+Then, the mathematical formulation of the P2P energy trading costs
+of house i at time t can be represented by Eq. (3), which consists of four
+components as follows.
+
+2.2. Objective function
+This work related to P2P energy trading among houses in the com­
+munity microgrid and energy trading between each house and the main
+grid. The objective function of the problem is to minimize the total
+electricity costs of the community by minimizing the costs of each house
+in the community. The costs of each house include buying and selling
+electricity with the main grid and P2P energy trading costs with other
+peers considering the battery degradation costs of HESS and PEV in the
+house.
+
+Ci,P1 (t) = ai (t)P2i,tr (t) + ̃
+bi (t)Pi,tr (t)
+
+(3a)
+
+Ci,P2 (t) = βPi,tr (t)
+
+(3b)
+
+⃦
+⃦
+⃦∑
+⃦
+⃦
+⃦
+Ci,P3 (t) = − γ⃦ Pi,tr (t) ⃦
+⃦ i∈N
+⃦
+i
+
+7
+
+(3c)
+∞
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 9. Energy utilization details of each peer in the community in Case 1, (a) energy utilization details of Prosumer 1, (b) energy utilization details of Prosumer 2, (c)
+energy utilization details of Prosumer 3, (d) energy utilization details of Consumer 1, (e) energy utilization details of Consumer 2, (f) energy utilization details of
+Consumer 3, (g) energy utilization details of the PEV of Prosumer 1, (h) energy utilization details of the PEV of Consumer 1.
+
+Ci,P4 (t) =
+
+∑
+di,j Pi,j (t)
+j∈Ni
+
+time t can be approximated with a quadratic convex function as follows:
+(
+(
+)2
+)2
+ch
+ch
++ θ⋅ Pdis
+(4)
+Ci,P5 (t) = θ⋅ Pdis
+i,HESS (t) − Pi,HESS (t)
+i,PEV (t) − Pi,PEV (t)
+
+(3d)
+
+Eq. (3a) presents the complex behavior preference function of peer i,
+where the parameter ai (t) > 0 is time-dependent and reflects the
+behavior of peer i [14]. The second component Ci,P2 (t) in Eq. (3b) is the
+utilization cost in the P2P trading for the traded powers of house i to be
+physically executed through the community microgrid, where the
+parameter β > 0 is a fixed rate and not time-dependent [15]. To prevent
+strategic behavior and punish prosumers contributing the most to im­
+ports, communities may impose additional fees such as the peak shaving
+service fee shown in Eq. (3c). The parameter γ = 0.1 is the penalization
+coefficient set by the community manager to the maximum component
+of houses import shares [11]. The last element Ci,P4 (t) is the bilateral
+trading cost with other peers based on the preference of buyers to the
+types of energy sources, where di,j is the trading coefficient of the energy
+trading between peer i and peer j for the purposes of the differentiation
+of consumption preference [33].
+In this study, the influences of battery degradation cost of the HESS
+and PEV to the P2P energy trading are also considered. To simplify the
+analysis, the battery degradation cost of the HESS or PEV of peer i at
+
+ch
+dis
+ch
+where Pdis
+i,HESS (t), Pi,HESS (t), Pi,PEV (t), and Pi,PEV (t) present the power
+charging and discharging of the HESS and PEV of peer i at time t
+representatively, and the coefficient θ equals 0.0625 according to [34].
+Therefore, the total P2P energy trading costs of each house with
+other peers in the community can be summed up as follows,
+⃦
+⃦
+⃦∑
+⃦
+⃦
+⃦
+Ci,P (t) =ai (t)P2i,tr (t) + bi (t)Pi,tr (t) + γ⃦ Pi,tr (t) ⃦
+⃦ i∈N
+⃦
+i
+∞
+(
+)2
+∑
+(5)
++
+di,j Pi,j (t) + θ⋅ Pdis (t) − Pch (t)
+j∈Ni
+
+i,HESS
+
+i,HESS
+
+(
+)2
+ch
++ θ⋅ Pdis
+i,PEV (t) − Pi,PEV (t)
+where bi (t)≜̃
+bi (t) + β.
+It is noted that since each components of the total cost of P2P energy
+trading Ci,P (t) is either quadratic or linear. Then, the functions Eq. (5) is
+8
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 9. (continued).
+
+9
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 9. (continued).
+
+also convex.
+
+2.3.2. Power balance in the P2P energy trading
+The bilateral trading power balance of each pair in the P2P market is
+shown by Eq. (9).
+
+2.2.3. Total cost of the house
+Regarding the above, the total cost of house i in the community is
+shown by Eq. (6):
+Ci (t) =Ci,G (t) + Ci,P (t) = QGb (t)Pi,Gb (t) − QGs (t)Pi,Gs (t) + ai (t)P2i,tr (t)
+⃦
+⃦
+⃦∑
+⃦
+⃦
+⃦
++ bi (t)Pi,tr (t) + γ⃦ Pi,tr (t) ⃦
+⃦ i∈N
+⃦
+i
+∞
+(
+)2
+∑
+dis
++
+di,j Pi,j (t) + θ⋅ Pi,HESS (t) − Pch
+i,HESS (t)
+j∈Ni
+
+(
+
+ch
++ θ⋅ Pdis
+i,PEV (t) − Pi,PEV (t)
+
+Pi,j (t) + Pj,i (t) = 0
+
+Pi,j (t) > 0 indicates peer i is a consumer and buys energy from peer j,
+and Pi,j (t) < 0 indicates peer i is a prosumer and sells energy to peer j.
+Loss of energy during transactions in the market is not considered in the
+work.
+
+(6)
+
+2.3.3. Power balance considering energy trading with the main grid
+For house i, the total power generated and bought must be equal to
+the total power consumed and sold at the same time. This constraint can
+be presented as follows:
+
+)2
+
+The total cost of the community C(t) is presented as follows:
+C(t) =
+
+m
+∑
+i=1
+
+Ci (t)
+
+dis
+Pi,gen (t) + Pi,Gb (t) + Pi,tr (t) + Pdis
+i,HESS (t) + Pi,PEV (t) − Pi,Gs (t) − Pi,Load (t)
+ch
+− Pch
+i,HESS (t) − Pi,PEV (t) = 0
+
+(7)
+
+(10)
+
+Denote Pi,gen (t) and Pi,Load (t) the power DERs generated by DERs and
+the power appliances consumed by other home appliances respectively
+by the house i at time t.
+
+2.3. Constraints
+2.3.1. Power limitation in the P2P energy trading
+In the P2P energy market, the total power to be traded of peer i is
+limited by its minimum and maximum power as modeled by Eq. (8).
+max
+Pmin
+i,tr (t) ≤ Pi,tr (t) ≤ Pi,tr (t)
+
+(9)
+
+3. Proposed method
+
+(8)
+
+In this part, both the mode separation optimal battery charging and
+discharging strategy for HESS and PEV and the distributed parallel
+ADMM algorithm for P2P energy trading are taken into account in the
+community framework to minimize the electricity cost of each house
+and the total cost of the community.
+
+min
+where Pmax
+i,tr (t) and Pi,tr (t) are the upper and lower limitation of the total
+power to be traded of peer i at time t, respectively.
+
+10
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 10. Energy utilization details of each peer in the community in Case 2, (a) energy utilization details of Prosumer 1, (b) energy utilization details of Prosumer 2,
+(c) energy utilization details of Prosumer 3, (d) energy utilization details of Consumer 1, (e) energy utilization details of Consumer 2, (f) energy utilization details of
+Consumer 3, (g) energy utilization details of the PEV of Prosumer 1, (h) energy utilization details of the PEV of Consumer 1.
+
+3.1. Battery charging and discharging strategy
+
+In this study, the strategy is improved based on the community
+framework shown in Fig. 2. Since the types of each house in the com­
+munity are different, four refined battery charging and discharging
+strategies are suitable for each house that deployed with HESS or PEV in
+the home.
+
+To minimize the electricity costs and reduce the battery charging and
+discharging costs of HESS and PEV, an optimal charging and discharging
+strategy based on the operation mode separation approach was pro­
+posed in our previous work. The detailed modeling and strategy of the
+HESS and PEV can be seen from the reference [35].
+11
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 10. (continued).
+
+3.1.1. Strategy for Prosumer 1
+The model of Prosumer 1 is the same as the layout of the house in the
+reference [35]. Specifically, Prosumer 1 has the same smart home ar­
+chitecture as in the reference [35], deploying photovoltaic panels, HESS,
+PEV, and several household appliances as common loads.
+Since both HESS and PEV are equipped in the home of Prosumer 1,
+the battery charging and discharging strategy for Prosumer 1 is similar
+to the strategy in the reference [35]. The refined point occurred after
+calculating the maximum allowable charging and discharging electricity
+of HESS and PEV under battery capacity constraints.
+
+Unlike step 1 in situation 1 and step 2 in situation 2 in the reference
+[35], the total power to be traded by Prosumer 1 is determined by the
+power of generation and consumption of Prosumer 1, which is presented
+as follows:
+P1(t) = Pload (t) − Pgen (t)
+
+(11)
+
+The steps of calculating the interaction power between the house and
+the main grid PG (t) in two situations are also deleted in the strategy
+optimization part and removed to the end of our overall optimization
+algorithm. The refined strategy for the batteries of HESS and PEV in the
+12
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 11. Energy utilization details of each peer in the community in Case 2, (a) energy utilization details of Prosumer 1, (b) energy utilization details of Prosumer 2,
+(c) energy utilization details of Prosumer 3, (d) energy utilization details of Consumer 1, (e) energy utilization details of Consumer 2, (f) energy utilization details of
+Consumer 3, (g) energy utilization details of the PEV of Prosumer 1, (h) energy utilization details of the PEV of Consumer 1.
+
+house of Prosumer 1 is shown in Fig. 4.
+
+3.1.3. Strategy for Consumer 1
+On the contrary, only PEV is combined and no HESS is deployed in
+the home of Consumer 1. For a similar reason, the battery charging and
+discharging strategy for the PEV of Consumer 1 also has to be refined as
+follows.
+Firstly, since Consumer 1 is not equipped with any DER generator, it
+has no ability to conduct energy generation. The total power to be traded
+without considering HESS and PEV in the home grid is different from all
+
+3.1.2. Strategy for Prosumer 2
+Different from Prosumer 1, Prosumer 2 only installs a large capacity
+HESS in the home and no PEV is used. As a result, no operation of PEV
+needs to be considered in the process of the battery charging and dis­
+charging strategy. Thus, the strategy for the HESS of Prosumer 2 has to
+be rectified and concentrated.
+13
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 11. (continued).
+
+prosumers above, which is presented in Eq. (12).
+P1(t) = − Pload (t)
+
+consumer home equipped with HESS. Its total traded power can be
+modeled in the format of Consumer 1. Its battery charging and dis­
+charging strategy is the same as the operation of Prosumer 2.
+
+(12)
+
+Secondly, the operation mode separation approach proposed in our
+previous work [35] is also used to minimize the cost of PEV of Consumer
+1.
+Lastly, the operation about HESS in the full battery charging and
+discharging strategy of Prosumer 1 is deleted.
+
+3.2. Alternating direction multiplier method
+After calculating the optimal power to be charged and discharged of
+HESS and PEV of each house, a distributed parallel approach based on
+the ADMM algorithm is proposed to calculate the energy and price to be
+traded between each pair in the P2P energy market.
+To minimize the total P2P energy trading costs of each house with
+
+3.1.4. Strategy for Consumer 2
+Similar to the partial of Prosumer 2 and Consumer 1, Consumer 2 is a
+14
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 12. Energy utilization details of each peer in the community in Case 2, (a) energy utilization details of Prosumer 1, (b) energy utilization details of Prosumer 2,
+(c) energy utilization details of Prosumer 3, (d) energy utilization details of Consumer 1, (e) energy utilization details of Consumer 2, (f) energy utilization details of
+Consumer 3, (g) energy utilization details of the PEV of Prosumer 1, (h) energy utilization details of the HESS of Prosumer 1, (i) energy utilization details of the HESS
+of Prosumer 2, (j) energy utilization details of the PEV of Consumer 1, (k) energy utilization details of the HESS of Consumer 2.
+
+15
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 12. (continued).
+
+other peers in the community shown in Eq. (5), the augmented
+Lagrangian of Ci,P (t) is defined as follows:
+
+between each pair of prosumers and consumers that obtained the energy
+trading contract in the community microgrid. The parameter ρ is the
+penal factor of the power balance constraints.
+Denote ni the total amount of trading neighbors of house i. Pi (t) ∈
+ℝni (t) is the vector of all the power to be traded between house i and other
+neighbors at time t as in Eq. (14):
+[
+]
+Pi (t) = Pi,1 (t) … Pi,ni (t)
+(14)
+
+m
+m ∑
+∑
+) ∑
+(
+(
+L Pi,j (t) , λi,j (t) =
+Ci,P (t) +
+λi,j (t) Pi,j (t)
+i=1
+
+i=1 j∈Ni
+
+⃦2
+⃦
+m
+) ρ⃦
+)⃦
+⃦
+⃦ ∑ ∑(
++ Pj,i (t) + ⃦
+Pi,j (t) + Pj,i (t) ⃦
+⃦
+2⃦ i=1 j∈N
+i
+
+(13)
+
+2
+
+Then the variable Pi (t) for each house i are calculated in parallel on
+every iteration k + 1 by Eq. (15):
+
+where λi,j (t) are the Lagrange multipliers associated with the power
+balance constraint (9), which are also seen as the energy trading prices
+16
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 12. (continued).
+
+)
+(
+Pi (t)k+1 ≜argminL Pi,j (t) , λi,j (t)
+
+power of each house Pk+1 is sent to the P2PSO, respectively. Next, the
+P2PSO updates the power price by Eq. (16). Then, the stopping criteria
+for the iterative process is checked. If it is convergent, the process ends.
+If not, P2PSO sends the updated price λ to each house and updates the
+number of iteration k = k + 1 and start a new iteration.
+
+(15)
+
+Next, the variable λ(t) is computed by Eq. (16):
+λ(t)k+1 = λ(t)k + ρ*
+
+m ∑
+∑
+(
+i=1 j∈Ni
+
+Pi,j (t) + Pj,i (t)
+
+)
+
+(16)
+
+where λ(t) is the vector of the energy trading prices between each house i
+and their neighbors at time t as follows:
+⎡
+⎤
+λ1,1 (t) ⋯ λ1,n1 (t)
+⎦
+⋱
+⋮
+λ(t) = ⎣ ⋮
+(17)
+λm,1 (t) ⋯ λm,nm (t)
+
+3.3. Overall optimization algorithm
+As shown above, a residential community microgrid framework with
+extremely high scalability is designed in this study. In addition, a novel
+distributed parallel ADMM algorithm is proposed combined with the
+battery charging and discharging strategies of PEV and HESS. As a result,
+the total operation process of the overall optimization algorithm can be
+summarized as the flowchart in Fig. 6.
+Specifically, every house in the community microgrid reads the realtime price and calculates its initial load and DER generation first. Sec­
+ondly, data about the parameters of HESS or PEV of the houses that are
+equipped with coordinating appliances are recognized and initialized by
+each house. Set the time stamp t equals to 1. Then, the iterations begin.
+Firstly, the total charging and discharging prices of each HESS and PEV
+in each house are calculated. Then, the value of time slot n of each PEV is
+computed by the obtained discharging price of PEV coordinately. Next,
+the optimal power and capacity of each HESS and PEV can be obtained
+
+Finally, denote the parameter ε the feasibility tolerance, which is set
+to be 10− 4 in this work. The convergence criteria for the iterative process
+of the P2P energy trading above is shown in Eq. (18).
+⃦
+⃦
+⃦
+k+1
+k⃦
+(18)
+⃦λ(t) − λ(t) ⃦ ≤ ε
+2
+
+The flowchart of the proposed distributed ADMM optimization al­
+gorithm is summarized in Fig. 5. First, the values of penalty parameter ρ
+and feasibility tolerance ε are chose, and the value of the matrix λ is
+initialized. Next, set the number of iteration k = 0. Then, the traded
+power of each house is updated by Eq. (15). Then, the updated traded
+17
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 13. Energy utilization details of each peer in the community in Case 4, (a) energy utilization details of Prosumer 1, (b) energy utilization details of Prosumer 2,
+(c) energy utilization details of Prosumer 3, (d) energy utilization details of Consumer 1, (e) energy utilization details of Consumer 2, (f) energy utilization details of
+Consumer 3, (g) energy utilization details of the PEV of Prosumer 1, (h) energy utilization details of the HESS of Prosumer 1, (i) energy utilization details of the HESS
+of Prosumer 2, (j) energy utilization details of the PEV of Consumer 1, (k) energy utilization details of the HESS of Consumer 2.
+
+by the battery charging and discharging strategy considering the
+degradation cost of the batteries. Combine the obtained optimal values
+of each HESS and PEV into the accordingly cost function and trading
+constraints of each house. The overall cost function of each house will be
+optimized by the parallel ADMM in the iteration. Then, the convergence
+criteria for the iterative process are checked. If t < T, a new iteration will
+start, or else, the electricity cost of each house and the total cost of the
+community will be calculated based on the optimal solution obtained
+above in 24 h.
+
+As listed in Table 2, the preference parameters ai and bi of each house
+are taken based on the reference [15]. The maximum and minimum
+capacity of HESS and PEV in the house of Prosumer 1 are taken from our
+previous work [35]. The capacities of HESSs and PEVs in other houses
+are initialized randomly based on the values of HESS and PEV of Pro­
+sumer 1. Table 3 shows common parameters for HESSs and PEVs used in
+the community microgrid, which are also obtained from our previous
+work [35], which were taken from [10,36], respectively. In this paper,
+the arrival and departure times of PEVs are assumed to be 18:30 and
+7:30, which are in a certain time period of traffic during the evening rush
+hour [35].
+Fig. 7 presents the real-time purchase and sale prices of the main grid
+from the Australian Energy Market Operator [38]. The sale price of the
+main grid is set to be 2.5 Cents. Fig. 8 shows the generation data of three
+prosumers and the load data of all houses in the community microgrid
+respectively. Among them, the PV generation data of Prosumer 1 is
+taken from [35], which was converted from the PV generation data of
+the European Network of Transmission System Operators to meet the
+residence PV generation [37], and the wind generation data of Prosumer
+2 and Prosumer 3 are taken from [39]. The consumption data of Fig. 8(b)
+
+4. Case studies
+4.1. Data collection
+A community microgrid consisting of 6 houses is considered in the
+study. Table 1 shows the list of the components deployed in each house.
+This list mainly includes two types of users (prosumers and consumers),
+two types of DERs (solar panels and wind turbines), electric vehicles,
+and household energy storage batteries with different capacities and
+parameters.
+18
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 13. (continued).
+
+are taken from [35,39] respectively.
+All simulations are conducted on a personal computer equipped with
+Intel Core i3-4130 CPU clocked at 3.40GHz and 16 GB of RAM, running
+on Windows 10 64bit education system. Python v.3.9.12 with CVXPY
+v.1.2.1 is used as the programming and solving platform.
+
+compare the results of the P2P market with the pool-based market of the
+main grid. Case 1 studies the Peer-to-Grid (P2G) mode of the commu­
+nity, which refers to the energy trading of the community only through
+the pool-based market of the main grid. Then, in Case 2, P2P energy
+trading is developed in the community microgrid. The energy trans­
+actions between each household and the main grid take a back seat to
+prevent the energy produced in the microgrid from being insufficient for
+community consumption. The influence of peak shaving service on the
+energy trading of all the houses in the community is studied in Case 3. To
+evaluate the influence of HESS installation on the houses in the
+
+4.2. Case study
+Five scenarios are studied in our work to study the effectiveness of
+the proposed distributed ADMM algorithm for P2P energy trading and
+19
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 13. (continued).
+
+community, Case 4 introduces HESS into the study, and the degradation
+cost is also considered in the battery charging and discharging strategy
+of HESS and PEV. Case 5, the last scenario, is set as a control group of
+Case 4 that does not consider degradation costs to evaluate the impact of
+degradation costs on the strategy and the overall optimization algo­
+rithm. A summary of case studies details and the total cost of the com­
+munity is presented in Table 4.
+
+no HESS is installed in any peers of the community. Each house in the
+community can only trade electricity with the main grid. Thus, only the
+battery charging and discharging strategy is used in our algorithm to
+calculate the charging and discharging power of the two PEVs.
+Fig. 9 shows the energy trading details of each house in Case 1
+considering the utilization of PEVs. From Fig. 9, we can see that there is
+a power balance in each house of the community, i.e., the total power
+generated and bought equals the total power consumed and sold.
+It is noted that though there are only two types of DERs, three pro­
+sumers in Case 1 present three conditions of prosumers respectively, i.e.,
+
+4.2.1. Case 1: Peer-to-Grid mode
+In Case 1, only Prosumer 1 and Consumer 1 equipped with PEVs, and
+20
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+Fig. 13. (continued).
+Table 5
+Summary of the total cost of each house and the total cost of the community in different cases.
+Items
+
+Case 1 (cents)
+
+Case 2 (cents)
+
+Case 3 (cents)
+
+Case 4 (cents)
+
+Case 4_s (cents)
+
+Case 5 (cents)
+
+Prosumer 1
+Prosumer 2
+Prosumer 3
+Consumer 1
+Consumer 2
+Consumer 3
+Total cost
+
+404.29
+− 121.65
+− 662.5
+1929.26
+3445.85
+1982.70
+6977.95
+
+368.63
+− 121.65
+− 1100.49
+947.88
+3007.62
+1982.70
+5084.69
+
+369.18
+− 121.30
+− 1080.12
+899.32
+2999.62
+1982.70
+5049.41
+
+338.74
+− 111.85
+− 1086.60
+898.85
+2984.55
+1982.70
+5006.38
+
+290.20
+− 121.30
+− 1086.60
+880.34
+2965.98
+1982.70
+4911.32
+
+292.72
+− 121.49
+− 1087.55
+877.61
+2986.33
+1982.70
+4930.31
+
+insufficiency type, matching type, and surplus type.
+
+trading failure might be the mismatch and dissatisfaction of the esti­
+mated energy prices between buyers and sellers, which are influenced by
+the parameters of preference behavior of each house (ai and bi ). In other
+words, when the price at which the deal concluded is too high for buyers
+or too low for sellers, the buyer or seller tends to cancel the deal to avoid
+losses.
+Different from Case 1, Prosumer 1 and Prosumer 3 sell their surplus
+energy to the consumers of the community first instead of the main grid.
+It is noted that when the total electricity of prosumers to be sold is more
+than the total energy of consumers’ needs to buy, the exceeded amount
+of energy will be sold to the main grid too, as shown in the condition of
+12:00 in Fig. 10(c).
+
+4.2.2. Case 2: Peer-to-Peer mode
+Case 2 shares a similarity to Case 1 that only Prosumer 1 and Con­
+sumer 1 are equipped with PEVs, while HESS is not installed in any peers
+of the community. However, each peer in the community trades energy
+with other peers first then with the main grid. Thus, the battery charging
+and discharging strategy is used to compute the charging and dis­
+charging power of the two PEVs. The proposed ADMM algorithm is also
+adopted to evaluate the power and price to be traded between each pair
+in the P2P energy market.
+Fig. 10 shows the energy trading details of each house in Case 2
+considering the utilization of PEVs of Prosumer 1 and Consumer 1.
+Despite the power balance of each house in the community, the elec­
+tricity utilization details of Prosumer 2 and Consumer 3 are also same as
+the conditions in Case 1, which means Prosumer 2 and Consumer 3 don’t
+participate in the P2P energy trading in the community. The reasons for
+
+4.2.3. Case 3: Peer-to-Peer mode with peak shaving service
+In this case, the energy trading mode and the parameters used are the
+same as in Case 2 while the peak shaving service fee is considered in the
+total cost function. As shown in Fig. 11(b) and (d), Prosumer 2 joins in
+21
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+the P2P energy trading in the community when the peak shaving fee is
+imposed. Unlike the previous case, since the fee is to encourage the
+energy exchange inside the community and reduce the energy require­
+ment from the main grid, this gives Prosumer 2 a chance to sell its
+surplus energy to Consumer 1 partly. Prosumer 3 also increases its en­
+ergy to be sold to others in the community. However, Consumer 3 does
+not participate in the P2P energy trading in the community because of
+high preference parameters. As a result, the total cost of the community
+is reduced along with the reduction of the cost of the houses.
+
+In summary, the findings and insights of this study are listed as
+follows:
+• From the comparison of Case 1 and the other three cases, we can find
+P2P energy trading in the community microgrid can reduce the total
+costs of each house and the community.
+• The same results of Consumer 3 in all cases show that if the prefer­
+ence parameters of users are far away from other peers, it may affect
+the final price and energy of the transaction in the P2P energy
+market.
+• In the P2P energy market of the community, prosumers have greater
+advantages in self-production and sales than consumers, and can get
+more benefits.
+• By comparing the results of Prosumer 2 and Prosumer 3, it is depicted
+that under appropriate optimization strategies, the more energy
+prosumers produce, the more profits can be obtained.
+• As the result of Prosumer 2 in Case 3 shows, the inclination of P2P
+energy trading in the community can be encouraged by imposing a
+penalty fee such as peak shaving service fee to reduce the reliance on
+the main grid.
+• From the examples of Case 4, it is shown that no matter what kind of
+user, they can optimize the electric energy demand by adding
+household energy storage equipment of appropriate capacity to
+reduce costs or increase profits.
+• From the result of Consumer 1 in Case 4, PEV can also temporarily
+serve as a household energy storage device, but due to time con­
+straints, the charging time of PEV is usually concentrated at night,
+and the overall efficiency is usually slightly lower than that of
+household batteries.
+• By comparing the results of Prosumer 1 and Prosumer 3 in Case 4 and
+Case 5, it is depicted that the degradation cost of the battery affects
+the charging and discharging timing of PEV and HESS and subse­
+quently affects the amount of power in the P2P energy transactions.
+• The results of Consumer 2 in Case 5 show a certain impact of the
+degradation cost of the battery in the optimization algorithm, which
+may lead to decision-making errors, thereby increasing the overall
+power consumption cost of the microgrid.
+
+4.2.4. Case 4: Peer-to-Peer mode combined HESS
+In this case, HESSs are deployed into the home of Prosumer 1, Pro­
+sumer 2, and Consumer 2. Other conditions are the same as the condi­
+tions in Case 3. The full framework of the community microgrid can be
+seen in Fig. 2. Thus the process of the battery charging and discharging
+strategy of PEVs and HESSs are refined from the flowchart of Fig. 4. The
+parameters of the strategy and ADMM are also the same as the param­
+eters in Case 3.
+From the same results of electricity utilization details shown in
+Fig. 12(b) and (f), Prosumer 2 sells partial energy to Consumer 1, but
+Consumer 3 still does not participate in the P2P energy trading in the
+community. In addition, the installation of HESS has an influence on the
+supply of energy to be traded in the market, such as the conditions at
+9:00–11:00 of Prosumer 1 in Fig. 12(a). On the other hand, as shown in
+Fig. 12(a) and Fig. 12(e), the discharging process of HESSs at
+17:00–18:00 of Prosumer 1 and Consumer 2 also reduces the electricity
+to be bought from the main grid, which has almost the highest purchase
+price of the electricity at these periods.
+4.2.5. Case5: Peer-to-Peer mode combined HESS and without degradation
+cost
+Fig. 13 shows the details of the energy trading of each house in the
+community in Case 5. In this case, the framework and communication
+structure between all prosumers and all consumers are the same as those
+in Case 4. All the parameters of ADMM are the same as the parameters in
+the previous cases. The process of the battery charging and discharging
+strategy of PEVs and HESS in each house is also same as the process in
+Case 4 except for the consideration of the degradation cost of the bat­
+teries of PEVs and HESSs in the community.
+Similar to other cases, all the energy trading details of each house are
+power-balanced, including the utilization of PEVs and HESSs. From
+Fig. 13(b), Prosumer 2 sells energy to Consumer 1 at 17:00, 19:00 and
+20:00 like in Case 3 and Case 4. However, at 23:00, Consumer 1 reduces
+the energy demand because of the different charging process. Consumer
+3 also do not trade energy with other houses successfully, which is the
+same as the conditions in the previous cases. However, as shown in
+Fig. 13(k), the charging and discharging process of the HESS in the home
+of Consumer 2 does not work well when ignoring the degradation cost of
+batteries. This not only reduces the utilization efficiency of the HESS but
+also increases the total cost of Consumer 2.
+
+There are also some limitations, which are listed as follows:
+• Firstly, the parameters of HESSs and PEVs are assumed to be fixed in
+this study, including the arrival and departure times of PEVs. How­
+ever, these parameters are changing, and PEVs may not follow this
+timetable.
+• Secondly, to guarantee the convex of the cost function of each house,
+the degradation cost of batteries follows the quadratic model, which
+does not consider the investment cost of batteries and may affect the
+results of simulations.
+• Thirdly, the selling price of energy of the main grid is assumed to be
+2.5 Cents all day. However, this selling price is often related to the
+financial incentives proposed by utilities.
+• Finally, to simplify the communication model of the mixed energy
+market in the community microgrid, all the houses are divided into
+two groups and form a bipartite mixed electricity market. Thus, the
+fully communicated P2P energy trading can be taken into account in
+future simulations.
+
+4.2.6. Summary
+Table 5 shows the total cost of each house and the total cost of the
+community in all five cases and the costs of Case 4 subtracting the
+degradation cost. From the table, all the houses who participate the P2P
+energy trading successfully, no matter prosumers or consumers, reduce
+the total costs. As shown in the second row of Table 5, Prosumer 2 also
+decreases its total cost in the last three cases due to the implementation
+of peak shaving service fee and the deployment of HESS. The condition
+of Consumer 3 has no change in all five cases since it has the highest
+preference parameters and affects the willingness to participate the P2P
+energy trading.
+It is noted that the degradation cost of the batteries of HESS and PEVs
+has an influence on the process choices of the battery charging and
+discharging strategy, which can be seen in the last two columns of
+Table 5, especially in the case of Consumer 1 and Consumer 2.
+
+5. Conclusions
+To reduce the DERs penetration in the main grid and maximize the
+profit of the end-users, a novel distributed parallel ADMM optimization
+approach associated with the optimal storage strategy has been pro­
+posed for P2P energy trading in a scalable community microgrid,
+considering the degradation cost of batteries of HESSs and PEVs in the
+community. The proposed P2P energy trading market clearing mecha­
+nism considers a variety of realistic factors such as household privacy,
+22
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+
+user preferences, peak shaving services, community power grid-related
+usage fees, point-to-point bilateral transaction weights, and battery
+degradation costs. The designed comparative case studies depict the
+impact of the types of users, grid transaction methods, peak shaving fee,
+energy storage equipment, and battery degradation costs on P2P energy
+trading. The results show a significant reduction in both the cost of each
+house and the total cost of the community when developing the P2P
+energy trading in the community. The comparison between peers and
+cases also presents that prosumers have greater advantages than con­
+sumers in P2P electricity transactions if the participants do not have
+special preferences for energy trading. In addition, by imposing a pen­
+alty fee such as a peak shaving service fee, the inclination of energy
+trading of each house can be affected, which reduces the reliance on the
+main grid. The deployment of home energy storage devices including
+HESSs and PEVs can also distribute and utilize energy more efficiently in
+the P2P market.
+In the future, the study can be improved from the following three
+aspects. Firstly, additional factors which influence the P2P energy
+trading in the local energy market can be investigated such as trade
+weights based on the types of energy sources and the efficiency of the
+storage systems can be investigated in the P2P energy trading. Secondly,
+the performance of different methods used in peer-to-peer energy
+trading can be evaluated and compared including the ADMM-based
+approach, reinforcement learning, and heuristic algorithms, etc.
+Thirdly, the effectiveness and robustness of the proposed ADMM algo­
+rithm can be analyzed and evaluated by real-time testing such as the
+Hardware-In-the-Loop method. In addition, the full communication
+structure as well as power flow constraints in the P2P energy market can
+also be studied in the simulations of future work.
+
+[5] H. Hu, N. Xie, D. Fang, X. Zhang, The role of renewable energy consumption and
+commercial services trade in carbon dioxide reduction: evidence from 25
+developing countries, Appl. Energy 211 (August 2017) (2018) 1229–1244, https://
+doi.org/10.1016/j.apenergy.2017.12.019.
+[6] International Energy Agency (IEA), Approximately 100 million households rely on
+rooftop solar PV by 2030, Accessed: Nov. 26, 2023. [Online]. Available: https
+://www.iea.org/reports/approximately-100-million-households-rely-on-rooftop
+-solar-pv-by-2030.
+[7] X. Yan, Y. Ozturk, Z. Hu, Y. Song, A review on price-driven residential demand
+response, Renew. Sustain. Energy Rev. 96 (April 2017) (Nov. 2018) 411–419,
+https://doi.org/10.1016/j.rser.2018.08.003.
+[8] M. Beaudin, H. Zareipour, Home energy management systems: a review of
+modelling and complexity, Renew. Sustain. Energy Rev. 45 (August) (2015)
+318–335, https://doi.org/10.1016/j.rser.2015.01.046.
+[9] Y. Parag, B.K. Sovacool, Electricity market design for the prosumer era, Nat. Energy
+1 (4) (2016), https://doi.org/10.1038/NENERGY.2016.32.
+[10] A. Paudel, L. P. M. I. M. I. Sampath, J. Yang, H.B. Gooi, G.S. Member, L. P. M. I. M.
+I. Sampath, Peer-to-peer energy trading in smart grid considering power losses and
+network fees, IEEE Trans. Smart Grid 11 (6) (2020) 4727–4737, https://doi.org/
+10.1109/TSG.2020.2997956.
+[11] F. Moret, P. Pinson, Energy collectives: a community and fairness based approach
+to future electricity markets, IEEE Trans. Power Syst. 34 (5) (2019) 3994–4004,
+https://doi.org/10.1109/TPWRS.2018.2808961.
+[12] Y. Zahraoui, I. Alhamrouni, S. Mekhilef, M.R. Basir Khan, B.P. Hayes, M. Ahmed,
+A novel approach for sizing battery storage system for enhancing resilience ability
+of a microgrid, Int. Trans. Electr. Energy Syst. 31 (12) (2021), https://doi.org/
+10.1002/2050-7038.13142.
+[13] Y. Zahraoui, et al., Self-healing strategy to enhance microgrid resilience during
+faults occurrence, Int. Trans. Electr. Energy Syst. 31 (12) (2021), https://doi.org/
+10.1002/2050-7038.13232.
+[14] D.H. Nguyen, Optimal solution analysis and decentralized mechanisms for peer-topeer energy markets, IEEE Trans. Power Syst. 36 (2) (2021) 1470–1481, https://
+doi.org/10.1109/TPWRS.2020.3021474.
+[15] D.H. Nguyen, T. Narikiyo, M. Kawanishi, Optimal demand response and real-time
+pricing by a sequential distributed consensus-based ADMM approach, IEEE Trans.
+Smart Grid 9 (5) (2018) 4964–4974, https://doi.org/10.1109/TSG.2017.2676179.
+[16] Y. Zahraoui, T. Korõtko, A. Rosin, H. Agabus, Market mechanisms and trading in
+microgrid local electricity markets: a comprehensive review, Energies 16 (5)
+(2023) 1–52, https://doi.org/10.3390/en16052145.
+[17] M. Mehdinejad, H. Shayanfar, B. Mohammadi-Ivatloo, Decentralized blockchainbased peer-to-peer energy-backed token trading for active prosumers, Energy 244
+(2022) 122713, https://doi.org/10.1016/j.energy.2021.122713.
+[18] J. Dong, C. Song, S. Liu, H. Yin, H. Zheng, Y. Li, Decentralized peer-to-peer energy
+trading strategy in energy blockchain environment: a game-theoretic approach,
+Appl. Energy 325 (August) (2022) 119852, https://doi.org/10.1016/j.
+apenergy.2022.119852.
+[19] B.P. Hayes, S. Thakur, J.G. Breslin, Co-simulation of electricity distribution
+networks and peer to peer energy trading platforms, Int. J. Electr. Power Energy
+Syst. 115 (July 2019) (2020) 105419, https://doi.org/10.1016/j.
+ijepes.2019.105419.
+[20] Y. Zahraoui, T. Korotko, A. Rosin, T.E.K. Zidane, S. Mekhilef, A real-time
+simulation for P2P energy trading using a distributed algorithm, IEEE Access 12
+(January) (2024) 44135–44146, https://doi.org/10.1109/ACCESS.2024.3369899.
+[21] M. Khorasany, Y. Mishra, B. Babaki, G. Ledwich, Enhancing scalability of peer-topeer energy markets using adaptive segmentation method, J. Mod. Power Syst.
+Clean Energy 7 (4) (2019) 791–801, https://doi.org/10.1007/s40565-019-0510-0.
+[22] E.A. Soto, L.B. Bosman, E. Wollega, W.D. Leon-Salas, Peer-to-peer energy trading: a
+review of the literature, Appl. Energy 283 (June 2020) (2021) 116268, https://doi.
+org/10.1016/j.apenergy.2020.116268.
+[23] J. Yang, W. Xu, K. Ma, C. Li, A three-stage multi-energy trading strategy based on
+P2P trading mode, IEEE Trans. Sustain. Energy 14 (1) (2023) 233–241, https://doi.
+org/10.1109/TSTE.2022.3208369.
+[24] H. Sahebi, M. Khodoomi, M. Seif, M.S. Pishvaee, T. Hanne, The benefits of peer-topeer renewable energy trading and battery storage backup for local grid, J. Energy
+Storage 63 (March) (2023) 106970, https://doi.org/10.1016/j.est.2023.106970.
+[25] S. Faria, et al., Consumer-centric electricity markets: a comprehensive review on
+user preferences and key performance indicators, Electr. Pow. Syst. Res. 210
+(November 2021) (2022), https://doi.org/10.1016/j.epsr.2022.108088.
+[26] Z. Zheng, Z. Sun, J. Pan, X. Luo, An integrated smart home energy management
+model based on a pyramid taxonomy for residential houses with photovoltaicbattery systems, Appl. Energy 298 (May) (2021) 117159, https://doi.org/10.1016/
+j.apenergy.2021.117159.
+[27] A. Aminlou, B. Mohammadi-Ivatloo, K. Zare, R. Razzaghi, A. Anvari-Moghaddam,
+Activating demand side flexibility market in a fully decentralized P2P transactive
+energy trading framework using ADMM algorithm, Sustain. Cities Soc. 100
+(October 2023) (2024) 105021, https://doi.org/10.1016/j.scs.2023.105021.
+[28] J. Hussain, et al., Microgrid and participant-centric residential demand response
+program and photovoltaic with battery-storage P2P energy trading for optimum
+energy management using MDULPS and PPBSD-ADMM, J. Energy Storage 84 (PB)
+(2024) 110881, https://doi.org/10.1016/j.est.2024.110881.
+[29] J. Hussain, et al., Optimization of social welfare in P2P community microgrid with
+efficient decentralized energy management and communication-efficient power
+trading, J. Energy Storage 81 (December 2023) (2024) 110458, https://doi.org/
+10.1016/j.est.2024.110458.
+[30] Y. Zahraoui, T. Korotko, A. Rosin, T.E.K. Zidane, H. Agabus, S. Mekhilef,
+A competitive framework for the participation of multi-microgrids in the
+
+CRediT authorship contribution statement
+Binghui Han: Writing – review & editing, Writing – original draft,
+Validation, Methodology, Investigation, Funding acquisition, Formal
+analysis, Data curation, Conceptualization. Younes Zahraoui: Writing –
+review & editing, Writing – original draft, Visualization, Supervision,
+Software, Methodology. Marizan Mubin: Supervision, Project admin­
+istration. Saad Mekhilef: Writing – review & editing, Writing – original
+draft, Supervision, Project administration. Tarmo Korõtko: Writing –
+review & editing, Writing – original draft. Obaid Alshammari: Re­
+sources, Project administration, Methodology, Investigation.
+Declaration of competing interest
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+Data availability
+Data will be made available on request.
+References
+[1] B. Han, Y. Zahraoui, M. Mubin, S. Mekhilef, M. Seyedmahmoudian, A. Stojcevski,
+Home energy management systems: a review of the concept, architecture, and
+scheduling strategies, IEEE Access 11 (December 2022) (2023) 19999–20025,
+https://doi.org/10.1109/ACCESS.2023.3248502.
+[2] T. Ahmed, S. Mekhilef, R. Shah, N. Mithulananthan, M. Seyedmahmoudian,
+B. Horan, ASEAN power grid: a secure transmission infrastructure for clean and
+sustainable energy for South-East Asia, Renew. Sustain. Energy Rev. 67 (2017)
+1420–1435, https://doi.org/10.1016/j.rser.2016.09.055.
+[3] M. Dreidy, H. Mokhlis, S. Mekhilef, Inertia response and frequency control
+techniques for renewable energy sources: a review, Renew. Sustain. Energy Rev. 69
+(July 2016) (2017) 144–155, https://doi.org/10.1016/j.rser.2016.11.170.
+[4] L. Olatomiwa, S. Mekhilef, M.S. Ismail, M. Moghavvemi, Energy management
+strategies in hybrid renewable energy systems: a review, Renew. Sustain. Energy
+Rev. 62 (2016) 821–835, https://doi.org/10.1016/j.rser.2016.05.040.
+
+23
+
+B. Han et al.
+
+Journal of Energy Storage 96 (2024) 112651
+[35] B. Han, Y. Zahraoui, M. Mubin, S. Mekhilef, M. Seyedmahmoudian, A. Stojcevski,
+Optimal strategy for comfort-based home energy management system considering
+impact of battery degradation cost model, Mathematics 11 (6) (2023) 1333,
+https://doi.org/10.3390/math11061333.
+[36] A.C. Duman, H.S. Erden, Ö. Gönül, Ö. Güler, A home energy management system
+with an integrated smart thermostat for demand response in smart grids, Sustain.
+Cities Soc. 65 (August 2020) (2021), https://doi.org/10.1016/j.scs.2020.102639.
+[37] X. Hou, J. Wang, T. Huang, T. Wang, P. Wang, Smart home energy management
+optimization method considering energy storage and electric vehicle, IEEE Access
+7 (2019) 144010–144020, https://doi.org/10.1109/ACCESS.2019.2944878.
+[38] The Australian Energy Market Operator (AEMO), Metadata [Online]. Available:
+https://aemo.com.au/.
+[39] A. Jiang, H. Yuan, D. Li, A two-stage optimization approach on the decisions for
+prosumers and consumers within a community in the peer-to-peer energy sharing
+trading, Int. J. Electr. Power Energy Syst. 125 (September 2020) (2021) 106527,
+https://doi.org/10.1016/j.ijepes.2020.106527.
+
+community energy trading market: a case study, IEEE Access 12 (April) (2024)
+68232–68248, https://doi.org/10.1109/ACCESS.2024.3399168.
+[31] H. Zhang, D. Yue, C. Dou, X. Xie, K. Li, G.P. Hancke, Resilient optimal defensive
+strategy of TSK fuzzy-model-based microgrids’ system via a novel reinforcement
+learning approach, IEEE Trans. Neural Networks Learn. Syst. 34 (4) (2023)
+1921–1931, https://doi.org/10.1109/TNNLS.2021.3105668.
+[32] A. Yaldız, T. Gökçek, İ. Şengör, O. Erdinç, Optimal sizing and economic analysis of
+photovoltaic distributed generation with battery energy storage system considering
+peer-to-peer energy trading, Sustain. Energy, Grids Networks 28 (2021), https://
+doi.org/10.1016/j.segan.2021.100540.
+[33] E. Sorin, L. Bobo, P. Pinson, Consensus-based approach to peer-to-peer electricity
+markets with product differentiation, IEEE Trans. Power Syst. 34 (2) (2019)
+994–1004, https://doi.org/10.1109/TPWRS.2018.2872880.
+[34] Y. Liu, et al., Distributed robust energy management of a multimicrogrid system in
+the real-time energy market, IEEE Trans. Sustain. Energy 10 (1) (2019) 396–406,
+https://doi.org/10.1109/TSTE.2017.2779827.
+
+24
+
+
